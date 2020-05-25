@@ -4,7 +4,7 @@
 
 Currently, the excel project is configured for [yarn](https://yarnpkg.com/)
 
-Go to the root fo```yarn deps```
+Go to the root folder then run the command on the terminal: ```yarn deps```
 
 ## Starting the Application
 
