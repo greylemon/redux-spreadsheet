@@ -1,5 +1,6 @@
 import React from 'react'
 import { VariableSizeGrid } from 'react-window'
+import AutoSizer from 'react-virtualized-auto-sizer'
 
 type CellProps = {
   columnIndex: number
@@ -22,17 +23,21 @@ const Cell = ({ columnIndex, rowIndex, style }: CellProps) => (
 
 export const Sheet = () => {
   return (
-    <VariableSizeGrid
-      columnCount={1000}
-      columnWidth={(index) => columnWidths[index]}
-      height={150}
-      rowCount={1000}
-      rowHeight={(index) => rowHeights[index]}
-      width={300}
-      extraBottomRightElement={<div />}
-    >
-      {Cell}
-    </VariableSizeGrid>
+    <AutoSizer>
+      {({ height, width }) => (
+        <VariableSizeGrid
+          columnCount={26}
+          columnWidth={(index) => columnWidths[index]}
+          height={height}
+          rowCount={1000}
+          rowHeight={(index) => rowHeights[index]}
+          width={width}
+          extraBottomRightElement={<div />}
+        >
+          {Cell}
+        </VariableSizeGrid>
+      )}
+    </AutoSizer>
   )
 }
 

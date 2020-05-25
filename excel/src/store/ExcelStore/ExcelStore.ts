@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import ExcelState from './types'
+import ExcelState from '../../@types/excel'
 
 const initialState: ExcelState = {
   data: {},
