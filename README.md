@@ -38,3 +38,15 @@ Please check out the package.json of the excel for the scripts and other node co
 - [TypeScript](https://www.typescriptlang.org/)
 - [Usage with Redux](https://redux.js.org/recipes/usage-with-typescript)
 - [Usage with Redux Toolkit](https://redux-toolkit.js.org/usage/usage-with-typescript)
+
+## Useful VSCode Packages
+
+- ESLint
+- Error Lens
+- GitLens
+- REST Client
+- Babel JavaScript
+- CodeMetrics
+- Color Highlight
+- Better Comments
+- markdownlint
