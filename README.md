@@ -22,13 +22,15 @@ Please check out the package.json of the excel for the scripts and other node co
 
 ## Main Libraries Used
 
-- [React](https://reactjs.org/): used for building HTML components
+- [React](https://reactjs.org/)(Specifically [hooks](https://reactjs.org/docs/hooks-overview.html)): used for building HTML components. 
 - [Redux](https://redux.js.org/): application state and state management
 - [Redux Toolkit](https://redux-toolkit.js.org/): tools which make Redux setup straightforward
 - [React Redux](https://react-redux.js.org/): For using Redux with React 
 
 ## Tutorials
 
+- [JavaScript](https://javascript.info/)
+- [React Patterns](https://reactpatterns.com/)
 - [Redux](https://egghead.io/courses/getting-started-with-redux). Please check out the Redux toolkit as that will simplify Redux a ton.
 
 ## Typescript
