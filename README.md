@@ -20,7 +20,7 @@ Change to the excel folder:
 
 Please check out the package.json of the excel for the scripts and other node configurations.
 
-## Libraries used
+## Main Libraries Used
 
 - [React](https://reactjs.org/): used for building HTML components
 - [Redux](https://redux.js.org/): application state and state management
@@ -29,4 +29,10 @@ Please check out the package.json of the excel for the scripts and other node co
 
 ## Tutorials
 
-- [Redux](https://egghead.io/courses/getting-started-with-redux)
+- [Redux](https://egghead.io/courses/getting-started-with-redux). Please check out the Redux toolkit as that will simplify Redux a ton.
+
+## Typescript
+
+- [TypeScript](https://www.typescriptlang.org/)
+- [Usage with Redux](https://redux.js.org/recipes/usage-with-typescript)
+- [Usage with Redux Toolkit](https://redux-toolkit.js.org/usage/usage-with-typescript)
