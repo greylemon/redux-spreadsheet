@@ -69,7 +69,7 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn run lint && npm run fix"
+      "pre-commit": "yarn lint && yarn fix"
     }
   }
 }
