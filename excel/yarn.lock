@@ -11077,7 +11077,7 @@ typescript@~3.7.2:
 
 "undox@https://github.com/greylemon/undox":
   version "1.3.1"
-  resolved "https://github.com/greylemon/undox#d7b97409097ac58e347bc90491e0ca67ab9c8ac5"
+  resolved "https://github.com/greylemon/undox#0836ab9ae598253df93f9ec8490d91f98533b910"
 
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"

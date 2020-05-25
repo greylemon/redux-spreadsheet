@@ -1,10 +1,10 @@
 import React from 'react'
 import { useTypedSelector } from '../../../store'
 
-const EditorCell = () => <div />
+// const EditorCell = () => <div />
 
 const ActiveCell = () => {
-  // const {} = useTypedSelector(({ ExcelStore: { sheetName } }) => ({}))
+  // const {} = useTypedSelector(({ Excel: { present: {} } }) => ({}))
 
   return <div />
 }
