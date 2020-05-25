@@ -60,7 +60,7 @@ type Cell = {
 }
 
 type Columns = {
-  [key: number]: Cell[]
+  [key: number]: Cell
 }
 
 type Rows = {
