@@ -20,6 +20,10 @@ Change to the excel folder:
 
 Please check out the package.json of the excel for the scripts and other node configurations.
 
+## Husky
+
+Husky is used here for performing tasks before a git commit. The tasks performed is finding code violations using eslint and formatting code using prettier.
+
 ## Main Libraries Used
 
 - [React](https://reactjs.org/) (Specifically [hooks](https://reactjs.org/docs/hooks-overview.html)): used for building HTML components
