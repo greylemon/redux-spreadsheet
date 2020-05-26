@@ -25,6 +25,7 @@
     "react-window": "https://github.com/greylemon/react-window",
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
+    "reselect": "^4.0.0",
     "slate": "../slate/packages/slate",
     "slate-history": "../slate/packages/slate-history",
     "slate-react": "../slate/packages/slate-react",

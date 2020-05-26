@@ -1,13 +1,13 @@
-type Position = { x: number; y: number }
+export type IPosition = { x: number; y: number }
 
-type Area = { start: Position; end: Position }
+export type IArea = { start: IPosition; end: IPosition }
 
-type Error = object
+export type IError = object
 
-type CSSLength = number | string
-type CSSPercentage = string
+export type ICSSLength = number | string
+export type ICSSPercentage = string
 
-type BlockStyles = {
+export type IBlockStyles = {
   borderTopColor?: any
   borderTopWidth?: any
   borderTopStyle?: any
@@ -25,11 +25,11 @@ type BlockStyles = {
   borderBottomStyle?: any
 }
 
-type InlineStyles = {
+export type IInlineStyles = {
   fontWeight?: 'normal' | 'bold'
   fontStyle?: 'normal' | 'italic'
   fontFamily?: any
-  fontSize?: CSSLength | CSSPercentage
+  fontSize?: ICSSLength | ICSSPercentage
   textDecoration?:
     | 'underline'
     | 'line-through'
@@ -39,61 +39,73 @@ type InlineStyles = {
   color?: any
 }
 
-type Styles = BlockStyles & InlineStyles
+export type IStyles = IBlockStyles & IInlineStyles
 
-type Fragment = {
+export type IFragment = {
   value: string
-  styles: InlineStyles
+  styles: IInlineStyles
 }
 
-type RichText = Fragment[]
+export type IRichText = IFragment[]
 
-type Hyperlink = {
+export type IHyperlink = {
   type: 'external' | 'internal'
   link: string
 }
 
-type Cell = {
-  value?: string | RichText
+export type ICell = {
+  value?: string | IRichText
   formula?: string
-  hyperlink?: Hyperlink
+  hyperlink?: IHyperlink
 }
 
-type Columns = {
-  [key: number]: Cell
+export type IOffset = number
+
+export type IColumns = { [key: number]: ICell }
+
+export type IRows = { [key: number]: IColumns }
+
+export type IGridMeasurements<T> = { [key: number]: T }
+
+export type IColumnWidth = number
+export type IColumnWidths = IGridMeasurements<IColumnWidth>
+
+export type IRowheight = number
+export type IRowHeights = IGridMeasurements<IRowheight>
+
+export type IRowCount = number
+export type IColumnCount = number
+export type IFreezeColumnCount = number
+export type IFreezeRowCount = number
+
+export type IIsEditMode = boolean
+export type ISheetName = string
+
+export type ISheet = {
+  data: IRows
+
+  selectionArea?: IArea
+  stagnantSelectionAreas: IArea[]
+
+  sheetName: ISheetName
+  position: IPosition
+
+  isEditMode: IIsEditMode
+
+  rowCount: IRowCount
+  columnCount: IColumnCount
+
+  columnWidths: IColumnWidths
+  rowHeights: IRowHeights
+
+  freezeColumnCount: IFreezeColumnCount
+  freezeRowCount: IFreezeRowCount
+
+  error: IError
 }
 
-type Rows = {
-  [key: number]: Columns
+export type IInactiveSheets = {
+  [key: string]: ISheet
 }
 
-type Sheet = {
-  data: Rows
-
-  selectionArea?: Area
-  stagnantSelectionAreas: Area[]
-
-  sheetName: string
-  position: Position
-
-  isEditMode: boolean
-
-  rowCount: number
-  columnCount: number
-
-  columnWidths: Array<number>
-  rowHeights: Array<number>
-
-  freezeColumnCount: number
-  freezeRowCount: number
-
-  error: Error
-}
-
-type InactiveSheets = {
-  [key: string]: Sheet
-}
-
-type ExcelState = Sheet & { inactiveSheets: InactiveSheets }
-
-export default ExcelState
+export type IExcelState = ISheet & { inactiveSheets: IInactiveSheets }

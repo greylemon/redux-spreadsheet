@@ -1,12 +1,26 @@
 import React from 'react'
 import { useTypedSelector } from '../../../store'
 
-// const EditorCell = () => <div />
+const EditorCell = () => {
+  return <div />
+}
+
+const NormalCell = () => {
+  return <div />
+}
 
 const ActiveCell = () => {
-  // const {} = useTypedSelector(({ Excel: { present: {} } }) => ({}))
+  const { isEditMode } = useTypedSelector(
+    ({
+      Excel: {
+        present: { isEditMode },
+      },
+    }) => ({
+      isEditMode,
+    })
+  )
 
-  return <div />
+  return isEditMode ? <EditorCell /> : <NormalCell />
 }
 
 export default ActiveCell

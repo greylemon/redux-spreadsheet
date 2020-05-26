@@ -3,7 +3,7 @@ import { combineReducers } from '@reduxjs/toolkit'
 import ExcelStore from './ExcelStore'
 
 const rootReducer = combineReducers({
-  ExcelStore: ExcelStore.reducer,
+  Excel: ExcelStore,
 })
 
 export default rootReducer

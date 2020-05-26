@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
-import ExcelState from '../../@types/excel'
+import { IExcelState } from '../../@types/excel'
+import { undox } from 'undox'
 
-const initialState: ExcelState = {
+const initialState: IExcelState = {
   data: {},
 
-  // selectionArea?:
   stagnantSelectionAreas: [],
 
   sheetName: '',
@@ -15,8 +15,8 @@ const initialState: ExcelState = {
   rowCount: 201,
   columnCount: 27,
 
-  columnWidths: [],
-  rowHeights: [],
+  columnWidths: {},
+  rowHeights: {},
 
   freezeColumnCount: 0,
   freezeRowCount: 0,
@@ -26,15 +26,14 @@ const initialState: ExcelState = {
   error: {},
 }
 
-const ExcelStore = createSlice({
-  name: 'excel',
+export const ExcelStore = createSlice({
+  name: 'EXCEL',
   initialState,
   reducers: {
-    sample_action: (state: ExcelState, action: any) => {
+    sample_action: (state: IExcelState, action: any) => {
       return {
         data: {},
 
-        // selectionArea?:
         stagnantSelectionAreas: [],
 
         sheetName: '',
@@ -45,8 +44,8 @@ const ExcelStore = createSlice({
         rowCount: 201,
         columnCount: 27,
 
-        columnWidths: [],
-        rowHeights: [],
+        columnWidths: {},
+        rowHeights: {},
 
         freezeColumnCount: 0,
         freezeRowCount: 0,
@@ -59,4 +58,18 @@ const ExcelStore = createSlice({
   },
 })
 
-export default ExcelStore
+const ignoredActionsMap = {
+  // EXCEL_MOUSE_DOWN: true,
+  EXCEL_SELECT_OVER: true,
+  // EXCEL_SET_SCROLL_DATA: true,
+  // EXCEL_SET_ACTIVE_CELL_INPUT_VALUE: true
+}
+
+const UndoxExcelStore = undox(
+  ExcelStore.reducer,
+  undefined,
+  undefined,
+  ignoredActionsMap
+)
+
+export default UndoxExcelStore

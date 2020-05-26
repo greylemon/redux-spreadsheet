@@ -1,10 +1,10 @@
 import { UndoxState, Action } from 'undox'
-import ExcelState from './excel'
+import { IExcelState } from './excel'
 
-export type ExcelStore = UndoxState<ExcelState, Action>
+export type IExcelStore = UndoxState<IExcelState, Action>
 
-type RootStore = {
-  Excel: ExcelStore
+type IRootStore = {
+  Excel: IExcelStore
 }
 
-export default RootStore
+export default IRootStore
