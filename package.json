@@ -1,0 +1,11 @@
+{
+  "name": "ss-redux",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/greylemon/spreadsheet-redux.git",
+  "author": "Alfred Lemon <alfred.lemon@mail.utoronto.ca>",
+  "license": "MIT",
+  "scripts": {
+    "deps": "yarn --cwd slate && yarn --cwd slate build && yarn --cwd excel"
+  }
+}
