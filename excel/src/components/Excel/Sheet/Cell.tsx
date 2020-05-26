@@ -1,10 +1,4 @@
-import React, { CSSProperties } from 'react'
-import {
-  IColumns,
-  IColumnIndex,
-  IRowIndex,
-  IRows,
-} from '../../../@types/excel/state'
+import React from 'react'
 import { ICell } from '../../../@types/excel/components'
 import EditableCell from './EditableCell'
 import RowCell from './RowCell'
@@ -13,8 +7,6 @@ import RootCell from './RootCell'
 
 const Cell = ({ data, style, columnIndex, rowIndex }: ICell) => {
   let CellComponent
-
-  // data
 
   if (columnIndex && rowIndex) {
     CellComponent = EditableCell
