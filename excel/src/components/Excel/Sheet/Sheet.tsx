@@ -1,28 +1,11 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback, useEffect, useMemo } from 'react'
 import { VariableSizeGrid } from 'react-window'
-import AutoSizer from 'react-virtualized-auto-sizer'
+import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../../store'
 import { ExcelStore } from '../../../store/ExcelStore/ExcelStore'
-import { useDispatch } from 'react-redux'
-
-type CellProps = {
-  columnIndex: number
-  rowIndex: number
-  style: object
-}
-
-const columnWidths = new Array(1000)
-  .fill(true)
-  .map(() => 75 + Math.round(Math.random() * 50))
-const rowHeights = new Array(1000)
-  .fill(true)
-  .map(() => 25 + Math.round(Math.random() * 50))
-
-const Cell = ({ columnIndex, rowIndex, style }: CellProps) => (
-  <div style={style}>
-    Item {rowIndex},{columnIndex}
-  </div>
-)
+import { useDispatch, shallowEqual } from 'react-redux'
+import { normalizeColumnWidth, normalizeRowHeight } from '../tools/dimensions'
+import Cell from './Cell'
 
 /**
  * React is a framework for building HTML. It operates on lifecycle stages which improves performance and predictability.
@@ -47,7 +30,7 @@ const Cell = ({ columnIndex, rowIndex, style }: CellProps) => (
  *
  * Please check out the hooks documentation for more functions!
  */
-export const Sheet = () => {
+export const Sheet = ({ height, width }: Size) => {
   const dispatch = useDispatch()
 
   /**
@@ -55,20 +38,32 @@ export const Sheet = () => {
    */
   const {
     columnCount,
-    // columnWidths,
     rowCount,
-    // rowHeights
+    data,
+    getColumnWidth,
+    getRowHeight,
   } = useTypedSelector(
     ({
       Excel: {
-        present: { columnCount, columnWidths, rowCount, rowHeights },
+        present: {
+          columnCount,
+          columnWidths,
+          rowCount,
+          rowHeights,
+
+          data,
+        },
       },
     }) => ({
       columnCount,
       columnWidths,
       rowCount,
-      rowHeights,
-    })
+      data,
+      getColumnWidth: (index: number) =>
+        normalizeColumnWidth(index, columnWidths),
+      getRowHeight: (index: number) => normalizeRowHeight(index, rowHeights),
+    }),
+    shallowEqual
   )
 
   /**
@@ -113,28 +108,32 @@ export const Sheet = () => {
     }
   }, [sampleAction])
 
+  const itemData = { data }
+
   return (
     /**
      * A custom component can nest other components using the children prop.
      * This is extremely useful!
      */
-    <AutoSizer>
-      {({ height, width }) => (
-        <VariableSizeGrid
-          className="unselectable"
-          columnCount={columnCount}
-          columnWidth={(index) => columnWidths[index]}
-          height={height}
-          rowCount={rowCount}
-          rowHeight={(index) => rowHeights[index]}
-          width={width}
-          extraBottomRightElement={<div />}
-        >
-          {Cell}
-        </VariableSizeGrid>
-      )}
-    </AutoSizer>
+    <VariableSizeGrid
+      columnCount={columnCount}
+      columnWidth={getColumnWidth}
+      height={height}
+      rowCount={rowCount}
+      rowHeight={getRowHeight}
+      width={width}
+      itemData={itemData}
+      extraBottomRightElement={<div />}
+    >
+      {Cell}
+    </VariableSizeGrid>
   )
 }
 
-export default Sheet
+const SheetSizer = ({ height, width }: Size) => (
+  <Sheet height={height} width={width} />
+)
+
+const SheetContainer = () => <AutoSizer children={SheetSizer} />
+
+export default SheetContainer

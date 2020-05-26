@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { IExcelState } from '../../@types/excel'
+import { IExcelState } from '../../@types/excel/state'
 import {
   getColumnOffsets,
   getRowOffsets,

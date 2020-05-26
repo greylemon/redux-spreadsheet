@@ -14,21 +14,36 @@ import {
   IRowCount,
   IRowHeights,
   IOffset,
-} from '../../../@types/excel'
+} from '../../../@types/excel/state'
 
 /**
  * Converts Excel scaled row height unit to normal scaled unit
  */
-export const normalizeRowHeight = (rowHeight: IRowheight): IRowheight =>
-  rowHeight ? rowHeight * EXCEL_ROW_HEIGHT_SCALE : EXCEL_SHEET_ROW_HEIGHT
+export const normalizeRowHeight = (
+  index: number,
+  rowHeights: IRowHeights
+): IRowheight => {
+  if (!index) return EXCEL_SHEET_ROW_HEIGHT_HEADER
+
+  const rowHeight = rowHeights[index]
+  return rowHeight ? rowHeight * EXCEL_ROW_HEIGHT_SCALE : EXCEL_SHEET_ROW_HEIGHT
+}
 
 /**
  * Converts Excel scaled column width unit to normal scaled unit
  */
-export const normalizeColumnWidth = (columnWidth: IColumnWidth): IColumnWidth =>
-  columnWidth
+export const normalizeColumnWidth = (
+  index: number,
+  columnWidths: IColumnWidths
+): IColumnWidth => {
+  if (!index) return EXCEL_SHEET_COLUMN_WIDTH_HEADER
+
+  const columnWidth = columnWidths[index]
+
+  return columnWidth
     ? columnWidth * EXCEL_COLUMN_WIDTH_SCALE
     : EXCEL_SHEET_COLUMN_WIDTH
+}
 
 /**
  * Creates an offset list of the column widths
@@ -44,7 +59,7 @@ export const getColumnOffsets = (
     column < columnCount;
     column++
   ) {
-    incrementor += normalizeColumnWidth(columnWidths[column - 1])
+    incrementor += normalizeColumnWidth(column - 1, columnWidths)
     leftOffsets.push(incrementor)
   }
 
@@ -65,7 +80,7 @@ export const getRowOffsets = (
     row < rowCount;
     row++
   ) {
-    incrementor += normalizeRowHeight(rowHeights[row - 1])
+    incrementor += normalizeRowHeight(row - 1, rowHeights)
     topOffsets.push(incrementor)
   }
 

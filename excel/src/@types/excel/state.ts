@@ -65,6 +65,9 @@ export type IColumns = { [key: number]: ICell }
 
 export type IRows = { [key: number]: IColumns }
 
+export type IColumnIndex = number
+export type IRowIndex = number
+
 export type IGridMeasurements<T> = { [key: number]: T }
 
 export type IColumnWidth = number

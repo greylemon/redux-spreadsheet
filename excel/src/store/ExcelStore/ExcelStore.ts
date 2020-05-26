@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { IExcelState } from '../../@types/excel'
+import { IExcelState } from '../../@types/excel/state'
 import { undox } from 'undox'
 
 const initialState: IExcelState = {

@@ -1,5 +1,5 @@
 import { UndoxState, Action } from 'undox'
-import { IExcelState } from './excel'
+import { IExcelState } from './excel/state'
 
 export type IExcelStore = UndoxState<IExcelState, Action>
 
