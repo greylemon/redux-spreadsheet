@@ -28,7 +28,7 @@ export const useTypedSelector: TypedUseSelectorHook<IRootStore> = useSelector
  * Actions are the way the store will know which Reducer should be used to handle data updates of the store.
  * Actions contain a type, which specify the key of the reducer, as well as the data you
  * intend to send to the reducer to use.
- * 
+ *
  * Action creators are the functions that creates the action objects.
  */
 const store = configureStore({
