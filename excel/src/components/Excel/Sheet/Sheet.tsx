@@ -4,16 +4,16 @@ import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../../store'
 import { ExcelStore } from '../../../store/ExcelStore/ExcelStore'
 import { useDispatch, shallowEqual } from 'react-redux'
-import { normalizeColumnWidth, normalizeRowHeight } from '../tools/dimensions'
 import Cell from './Cell'
 import {
   selectColumnCount,
   selectColumnWidths,
   selectRowCount,
   selectData,
-  selectRowHeights,
   selectFreezeRowCount,
   selectFreezeColumnCount,
+  selectFactoryRowHeight,
+  selectFactoryColumnWidth,
 } from '../../../store/ExcelStore/selectors'
 
 /**
@@ -39,7 +39,7 @@ import {
  *
  * Please check out the hooks documentation for more functions!
  * ==================================================================================
- * 
+ *
  * useCallback: https://reactjs.org/docs/hooks-reference.html
  *
  * Memoize the function's return value based on the dependency array.
@@ -57,7 +57,7 @@ import {
  * In this case, the sampleAction function is only recomputed when dispatch changes
  * because dispatch is in the dependency array
  * ==================================================================================
- * 
+ *
  * useEffect: https://reactjs.org/docs/hooks-reference.html#useeffect
  *
  * useEffect is triggered on initial render and dependency change
@@ -78,19 +78,17 @@ export const Sheet = ({ height, width }: Size) => {
     getColumnWidth,
     getRowHeight,
     tableFreezeColumnCount,
-    tableFreezeRowCount
+    tableFreezeRowCount,
   } = useTypedSelector(
     (state) => ({
       columnCount: selectColumnCount(state),
       columnWidths: selectColumnWidths(state),
       rowCount: selectRowCount(state),
       data: selectData(state),
-      getColumnWidth: (index: number) =>
-        normalizeColumnWidth(index, selectColumnWidths(state)),
-      getRowHeight: (index: number) =>
-        normalizeRowHeight(index, selectRowHeights(state)),
+      getColumnWidth: selectFactoryColumnWidth(state),
+      getRowHeight: selectFactoryRowHeight(state),
       tableFreezeRowCount: selectFreezeRowCount(state) + 1,
-      tableFreezeColumnCount: selectFreezeColumnCount(state) + 1
+      tableFreezeColumnCount: selectFreezeColumnCount(state) + 1,
     }),
     shallowEqual
   )

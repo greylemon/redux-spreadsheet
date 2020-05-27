@@ -5,11 +5,11 @@ import { IActiveCell } from '../../../@types/excel/components'
 import { selectIsEditMode } from '../../../store/ExcelStore/selectors'
 
 const EditorCell = (props: IActiveCell) => {
-  return <div />
+  return <div className="cell__active"/>
 }
 
 const NormalCell = (props: IActiveCell) => {
-  return <div />
+  return <div className="cell__active"/>
 }
 
 const ActiveCell = () => {

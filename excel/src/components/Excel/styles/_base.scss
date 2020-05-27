@@ -5,4 +5,10 @@
     text-align: center;
     background-color: #F7F8F9;
   }
+
+  &__active {
+    position: absolute;
+    outline: 2px solid rgba(75, 135, 255, 0.8);
+    outline-offset: -2px;
+  }
 }

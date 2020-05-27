@@ -2,6 +2,8 @@ import { createSelector } from 'reselect'
 import {
   getColumnOffsets,
   getRowOffsets,
+  normalizeRowHeight,
+  normalizeColumnWidth,
 } from '../../components/Excel/tools/dimensions'
 import IRootStore from '../../@types/store'
 
@@ -12,6 +14,9 @@ export const selectExcel = createSelector(
   (undoxExcel) => undoxExcel.present
 )
 
+// ===========================================================================
+// EXCEL BASE SELECTORS
+// ===========================================================================
 export const selectColumnWidths = createSelector(
   [selectExcel],
   (excel) => excel.columnWidths
@@ -49,6 +54,9 @@ export const selectFreezeColumnCount = createSelector(
   (excel) => excel.freezeColumnCount
 )
 
+// ===========================================================================
+// CUSTOM SELECTORS
+// ===========================================================================
 export const selectColumnoffsets = createSelector(
   [selectColumnWidths, selectColumnCount],
   (columnWidths, columnCount) => getColumnOffsets(columnWidths, columnCount)
@@ -58,3 +66,16 @@ export const selectRowOffsets = createSelector(
   [selectRowHeights, selectRowCount],
   (rowHeights, rowCount) => getRowOffsets(rowHeights, rowCount)
 )
+
+// ===========================================================================
+// CUSTOM SELECTOR FACTORIES
+// ===========================================================================
+export const selectFactoryRowHeight = (state: IRootStore) => (index: number) => createSelector(
+  [selectRowHeights],
+  (rowHeights) => normalizeRowHeight(index, rowHeights)
+)(state)
+
+export const selectFactoryColumnWidth = (state: IRootStore) => (index: number) => createSelector(
+  [selectColumnWidths],
+  (columnWidths) => normalizeColumnWidth(index, columnWidths)
+)(state)
