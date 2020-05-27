@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../../store'
@@ -6,6 +6,7 @@ import { ExcelStore } from '../../../store/ExcelStore/ExcelStore'
 import { useDispatch, shallowEqual } from 'react-redux'
 import { normalizeColumnWidth, normalizeRowHeight } from '../tools/dimensions'
 import Cell from './Cell'
+import { selectColumnCount, selectColumnWidths, selectRowCount, selectData, selectRowHeights } from '../../../store/ExcelStore/selectors'
 
 /**
  * React is a framework for building HTML. It operates on lifecycle stages which improves performance and predictability.
@@ -43,25 +44,14 @@ export const Sheet = ({ height, width }: Size) => {
     getColumnWidth,
     getRowHeight,
   } = useTypedSelector(
-    ({
-      Excel: {
-        present: {
-          columnCount,
-          columnWidths,
-          rowCount,
-          rowHeights,
-
-          data,
-        },
-      },
-    }) => ({
-      columnCount,
-      columnWidths,
-      rowCount,
-      data,
+    (state) => ({
+      columnCount: selectColumnCount(state),
+      columnWidths: selectColumnWidths(state),
+      rowCount: selectRowCount(state),
+      data: selectData(state),
       getColumnWidth: (index: number) =>
-        normalizeColumnWidth(index, columnWidths),
-      getRowHeight: (index: number) => normalizeRowHeight(index, rowHeights),
+        normalizeColumnWidth(index, selectColumnWidths(state)),
+      getRowHeight: (index: number) => normalizeRowHeight(index, selectRowHeights(state)),
     }),
     shallowEqual
   )

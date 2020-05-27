@@ -2,6 +2,7 @@ import React from 'react'
 import { useTypedSelector } from '../../../store'
 import { shallowEqual } from 'react-redux'
 import { IActiveCell } from '../../../@types/excel/components'
+import { selectIsEditMode } from '../../../store/ExcelStore/selectors'
 
 const EditorCell = (props: IActiveCell) => {
   return <div />
@@ -13,8 +14,8 @@ const NormalCell = (props: IActiveCell) => {
 
 const ActiveCell = () => {
   const { isEditMode } = useTypedSelector(
-    ({ Excel: { present } }) => ({
-      isEditMode: present.isEditMode,
+    (state) => ({
+      isEditMode: selectIsEditMode(state)
     }),
     shallowEqual
   )
