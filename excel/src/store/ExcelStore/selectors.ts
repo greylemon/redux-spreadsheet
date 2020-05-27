@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 import {
   getColumnOffsets,
-  getRowOffsets
+  getRowOffsets,
 } from '../../components/Excel/tools/dimensions'
 import IRootStore from '../../@types/store'
 
@@ -17,23 +17,36 @@ export const selectColumnWidths = createSelector(
   (excel) => excel.columnWidths
 )
 
-export const selectData = createSelector(
-  [selectExcel],
-  (excel) => excel.data
-)
+export const selectData = createSelector([selectExcel], (excel) => excel.data)
 
 export const selectColumnCount = createSelector(
   [selectExcel],
   (excel) => excel.columnCount
 )
 
-export const selectRowHeights = createSelector([selectExcel], (excel) => excel.rowHeights)
+export const selectRowHeights = createSelector(
+  [selectExcel],
+  (excel) => excel.rowHeights
+)
 
-export const selectRowCount = createSelector([selectExcel], (excel) => excel.rowCount)
+export const selectRowCount = createSelector(
+  [selectExcel],
+  (excel) => excel.rowCount
+)
 
 export const selectIsEditMode = createSelector(
   [selectExcel],
   (excel) => excel.isEditMode
+)
+
+export const selectFreezeRowCount = createSelector(
+  [selectExcel],
+  (excel) => excel.freezeRowCount
+)
+
+export const selectFreezeColumnCount = createSelector(
+  [selectExcel],
+  (excel) => excel.freezeColumnCount
 )
 
 export const selectColumnoffsets = createSelector(

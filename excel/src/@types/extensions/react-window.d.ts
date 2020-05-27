@@ -7,5 +7,7 @@ declare module 'react-window' {
     extraBottomLeftElement?: ReactElement
     extraTopLeftElement?: ReactElement
     extraTopRightElement?: ReactElement
+    freezeColumnCount?: number
+    freezeRowCount?: number
   }
 }

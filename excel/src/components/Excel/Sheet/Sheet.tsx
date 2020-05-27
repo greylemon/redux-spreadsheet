@@ -6,7 +6,15 @@ import { ExcelStore } from '../../../store/ExcelStore/ExcelStore'
 import { useDispatch, shallowEqual } from 'react-redux'
 import { normalizeColumnWidth, normalizeRowHeight } from '../tools/dimensions'
 import Cell from './Cell'
-import { selectColumnCount, selectColumnWidths, selectRowCount, selectData, selectRowHeights } from '../../../store/ExcelStore/selectors'
+import {
+  selectColumnCount,
+  selectColumnWidths,
+  selectRowCount,
+  selectData,
+  selectRowHeights,
+  selectFreezeRowCount,
+  selectFreezeColumnCount,
+} from '../../../store/ExcelStore/selectors'
 
 /**
  * React is a framework for building HTML. It operates on lifecycle stages which improves performance and predictability.
@@ -30,19 +38,47 @@ import { selectColumnCount, selectColumnWidths, selectRowCount, selectData, sele
  * Some of the React hooks: useCallback, useMemo, useEffect, useRef
  *
  * Please check out the hooks documentation for more functions!
+ * ==================================================================================
+ * 
+ * useCallback: https://reactjs.org/docs/hooks-reference.html
+ *
+ * Memoize the function's return value based on the dependency array.
+ *
+ * The first parameter is the function to memoize.
+ *
+ * The second parameter is the recomputation dependencies
+ *
+ * If:
+ * - you do not supply a dependency array, the function will always be recomputed
+ * - you supply dependencies in the array, the function will only be recomputed when the dependencies change
+ * - (related with second point) you supply an empty array, the value will never be recomputed
+ * because there will never be a dependency change
+ *
+ * In this case, the sampleAction function is only recomputed when dispatch changes
+ * because dispatch is in the dependency array
+ * ==================================================================================
+ * 
+ * useEffect: https://reactjs.org/docs/hooks-reference.html#useeffect
+ *
+ * useEffect is triggered on initial render and dependency change
+ *
+ * It is quite useful, the first parameter is the function that is called on trigger.
+ * The return value of this function is the clean up function, usually used when components unmount:
+ * https://reactjs.org/docs/hooks-reference.html#cleaning-up-an-effect
+ *
+ * The second parameter is the dependency for recomputation, just like useCallback
  */
 export const Sheet = ({ height, width }: Size) => {
   const dispatch = useDispatch()
 
-  /**
-   *
-   */
   const {
     columnCount,
     rowCount,
     data,
     getColumnWidth,
     getRowHeight,
+    tableFreezeColumnCount,
+    tableFreezeRowCount
   } = useTypedSelector(
     (state) => ({
       columnCount: selectColumnCount(state),
@@ -51,44 +87,18 @@ export const Sheet = ({ height, width }: Size) => {
       data: selectData(state),
       getColumnWidth: (index: number) =>
         normalizeColumnWidth(index, selectColumnWidths(state)),
-      getRowHeight: (index: number) => normalizeRowHeight(index, selectRowHeights(state)),
+      getRowHeight: (index: number) =>
+        normalizeRowHeight(index, selectRowHeights(state)),
+      tableFreezeRowCount: selectFreezeRowCount(state) + 1,
+      tableFreezeColumnCount: selectFreezeColumnCount(state) + 1
     }),
     shallowEqual
   )
 
-  /**
-   * useCallback: https://reactjs.org/docs/hooks-reference.html
-   *
-   * Memoize the function's return value based on the dependency array.
-   *
-   * The first parameter is the function to memoize.
-   *
-   * The second parameter is the recomputation dependencies
-   *
-   * If:
-   * - you do not supply a dependency array, the function will always be recomputed
-   * - you supply dependencies in the array, the function will only be recomputed when the dependencies change
-   * - (related with second point) you supply an empty array, the value will never be recomputed
-   * because there will never be a dependency change
-   *
-   * In this case, the sampleAction function is only recomputed when dispatch changes
-   * because dispatch is in the dependency array
-   */
   const sampleAction = useCallback(() => {
     dispatch(ExcelStore.actions.sample_action({}))
   }, [dispatch])
 
-  /**
-   * useEffect: https://reactjs.org/docs/hooks-reference.html#useeffect
-   *
-   * useEffect is triggered on initial render and dependency change
-   *
-   * It is quite useful, the first parameter is the function that is called on trigger.
-   * The return value of this function is the clean up function, usually used when components unmount:
-   * https://reactjs.org/docs/hooks-reference.html#cleaning-up-an-effect
-   *
-   * The second parameter is the dependency for recomputation, just like useCallback
-   */
   useEffect(() => {
     sampleAction()
 
@@ -114,6 +124,8 @@ export const Sheet = ({ height, width }: Size) => {
       width={width}
       itemData={itemData}
       extraBottomRightElement={<div />}
+      freezeColumnCount={tableFreezeColumnCount}
+      freezeRowCount={tableFreezeRowCount}
     >
       {Cell}
     </VariableSizeGrid>

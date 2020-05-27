@@ -15,7 +15,7 @@ const NormalCell = (props: IActiveCell) => {
 const ActiveCell = () => {
   const { isEditMode } = useTypedSelector(
     (state) => ({
-      isEditMode: selectIsEditMode(state)
+      isEditMode: selectIsEditMode(state),
     }),
     shallowEqual
   )
