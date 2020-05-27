@@ -3,6 +3,8 @@ import { IExcelState } from '../../@types/excel/state'
 import { undox } from 'undox'
 
 const initialState: IExcelState = {
+  activeCellPosition: { x: 1, y: 1 },
+
   data: {},
 
   stagnantSelectionAreas: [],
@@ -32,6 +34,8 @@ export const ExcelStore = createSlice({
   reducers: {
     sample_action: (state: IExcelState, action: any) => {
       return {
+        activeCellPosition: { x: 1, y: 1 },
+        
         data: {},
 
         stagnantSelectionAreas: [],

@@ -14,6 +14,9 @@ import {
   IRowCount,
   IRowHeights,
   IOffset,
+  IRowOffsets,
+  IColumnOffsets,
+  IArea,
 } from '../../../@types/excel/state'
 
 /**
@@ -86,3 +89,20 @@ export const getRowOffsets = (
 
   return topOffsets
 }
+
+export const getAreaDimensions = (
+  area: IArea,
+  rowOffsets: IRowOffsets,
+  columnOffsets: IColumnOffsets,
+  columnWidths: IColumnWidths,
+  rowHeights: IRowHeights
+) => ({
+  height:
+    rowOffsets[area.end.y] +
+    normalizeRowHeight(area.end.y, rowHeights) -
+    rowHeights[area.start.y],
+  width:
+    columnOffsets[area.end.x] +
+    normalizeColumnWidth(area.end.x, columnWidths) -
+    columnWidths[area.start.x],
+})

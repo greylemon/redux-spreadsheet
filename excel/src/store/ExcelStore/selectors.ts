@@ -4,8 +4,12 @@ import {
   getRowOffsets,
   normalizeRowHeight,
   normalizeColumnWidth,
+  getAreaDimensions,
 } from '../../components/Excel/tools/dimensions'
 import IRootStore from '../../@types/store'
+import { IComputeActiveCellStyle } from '../../@types/excel/functions'
+import { IPosition } from '../../@types/excel/state'
+import { CSSProperties } from 'react'
 
 export const selectUndoxExcel = (state: IRootStore) => state.Excel
 
@@ -54,6 +58,11 @@ export const selectFreezeColumnCount = createSelector(
   (excel) => excel.freezeColumnCount
 )
 
+export const selectActiveCellPosition = createSelector(
+  [selectExcel],
+  (excel) => excel.activeCellPosition
+)
+
 // ===========================================================================
 // CUSTOM SELECTORS
 // ===========================================================================
@@ -67,15 +76,130 @@ export const selectRowOffsets = createSelector(
   (rowHeights, rowCount) => getRowOffsets(rowHeights, rowCount)
 )
 
+export const selectGetRowHeight = (state: IRootStore) => (index: number) =>
+  createSelector([selectRowHeights], (rowHeights) =>
+    normalizeRowHeight(index, rowHeights)
+  )(state)
+
+export const selectGetColumnWidth = (state: IRootStore) => (index: number) =>
+  createSelector([selectColumnWidths], (columnWidths) =>
+    normalizeColumnWidth(index, columnWidths)
+  )(state)
+
 // ===========================================================================
 // CUSTOM SELECTOR FACTORIES
 // ===========================================================================
-export const selectFactoryRowHeight = (state: IRootStore) => (index: number) => createSelector(
-  [selectRowHeights],
-  (rowHeights) => normalizeRowHeight(index, rowHeights)
-)(state)
+export const selectRowDataFactory = (row: number) => (state: IRootStore) =>
+  createSelector([selectData], (data) => data[row])(state)
 
-export const selectFactoryColumnWidth = (state: IRootStore) => (index: number) => createSelector(
-  [selectColumnWidths],
-  (columnWidths) => normalizeColumnWidth(index, columnWidths)
-)(state)
+export const selectCellFactory = (position: IPosition) => (state: IRootStore) =>
+  createSelector([selectRowDataFactory(position.y)], (rowData) =>
+    rowData ? rowData[position.x] : undefined
+  )(state)
+
+export const selectCellMergeFactory = (position: IPosition) => (
+  state: IRootStore
+) =>
+  createSelector([selectCellFactory(position)], (cell) =>
+    cell ? cell.merged : undefined
+  )(state)
+
+export const selectFactoryActiveCellStyles = (
+  computeActiveCellStyle?: IComputeActiveCellStyle
+) => (state: IRootStore) =>
+  createSelector(
+    [
+      selectFreezeRowCount,
+
+      selectColumnCount,
+      selectRowCount,
+
+      selectColumnWidths,
+      selectRowHeights,
+
+      selectColumnoffsets,
+      selectRowOffsets,
+
+      selectData,
+
+      selectActiveCellPosition
+    ],
+    (
+      freezeRowCount,
+
+      columnCount,
+      rowCount,
+
+      columnWidths,
+      rowHeights,
+
+      columnOffsets,
+      rowOffsets,
+
+      data,
+
+      activeCellPosition
+    ) => {
+      let activeCellStyle: CSSProperties
+
+      if (computeActiveCellStyle) {
+        activeCellStyle = computeActiveCellStyle(
+          activeCellPosition,
+          columnWidths,
+          columnOffsets,
+          rowHeights,
+          rowOffsets,
+          freezeRowCount,
+          data
+        )
+        activeCellStyle.minHeight = activeCellStyle.height
+        activeCellStyle.minWidth = activeCellStyle.width
+      } else {
+        let height, width, top, left
+
+        const cellMergeArea = selectCellMergeFactory(activeCellPosition)(state)
+
+        if (cellMergeArea) {
+          const mergeDimensions = getAreaDimensions(
+            cellMergeArea,
+            rowOffsets,
+            columnOffsets,
+            columnWidths,
+            rowHeights
+          )
+
+          height = mergeDimensions.height
+          width = mergeDimensions.width
+
+          top = rowOffsets[cellMergeArea.start.y]
+          left = columnOffsets[cellMergeArea.start.x]
+        } else {
+          top = rowOffsets[activeCellPosition.y]
+          left = columnOffsets[activeCellPosition.x]
+
+          height = normalizeRowHeight(activeCellPosition.y, rowHeights)
+          width = normalizeColumnWidth(activeCellPosition.x, columnWidths)
+        }
+
+        activeCellStyle = {
+          top,
+          left,
+          height,
+          width,
+          minHeight: height,
+          minWidth: width,
+        }
+      }
+
+      activeCellStyle.maxWidth =
+        columnOffsets[columnCount - 1] +
+        normalizeColumnWidth(columnCount, columnWidths) -
+        columnOffsets[activeCellPosition.x]
+      activeCellStyle.maxHeight =
+        rowOffsets[rowCount - 1] +
+        normalizeRowHeight(rowCount, rowHeights) -
+        rowOffsets[activeCellPosition.y]
+
+      return activeCellStyle
+    }
+  )(state)

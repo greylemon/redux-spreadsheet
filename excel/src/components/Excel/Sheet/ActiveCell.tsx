@@ -1,26 +1,27 @@
 import React from 'react'
 import { useTypedSelector } from '../../../store'
 import { shallowEqual } from 'react-redux'
-import { IActiveCell } from '../../../@types/excel/components'
-import { selectIsEditMode } from '../../../store/ExcelStore/selectors'
+import { IActiveCellProps, INormalActiveCellProps, IEditorCellProps } from '../../../@types/excel/components'
+import { selectIsEditMode, selectFactoryActiveCellStyles } from '../../../store/ExcelStore/selectors'
 
-const EditorCell = (props: IActiveCell) => {
-  return <div className="cell__active"/>
+const EditorCell = ({ style }: IEditorCellProps) => {
+  return <div className="cell__active" style={style}/>
 }
 
-const NormalCell = (props: IActiveCell) => {
-  return <div className="cell__active"/>
+const NormalActiveCell = ({ style }: INormalActiveCellProps) => {
+  return <div className="cell__active" style={style}/>
 }
 
-const ActiveCell = () => {
-  const { isEditMode } = useTypedSelector(
+const ActiveCell = ({ computeActiveCellStyle }: IActiveCellProps) => {
+  const { isEditMode, style } = useTypedSelector(
     (state) => ({
       isEditMode: selectIsEditMode(state),
+      style: selectFactoryActiveCellStyles(computeActiveCellStyle)(state)
     }),
     shallowEqual
   )
 
-  return isEditMode ? <EditorCell style={{}} /> : <NormalCell style={{}} />
+  return isEditMode ? <EditorCell style={style} /> : <NormalActiveCell style={style} />
 }
 
 export default ActiveCell

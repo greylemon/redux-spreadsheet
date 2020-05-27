@@ -12,9 +12,10 @@ import {
   selectData,
   selectFreezeRowCount,
   selectFreezeColumnCount,
-  selectFactoryRowHeight,
-  selectFactoryColumnWidth,
+  selectGetRowHeight,
+  selectGetColumnWidth,
 } from '../../../store/ExcelStore/selectors'
+import BottomRightPane from './BottomRightPane'
 
 /**
  * React is a framework for building HTML. It operates on lifecycle stages which improves performance and predictability.
@@ -85,8 +86,8 @@ export const Sheet = ({ height, width }: Size) => {
       columnWidths: selectColumnWidths(state),
       rowCount: selectRowCount(state),
       data: selectData(state),
-      getColumnWidth: selectFactoryColumnWidth(state),
-      getRowHeight: selectFactoryRowHeight(state),
+      getColumnWidth: selectGetColumnWidth(state),
+      getRowHeight: selectGetRowHeight(state),
       tableFreezeRowCount: selectFreezeRowCount(state) + 1,
       tableFreezeColumnCount: selectFreezeColumnCount(state) + 1,
     }),
@@ -121,9 +122,9 @@ export const Sheet = ({ height, width }: Size) => {
       rowHeight={getRowHeight}
       width={width}
       itemData={itemData}
-      extraBottomRightElement={<div />}
       freezeColumnCount={tableFreezeColumnCount}
       freezeRowCount={tableFreezeRowCount}
+      extraBottomRightElement={<BottomRightPane key="bottom-right-activity-pane"/>}
     >
       {Cell}
     </VariableSizeGrid>

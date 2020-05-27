@@ -57,9 +57,12 @@ export type ICell = {
   value?: string | IRichText
   formula?: string
   hyperlink?: IHyperlink
+  merged?: IArea
 }
 
 export type IOffset = number
+export type IRowOffsets = Array<IOffset>
+export type IColumnOffsets = Array<IOffset>
 
 export type IColumns = { [key: number]: ICell }
 
@@ -84,11 +87,18 @@ export type IFreezeRowCount = number
 export type IIsEditMode = boolean
 export type ISheetName = string
 
+export type IActiveCellPosition = IPosition
+
+export type IStagnantSelectionAreas = IArea[]
+
+export type ISelectionArea = IArea
+
 export type ISheet = {
   data: IRows
 
-  selectionArea?: IArea
-  stagnantSelectionAreas: IArea[]
+  activeCellPosition: IActiveCellPosition
+  selectionArea?: ISelectionArea
+  stagnantSelectionAreas: IStagnantSelectionAreas
 
   sheetName: ISheetName
   position: IPosition
