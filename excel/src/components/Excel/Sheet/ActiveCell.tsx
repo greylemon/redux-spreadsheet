@@ -1,26 +1,25 @@
 import React from 'react'
 import { useTypedSelector } from '../../../store'
+import { shallowEqual } from 'react-redux'
+import { IActiveCell } from '../../../@types/excel/components'
 
-const EditorCell = () => {
+const EditorCell = (props: IActiveCell) => {
   return <div />
 }
 
-const NormalCell = () => {
+const NormalCell = (props: IActiveCell) => {
   return <div />
 }
 
 const ActiveCell = () => {
   const { isEditMode } = useTypedSelector(
-    ({
-      Excel: {
-        present: { isEditMode },
-      },
-    }) => ({
-      isEditMode,
-    })
+    ({ Excel: { present } }) => ({
+      isEditMode: present.isEditMode,
+    }),
+    shallowEqual
   )
 
-  return isEditMode ? <EditorCell /> : <NormalCell />
+  return isEditMode ? <EditorCell style={{}} /> : <NormalCell style={{}} />
 }
 
 export default ActiveCell

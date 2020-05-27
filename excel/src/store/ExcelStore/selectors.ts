@@ -4,13 +4,31 @@ import {
   getColumnOffsets,
   getRowOffsets,
 } from '../../components/Excel/tools/dimensions'
+import IRootStore from '../../@types/store'
 
 // The object parameter here is received from the input of the selectors
 // In this case, the Excel store's `present` values are received
-const getColumnWidths = ({ columnWidths }: IExcelState) => columnWidths
-const getColumnCount = ({ columnCount }: IExcelState) => columnCount
-const getRowHeights = ({ rowHeights }: IExcelState) => rowHeights
-const getRowCount = ({ rowCount }: IExcelState) => rowCount
+
+const selectUndoxExcel = (state: IRootStore) => state.Excel
+
+const selectExcel = createSelector(
+  [selectUndoxExcel],
+  (undoxExcel) => undoxExcel.present
+)
+
+const getColumnWidths = createSelector(
+  [selectExcel],
+  (excel) => excel.columnWidths
+)
+
+const getColumnCount = createSelector(
+  [selectExcel],
+  (excel) => excel.columnCount
+)
+
+const getRowHeights = createSelector([selectExcel], (excel) => excel.rowHeights)
+
+const getRowCount = createSelector([selectExcel], (excel) => excel.rowCount)
 
 /**
  * Selectors are functions, whose return values are memoized
@@ -23,12 +41,12 @@ const getRowCount = ({ rowCount }: IExcelState) => rowCount
  * ```
  */
 
-export const columnOffsetsSelector = createSelector(
+export const selectColumnoffsets = createSelector(
   [getColumnWidths, getColumnCount],
   (columnWidths, columnCount) => getColumnOffsets(columnWidths, columnCount)
 )
 
-export const rowOffsetsSelector = createSelector(
+export const selectRowOffsets = createSelector(
   [getRowHeights, getRowCount],
   (rowHeights, rowCount) => getRowOffsets(rowHeights, rowCount)
 )

@@ -11,3 +11,7 @@ export interface ICell {
   columnIndex: IColumnIndex
   rowIndex: IRowIndex
 }
+
+export interface IActiveCell {
+  style: CSSProperties
+}
