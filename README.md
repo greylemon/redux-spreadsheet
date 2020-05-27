@@ -36,6 +36,7 @@ Husky is used here for performing tasks before a git commit. The tasks performed
 - [JavaScript](https://javascript.info/)
 - [React Patterns](https://reactpatterns.com/)
 - [Redux](https://egghead.io/courses/getting-started-with-redux). Please check out the Redux toolkit as that will simplify Redux a ton.
+- [Reselect](https://www.youtube.com/watch?v=aOkzmHvF_Zo)
 
 ## Typescript
 
