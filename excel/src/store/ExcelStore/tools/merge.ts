@@ -1,5 +1,11 @@
-import { IRows, IArea, IRange, IColumnIndex, IRowIndex } from "../../../@types/excel/state"
-import cloneDeep from "clone-deep"
+import {
+  IRows,
+  IArea,
+  IRange,
+  IColumnIndex,
+  IRowIndex,
+} from '../../../@types/excel/state'
+import cloneDeep from 'clone-deep'
 
 /**
  * Sets the new area to be the smallest area which covers both newArea and mergeArea in place
@@ -21,7 +27,12 @@ const changeAreaToSuperAreaInPlace = (mergeArea: IArea, newArea: IArea) => {
 /**
  * Gets the `partial` super area from a range of column on a single row
  */
-const getPartialSuperAreaFromColumnRange = (xRange: IRange, area: IArea, row: IRowIndex, data: IRows) => {
+const getPartialSuperAreaFromColumnRange = (
+  xRange: IRange,
+  area: IArea,
+  row: IRowIndex,
+  data: IRows
+) => {
   const newArea = cloneDeep(area)
 
   const rowData = data[row]
@@ -29,7 +40,7 @@ const getPartialSuperAreaFromColumnRange = (xRange: IRange, area: IArea, row: IR
   for (let column = xRange.start; column <= xRange.end; column++) {
     const cellData = rowData[column]
 
-    if (cellData && cellData.merged) 
+    if (cellData && cellData.merged)
       changeAreaToSuperAreaInPlace(cellData.merged, newArea)
   }
 
@@ -39,13 +50,18 @@ const getPartialSuperAreaFromColumnRange = (xRange: IRange, area: IArea, row: IR
 /**
  * Gets the partial area from a range of rows on a single column
  */
-const getPartialSuperAreaFromRowRange = (yRange: IRange, area: IArea, column: IColumnIndex, data: IRows) => {
+const getPartialSuperAreaFromRowRange = (
+  yRange: IRange,
+  area: IArea,
+  column: IColumnIndex,
+  data: IRows
+) => {
   const newArea = cloneDeep(area)
 
   for (let row = yRange.start; row <= yRange.end; row++) {
     const rowData = data[row]
 
-    if (rowData && rowData[column] && rowData[column].merged) 
+    if (rowData && rowData[column] && rowData[column].merged)
       changeAreaToSuperAreaInPlace(rowData[column].merged!, newArea)
   }
 
@@ -54,11 +70,11 @@ const getPartialSuperAreaFromRowRange = (yRange: IRange, area: IArea, column: IC
 
 /**
  * Expands the area by capturing merged areas in the area.
- * 
- * Note that only merged areas within the area are observed. As a result, this is only a partial expansion 
- * in some cases, as the new expanded areas are not observed. 
- * 
- * Use getEntireSuperArea if you need the full area 
+ *
+ * Note that only merged areas within the area are observed. As a result, this is only a partial expansion
+ * in some cases, as the new expanded areas are not observed.
+ *
+ * Use getEntireSuperArea if you need the full area
  */
 const getPartialSuperAreaFromArea = (area: IArea, data: IRows) => {
   const { start, end } = area
@@ -68,28 +84,47 @@ const getPartialSuperAreaFromArea = (area: IArea, data: IRows) => {
   const top = data[start.y]
   const bottom = data[end.y]
 
-  if (top) 
-    newArea = getPartialSuperAreaFromColumnRange({ start: newArea.start.x, end: newArea.end.x }, newArea, start.y, data)
-  
+  if (top)
+    newArea = getPartialSuperAreaFromColumnRange(
+      { start: newArea.start.x, end: newArea.end.x },
+      newArea,
+      start.y,
+      data
+    )
+
   // Bottom might be the same as top (1 row)
-  if (bottom && start.y !== end.y) 
-    newArea = getPartialSuperAreaFromColumnRange({ start: newArea.start.x, end: newArea.end.x }, newArea, end.y, data) 
-  
+  if (bottom && start.y !== end.y)
+    newArea = getPartialSuperAreaFromColumnRange(
+      { start: newArea.start.x, end: newArea.end.x },
+      newArea,
+      end.y,
+      data
+    )
 
   // Do not need to check edges because top and bottom covers those already
-  newArea = getPartialSuperAreaFromRowRange({ start: newArea.start.y + 1, end: newArea.end.y - 1 }, newArea, start.x, data)
+  newArea = getPartialSuperAreaFromRowRange(
+    { start: newArea.start.y + 1, end: newArea.end.y - 1 },
+    newArea,
+    start.x,
+    data
+  )
 
   // left might be the same as right (1 column)
-  if (start.x !== end.x) 
-    getPartialSuperAreaFromRowRange({ start: newArea.start.y + 1, end: newArea.end.y - 1 }, newArea, end.x, data)
+  if (start.x !== end.x)
+    getPartialSuperAreaFromRowRange(
+      { start: newArea.start.y + 1, end: newArea.end.y - 1 },
+      newArea,
+      end.x,
+      data
+    )
 
   return newArea
 }
 
 /**
  * Gets the maximum area which contains the overlapping area expansion, starting from ordered area.
- * 
- * Ordered area represents an area which is ordered: start represents min values, end represents max values  
+ *
+ * Ordered area represents an area which is ordered: start represents min values, end represents max values
  */
 export const getEntireSuperArea = (orderedArea: IArea, data: IRows) => {
   let subArea = cloneDeep(orderedArea)

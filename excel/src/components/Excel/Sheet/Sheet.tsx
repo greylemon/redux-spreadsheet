@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect } from 'react'
+import React from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../../store'
-import { ExcelStore } from '../../../store/ExcelStore/store'
-import { useDispatch, shallowEqual } from 'react-redux'
+import { shallowEqual } from 'react-redux'
 import Cell from './Cell'
 import {
   selectColumnCount,
@@ -70,7 +69,7 @@ import BottomRightPane from './BottomRightPane'
  * The second parameter is the dependency for recomputation, just like useCallback
  */
 export const Sheet = ({ height, width }: Size) => {
-  const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
   const {
     columnCount,
@@ -93,19 +92,6 @@ export const Sheet = ({ height, width }: Size) => {
     }),
     shallowEqual
   )
-
-  const sampleAction = useCallback(() => {
-    dispatch(ExcelStore.actions.sample_action({}))
-  }, [dispatch])
-
-  useEffect(() => {
-    sampleAction()
-
-    return () => {
-      // Clean up function
-      // cleanUpSampleActionTrash()
-    }
-  }, [sampleAction])
 
   const itemData = { data }
 

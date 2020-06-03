@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import rootReducer from './reducers'
 import { TypedUseSelectorHook, useSelector } from 'react-redux'
-import IRootStore from '../@types/store'
+import IRootStore from '../@types/store/store'
 
 /**
  * Essentially useSelector with type declarations

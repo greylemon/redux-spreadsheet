@@ -6,7 +6,7 @@ import {
   normalizeColumnWidth,
   getAreaDimensions,
 } from '../../components/Excel/tools/dimensions'
-import IRootStore from '../../@types/store'
+import IRootStore from '../../@types/store/store'
 import { IComputeActiveCellStyle } from '../../@types/excel/functions'
 import { IPosition } from '../../@types/excel/state'
 import { CSSProperties } from 'react'

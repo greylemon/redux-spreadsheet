@@ -2,6 +2,8 @@ export type IPosition = { x: number; y: number }
 
 export type IArea = { start: IPosition; end: IPosition }
 
+export type IRange = { start: number; end: number }
+
 export type IError = object
 
 export type ICSSLength = number | string
@@ -85,6 +87,8 @@ export type IFreezeColumnCount = number
 export type IFreezeRowCount = number
 
 export type IIsEditMode = boolean
+export type IIsSelectionMode = boolean
+
 export type ISheetName = string
 
 export type IActiveCellPosition = IPosition
@@ -93,6 +97,8 @@ export type IStagnantSelectionAreas = IArea[]
 
 export type ISelectionArea = IArea
 
+export type ISelectionAreaIndex = number
+
 export type ISheet = {
   data: IRows
 
@@ -100,10 +106,13 @@ export type ISheet = {
   selectionArea?: ISelectionArea
   stagnantSelectionAreas: IStagnantSelectionAreas
 
+  selectionAreaIndex: ISelectionAreaIndex
+
   sheetName: ISheetName
   position: IPosition
 
   isEditMode: IIsEditMode
+  isSelectionMode: IIsSelectionMode
 
   rowCount: IRowCount
   columnCount: IColumnCount
