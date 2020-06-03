@@ -10,6 +10,7 @@ import IRootStore from '../../@types/store'
 import { IComputeActiveCellStyle } from '../../@types/excel/functions'
 import { IPosition } from '../../@types/excel/state'
 import { CSSProperties } from 'react'
+import memoize from 'fast-memoize'
 
 export const selectUndoxExcel = (state: IRootStore) => state.Excel
 
@@ -76,35 +77,35 @@ export const selectRowOffsets = createSelector(
   (rowHeights, rowCount) => getRowOffsets(rowHeights, rowCount)
 )
 
-export const selectGetRowHeight = (state: IRootStore) => (index: number) =>
-  createSelector([selectRowHeights], (rowHeights) =>
+export const selectGetRowHeight = 
+  createSelector([selectRowHeights], (rowHeights) => (index: number) =>
     normalizeRowHeight(index, rowHeights)
-  )(state)
+  )
 
-export const selectGetColumnWidth = (state: IRootStore) => (index: number) =>
-  createSelector([selectColumnWidths], (columnWidths) =>
+export const selectGetColumnWidth = createSelector([selectColumnWidths], (columnWidths) => (index: number) =>
     normalizeColumnWidth(index, columnWidths)
-  )(state)
+  )
 
 // ===========================================================================
 // CUSTOM SELECTOR FACTORIES
 // ===========================================================================
-export const selectRowDataFactory = (row: number) => (state: IRootStore) =>
-  createSelector([selectData], (data) => data[row])(state)
+export const selectRowDataFactory = memoize((row: number) =>
+  createSelector([selectData], (data) => data[row])
+)
 
-export const selectCellFactory = (position: IPosition) => (state: IRootStore) =>
+export const selectCellFactory = memoize((position: IPosition) =>
   createSelector([selectRowDataFactory(position.y)], (rowData) =>
     rowData ? rowData[position.x] : undefined
-  )(state)
+  )
+)
 
-export const selectCellMergeFactory = (position: IPosition) => (
-  state: IRootStore
-) =>
+export const selectCellMergeFactory = memoize((position: IPosition)  =>
   createSelector([selectCellFactory(position)], (cell) =>
     cell ? cell.merged : undefined
-  )(state)
+  )
+)
 
-export const selectFactoryActiveCellStyles = (
+export const selectFactoryActiveCellStyles = memoize((
   computeActiveCellStyle?: IComputeActiveCellStyle
 ) => (state: IRootStore) =>
   createSelector(
@@ -122,7 +123,7 @@ export const selectFactoryActiveCellStyles = (
 
       selectData,
 
-      selectActiveCellPosition
+      selectActiveCellPosition,
     ],
     (
       freezeRowCount,
@@ -203,3 +204,4 @@ export const selectFactoryActiveCellStyles = (
       return activeCellStyle
     }
   )(state)
+)

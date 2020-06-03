@@ -35,7 +35,7 @@ export const ExcelStore = createSlice({
     sample_action: (state: IExcelState, action: any) => {
       return {
         activeCellPosition: { x: 1, y: 1 },
-        
+
         data: {},
 
         stagnantSelectionAreas: [],

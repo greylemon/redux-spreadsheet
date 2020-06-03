@@ -2,7 +2,7 @@ import React, { useCallback, useEffect } from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../../store'
-import { ExcelStore } from '../../../store/ExcelStore/ExcelStore'
+import { ExcelStore } from '../../../store/ExcelStore/store'
 import { useDispatch, shallowEqual } from 'react-redux'
 import Cell from './Cell'
 import {
@@ -124,7 +124,9 @@ export const Sheet = ({ height, width }: Size) => {
       itemData={itemData}
       freezeColumnCount={tableFreezeColumnCount}
       freezeRowCount={tableFreezeRowCount}
-      extraBottomRightElement={<BottomRightPane key="bottom-right-activity-pane"/>}
+      extraBottomRightElement={
+        <BottomRightPane key="bottom-right-activity-pane" />
+      }
     >
       {Cell}
     </VariableSizeGrid>

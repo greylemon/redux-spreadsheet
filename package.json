@@ -6,6 +6,7 @@
   "author": "Alfred Lemon <alfred.lemon@mail.utoronto.ca>",
   "license": "MIT",
   "scripts": {
+    "start": "yarn --cwd excel start",
     "deps": "yarn --cwd slate && yarn --cwd slate build && yarn --cwd excel"
   }
 }

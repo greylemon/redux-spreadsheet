@@ -9,8 +9,7 @@ const CommonActivityPane = ({
   computeActiveCellStyle,
   checkIsActiveCellInCorrectPane,
   checkIsRelevantArea,
-}:
-ICommonPaneProps) => (
+}: ICommonPaneProps) => (
   <Fragment>
     <ActiveCell
       computeActiveCellStyle={computeActiveCellStyle}

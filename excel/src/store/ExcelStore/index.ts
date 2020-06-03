@@ -1,1 +1,1 @@
-export { default } from './ExcelStore'
+export { default } from './store'
