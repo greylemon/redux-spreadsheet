@@ -77,14 +77,15 @@ export const selectRowOffsets = createSelector(
   (rowHeights, rowCount) => getRowOffsets(rowHeights, rowCount)
 )
 
-export const selectGetRowHeight = 
-  createSelector([selectRowHeights], (rowHeights) => (index: number) =>
-    normalizeRowHeight(index, rowHeights)
-  )
+export const selectGetRowHeight = createSelector(
+  [selectRowHeights],
+  (rowHeights) => (index: number) => normalizeRowHeight(index, rowHeights)
+)
 
-export const selectGetColumnWidth = createSelector([selectColumnWidths], (columnWidths) => (index: number) =>
-    normalizeColumnWidth(index, columnWidths)
-  )
+export const selectGetColumnWidth = createSelector(
+  [selectColumnWidths],
+  (columnWidths) => (index: number) => normalizeColumnWidth(index, columnWidths)
+)
 
 // ===========================================================================
 // CUSTOM SELECTOR FACTORIES
@@ -99,109 +100,110 @@ export const selectCellFactory = memoize((position: IPosition) =>
   )
 )
 
-export const selectCellMergeFactory = memoize((position: IPosition)  =>
+export const selectCellMergeFactory = memoize((position: IPosition) =>
   createSelector([selectCellFactory(position)], (cell) =>
     cell ? cell.merged : undefined
   )
 )
 
-export const selectFactoryActiveCellStyles = memoize((
-  computeActiveCellStyle?: IComputeActiveCellStyle
-) => (state: IRootStore) =>
-  createSelector(
-    [
-      selectFreezeRowCount,
+export const selectFactoryActiveCellStyles = memoize(
+  (computeActiveCellStyle?: IComputeActiveCellStyle) => (state: IRootStore) =>
+    createSelector(
+      [
+        selectFreezeRowCount,
 
-      selectColumnCount,
-      selectRowCount,
+        selectColumnCount,
+        selectRowCount,
 
-      selectColumnWidths,
-      selectRowHeights,
+        selectColumnWidths,
+        selectRowHeights,
 
-      selectColumnoffsets,
-      selectRowOffsets,
+        selectColumnoffsets,
+        selectRowOffsets,
 
-      selectData,
+        selectData,
 
-      selectActiveCellPosition,
-    ],
-    (
-      freezeRowCount,
+        selectActiveCellPosition,
+      ],
+      (
+        freezeRowCount,
 
-      columnCount,
-      rowCount,
+        columnCount,
+        rowCount,
 
-      columnWidths,
-      rowHeights,
+        columnWidths,
+        rowHeights,
 
-      columnOffsets,
-      rowOffsets,
+        columnOffsets,
+        rowOffsets,
 
-      data,
+        data,
 
-      activeCellPosition
-    ) => {
-      let activeCellStyle: CSSProperties
+        activeCellPosition
+      ) => {
+        let activeCellStyle: CSSProperties
 
-      if (computeActiveCellStyle) {
-        activeCellStyle = computeActiveCellStyle(
-          activeCellPosition,
-          columnWidths,
-          columnOffsets,
-          rowHeights,
-          rowOffsets,
-          freezeRowCount,
-          data
-        )
-        activeCellStyle.minHeight = activeCellStyle.height
-        activeCellStyle.minWidth = activeCellStyle.width
-      } else {
-        let height, width, top, left
-
-        const cellMergeArea = selectCellMergeFactory(activeCellPosition)(state)
-
-        if (cellMergeArea) {
-          const mergeDimensions = getAreaDimensions(
-            cellMergeArea,
-            rowOffsets,
-            columnOffsets,
+        if (computeActiveCellStyle) {
+          activeCellStyle = computeActiveCellStyle(
+            activeCellPosition,
             columnWidths,
-            rowHeights
+            columnOffsets,
+            rowHeights,
+            rowOffsets,
+            freezeRowCount,
+            data
+          )
+          activeCellStyle.minHeight = activeCellStyle.height
+          activeCellStyle.minWidth = activeCellStyle.width
+        } else {
+          let height, width, top, left
+
+          const cellMergeArea = selectCellMergeFactory(activeCellPosition)(
+            state
           )
 
-          height = mergeDimensions.height
-          width = mergeDimensions.width
+          if (cellMergeArea) {
+            const mergeDimensions = getAreaDimensions(
+              cellMergeArea,
+              rowOffsets,
+              columnOffsets,
+              columnWidths,
+              rowHeights
+            )
 
-          top = rowOffsets[cellMergeArea.start.y]
-          left = columnOffsets[cellMergeArea.start.x]
-        } else {
-          top = rowOffsets[activeCellPosition.y]
-          left = columnOffsets[activeCellPosition.x]
+            height = mergeDimensions.height
+            width = mergeDimensions.width
 
-          height = normalizeRowHeight(activeCellPosition.y, rowHeights)
-          width = normalizeColumnWidth(activeCellPosition.x, columnWidths)
+            top = rowOffsets[cellMergeArea.start.y]
+            left = columnOffsets[cellMergeArea.start.x]
+          } else {
+            top = rowOffsets[activeCellPosition.y]
+            left = columnOffsets[activeCellPosition.x]
+
+            height = normalizeRowHeight(activeCellPosition.y, rowHeights)
+            width = normalizeColumnWidth(activeCellPosition.x, columnWidths)
+          }
+
+          activeCellStyle = {
+            top,
+            left,
+            height,
+            width,
+            minHeight: height,
+            minWidth: width,
+          }
         }
 
-        activeCellStyle = {
-          top,
-          left,
-          height,
-          width,
-          minHeight: height,
-          minWidth: width,
-        }
+        activeCellStyle.maxWidth =
+          columnOffsets[columnCount - 1] +
+          normalizeColumnWidth(columnCount, columnWidths) -
+          columnOffsets[activeCellPosition.x]
+        activeCellStyle.maxHeight =
+          rowOffsets[rowCount - 1] +
+          normalizeRowHeight(rowCount, rowHeights) -
+          rowOffsets[activeCellPosition.y]
+
+        return activeCellStyle
       }
-
-      activeCellStyle.maxWidth =
-        columnOffsets[columnCount - 1] +
-        normalizeColumnWidth(columnCount, columnWidths) -
-        columnOffsets[activeCellPosition.x]
-      activeCellStyle.maxHeight =
-        rowOffsets[rowCount - 1] +
-        normalizeRowHeight(rowCount, rowHeights) -
-        rowOffsets[activeCellPosition.y]
-
-      return activeCellStyle
-    }
-  )(state)
+    )(state)
 )
