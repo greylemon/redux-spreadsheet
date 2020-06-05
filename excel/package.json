@@ -23,6 +23,7 @@
     "clone-deep": "^4.0.1",
     "fast-memoize": "^2.5.2",
     "lint": "^0.7.0",
+    "lint-staged": "^10.2.9",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -45,6 +46,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "test:staged": "cross-env CI=true react-scripts test --env=jsdom --findRelatedTests",
     "eject": "react-scripts eject",
     "fix": "yarn fix:prettier && yarn fix:eslint",
     "fix:eslint": "yarn lint:eslint --fix",
@@ -70,6 +72,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^3.0.0",
     "@typescript-eslint/parser": "^3.0.0",
+    "cross-env": "^7.0.2",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.2",
     "eslint-config-prettier": "^6.11.0",
@@ -82,7 +85,14 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "yarn fix"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": [
+      "yarn fix",
+      "yarn test:staged",
+      "git add"
+    ]
   }
 }
