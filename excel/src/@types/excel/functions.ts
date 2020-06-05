@@ -28,25 +28,25 @@ export interface IComputeSelectionAreaStyle {
   (
     columnWidths: IColumnWidths,
     columnOffsets: IColumnOffsets,
-    freezeColumnCount: IFreezeColumnCount,
     rowHeights: IRowHeights,
     rowOffsets: IRowOffsets,
+    freezeColumnCount: IFreezeColumnCount,
     freezeRowCount: IFreezeRowCount,
-    selectionArea: ISelectionArea
+    selectionArea?: ISelectionArea
   ): CSSProperties
+}
+
+export interface ICheckIsAreaInRelevantPane {
+  (
+    freezeColumnCount: IFreezeColumnCount,
+    freezeRowCount: IFreezeRowCount,
+    area?: ISelectionArea
+  ): boolean
 }
 
 export interface ICheckIsActiveCellInCorrectPane {
   (
     position: IPosition,
-    freezeColumnCount: IFreezeColumnCount,
-    freezeRowCount: IFreezeRowCount
-  ): boolean
-}
-
-export interface ICheckIsRelevantArea {
-  (
-    area: IArea,
     freezeColumnCount: IFreezeColumnCount,
     freezeRowCount: IFreezeRowCount
   ): boolean

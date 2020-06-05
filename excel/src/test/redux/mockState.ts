@@ -1,9 +1,9 @@
 import IRootStore from '../../@types/store/store'
-import { initialState } from '../../redux/ExcelStore/store'
+import { initialExcelState } from '../../redux/ExcelStore/store'
 
 export const mockState: IRootStore = {
   Excel: {
-    present: initialState,
+    present: initialExcelState,
     history: [],
     index: 0,
   },

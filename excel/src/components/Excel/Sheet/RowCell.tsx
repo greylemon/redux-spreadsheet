@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { ICell } from '../../../@types/excel/components'
+import { ICellProps } from '../../../@types/excel/components'
 
-const RowCell = ({ style, rowIndex }: ICell) => {
+const RowCell = ({ style, rowIndex }: ICellProps) => {
   return (
     <div className="unselectable cell cell__header" style={style}>
       {rowIndex}

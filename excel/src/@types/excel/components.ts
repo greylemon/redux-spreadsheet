@@ -2,15 +2,16 @@ import { CSSProperties } from 'react'
 import { IRows, IColumnIndex, IRowIndex } from './state'
 import {
   ICheckIsActiveCellInCorrectPane,
-  ICheckIsRelevantArea,
+  ICheckIsAreaInRelevantPane,
   IComputeActiveCellStyle,
+  IComputeSelectionAreaStyle,
 } from './functions'
 
 type IItemData = {
   data: IRows
 }
 
-export interface ICell {
+export interface ICellProps {
   data: IItemData
   style: CSSProperties
   columnIndex: IColumnIndex
@@ -32,6 +33,12 @@ export interface INormalActiveCellProps {
 
 export interface ICommonPaneProps {
   checkIsActiveCellInCorrectPane: ICheckIsActiveCellInCorrectPane
-  checkIsRelevantArea: ICheckIsRelevantArea
+  checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
+  computeSelectionAreaStyle: IComputeSelectionAreaStyle
   computeActiveCellStyle?: IComputeActiveCellStyle
+}
+
+export interface ISelectionAreaProps {
+  computeSelectionAreaStyle: IComputeSelectionAreaStyle
+  checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
 }

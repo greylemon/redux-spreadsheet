@@ -9,7 +9,7 @@ import {
   CELL_MOUSE_DOWN_CTRL,
 } from './mouse/cell/cell.reducers'
 
-export const initialState: IExcelState = {
+export const initialExcelState: IExcelState = {
   activeCellPosition: { x: 1, y: 1 },
 
   data: {},
@@ -38,7 +38,7 @@ export const initialState: IExcelState = {
 
 export const ExcelStore = createSlice({
   name: 'EXCEL',
-  initialState,
+  initialState: initialExcelState,
   reducers: {
     CELL_MOUSE_DOWN,
     CELL_MOUSE_ENTER,

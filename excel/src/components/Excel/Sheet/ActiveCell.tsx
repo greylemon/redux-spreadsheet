@@ -8,7 +8,7 @@ import {
 } from '../../../@types/excel/components'
 import {
   selectIsEditMode,
-  selectFactoryActiveCellStyles,
+  selectFactoryActiveCellStyle,
 } from '../../../redux/ExcelStore/selectors'
 
 const EditorCell = ({ style }: IEditorCellProps) => {
@@ -23,7 +23,7 @@ const ActiveCell = ({ computeActiveCellStyle }: IActiveCellProps) => {
   const { isEditMode, style } = useTypedSelector(
     (state) => ({
       isEditMode: selectIsEditMode(state),
-      style: selectFactoryActiveCellStyles(computeActiveCellStyle)(state),
+      style: selectFactoryActiveCellStyle(computeActiveCellStyle)(state),
     }),
     shallowEqual
   )

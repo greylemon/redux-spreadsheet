@@ -1,12 +1,12 @@
 import React, { FunctionComponent } from 'react'
-import { ICell } from '../../../@types/excel/components'
+import { ICellProps } from '../../../@types/excel/components'
 import EditableCell from './EditableCell'
 import RowCell from './RowCell'
 import ColumnCell from './ColumnCell'
 import RootCell from './RootCell'
 
-const Cell = ({ data, style, columnIndex, rowIndex }: ICell) => {
-  let CellComponent: FunctionComponent<ICell>
+const Cell = ({ data, style, columnIndex, rowIndex }: ICellProps) => {
+  let CellComponent: FunctionComponent<ICellProps>
 
   if (columnIndex && rowIndex) {
     CellComponent = EditableCell

@@ -1,8 +1,8 @@
 import React from 'react'
-import { ICell } from '../../../@types/excel/components'
+import { ICellProps } from '../../../@types/excel/components'
 import { columnNumberToName } from '../tools/conversion'
 
-const ColumnCell = ({ style, columnIndex }: ICell) => {
+const ColumnCell = ({ style, columnIndex }: ICellProps) => {
   const columnName = columnNumberToName(columnIndex)
 
   return (

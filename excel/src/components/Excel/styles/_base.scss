@@ -1,3 +1,16 @@
+.sheet {
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+}
+
 .cell {
   outline: 1px solid rgba(0, 0, 0, 0.1);
 
@@ -8,7 +21,18 @@
 
   &__active {
     position: absolute;
+    pointer-events: none;
     outline: 2px solid rgba(75, 135, 255, 0.8);
     outline-offset: -2px;
   }
+
+  &__static {
+    pointer-events: none;
+  }
+}
+
+.selectionArea {
+  position: absolute;
+  pointer-events: none;
+  background-color: rgba(3, 169, 244, 0.1);
 }

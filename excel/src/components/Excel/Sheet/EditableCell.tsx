@@ -1,9 +1,9 @@
 import React, { MouseEvent } from 'react'
-import { ICell } from '../../../@types/excel/components'
+import { ICellProps } from '../../../@types/excel/components'
 import { useDispatch } from 'react-redux'
 import { ExcelStore } from '../../../redux/ExcelStore/store'
 
-const EditableCell = ({ style, data, columnIndex, rowIndex }: ICell) => {
+const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
   const dispatch = useDispatch()
 
   const { data: sheetData } = data

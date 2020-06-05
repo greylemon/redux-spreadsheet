@@ -1,12 +1,16 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { IPosition, IExcelState, IArea } from '../../../../@types/excel/state'
 import { getEntireSuperArea } from '../../tools/merge'
+import { checkIsCellPositionValid } from '../../tools/validation'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
   action: PayloadAction<IPosition>
 ) => {
   const position = action.payload
+
+  if (!checkIsCellPositionValid(position, state.columnCount, state.rowCount))
+    return state
 
   state.selectionAreaIndex = state.stagnantSelectionAreas.length + 1
   state.activeCellPosition = position
@@ -20,6 +24,9 @@ export const CELL_MOUSE_DOWN_SHIFT = (
 ) => {
   const activeCellPosition = state.activeCellPosition
   const position = action.payload
+
+  if (!checkIsCellPositionValid(position, state.columnCount, state.rowCount))
+    return state
 
   const orderedArea: IArea = {
     start: {
@@ -44,6 +51,9 @@ export const CELL_MOUSE_DOWN = (
   action: PayloadAction<IPosition>
 ) => {
   const position = action.payload
+
+  if (!checkIsCellPositionValid(position, state.columnCount, state.rowCount))
+    return state
 
   state.isSelectionMode = true
   state.activeCellPosition = position
