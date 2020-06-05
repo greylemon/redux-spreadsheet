@@ -14,7 +14,7 @@ export const initialExcelState: IExcelState = {
 
   data: {},
 
-  stagnantSelectionAreas: [],
+  inactiveSelectionAreas: [],
 
   sheetName: '',
 

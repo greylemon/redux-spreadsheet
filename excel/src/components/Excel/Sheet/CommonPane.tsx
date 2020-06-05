@@ -5,6 +5,7 @@ import ActiveCell from './ActiveCell'
 // import StagnantSelectionAreas from './StagnantSelectionAreas'
 import { ICommonPaneProps } from '../../../@types/excel/components'
 import SelectionArea from './SelectionArea'
+import InactiveSelectionAreas from './InactiveSelectionAreas'
 
 const CommonActivityPane = ({
   computeActiveCellStyle,
@@ -21,10 +22,10 @@ const CommonActivityPane = ({
       checkIsAreaInRelevantPane={checkIsAreaInRelevantPane}
       computeSelectionAreaStyle={computeSelectionAreaStyle}
     />
-    {/* <StagnantSelectionAreas
-      isRelevantArea={isRelevantArea}
+    <InactiveSelectionAreas
+      checkIsAreaInRelevantPane={checkIsAreaInRelevantPane}
       computeSelectionAreaStyle={computeSelectionAreaStyle}
-    /> */}
+    />
   </Fragment>
 )
 

@@ -12,7 +12,7 @@ export const CELL_MOUSE_DOWN_CTRL = (
   if (!checkIsCellPositionValid(position, state.columnCount, state.rowCount))
     return state
 
-  state.selectionAreaIndex = state.stagnantSelectionAreas.length + 1
+  state.selectionAreaIndex = state.inactiveSelectionAreas.length + 1
   state.activeCellPosition = position
 
   return state
@@ -41,7 +41,7 @@ export const CELL_MOUSE_DOWN_SHIFT = (
 
   state.selectionArea = getEntireSuperArea(orderedArea, state.data)
   state.selectionAreaIndex = 0
-  state.stagnantSelectionAreas = []
+  state.inactiveSelectionAreas = []
 
   return state
 }
@@ -74,10 +74,12 @@ export const CELL_MOUSE_ENTER = (
   return state
 }
 
+// TODO
 export const CELL_MOUSE_UP = (state: IExcelState) => {
   state.isSelectionMode = false
 
-  state.stagnantSelectionAreas.push(state.selectionArea!)
+  state.inactiveSelectionAreas.push(state.selectionArea!)
+  state.selectionAreaIndex = state.selectionAreaIndex + 1
   state.selectionArea = undefined
 
   return state

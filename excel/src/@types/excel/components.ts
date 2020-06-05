@@ -42,3 +42,12 @@ export interface ISelectionAreaProps {
   computeSelectionAreaStyle: IComputeSelectionAreaStyle
   checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
 }
+
+export interface IInactiveSelectionAreasComponentsProps {
+  inactiveSelectionAreasStyle: Array<CSSProperties>
+}
+
+export interface IInactiveSelectionAreasProps {
+  computeSelectionAreaStyle: IComputeSelectionAreaStyle
+  checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
+}

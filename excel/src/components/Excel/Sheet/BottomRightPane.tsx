@@ -1,20 +1,5 @@
 import React, { Fragment, CSSProperties } from 'react'
-// import {
-//   ACTIVE_SELECTION_BORDER_STYLE,
-//   STAGNANT_SELECTION_BORDER_STYLE,
-//   SELECTION_BORDER_WIDTH,
-//   SELECTION_BORDER_COLOR,
-// } from '../styles/constants'
-// import { normalizeColumnWidth, normalizeRowHeight } from '../tools/dimensions'
-// import {
-//   IColumnWidths,
-//   IColumnOffsets,
-//   IRowHeights,
-//   IRowOffsets,
-//   IArea,
-//   IFreezeColumnCount,
-//   IFreezeRowCount,
-// } from '../../../@types/excel/state'
+
 import {
   ICheckIsActiveCellInCorrectPane,
   IComputeSelectionAreaStyle,
@@ -41,7 +26,7 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
   freezeRowCount: IFreezeRowCount,
   selectionArea?: ISelectionArea
 ) => {
-  if(!selectionArea) return {}
+  if (!selectionArea) return {}
 
   let selectionAreaWidth
   let selectionAreaHeight
@@ -128,6 +113,7 @@ const checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane = (
   freezeRowCount,
   area
 ) =>
+  area !== undefined &&
   (area!.start.x > freezeColumnCount || area!.end.x > freezeColumnCount) &&
   (area!.start.y > freezeRowCount || area!.end.y > freezeRowCount)
 
@@ -136,8 +122,6 @@ const BottomRightPane = () => (
     <CommonActivityPane
       checkIsActiveCellInCorrectPane={checkIsActiveCellInCorrectPane}
       checkIsAreaInRelevantPane={checkIsAreaInRelevantPane}
-      // isActiveCellInCorrectPane={isActiveCellInCorrectPane}
-      // isRelevantArea={isRelevantArea}
       computeSelectionAreaStyle={computeSelectionAreaStyle}
     />
   </Fragment>

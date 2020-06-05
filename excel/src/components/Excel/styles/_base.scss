@@ -25,14 +25,12 @@
     outline: 2px solid rgba(75, 135, 255, 0.8);
     outline-offset: -2px;
   }
-
-  &__static {
-    pointer-events: none;
-  }
 }
 
 .selectionArea {
-  position: absolute;
-  pointer-events: none;
-  background-color: rgba(3, 169, 244, 0.1);
+  &__active, &__inactive {
+    position: absolute;
+    pointer-events: none;
+    background-color: rgba(3, 169, 244, 0.1);
+  }
 }

@@ -73,6 +73,11 @@ export const selectSelectionArea = createSelector(
   (excel) => excel.selectionArea
 )
 
+export const selectInactiveSelectionAreas = createSelector(
+  [selectExcel],
+  (excel) => excel.inactiveSelectionAreas
+)
+
 // ===========================================================================
 // CUSTOM SELECTORS
 // ===========================================================================
@@ -99,11 +104,16 @@ export const selectGetColumnWidth = createSelector(
 export const selectIsActiveCellPositionEqualSelectionArea = createSelector(
   [selectActiveCellPosition, selectSelectionArea],
   (activeCellPosition, selectionArea) => {
-    if(!selectionArea) return true
+    if (!selectionArea) return true
 
     const { start, end } = selectionArea
 
-    return activeCellPosition.x === start.x && activeCellPosition.x === end.x && activeCellPosition.y === start.y && activeCellPosition.y === end.y
+    return (
+      activeCellPosition.x === start.x &&
+      activeCellPosition.x === end.x &&
+      activeCellPosition.y === start.y &&
+      activeCellPosition.y === end.y
+    )
   }
 )
 
@@ -126,10 +136,13 @@ export const selectCellMergeFactory = memoize((position: IPosition) =>
   )
 )
 
-export const selectFactoryIsRelevantPane = memoize((checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane) => createSelector(
-  [selectFreezeColumnCount, selectFreezeRowCount, selectSelectionArea],
-  checkIsAreaInRelevantPane
-))
+export const selectFactoryIsAreaInRelevantPane = memoize(
+  (checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane) =>
+    createSelector(
+      [selectFreezeColumnCount, selectFreezeRowCount, selectSelectionArea],
+      checkIsAreaInRelevantPane
+    )
+)
 
 export const selectFactoryActiveCellStyle = memoize(
   (computeActiveCellStyle?: IComputeActiveCellStyle) => (state: IRootStore) =>
@@ -233,14 +246,6 @@ export const selectFactoryActiveCellStyle = memoize(
     )(state)
 )
 
-// columnWidths: IColumnWidths,
-// columnOffsets: IColumnOffsets,
-// rowHeights: IRowHeights,
-// rowOffsets: IRowOffsets,
-// selectionArea: ISelectionArea,
-// freezeColumnCount: IFreezeColumnCount,
-// freezeRowCount: IFreezeRowCount
-
 export const selectFactorySelectionAreaStyle = memoize(
   (computeSelectionAreaStyle: IComputeSelectionAreaStyle) =>
     createSelector(
@@ -254,5 +259,51 @@ export const selectFactorySelectionAreaStyle = memoize(
         selectSelectionArea,
       ],
       computeSelectionAreaStyle
+    )
+)
+
+export const selectFactoryInactiveSelectionAreasStyle = memoize(
+  (
+    computeSelectionAreaStyle: IComputeSelectionAreaStyle,
+    checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
+  ) =>
+    createSelector(
+      [
+        selectColumnWidths,
+        selectColumnoffsets,
+        selectRowHeights,
+        selectRowOffsets,
+        selectFreezeColumnCount,
+        selectFreezeRowCount,
+        selectInactiveSelectionAreas,
+      ],
+      (
+        columnWidths,
+        columnOffsets,
+        rowHeights,
+        rowOffsets,
+        freezeColumnCount,
+        freezeRowCount,
+        inactiveSelectionAreas
+      ) =>
+        inactiveSelectionAreas
+          .filter((inactiveSelectionArea) =>
+            checkIsAreaInRelevantPane(
+              freezeColumnCount,
+              freezeRowCount,
+              inactiveSelectionArea
+            )
+          )
+          .map((inactiveSelectionArea) =>
+            computeSelectionAreaStyle(
+              columnWidths,
+              columnOffsets,
+              rowHeights,
+              rowOffsets,
+              freezeColumnCount,
+              freezeRowCount,
+              inactiveSelectionArea
+            )
+          )
     )
 )

@@ -96,15 +96,17 @@ export type IActiveCellPosition = IPosition
 export type IStagnantSelectionAreas = IArea[]
 
 export type ISelectionArea = IArea
+export type IInactiveSelectionAreas = Array<IArea>
 
 export type ISelectionAreaIndex = number
 
 export type ISheet = {
   data: IRows
 
+  inactiveSelectionAreas: IInactiveSelectionAreas
+
   activeCellPosition: IActiveCellPosition
   selectionArea?: ISelectionArea
-  stagnantSelectionAreas: IStagnantSelectionAreas
 
   selectionAreaIndex: ISelectionAreaIndex
 
