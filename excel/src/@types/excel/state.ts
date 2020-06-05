@@ -109,7 +109,6 @@ export type ISheet = {
   selectionAreaIndex: ISelectionAreaIndex
 
   sheetName: ISheetName
-  position: IPosition
 
   isEditMode: IIsEditMode
   isSelectionMode: IIsSelectionMode

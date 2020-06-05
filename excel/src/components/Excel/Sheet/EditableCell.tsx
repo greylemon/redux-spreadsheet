@@ -1,7 +1,7 @@
 import React, { MouseEvent } from 'react'
 import { ICell } from '../../../@types/excel/components'
 import { useDispatch } from 'react-redux'
-import { ExcelStore } from '../../../store/ExcelStore/store'
+import { ExcelStore } from '../../../redux/ExcelStore/store'
 
 const EditableCell = ({ style, data, columnIndex, rowIndex }: ICell) => {
   const dispatch = useDispatch()
@@ -20,6 +20,7 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICell) => {
     const { ctrlKey, shiftKey } = event
 
     if (ctrlKey) {
+      dispatch(ExcelStore.actions.CELL_MOUSE_DOWN_CTRL(position))
     } else if (shiftKey) {
       dispatch(ExcelStore.actions.CELL_MOUSE_DOWN_SHIFT(position))
     } else {

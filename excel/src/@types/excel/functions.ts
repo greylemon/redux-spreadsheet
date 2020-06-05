@@ -9,6 +9,7 @@ import {
   IColumnWidths,
   IRowHeights,
   IColumnOffsets,
+  ISelectionArea,
 } from './state'
 
 export interface IComputeActiveCellStyle {
@@ -20,6 +21,18 @@ export interface IComputeActiveCellStyle {
     rowoffsets: IRowOffsets,
     freezeRowCount: IFreezeRowCount,
     data: IRows
+  ): CSSProperties
+}
+
+export interface IComputeSelectionAreaStyle {
+  (
+    columnWidths: IColumnWidths,
+    columnOffsets: IColumnOffsets,
+    freezeColumnCount: IFreezeColumnCount,
+    rowHeights: IRowHeights,
+    rowOffsets: IRowOffsets,
+    freezeRowCount: IFreezeRowCount,
+    selectionArea: ISelectionArea
   ): CSSProperties
 }
 

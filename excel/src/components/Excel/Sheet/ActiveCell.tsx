@@ -1,5 +1,5 @@
 import React from 'react'
-import { useTypedSelector } from '../../../store'
+import { useTypedSelector } from '../../../redux'
 import { shallowEqual } from 'react-redux'
 import {
   IActiveCellProps,
@@ -9,7 +9,7 @@ import {
 import {
   selectIsEditMode,
   selectFactoryActiveCellStyles,
-} from '../../../store/ExcelStore/selectors'
+} from '../../../redux/ExcelStore/selectors'
 
 const EditorCell = ({ style }: IEditorCellProps) => {
   return <div className="cell__active" style={style} />

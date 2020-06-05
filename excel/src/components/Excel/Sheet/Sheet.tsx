@@ -1,7 +1,7 @@
 import React from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
-import { useTypedSelector } from '../../../store'
+import { useTypedSelector } from '../../../redux'
 import { shallowEqual } from 'react-redux'
 import Cell from './Cell'
 import {
@@ -13,7 +13,7 @@ import {
   selectFreezeColumnCount,
   selectGetRowHeight,
   selectGetColumnWidth,
-} from '../../../store/ExcelStore/selectors'
+} from '../../../redux/ExcelStore/selectors'
 import BottomRightPane from './BottomRightPane'
 
 /**

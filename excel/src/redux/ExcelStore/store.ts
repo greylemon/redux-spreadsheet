@@ -9,7 +9,7 @@ import {
   CELL_MOUSE_DOWN_CTRL,
 } from './mouse/cell/cell.reducers'
 
-const initialState: IExcelState = {
+export const initialState: IExcelState = {
   activeCellPosition: { x: 1, y: 1 },
 
   data: {},
@@ -17,7 +17,6 @@ const initialState: IExcelState = {
   stagnantSelectionAreas: [],
 
   sheetName: '',
-  position: { x: 1, y: 1 },
 
   isEditMode: false,
   isSelectionMode: false,
