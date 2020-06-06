@@ -39,7 +39,7 @@
     "slate-history": "../slate/packages/slate-history",
     "slate-react": "../slate/packages/slate-react",
     "typescript": "~3.7.2",
-    "undox": "https://github.com/greylemon/undox",
+    "undox": "../undox",
     "xlsx-populate": "https://github.com/greylemon/xlsx-populate"
   },
   "scripts": {
