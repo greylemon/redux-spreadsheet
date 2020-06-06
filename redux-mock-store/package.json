@@ -12,7 +12,7 @@
     "build:umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -f umd -c -i src/index.js -o dist/index-umd.js",
     "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -f umd -c -i src/index.js -o dist/index-umd.min.js",
     "build:es": "cross-env BABEL_ENV=es NODE_ENV=development rollup -f es -c -i src/index.js -o dist/index-es.js",
-    "build": "npm run build:umd && npm run build:umd:min && npm run build:es && npm run build:cjs",
+    "build": "npm run build:es && npm run build:cjs",
     "lint": "standard src/*.js test/*.js",
     "pretest": "npm run lint",
     "test": "npm run build && npm run test:unit && npm run test:cjs && npm run test:es",
