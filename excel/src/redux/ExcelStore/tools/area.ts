@@ -1,3 +1,19 @@
+import { IPosition, IActiveCellPosition } from '../../../@types/excel/state'
+
+export const getOrderedArea = (
+  position: IPosition,
+  activeCellPosition: IActiveCellPosition
+) => ({
+  start: {
+    y: Math.min(position.y, activeCellPosition.y),
+    x: Math.min(position.x, activeCellPosition.x),
+  },
+  end: {
+    y: Math.max(position.y, activeCellPosition.y),
+    x: Math.max(position.x, activeCellPosition.x),
+  },
+})
+
 // export const getAllAreas = (newState) => {
 //   const {
 //     activeSelectionArea,

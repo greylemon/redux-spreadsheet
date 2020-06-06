@@ -50,7 +50,7 @@ export const ExcelStore = createSlice({
 
 const ignoredActionsMap = {
   // EXCEL_MOUSE_DOWN: true,
-  EXCEL_SELECT_OVER: true,
+  [ExcelStore.actions.CELL_MOUSE_ENTER.type]: true,
   // EXCEL_SET_SCROLL_DATA: true,
   // EXCEL_SET_ACTIVE_CELL_INPUT_VALUE: true
 }

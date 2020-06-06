@@ -33,6 +33,7 @@ export const useTypedSelector: TypedUseSelectorHook<IRootStore> = useSelector
  */
 const store = configureStore({
   reducer: rootReducer,
+  // devTools
 })
 
 export default store

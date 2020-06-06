@@ -1,8 +1,9 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { IPosition, IExcelState, IArea } from '../../../../@types/excel/state'
+import { IPosition, IExcelState } from '../../../../@types/excel/state'
 import { getEntireSuperArea } from '../../tools/merge'
 import { checkIsCellPositionValid } from '../../tools/cell'
 import { isSelectionAreaEqualPosition } from '../../tools/selectionArea'
+import { getOrderedArea } from '../../tools/area'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -25,22 +26,12 @@ export const CELL_MOUSE_DOWN_SHIFT = (
   state: IExcelState,
   action: PayloadAction<IPosition>
 ) => {
-  const activeCellPosition = state.activeCellPosition
   const position = action.payload
 
   if (!checkIsCellPositionValid(position, state.columnCount, state.rowCount))
     return state
 
-  const orderedArea: IArea = {
-    start: {
-      y: Math.min(position.y, activeCellPosition.y),
-      x: Math.min(position.x, activeCellPosition.x),
-    },
-    end: {
-      y: Math.max(position.y, activeCellPosition.y),
-      x: Math.max(position.x, activeCellPosition.x),
-    },
-  }
+  const orderedArea = getOrderedArea(position, state.activeCellPosition)
 
   state.isSelectionMode = true
   state.selectionArea = getEntireSuperArea(orderedArea, state.data)
@@ -73,14 +64,20 @@ export const CELL_MOUSE_ENTER = (
 ) => {
   if (state.isSelectionMode) {
     const position = action.payload
-    state.selectionArea!.end = position
+    const orderedArea = getOrderedArea(position, state.activeCellPosition)
+
+    state.selectionArea = state.selectionArea = getEntireSuperArea(
+      orderedArea,
+      state.data
+    )
   }
 
   return state
 }
 
-// TODO
 export const CELL_MOUSE_UP = (state: IExcelState) => {
+  if (!state.isSelectionMode) return state
+
   state.isSelectionMode = false
 
   if (!isSelectionAreaEqualPosition(state.selectionArea!))

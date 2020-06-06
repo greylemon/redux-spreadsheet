@@ -18,8 +18,9 @@ const InactiveSelectionAreas = ({
 
   return (
     <Fragment>
-      {inactiveSelectionAreasStyle.map((inactiveSelectionAreaStyle) => (
+      {inactiveSelectionAreasStyle.map((inactiveSelectionAreaStyle, index) => (
         <div
+          key={`inactive-selection-area-${index}`}
           className="selectionArea__inactive"
           style={inactiveSelectionAreaStyle}
         />
