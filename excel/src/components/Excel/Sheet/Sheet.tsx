@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { Fragment } from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../../redux'
-import { shallowEqual, useDispatch } from 'react-redux'
+import { shallowEqual } from 'react-redux'
 import Cell from './Cell'
 import {
   selectColumnCount,
@@ -15,11 +15,9 @@ import {
   selectGetColumnWidth,
 } from '../../../redux/ExcelStore/selectors'
 import BottomRightPane from './BottomRightPane'
-import { ExcelStore } from '../../../redux/ExcelStore/store'
+import WindowListener from './WindowListener'
 
 export const Sheet = ({ height, width }: Size) => {
-  const dispatch = useDispatch()
-
   const {
     columnCount,
     rowCount,
@@ -44,10 +42,6 @@ export const Sheet = ({ height, width }: Size) => {
 
   const itemData = { data }
 
-  useEffect(() => {
-    window.onmouseup = () => dispatch(ExcelStore.actions.CELL_MOUSE_UP())
-  }, [dispatch])
-
   return (
     <VariableSizeGrid
       className="sheet"
@@ -70,7 +64,10 @@ export const Sheet = ({ height, width }: Size) => {
 }
 
 const SheetSizer = ({ height, width }: Size) => (
-  <Sheet height={height} width={width} />
+  <Fragment>
+    <Sheet height={height} width={width} />
+    <WindowListener />
+  </Fragment>
 )
 
 const SheetContainer = () => <AutoSizer children={SheetSizer} />
