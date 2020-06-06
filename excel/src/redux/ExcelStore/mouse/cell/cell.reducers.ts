@@ -66,10 +66,7 @@ export const CELL_MOUSE_ENTER = (
     const position = action.payload
     const orderedArea = getOrderedArea(position, state.activeCellPosition)
 
-    state.selectionArea = state.selectionArea = getEntireSuperArea(
-      orderedArea,
-      state.data
-    )
+    state.selectionArea = getEntireSuperArea(orderedArea, state.data)
   }
 
   return state
