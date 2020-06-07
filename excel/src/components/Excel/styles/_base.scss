@@ -32,5 +32,7 @@
     position: absolute;
     pointer-events: none;
     background-color: rgba(3, 169, 244, 0.1);
+    outline: 2px solid rgba(69, 131, 255, 0.8);
+    outline-offset: -1px;
   }
 }
