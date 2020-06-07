@@ -4,7 +4,7 @@
 
 Currently, the excel project is configured for [yarn](https://yarnpkg.com/) package manager
 
-Command: ```yarn deps```
+Command: ```yarn install```
 
 ## Starting the Application
 
