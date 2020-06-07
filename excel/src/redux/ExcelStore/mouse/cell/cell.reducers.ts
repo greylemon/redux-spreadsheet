@@ -6,8 +6,7 @@ import {
 } from '../../../../@types/excel/state'
 import { getEntireSuperArea } from '../../tools/merge'
 import { checkIsCellPositionValid } from '../../tools/cell'
-import { isSelectionAreaEqualPosition } from '../../tools/selectionArea'
-import { getOrderedArea } from '../../tools/area'
+import { getOrderedAreaFromPositions, getAndAddArea } from '../../tools/area'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -35,7 +34,10 @@ export const CELL_MOUSE_DOWN_SHIFT = (
   if (!checkIsCellPositionValid(position, state.columnCount, state.rowCount))
     return state
 
-  const orderedArea = getOrderedArea(position, state.activeCellPosition)
+  const orderedArea = getOrderedAreaFromPositions(
+    position,
+    state.activeCellPosition
+  )
 
   state.isSelectionMode = true
   state.selectionArea = getEntireSuperArea(orderedArea, state.data)
@@ -68,7 +70,10 @@ export const CELL_MOUSE_ENTER = (
 ) => {
   if (state.isSelectionMode) {
     const position = action.payload
-    const orderedArea = getOrderedArea(position, state.activeCellPosition)
+    const orderedArea = getOrderedAreaFromPositions(
+      position,
+      state.activeCellPosition
+    )
 
     state.selectionArea = getEntireSuperArea(orderedArea, state.data)
   }
@@ -86,8 +91,13 @@ export const CELL_MOUSE_UP = (
 
   state.isSelectionMode = false
 
-  if (!isSelectionAreaEqualPosition(selectionArea!))
-    state.inactiveSelectionAreas.push(selectionArea)
+  if (selectionArea) {
+    state.inactiveSelectionAreas = getAndAddArea(
+      selectionArea,
+      state.inactiveSelectionAreas
+    )
+  }
+
   state.selectionAreaIndex = state.selectionAreaIndex + 1
   state.selectionArea = undefined
 

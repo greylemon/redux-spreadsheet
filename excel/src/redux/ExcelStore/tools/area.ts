@@ -1,67 +1,152 @@
-import { IPosition, IActiveCellPosition } from '../../../@types/excel/state'
+import {
+  IPosition,
+  ISelectionArea,
+  IRange,
+  IArea,
+  IAreaRange,
+} from '../../../@types/excel/state'
 
-export const getOrderedArea = (
+export const getOrderedAreaFromPositions = (
   position: IPosition,
-  activeCellPosition: IActiveCellPosition
-) => ({
+  position2: IPosition
+): IArea => ({
   start: {
-    y: Math.min(position.y, activeCellPosition.y),
-    x: Math.min(position.x, activeCellPosition.x),
+    y: Math.min(position.y, position2.y),
+    x: Math.min(position.x, position2.x),
   },
   end: {
-    y: Math.max(position.y, activeCellPosition.y),
-    x: Math.max(position.x, activeCellPosition.x),
+    y: Math.max(position.y, position2.y),
+    x: Math.max(position.x, position2.x),
   },
 })
 
-// export const getAllAreas = (newState) => {
-//   const {
-//     activeSelectionArea,
-//     stagnantSelectionAreas,
-//     activeCellPosition: { x, y },
-//   } = newState
+export const getAreaRanges = (area: IArea) => {
+  const orderedArea = getOrderedAreaFromPositions(area.start, area.end)
 
-//   const selectionAreaCoveredCells = {
-//     [y]: {
-//       [x]: true,
-//     },
-//   }
+  return {
+    xRange: { start: orderedArea.start.x, end: orderedArea.end.x } as IRange,
+    yRange: { start: orderedArea.start.y, end: orderedArea.end.y } as IRange,
+  }
+}
 
-//   const combinedSelectionArea = [...stagnantSelectionAreas]
+export const getAreaDifference = (areaToSubtract: IArea, area: IArea) => {
+  const areaDifference: Array<IArea> = []
 
-//   if (activeSelectionArea) combinedSelectionArea.push(activeSelectionArea)
+  const areaRange = getAreaRanges(area)
+  const areaToSubtractRange = getAreaRanges(areaToSubtract)
 
-//   combinedSelectionArea.forEach(({ x1, x2, y1, y2 }) => {
-//     const startRow = Math.min(y1, y2)
-//     const endRow = Math.max(y1, y2)
+  const minSX = areaRange.xRange.start
+  const midLeftSX = areaToSubtractRange.xRange.start
+  const midRightSX = areaToSubtractRange.xRange.end
+  const maxSX = areaRange.xRange.end
 
-//     const startColumn = Math.min(x1, x2)
-//     const endColumn = Math.max(x1, x2)
+  const minSY = areaRange.yRange.start
+  const midTopSY = areaToSubtractRange.yRange.start
+  const midBottomSY = areaToSubtractRange.yRange.end
+  const maxSY = areaRange.yRange.end
 
-//     for (let row = startRow; row <= endRow; row++) {
-//       for (let column = startColumn; column <= endColumn; column++) {
-//         if (selectionAreaCoveredCells[row]) {
-//           selectionAreaCoveredCells[row][column] = true
-//         } else {
-//           selectionAreaCoveredCells[row] = { [column]: true }
-//         }
-//       }
-//     }
-//   })
+  if (minSY !== midTopSY)
+    areaDifference.push({
+      start: {
+        x: minSX,
+        y: minSY,
+      },
+      end: {
+        x: maxSX,
+        y: midTopSY - 1,
+      },
+    })
+  if (minSX !== midLeftSX)
+    areaDifference.push({
+      start: {
+        x: minSX,
+        y: midTopSY,
+      },
+      end: {
+        x: midLeftSX - 1,
+        y: midBottomSY,
+      },
+    })
+  if (maxSX !== midRightSX)
+    areaDifference.push({
+      start: {
+        x: midRightSX + 1,
+        y: midTopSY,
+      },
+      end: {
+        x: maxSX,
+        y: midBottomSY,
+      },
+    })
+  if (maxSY !== midBottomSY)
+    areaDifference.push({
+      start: {
+        x: minSX,
+        y: midBottomSY + 1,
+      },
+      end: {
+        x: maxSX,
+        y: maxSY,
+      },
+    })
 
-//   return selectionAreaCoveredCells
-// }
+  return areaDifference
+}
 
-// export const getLastArea = (stagnantSelectionAreas, activeCellPosition) => {
-//   let area
-//   const stagnantSelectionAreasLength = stagnantSelectionAreas.length
+export const getAndAddArea = (area: IArea, areas: Array<IArea>) => {
+  let newAreas: Array<IArea>
 
-//   if (stagnantSelectionAreasLength) {
-//     area = stagnantSelectionAreas[stagnantSelectionAreasLength - 1]
-//   } else {
-//     const { y, x } = activeCellPosition
-//     area = { y1: y, y2: y, x1: x, x2: x }
-//   }
+  const superAreaIndex = getFirstSuperAreaIndex(area, areas)
 
-//   return area
-// }
+  if (superAreaIndex > -1) {
+    newAreas = [
+      ...areas.slice(0, superAreaIndex),
+      ...getAreaDifference(area, areas[superAreaIndex]),
+      ...areas.slice(superAreaIndex + 1),
+    ]
+  } else {
+    newAreas = [...areas, area]
+  }
+
+  return newAreas
+}
+
+/**
+ * Finds the index of the first superset of area
+ */
+export const getFirstSuperAreaIndex = (area: IArea, areas: Array<IArea>) => {
+  const orderedArea = getOrderedAreaFromPositions(area.start, area.end)
+
+  const areaRanges = getAreaRanges(orderedArea)
+
+  // console.log('--', areaRanges, areas)
+
+  return areas.findIndex(({ start, end }) => {
+    const potentialSuperArea = getOrderedAreaFromPositions(start, end)
+    const potentialSuperAreaRanges = getAreaRanges(potentialSuperArea)
+
+    // console.log(potentialSuperAreaRanges)
+
+    return checkIsAreaRangeContainedInOtherAreaRange(
+      areaRanges,
+      potentialSuperAreaRanges
+    )
+  })
+}
+
+export const checkIsAreaRangeContainedInOtherAreaRange = (
+  areaRange: IAreaRange,
+  otherAreaRange: IAreaRange
+) =>
+  checkIsRangeContainedInOtherRange(areaRange.xRange, otherAreaRange.xRange) &&
+  checkIsRangeContainedInOtherRange(areaRange.yRange, otherAreaRange.yRange)
+
+export const checkIsSelectionAreaEqualPosition = ({
+  start,
+  end,
+}: ISelectionArea) => start.x === end.x && start.y === end.y
+
+export const checkIsRangeContainedInOtherRange = (
+  range: IRange,
+  otherRange: IRange
+) => otherRange.start <= range.start && range.end <= otherRange.end

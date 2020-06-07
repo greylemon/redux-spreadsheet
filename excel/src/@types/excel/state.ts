@@ -4,6 +4,11 @@ export type IArea = { start: IPosition; end: IPosition }
 
 export type IRange = { start: number; end: number }
 
+export type IAreaRange = {
+  xRange: IRange
+  yRange: IRange
+}
+
 export type IError = object
 
 export type ICSSLength = number | string
