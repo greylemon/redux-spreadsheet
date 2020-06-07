@@ -11,23 +11,25 @@ export const getOrderedAreaFromPositions = (
   position2: IPosition
 ): IArea => ({
   start: {
-    y: Math.min(position.y, position2.y),
     x: Math.min(position.x, position2.x),
+    y: Math.min(position.y, position2.y),
   },
   end: {
-    y: Math.max(position.y, position2.y),
     x: Math.max(position.x, position2.x),
+    y: Math.max(position.y, position2.y),
   },
 })
 
 export const getAreaRanges = (area: IArea) => {
   const orderedArea = getOrderedAreaFromPositions(area.start, area.end)
 
-  return {
-    yRange: { start: orderedArea.start.y, end: orderedArea.end.y } as IRange,
-    xRange: { start: orderedArea.start.x, end: orderedArea.end.x } as IRange,
-  }
+  return getAreaRangesFromOrderedArea(orderedArea)
 }
+
+export const getAreaRangesFromOrderedArea = (orderedArea: IArea) => ({
+  xRange: { start: orderedArea.start.x, end: orderedArea.end.x } as IRange,
+  yRange: { start: orderedArea.start.y, end: orderedArea.end.y } as IRange,
+})
 
 export const getAreaDifference = (areaToSubtract: IArea, area: IArea) => {
   const areaDifference: Array<IArea> = []
@@ -117,15 +119,13 @@ export const getAndAddArea = (area: IArea, areas: Array<IArea>) => {
 export const getFirstSuperAreaIndex = (area: IArea, areas: Array<IArea>) => {
   const orderedArea = getOrderedAreaFromPositions(area.start, area.end)
 
-  const areaRanges = getAreaRanges(orderedArea)
-
-  // console.log('--', areaRanges, areas)
+  const areaRanges = getAreaRangesFromOrderedArea(orderedArea)
 
   return areas.findIndex(({ start, end }) => {
     const potentialSuperArea = getOrderedAreaFromPositions(start, end)
-    const potentialSuperAreaRanges = getAreaRanges(potentialSuperArea)
-
-    // console.log(potentialSuperAreaRanges)
+    const potentialSuperAreaRanges = getAreaRangesFromOrderedArea(
+      potentialSuperArea
+    )
 
     return checkIsAreaRangeContainedInOtherAreaRange(
       areaRanges,
