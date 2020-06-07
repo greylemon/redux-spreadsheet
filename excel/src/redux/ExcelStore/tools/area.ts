@@ -24,8 +24,8 @@ export const getAreaRanges = (area: IArea) => {
   const orderedArea = getOrderedAreaFromPositions(area.start, area.end)
 
   return {
-    xRange: { start: orderedArea.start.x, end: orderedArea.end.x } as IRange,
     yRange: { start: orderedArea.start.y, end: orderedArea.end.y } as IRange,
+    xRange: { start: orderedArea.start.x, end: orderedArea.end.x } as IRange,
   }
 }
 
