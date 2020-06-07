@@ -6,6 +6,11 @@ import {
   IAreaRange,
 } from '../../../@types/excel/state'
 
+export const getMinPositionFromArea = ({ start, end }: IArea): IPosition => ({
+  x: Math.min(start.x, end.x),
+  y: Math.min(start.y, end.y),
+})
+
 export const getOrderedAreaFromPositions = (
   position: IPosition,
   position2: IPosition
@@ -95,22 +100,28 @@ export const getAreaDifference = (areaToSubtract: IArea, area: IArea) => {
   return areaDifference
 }
 
+export const getAndAddAreaFromSuperAreaIndex = (
+  superAreaIndex: number,
+  area: IArea,
+  areas: Array<IArea>
+) => [
+  ...areas.slice(0, superAreaIndex),
+  ...getAreaDifference(area, areas[superAreaIndex]),
+  ...areas.slice(superAreaIndex + 1),
+]
+
 export const getAndAddArea = (area: IArea, areas: Array<IArea>) => {
   let newAreas: Array<IArea>
 
   const superAreaIndex = getFirstSuperAreaIndex(area, areas)
 
   if (superAreaIndex > -1) {
-    newAreas = [
-      ...areas.slice(0, superAreaIndex),
-      ...getAreaDifference(area, areas[superAreaIndex]),
-      ...areas.slice(superAreaIndex + 1),
-    ]
+    newAreas = getAndAddAreaFromSuperAreaIndex(superAreaIndex, area, areas)
   } else {
     newAreas = [...areas, area]
   }
 
-  return newAreas
+  return { superAreaIndex, newAreas }
 }
 
 /**

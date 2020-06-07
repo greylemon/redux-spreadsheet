@@ -6,7 +6,11 @@ import {
 } from '../../../../@types/excel/state'
 import { getEntireSuperArea } from '../../tools/merge'
 import { checkIsCellPositionValid } from '../../tools/cell'
-import { getOrderedAreaFromPositions, getAndAddArea } from '../../tools/area'
+import {
+  getOrderedAreaFromPositions,
+  getAndAddArea,
+  getMinPositionFromArea,
+} from '../../tools/area'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -92,10 +96,18 @@ export const CELL_MOUSE_UP = (
   state.isSelectionMode = false
 
   if (selectionArea) {
-    state.inactiveSelectionAreas = getAndAddArea(
+    const { newAreas, superAreaIndex } = getAndAddArea(
       selectionArea,
       state.inactiveSelectionAreas
     )
+
+    state.inactiveSelectionAreas = newAreas
+
+    if (superAreaIndex > -1) {
+      state.activeCellPosition = getMinPositionFromArea(
+        state.inactiveSelectionAreas[superAreaIndex]
+      )
+    }
   }
 
   state.selectionAreaIndex = state.selectionAreaIndex + 1
