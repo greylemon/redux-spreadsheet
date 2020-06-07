@@ -6,7 +6,7 @@ import {
   normalizeColumnWidth,
   getAreaDimensions,
 } from '../../components/Excel/tools/dimensions'
-import IRootStore from '../../@types/store/store'
+import IRootStore from '../../@types/redux/store'
 import {
   IComputeActiveCellStyle,
   IComputeSelectionAreaStyle,

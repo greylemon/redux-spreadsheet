@@ -14,8 +14,6 @@ const InactiveSelectionAreas = ({
     )(state)
   )
 
-  if (!inactiveSelectionAreasStyle.length) return null
-
   return (
     <Fragment>
       {inactiveSelectionAreasStyle.map((inactiveSelectionAreaStyle, index) => (

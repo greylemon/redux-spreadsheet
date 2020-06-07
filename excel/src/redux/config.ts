@@ -1,4 +1,4 @@
-import IRootStore from '../@types/store/store'
+import IRootStore from '../@types/redux/store'
 
 export const devTools = {
   stateSanitizer: (state: IRootStore) => ({
