@@ -25,7 +25,7 @@ const Excel = () => {
   }
 
   return (
-    <div className="view" tabIndex={-1} onKeyDown={handlekeyDown}>
+    <div className="view" onKeyDown={handlekeyDown}>
       <Sheet />
     </div>
   )

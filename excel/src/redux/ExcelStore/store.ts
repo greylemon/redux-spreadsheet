@@ -7,7 +7,13 @@ import {
   CELL_MOUSE_UP,
   CELL_MOUSE_DOWN_SHIFT,
   CELL_MOUSE_DOWN_CTRL,
-} from './mouse/cell/cell.reducers'
+} from './mouse/cell'
+import {
+  CELL_KEY_DOWN,
+  CELL_KEY_UP,
+  CELL_KEY_RIGHT,
+  CELL_KEY_LEFT,
+} from './keyboard/cell'
 
 export const initialExcelState: IExcelState = {
   activeCellPosition: { x: 1, y: 1 },
@@ -45,11 +51,19 @@ export const ExcelStore = createSlice({
     CELL_MOUSE_UP,
     CELL_MOUSE_DOWN_SHIFT,
     CELL_MOUSE_DOWN_CTRL,
+    CELL_KEY_DOWN,
+    CELL_KEY_UP,
+    CELL_KEY_RIGHT,
+    CELL_KEY_LEFT,
   },
 })
 
 const ignoredActionsMap = {
   [ExcelStore.actions.CELL_MOUSE_ENTER.type]: true,
+  [ExcelStore.actions.CELL_KEY_DOWN.type]: true,
+  [ExcelStore.actions.CELL_KEY_UP.type]: true,
+  [ExcelStore.actions.CELL_KEY_RIGHT.type]: true,
+  [ExcelStore.actions.CELL_KEY_LEFT.type]: true,
 }
 
 const UndoxExcelStore = undox(

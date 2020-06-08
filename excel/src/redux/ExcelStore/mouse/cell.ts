@@ -3,14 +3,14 @@ import {
   IPosition,
   IExcelState,
   ISelectionArea,
-} from '../../../../@types/excel/state'
-import { getEntireSuperArea } from '../../tools/merge'
-import { checkIsCellPositionValid } from '../../tools/cell'
+} from '../../../@types/excel/state'
+import { getEntireSuperArea } from '../tools/merge'
+import { checkIsCellPositionValid } from '../tools/cell'
 import {
   getOrderedAreaFromPositions,
   getAndAddArea,
   getMinPositionFromArea,
-} from '../../tools/area'
+} from '../tools/area'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
