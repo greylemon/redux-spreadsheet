@@ -3,26 +3,18 @@ import { ISelectionAreaProps } from '../../../@types/excel/components'
 import {
   selectSelectionArea,
   selectFactorySelectionAreaStyle,
-  selectIsActiveCellPositionEqualSelectionArea,
 } from '../../../redux/ExcelStore/selectors'
 import { useTypedSelector } from '../../../redux'
 
 const SelectionArea = ({ computeSelectionAreaStyle }: ISelectionAreaProps) => {
-  const {
-    selectionArea,
-    selectionAreaStyle,
-    isActiveCellPositionEqualSelectionArea,
-  } = useTypedSelector((state) => ({
+  const { selectionArea, selectionAreaStyle } = useTypedSelector((state) => ({
     selectionArea: selectSelectionArea(state),
     selectionAreaStyle: selectFactorySelectionAreaStyle(
       computeSelectionAreaStyle
     )(state),
-    isActiveCellPositionEqualSelectionArea: selectIsActiveCellPositionEqualSelectionArea(
-      state
-    ),
   }))
 
-  if (!selectionArea || isActiveCellPositionEqualSelectionArea) return null
+  if (!selectionArea) return null
 
   return <div className="selectionArea__active" style={selectionAreaStyle} />
 }
