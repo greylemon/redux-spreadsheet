@@ -10,6 +10,9 @@ import {
   getOrderedAreaFromPositions,
   getAndAddArea,
   getMinPositionFromArea,
+  checkIsSelectionAreaEqualPosition,
+  checkIsPositionEqualOtherPosition,
+  getAreaFromPosition,
 } from '../tools/area'
 
 export const CELL_MOUSE_DOWN_CTRL = (
@@ -20,6 +23,14 @@ export const CELL_MOUSE_DOWN_CTRL = (
 
   if (!checkIsCellPositionValid(position, state.columnCount, state.rowCount))
     return state
+
+  if (
+    !checkIsPositionEqualOtherPosition(state.activeCellPosition, position) &&
+    !state.inactiveSelectionAreas.length
+  )
+    state.inactiveSelectionAreas = [
+      getAreaFromPosition(state.activeCellPosition),
+    ]
 
   state.isSelectionMode = true
   state.selectionArea = { start: position, end: position }
@@ -100,13 +111,30 @@ export const CELL_MOUSE_UP = (
       selectionArea,
       state.inactiveSelectionAreas
     )
+    if (
+      state.inactiveSelectionAreas.length > 0 ||
+      (state.inactiveSelectionAreas.length === 1 &&
+        !checkIsSelectionAreaEqualPosition(state.inactiveSelectionAreas[0])) ||
+      !checkIsSelectionAreaEqualPosition(selectionArea)
+    ) {
+      state.inactiveSelectionAreas = newAreas
+      if (superAreaIndex > -1 && superAreaIndex < newAreas.length) {
+        // Area difference does not completely eliminate an area
+        state.activeCellPosition = getMinPositionFromArea(
+          state.inactiveSelectionAreas[superAreaIndex]
+        )
 
-    state.inactiveSelectionAreas = newAreas
-
-    if (superAreaIndex > -1) {
-      state.activeCellPosition = getMinPositionFromArea(
-        state.inactiveSelectionAreas[superAreaIndex]
-      )
+        state.selectionAreaIndex = superAreaIndex
+      } else if (superAreaIndex > 0) {
+        // Area eliminated a block, but there are still other areas for active cell position to occupy
+        state.selectionAreaIndex = superAreaIndex - 1
+        state.activeCellPosition = getMinPositionFromArea(
+          state.inactiveSelectionAreas[state.selectionAreaIndex]
+        )
+      } else {
+        // Last area to eliminate - no more possible occupation
+        state.selectionAreaIndex = -1
+      }
     }
   }
 

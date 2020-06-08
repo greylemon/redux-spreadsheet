@@ -1,4 +1,4 @@
-import { IPosition, IRows, IRowIndex } from '../../../@types/excel/state'
+import { IPosition, IRows } from '../../../@types/excel/state'
 
 // //////////////////////////////////////////////////////////////
 // FUNCTIONS TO FETCH EXCEL DATA FROM REDUCER

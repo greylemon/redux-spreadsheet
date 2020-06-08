@@ -8,8 +8,9 @@ const WindowListener = () => {
 
   const selectionArea = useTypedSelector((state) => selectSelectionArea(state))
 
-  window.onmouseup = () =>
-    dispatch(ExcelStore.actions.CELL_MOUSE_UP(selectionArea!))
+  window.onmouseup = () => {
+    if (selectionArea) dispatch(ExcelStore.actions.CELL_MOUSE_UP(selectionArea))
+  }
 
   return null
 }

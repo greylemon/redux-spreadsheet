@@ -11,6 +11,11 @@ export const getMinPositionFromArea = ({ start, end }: IArea): IPosition => ({
   y: Math.min(start.y, end.y),
 })
 
+export const getMaxPositionFromArea = ({ start, end }: IArea): IPosition => ({
+  x: Math.max(start.x, end.x),
+  y: Math.max(start.y, end.y),
+})
+
 export const getOrderedAreaFromPositions = (
   position: IPosition,
   position2: IPosition
@@ -25,8 +30,13 @@ export const getOrderedAreaFromPositions = (
   },
 })
 
+export const getOrderedAreaFromArea = (area: IArea) => ({
+  start: getMinPositionFromArea(area),
+  end: getMaxPositionFromArea(area),
+})
+
 export const getAreaRanges = (area: IArea) => {
-  const orderedArea = getOrderedAreaFromPositions(area.start, area.end)
+  const orderedArea = getOrderedAreaFromArea(area)
 
   return getAreaRangesFromOrderedArea(orderedArea)
 }
@@ -34,6 +44,16 @@ export const getAreaRanges = (area: IArea) => {
 export const getAreaRangesFromOrderedArea = (orderedArea: IArea) => ({
   xRange: { start: orderedArea.start.x, end: orderedArea.end.x } as IRange,
   yRange: { start: orderedArea.start.y, end: orderedArea.end.y } as IRange,
+})
+
+export const checkIsPositionEqualOtherPosition = (
+  position: IPosition,
+  otherPosition: IPosition
+) => position.x === otherPosition.x && position.y === otherPosition.y
+
+export const getAreaFromPosition = (position: IPosition) => ({
+  start: { ...position },
+  end: { ...position },
 })
 
 export const getAreaDifference = (areaToSubtract: IArea, area: IArea) => {
@@ -128,12 +148,12 @@ export const getAndAddArea = (area: IArea, areas: Array<IArea>) => {
  * Finds the index of the first superset of area
  */
 export const getFirstSuperAreaIndex = (area: IArea, areas: Array<IArea>) => {
-  const orderedArea = getOrderedAreaFromPositions(area.start, area.end)
+  const orderedArea = getOrderedAreaFromArea(area)
 
   const areaRanges = getAreaRangesFromOrderedArea(orderedArea)
 
-  return areas.findIndex(({ start, end }) => {
-    const potentialSuperArea = getOrderedAreaFromPositions(start, end)
+  return areas.findIndex((elementArea) => {
+    const potentialSuperArea = getOrderedAreaFromArea(elementArea)
     const potentialSuperAreaRanges = getAreaRangesFromOrderedArea(
       potentialSuperArea
     )
