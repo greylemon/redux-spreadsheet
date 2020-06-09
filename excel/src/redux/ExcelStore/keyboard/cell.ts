@@ -1,6 +1,7 @@
 import { IExcelState, IEditorState } from '../../../@types/excel/state'
 import { nSelectMergeCell } from '../tools/selectors'
 import { PayloadAction } from '@reduxjs/toolkit'
+import { EditorState } from 'draft-js'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState) => {
   return state
@@ -84,5 +85,11 @@ export const CELL_EDITOR_STATE_UPDATE = (
 ) => {
   const editorState = action.payload
   state.editorState = editorState
+  return state
+}
+
+export const CELL_EDITOR_STATE_START = (state: IExcelState) => {
+  state.isEditMode = true
+  state.editorState = EditorState.moveFocusToEnd(EditorState.createEmpty())
   return state
 }

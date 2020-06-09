@@ -29,8 +29,10 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
   }
 
   const handleMouseEnter = (event: MouseEvent) => {
-    if (event.buttons === 1)
+    if (event.buttons === 1) {
+      event.stopPropagation()
       dispatch(ExcelStore.actions.CELL_MOUSE_ENTER(position))
+    }
   }
 
   const handleDoubleClick = () => {

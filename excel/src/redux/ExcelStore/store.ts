@@ -15,6 +15,7 @@ import {
   CELL_KEY_RIGHT,
   CELL_KEY_LEFT,
   CELL_EDITOR_STATE_UPDATE,
+  CELL_EDITOR_STATE_START,
 } from './keyboard/cell'
 import { EditorState } from 'draft-js'
 
@@ -60,19 +61,25 @@ export const ExcelStore = createSlice({
     CELL_KEY_LEFT,
     CELL_DOUBLE_CLICK,
     CELL_EDITOR_STATE_UPDATE,
+    CELL_EDITOR_STATE_START,
   },
 })
 
+export const ExcelActions = ExcelStore.actions
+
 const ignoredActionsMap = {
-  [ExcelStore.actions.CELL_MOUSE_ENTER.type]: true,
-  [ExcelStore.actions.CELL_KEY_DOWN.type]: true,
-  [ExcelStore.actions.CELL_KEY_UP.type]: true,
-  [ExcelStore.actions.CELL_KEY_RIGHT.type]: true,
-  [ExcelStore.actions.CELL_KEY_LEFT.type]: true,
-  [ExcelStore.actions.CELL_MOUSE_DOWN_CTRL.type]: true,
-  [ExcelStore.actions.CELL_MOUSE_DOWN_SHIFT.type]: true,
-  [ExcelStore.actions.CELL_MOUSE_UP.type]: true,
-  [ExcelStore.actions.CELL_MOUSE_DOWN.type]: true,
+  [ExcelActions.CELL_MOUSE_ENTER.type]: true,
+  [ExcelActions.CELL_KEY_DOWN.type]: true,
+  [ExcelActions.CELL_KEY_UP.type]: true,
+  [ExcelActions.CELL_KEY_RIGHT.type]: true,
+  [ExcelActions.CELL_KEY_LEFT.type]: true,
+  [ExcelActions.CELL_MOUSE_DOWN_CTRL.type]: true,
+  [ExcelActions.CELL_MOUSE_DOWN_SHIFT.type]: true,
+  [ExcelActions.CELL_MOUSE_UP.type]: true,
+  [ExcelActions.CELL_MOUSE_DOWN.type]: true,
+  [ExcelActions.CELL_EDITOR_STATE_UPDATE.type]: true,
+  [ExcelActions.CELL_DOUBLE_CLICK.type]: true,
+  [ExcelActions.CELL_EDITOR_STATE_START.type]: true,
 }
 
 const UndoxExcelStore = undox(
