@@ -14,6 +14,8 @@ import {
   checkIsPositionEqualOtherPosition,
   getAreaFromPosition,
 } from '../tools/area'
+import { nSelectCell } from '../tools/selectors'
+import { EditorState } from 'draft-js'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -24,16 +26,17 @@ export const CELL_MOUSE_DOWN_CTRL = (
   if (!checkIsCellPositionValid(position, state.columnCount, state.rowCount))
     return state
 
-  if (
-    !checkIsPositionEqualOtherPosition(state.activeCellPosition, position) &&
-    !state.inactiveSelectionAreas.length
-  )
-    state.inactiveSelectionAreas = [
-      getAreaFromPosition(state.activeCellPosition),
-    ]
+  if (!checkIsPositionEqualOtherPosition(state.activeCellPosition, position)) {
+    if (!state.inactiveSelectionAreas.length) {
+      state.inactiveSelectionAreas = [
+        getAreaFromPosition(state.activeCellPosition),
+      ]
+    }
+  }
 
   state.selectionArea = { start: position, end: position }
   state.selectionAreaIndex = state.inactiveSelectionAreas.length + 1
+
   state.activeCellPosition = position
   state.isEditMode = false
 
@@ -144,6 +147,11 @@ export const CELL_MOUSE_UP = (
 
 export const CELL_DOUBLE_CLICK = (state: IExcelState) => {
   state.isEditMode = true
+
+  const cellValue = nSelectCell(state.data, state.activeCellPosition)
+
+  if (!cellValue)
+    state.editorState = EditorState.moveFocusToEnd(EditorState.createEmpty())
 
   return state
 }

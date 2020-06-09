@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { Editor } from 'draft-js'
+import { Editor, RichUtils, EditorState } from 'draft-js'
 import { useTypedSelector } from '../../../redux'
 import { shallowEqual, useDispatch } from 'react-redux'
 import {
@@ -28,9 +28,24 @@ const EditorCell = ({ style }: IEditorCellProps) => {
     [dispatch]
   )
 
+  const handleKeyCommand = (command: string, editorState: EditorState) => {
+    const newState = RichUtils.handleKeyCommand(editorState, command)
+
+    if (newState) {
+      handleChange(newState)
+      return 'handled'
+    }
+
+    return 'not-handled'
+  }
+
   return (
     <div className="cell__active cell__active--edit" style={style}>
-      <Editor editorState={editorState} onChange={handleChange} />
+      <Editor
+        editorState={editorState}
+        onChange={handleChange}
+        handleKeyCommand={handleKeyCommand}
+      />
     </div>
   )
 }
