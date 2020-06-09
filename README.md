@@ -38,27 +38,10 @@ Husky is used here for performing tasks before a git commit. The tasks performed
 - [React Redux](https://react-redux.js.org/): used to integrate Redux with React
 - [Redux Mock Store](https://github.com/ananas7/redux-mock-store/tree/feature/extended-replaceReducer): Mocks the Redux store for testing purpose. Fork of [ananas7](https://github.com/ananas7) branch for replace reducer function
 
-## Tutorials
+## History - Redo and Undo
 
-- [JavaScript](https://javascript.info/)
-- [React Patterns](https://reactpatterns.com/)
-- [Redux](https://egghead.io/courses/getting-started-with-redux). Please check out the Redux toolkit as that will simplify Redux a ton.
-- [Reselect](https://www.youtube.com/watch?v=aOkzmHvF_Zo)
+### Potential Issues
 
-## Typescript
+For implementation, there are things that need to be done carefully for history.
 
-- [TypeScript](https://www.typescriptlang.org/)
-- [Usage with Redux](https://redux.js.org/recipes/usage-with-typescript)
-- [Usage with Redux Toolkit](https://redux-toolkit.js.org/usage/usage-with-typescript)
-
-## Useful VSCode Packages
-
-- ESLint
-- Error Lens
-- GitLens
-- REST Client
-- Babel JavaScript
-- CodeMetrics
-- Color Highlight
-- Better Comments
-- markdownlint
+History might trigger unintended state operations that would normally be safe.

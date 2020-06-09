@@ -53,6 +53,11 @@ export const selectIsEditMode = createSelector(
   (excel) => excel.isEditMode
 )
 
+export const selectCellEditorState = createSelector(
+  [selectExcel],
+  (excel) => excel.editorState
+)
+
 export const selectFreezeRowCount = createSelector(
   [selectExcel],
   (excel) => excel.freezeRowCount

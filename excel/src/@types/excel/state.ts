@@ -1,3 +1,5 @@
+import { EditorState } from 'draft-js'
+
 export type IPosition = { x: number; y: number }
 
 export type IArea = { start: IPosition; end: IPosition }
@@ -104,6 +106,8 @@ export type IInactiveSelectionAreas = Array<IArea>
 
 export type ISelectionAreaIndex = number
 
+export type IEditorState = EditorState
+
 export type ISheet = {
   data: IRows
 
@@ -113,6 +117,8 @@ export type ISheet = {
   selectionArea?: ISelectionArea
 
   selectionAreaIndex: ISelectionAreaIndex
+
+  editorState: IEditorState
 
   sheetName: ISheetName
 

@@ -33,12 +33,17 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
       dispatch(ExcelStore.actions.CELL_MOUSE_ENTER(position))
   }
 
+  const handleDoubleClick = () => {
+    dispatch(ExcelStore.actions.CELL_DOUBLE_CLICK())
+  }
+
   return (
     <div
       className="unselectable cell"
       style={style}
       onMouseDown={handleMouseDown}
       onMouseEnter={handleMouseEnter}
+      onDoubleClick={handleDoubleClick}
     >
       {value}
     </div>

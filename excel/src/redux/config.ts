@@ -11,3 +11,5 @@ export const devTools = {
     },
   }),
 }
+
+export const middleware = []

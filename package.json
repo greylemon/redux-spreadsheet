@@ -6,7 +6,7 @@
   "author": "Alfred Lemon <alfred.lemon@mail.utoronto.ca>",
   "license": "MIT",
   "scripts": {
-    "install": "yarn --cwd redux-mock-store && yarn --cwd slate && yarn --cwd undox && yarn --cwd excel",
+    "install": "yarn --cwd redux-mock-store && yarn --cwd undox && yarn --cwd excel",
     "start": "yarn --cwd excel start",
     "test": "yarn --cwd excel test"
   }

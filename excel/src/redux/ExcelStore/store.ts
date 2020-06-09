@@ -7,13 +7,16 @@ import {
   CELL_MOUSE_UP,
   CELL_MOUSE_DOWN_SHIFT,
   CELL_MOUSE_DOWN_CTRL,
+  CELL_DOUBLE_CLICK,
 } from './mouse/cell'
 import {
   CELL_KEY_DOWN,
   CELL_KEY_UP,
   CELL_KEY_RIGHT,
   CELL_KEY_LEFT,
+  CELL_EDITOR_STATE_UPDATE,
 } from './keyboard/cell'
+import { EditorState } from 'draft-js'
 
 export const initialExcelState: IExcelState = {
   activeCellPosition: { x: 1, y: 1 },
@@ -25,6 +28,7 @@ export const initialExcelState: IExcelState = {
   sheetName: '',
 
   isEditMode: false,
+  editorState: EditorState.createEmpty(),
 
   rowCount: 201,
   columnCount: 27,
@@ -54,6 +58,8 @@ export const ExcelStore = createSlice({
     CELL_KEY_UP,
     CELL_KEY_RIGHT,
     CELL_KEY_LEFT,
+    CELL_DOUBLE_CLICK,
+    CELL_EDITOR_STATE_UPDATE,
   },
 })
 

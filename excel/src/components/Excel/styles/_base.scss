@@ -21,9 +21,17 @@
 
   &__active {
     position: absolute;
-    pointer-events: none;
-    outline: 2px solid rgba(75, 135, 255, 0.8);
+    outline: 2px solid rgba(75, 135, 255, 0.8) !important;
     outline-offset: -2px;
+
+    &--normal {
+      pointer-events: none;
+    }
+
+    &--edit {
+      padding: 2px;
+      box-sizing: border-box;
+    }
   }
 }
 

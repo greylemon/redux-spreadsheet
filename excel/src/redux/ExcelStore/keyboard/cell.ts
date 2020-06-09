@@ -1,5 +1,6 @@
-import { IExcelState } from '../../../@types/excel/state'
+import { IExcelState, IEditorState } from '../../../@types/excel/state'
 import { nSelectMergeCell } from '../tools/selectors'
+import { PayloadAction } from '@reduxjs/toolkit'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState) => {
   return state
@@ -74,5 +75,14 @@ export const CELL_KEY_LEFT = (state: IExcelState) => {
   state.selectionAreaIndex = -1
   state.selectionArea = undefined
 
+  return state
+}
+
+export const CELL_EDITOR_STATE_UPDATE = (
+  state: IExcelState,
+  action: PayloadAction<IEditorState>
+) => {
+  const editorState = action.payload
+  state.editorState = editorState
   return state
 }
