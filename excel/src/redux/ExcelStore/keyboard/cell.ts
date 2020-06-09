@@ -15,6 +15,7 @@ export const CELL_KEY_DOWN = (state: IExcelState) => {
     : state.activeCellPosition.y + 1
   state.inactiveSelectionAreas = []
   state.selectionAreaIndex = -1
+  state.selectionArea = undefined
 
   return state
 }
@@ -33,6 +34,7 @@ export const CELL_KEY_UP = (state: IExcelState) => {
     : state.activeCellPosition.y - 1
   state.inactiveSelectionAreas = []
   state.selectionAreaIndex = -1
+  state.selectionArea = undefined
 
   return state
 }
@@ -51,6 +53,7 @@ export const CELL_KEY_RIGHT = (state: IExcelState) => {
     : state.activeCellPosition.x + 1
   state.inactiveSelectionAreas = []
   state.selectionAreaIndex = -1
+  state.selectionArea = undefined
 
   return state
 }
@@ -69,6 +72,7 @@ export const CELL_KEY_LEFT = (state: IExcelState) => {
     : state.activeCellPosition.x - 1
   state.inactiveSelectionAreas = []
   state.selectionAreaIndex = -1
+  state.selectionArea = undefined
 
   return state
 }
