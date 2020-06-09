@@ -25,7 +25,6 @@ export const initialExcelState: IExcelState = {
   sheetName: '',
 
   isEditMode: false,
-  isSelectionMode: false,
 
   rowCount: 201,
   columnCount: 27,

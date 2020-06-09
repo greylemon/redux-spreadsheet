@@ -32,7 +32,6 @@ export const CELL_MOUSE_DOWN_CTRL = (
       getAreaFromPosition(state.activeCellPosition),
     ]
 
-  state.isSelectionMode = true
   state.selectionArea = { start: position, end: position }
   state.selectionAreaIndex = state.inactiveSelectionAreas.length + 1
   state.activeCellPosition = position
@@ -54,7 +53,6 @@ export const CELL_MOUSE_DOWN_SHIFT = (
     state.activeCellPosition
   )
 
-  state.isSelectionMode = true
   state.selectionArea = getEntireSuperArea(orderedArea, state.data)
   state.selectionAreaIndex = 0
   state.inactiveSelectionAreas = []
@@ -71,7 +69,6 @@ export const CELL_MOUSE_DOWN = (
   if (!checkIsCellPositionValid(position, state.columnCount, state.rowCount))
     return state
 
-  state.isSelectionMode = true
   state.inactiveSelectionAreas = []
   state.activeCellPosition = position
   state.selectionArea = { start: position, end: position }
@@ -83,7 +80,7 @@ export const CELL_MOUSE_ENTER = (
   state: IExcelState,
   action: PayloadAction<IPosition>
 ) => {
-  if (state.isSelectionMode) {
+  if (state.selectionArea) {
     const position = action.payload
     const orderedArea = getOrderedAreaFromPositions(
       position,
@@ -100,11 +97,9 @@ export const CELL_MOUSE_UP = (
   state: IExcelState,
   action: PayloadAction<ISelectionArea>
 ) => {
-  if (!state.isSelectionMode) return state
+  if (!state.selectionArea) return state
 
   const selectionArea = action.payload
-
-  state.isSelectionMode = false
 
   if (selectionArea) {
     const { newAreas, superAreaIndex } = getAndAddArea(

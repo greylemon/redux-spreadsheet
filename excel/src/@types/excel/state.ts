@@ -92,7 +92,6 @@ export type IFreezeColumnCount = number
 export type IFreezeRowCount = number
 
 export type IIsEditMode = boolean
-export type IIsSelectionMode = boolean
 
 export type ISheetName = string
 
@@ -118,7 +117,6 @@ export type ISheet = {
   sheetName: ISheetName
 
   isEditMode: IIsEditMode
-  isSelectionMode: IIsSelectionMode
 
   rowCount: IRowCount
   columnCount: IColumnCount
