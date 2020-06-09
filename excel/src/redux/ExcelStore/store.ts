@@ -63,6 +63,9 @@ const ignoredActionsMap = {
   [ExcelStore.actions.CELL_KEY_UP.type]: true,
   [ExcelStore.actions.CELL_KEY_RIGHT.type]: true,
   [ExcelStore.actions.CELL_KEY_LEFT.type]: true,
+  [ExcelStore.actions.CELL_MOUSE_DOWN_CTRL.type]: true,
+  [ExcelStore.actions.CELL_MOUSE_DOWN_SHIFT.type]: true,
+  [ExcelStore.actions.CELL_MOUSE_UP.type]: true,
 }
 
 const UndoxExcelStore = undox(
