@@ -1,4 +1,4 @@
-import React, { Fragment, KeyboardEvent } from 'react'
+import React, { KeyboardEvent } from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../../redux'
@@ -15,7 +15,6 @@ import {
   selectGetColumnWidth,
 } from '../../../redux/ExcelStore/selectors'
 import BottomRightPane from './BottomRightPane'
-import WindowListener from './WindowListener'
 import { ExcelStore } from '../../../redux/ExcelStore/store'
 
 export const Sheet = ({ height, width }: Size) => {
@@ -92,10 +91,7 @@ export const Sheet = ({ height, width }: Size) => {
 }
 
 const SheetSizer = ({ height, width }: Size) => (
-  <Fragment>
-    <Sheet height={height} width={width} />
-    <WindowListener />
-  </Fragment>
+  <Sheet height={height} width={width} />
 )
 
 const SheetContainer = () => <AutoSizer children={SheetSizer} />
