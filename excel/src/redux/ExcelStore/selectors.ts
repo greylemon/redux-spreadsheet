@@ -122,6 +122,17 @@ export const selectIsActiveCellPositionEqualSelectionArea = createSelector(
   }
 )
 
+export const selectColumnWidthsAdjusted = createSelector(
+  [selectColumnWidths, selectColumnoffsets, selectColumnCount],
+  (columnWidths, columnOffsets, columnCount) =>
+    columnOffsets.map(
+      (offset) =>
+        columnOffsets[columnCount - 1] +
+        normalizeColumnWidth(columnCount - 1, columnWidths) -
+        offset
+    )
+)
+
 // ===========================================================================
 // CUSTOM SELECTOR FACTORIES
 // ===========================================================================

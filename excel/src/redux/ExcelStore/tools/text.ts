@@ -1,71 +1,21 @@
-import { EditorState, convertToRaw, RawDraftInlineStyleRange } from 'draft-js'
+import {
+  EditorState,
+  convertToRaw,
+  RawDraftInlineStyleRange,
+  RawDraftContentBlock,
+  RawDraftContentState,
+  DraftInlineStyleType,
+} from 'draft-js'
 import {
   IValue,
   IRange,
   IRichText,
   IFragment,
+  IRichTextBlock,
 } from '../../../@types/excel/state'
 import uniqid from 'uniqid'
-
-// https://stackoverflow.com/questions/55480499/split-set-of-intervals-into-minimal-set-of-disjoint-intervals
-export const getElementaryRanges = (ranges: IRange[], length: number) => {
-  const points: IRange[] = []
-
-  if (ranges.length) {
-    const first = ranges[0]
-
-    if (first.start) {
-      ranges.push({ start: 0, end: first.end - 1 })
-    }
-  }
-
-  for (const range of ranges) {
-    points.push({ start: range.start, end: 1 })
-    points.push({ start: range.end + 1, end: -1 })
-  }
-
-  let count = 0
-  let prev: null | number = null
-
-  const result = points
-    .sort((a, b) => a.start - b.start) // sort boundary points
-    .map((x) => {
-      // make an interval for every section that is inside any input interval
-      const ret =
-        x.start > prev! && count !== 0
-          ? { start: prev!, end: x.start - 1 }
-          : null
-      prev = x.start
-      count += x.end
-      return ret
-    })
-    .filter((x) => !!x) as Array<IRange>
-
-  if (result.length) {
-    const last = result[result.length - 1]
-
-    if (last.end !== length - 1) {
-      result.push({ start: last.end + 1, end: length - 1 })
-    }
-  }
-
-  const searchCap = result.length
-
-  let previousEnd = -1
-  for (let i = 0; i < searchCap; i++) {
-    const range = result[i]
-
-    if (range.start !== previousEnd + 1) {
-      result.push({ start: previousEnd + 1, end: range.start - 1 })
-    }
-
-    previousEnd = range.end
-  }
-
-  if (!result.length) result.push({ start: 0, end: length - 1 })
-
-  return result.sort((a, b) => a.start - b.start)
-}
+import { getElementaryRanges, mergeRanges } from './range'
+import { IInlineStylesRange } from '../../../@types/excel/general'
 
 export const getRangesFromInlineRanges = (
   inlineStyleRanges: RawDraftInlineStyleRange[]
@@ -88,7 +38,7 @@ export const getTextFromRichText = (richText: IRichText) => {
   return text
 }
 
-const updateStyleInPlace = (
+export const updateStyleInPlace = (
   inlineRange: RawDraftInlineStyleRange,
   fragment: IFragment
 ) => {
@@ -149,8 +99,6 @@ export const createValueFromEditorState = (
         const inlineStart = inlineRange.offset
         const inlineEnd = inlineStart + inlineRange.length - 1
 
-        if (inlineStart > end) break
-
         if (inlineStart <= start && end <= inlineEnd) {
           if (!fragment.styles) fragment.styles = {}
 
@@ -174,3 +122,125 @@ export const createValueFromEditorState = (
 
   return isRichText ? richText : getTextFromRichText(richText)
 }
+
+export const getRichTextBlockText = (block: IRichTextBlock) => {
+  let text = ''
+
+  const fragments = block.fragments
+  for (const fragment of fragments) {
+    text += fragment.value
+  }
+
+  return text
+}
+
+// TODO
+// Currently the fragment styles are in elementary ranges, unlike overlapping ranges.. may not matter at all
+export const getRawInlineStyleRangesFromRichTextBlock = (
+  block: IRichTextBlock
+) => {
+  // Any fragment with style is an inline style
+  const inlineStyleRanges: RawDraftInlineStyleRange[] = []
+  let text = ''
+
+  const fragments = block.fragments
+
+  const data: IInlineStylesRange = {
+    BOLD: [],
+    ITALIC: [],
+    STRIKETHROUGH: [],
+    UNDERLINE: [],
+  }
+
+  let previousOffset: number = -1
+
+  for (const fragment of fragments) {
+    const start = previousOffset + 1
+    let end = start
+
+    if (fragment.value) {
+      text += fragment.value
+      end = text.length - 1
+    }
+
+    previousOffset = end
+
+    const range: IRange = { start, end }
+
+    if (fragment.styles) {
+      const {
+        fontWeight,
+        // fontFamily,
+        // fontSize,
+        fontStyle,
+        textDecoration,
+        // verticalAlign,
+        // color
+      } = fragment.styles
+
+      if (fontWeight === 'bold') {
+        data.BOLD.push(range)
+      }
+
+      if (fontStyle === 'italic') {
+        data.ITALIC.push(range)
+      }
+
+      if (textDecoration) {
+        if (textDecoration.includes('underline')) {
+          data.UNDERLINE.push(range)
+        }
+
+        if (textDecoration.includes('line-through')) {
+          data.STRIKETHROUGH.push(range)
+        }
+      }
+    }
+  }
+
+  /**
+   * 3 b
+   * 4-5 bi
+   */
+
+  for (const style in data) {
+    const ranges = mergeRanges(data[style])
+
+    for (const range of ranges) {
+      const length = range.end - range.start + 1
+      inlineStyleRanges.push({
+        offset: range.start,
+        length,
+        style: style as DraftInlineStyleType,
+      })
+    }
+  }
+
+  return { text, inlineStyleRanges }
+}
+
+// TODO
+export const createRawContentBlockFromRichTextBlock = (
+  block: IRichTextBlock
+): RawDraftContentBlock => {
+  const { inlineStyleRanges, text } = getRawInlineStyleRangesFromRichTextBlock(
+    block
+  )
+  return {
+    key: uniqid(),
+    type: 'unstyled', // TODO check what this is suppoed to be
+    text,
+    depth: 0,
+    entityRanges: [],
+    inlineStyleRanges,
+  }
+}
+
+export const getRawContentStateFromRichText = (
+  richText: IRichText
+): RawDraftContentState => ({
+  blocks: richText.map((block) =>
+    createRawContentBlockFromRichTextBlock(block)
+  ),
+  entityMap: {},
+})

@@ -12,14 +12,19 @@
 }
 
 .cell {
-  outline: 1px solid rgba(0, 0, 0, 0.1);
-  pointer-events: auto;
+  outline: 1px solid rgb(221, 221, 221);
+  outline-offset: -1px;
   padding: 2px;
   box-sizing: border-box;
 
   &__header {
     text-align: center;
     background-color: #F7F8F9;
+  }
+
+  &__editable {
+    background-color: white;
+    width: fit-content;
   }
 
   &__active {
@@ -36,6 +41,7 @@
       box-sizing: border-box;
       background-color: white;
       height: fit-content !important;
+      width: fit-content !important;
     }
   }
 }

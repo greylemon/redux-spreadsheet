@@ -11,6 +11,8 @@ export type IAreaRange = {
   yRange: IRange
 }
 
+export type IColumnWidthsAdjusted = number[]
+
 export type IError = object
 
 export type ICSSLength = number | string

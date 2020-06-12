@@ -37,7 +37,7 @@ const NormalCellValue: FunctionComponent<{ value?: string }> = ({ value }) => (
 const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
   const dispatch = useDispatch()
 
-  const { data: sheetData } = data
+  const { data: sheetData, columnWidthsAdjusted } = data
 
   const rowData = sheetData[rowIndex]
 
@@ -70,10 +70,15 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
     dispatch(ExcelStore.actions.CELL_DOUBLE_CLICK())
   }
 
+  const adjustedStyle = {
+    ...style,
+    width: columnWidthsAdjusted[columnIndex],
+  }
+
   return (
     <div
-      className="unselectable cell"
-      style={style}
+      className={`unselectable cell ${value ? 'cell__editable' : ''}`}
+      style={adjustedStyle}
       onMouseDown={handleMouseDown}
       onMouseEnter={handleMouseEnter}
       onDoubleClick={handleDoubleClick}

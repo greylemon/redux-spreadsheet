@@ -6,13 +6,13 @@ import { shallowEqual, useDispatch } from 'react-redux'
 import Cell from './Cell'
 import {
   selectColumnCount,
-  selectColumnWidths,
   selectRowCount,
   selectData,
   selectFreezeRowCount,
   selectFreezeColumnCount,
   selectGetRowHeight,
   selectGetColumnWidth,
+  selectColumnWidthsAdjusted,
 } from '../../../redux/ExcelStore/selectors'
 import BottomRightPane from './BottomRightPane'
 import { ExcelStore } from '../../../redux/ExcelStore/store'
@@ -27,21 +27,22 @@ export const Sheet = ({ height, width }: Size) => {
     getRowHeight,
     tableFreezeColumnCount,
     tableFreezeRowCount,
+    columnWidthsAdjusted,
   } = useTypedSelector(
     (state) => ({
       columnCount: selectColumnCount(state),
-      columnWidths: selectColumnWidths(state),
       rowCount: selectRowCount(state),
       data: selectData(state),
       getColumnWidth: selectGetColumnWidth(state),
       getRowHeight: selectGetRowHeight(state),
       tableFreezeRowCount: selectFreezeRowCount(state) + 1,
       tableFreezeColumnCount: selectFreezeColumnCount(state) + 1,
+      columnWidthsAdjusted: selectColumnWidthsAdjusted(state),
     }),
     shallowEqual
   )
 
-  const itemData = { data }
+  const itemData = { data, columnWidthsAdjusted, getRowHeight }
 
   const handleKeyDown = (event: KeyboardEvent) => {
     const { key, shiftKey } = event

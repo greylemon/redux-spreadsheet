@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react'
-import { IRows, IColumnIndex, IRowIndex } from './state'
+import { IRows, IColumnIndex, IRowIndex, IColumnWidthsAdjusted } from './state'
 import {
   ICheckIsActiveCellInCorrectPane,
   ICheckIsAreaInRelevantPane,
@@ -7,8 +7,10 @@ import {
   IComputeSelectionAreaStyle,
 } from './functions'
 
-type IItemData = {
+export type IItemData = {
   data: IRows
+  columnWidthsAdjusted: IColumnWidthsAdjusted
+  getRowHeight: (index: number) => number
 }
 
 export interface ICellProps {
