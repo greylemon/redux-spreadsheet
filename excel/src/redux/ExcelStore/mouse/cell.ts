@@ -173,10 +173,12 @@ export const CELL_DOUBLE_CLICK = (state: IExcelState) => {
   if (cellValue && cellValue.value) {
     state.editorState =
       typeof cellValue.value === 'object'
-        ? EditorState.createWithContent(
-            convertFromRaw(getRawContentStateFromRichText(cellValue.value))
+        ? EditorState.moveFocusToEnd(
+            EditorState.createWithContent(
+              convertFromRaw(getRawContentStateFromRichText(cellValue.value))
+            )
           )
-        : EditorState.createEmpty()
+        : EditorState.moveFocusToEnd(EditorState.createEmpty())
   } else {
     state.editorState = EditorState.moveFocusToEnd(EditorState.createEmpty())
   }

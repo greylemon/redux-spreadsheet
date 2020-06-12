@@ -9,7 +9,9 @@ import {
 } from '../../../@types/excel/state'
 
 const RichTextFragment: FunctionComponent<IFragment> = ({ value, styles }) => (
-  <div style={styles}>{value}</div>
+  <div className="richText__cell" style={styles}>
+    {value}
+  </div>
 )
 
 const RichTextBlock: FunctionComponent<IRichTextBlock> = ({ fragments }) => (

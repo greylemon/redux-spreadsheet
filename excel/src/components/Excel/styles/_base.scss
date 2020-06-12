@@ -50,6 +50,10 @@
   &__block {
     display: flex;
   }
+
+  &__cell {
+    white-space: pre;
+  }
 }
 
 .selectionArea {

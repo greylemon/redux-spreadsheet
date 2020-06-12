@@ -72,7 +72,6 @@ export const updateStyleInPlace = (
 export const createValueFromEditorState = (
   editorState: EditorState
 ): IValue => {
-  // let value: IValue
   const richText: IRichText = []
 
   const rawBlocks = convertToRaw(editorState.getCurrentContent()).blocks
@@ -134,7 +133,6 @@ export const getRichTextBlockText = (block: IRichTextBlock) => {
   return text
 }
 
-// TODO
 // Currently the fragment styles are in elementary ranges, unlike overlapping ranges.. may not matter at all
 export const getRawInlineStyleRangesFromRichTextBlock = (
   block: IRichTextBlock
@@ -198,11 +196,6 @@ export const getRawInlineStyleRangesFromRichTextBlock = (
     }
   }
 
-  /**
-   * 3 b
-   * 4-5 bi
-   */
-
   for (const style in data) {
     const ranges = mergeRanges(data[style])
 
@@ -219,7 +212,6 @@ export const getRawInlineStyleRangesFromRichTextBlock = (
   return { text, inlineStyleRanges }
 }
 
-// TODO
 export const createRawContentBlockFromRichTextBlock = (
   block: IRichTextBlock
 ): RawDraftContentBlock => {
@@ -228,7 +220,7 @@ export const createRawContentBlockFromRichTextBlock = (
   )
   return {
     key: uniqid(),
-    type: 'unstyled', // TODO check what this is suppoed to be
+    type: 'unstyled',
     text,
     depth: 0,
     entityRanges: [],
