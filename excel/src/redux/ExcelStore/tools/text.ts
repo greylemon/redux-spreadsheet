@@ -149,8 +149,6 @@ export const createValueFromEditorState = (
         const inlineStart = inlineRange.offset
         const inlineEnd = inlineStart + inlineRange.length - 1
 
-        if (inlineStart > end) break
-
         if (inlineStart <= start && end <= inlineEnd) {
           if (!fragment.styles) fragment.styles = {}
 
