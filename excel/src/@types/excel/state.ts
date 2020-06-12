@@ -51,11 +51,19 @@ export type IInlineStyles = {
 export type IStyles = IBlockStyles & IInlineStyles
 
 export type IFragment = {
-  value: string
-  styles: IInlineStyles
+  key?: string
+  value?: string
+  styles?: IInlineStyles
 }
 
-export type IRichText = IFragment[]
+export type IRichTextBlock = {
+  key?: string
+  fragments: IFragment[]
+}
+
+export type IRichText = IRichTextBlock[]
+
+export type IValue = string | IRichText
 
 export type IHyperlink = {
   type: 'external' | 'internal'
@@ -63,7 +71,7 @@ export type IHyperlink = {
 }
 
 export type ICell = {
-  value?: string | IRichText
+  value?: IValue
   formula?: string
   hyperlink?: IHyperlink
   merged?: IArea

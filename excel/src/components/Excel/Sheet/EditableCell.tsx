@@ -1,7 +1,38 @@
-import React, { MouseEvent } from 'react'
+import React, { MouseEvent, FunctionComponent, Fragment } from 'react'
 import { ICellProps } from '../../../@types/excel/components'
 import { useDispatch } from 'react-redux'
 import { ExcelStore } from '../../../redux/ExcelStore/store'
+import {
+  IRichText,
+  IFragment,
+  IRichTextBlock,
+} from '../../../@types/excel/state'
+
+const RichTextFragment: FunctionComponent<IFragment> = ({ value, styles }) => (
+  <div style={styles}>{value}</div>
+)
+
+const RichTextBlock: FunctionComponent<IRichTextBlock> = ({ fragments }) => (
+  <div className="richText__block">
+    {fragments.map((data) => (
+      <RichTextFragment {...data} />
+    ))}
+  </div>
+)
+
+const RichTextCellValue: FunctionComponent<{ value: IRichText }> = ({
+  value,
+}) => (
+  <Fragment>
+    {value.map((data) => (
+      <RichTextBlock {...data} />
+    ))}
+  </Fragment>
+)
+
+const NormalCellValue: FunctionComponent<{ value?: string }> = ({ value }) => (
+  <Fragment>{value}</Fragment>
+)
 
 const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
   const dispatch = useDispatch()
@@ -10,7 +41,7 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
 
   const rowData = sheetData[rowIndex]
 
-  const cellData = rowData ? rowData[columnIndex] : {}
+  const cellData = rowData && rowData[columnIndex] ? rowData[columnIndex] : {}
 
   const { value } = cellData
 
@@ -47,7 +78,11 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
       onMouseEnter={handleMouseEnter}
       onDoubleClick={handleDoubleClick}
     >
-      {value}
+      {typeof value === 'object' ? (
+        <RichTextCellValue value={value} />
+      ) : (
+        <NormalCellValue value={value} />
+      )}
     </div>
   )
 }

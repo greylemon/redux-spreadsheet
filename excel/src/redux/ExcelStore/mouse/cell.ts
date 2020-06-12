@@ -16,6 +16,7 @@ import {
 } from '../tools/area'
 import { nSelectCell } from '../tools/selectors'
 import { EditorState } from 'draft-js'
+import { createValueFromEditorState } from '../tools/text'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -74,8 +75,24 @@ export const CELL_MOUSE_DOWN = (
   if (!checkIsCellPositionValid(position, state.columnCount, state.rowCount))
     return state
 
-  state.inactiveSelectionAreas = []
+  if (
+    state.isEditMode &&
+    !checkIsPositionEqualOtherPosition(state.activeCellPosition, position)
+  ) {
+    const cellValue = createValueFromEditorState(state.editorState)
+
+    if (cellValue) {
+      state.data[state.activeCellPosition.y] = {
+        ...state.data[state.activeCellPosition.y],
+        [state.activeCellPosition.x]: {
+          value: cellValue,
+        },
+      }
+    }
+  }
+
   state.activeCellPosition = position
+  state.inactiveSelectionAreas = []
   state.selectionArea = { start: position, end: position }
   state.isEditMode = false
 
