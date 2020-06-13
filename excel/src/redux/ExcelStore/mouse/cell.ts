@@ -5,7 +5,10 @@ import {
   ISelectionArea,
 } from '../../../@types/excel/state'
 import { getEntireSuperArea } from '../tools/merge'
-import { checkIsCellPositionValid } from '../tools/cell'
+import {
+  checkIsCellPositionValid,
+  createEditorStateFromCellValue,
+} from '../tools/cell'
 import {
   getOrderedAreaFromPositions,
   getAndAddArea,
@@ -15,11 +18,7 @@ import {
   getAreaFromPosition,
 } from '../tools/area'
 import { nSelectCell } from '../tools/selectors'
-import { EditorState, convertFromRaw } from 'draft-js'
-import {
-  createValueFromEditorState,
-  getRawContentStateFromRichText,
-} from '../tools/text'
+import { createValueFromEditorState } from '../tools/text'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -170,18 +169,7 @@ export const CELL_DOUBLE_CLICK = (state: IExcelState) => {
 
   const cellValue = nSelectCell(state.data, state.activeCellPosition)
 
-  if (cellValue && cellValue.value) {
-    state.editorState =
-      typeof cellValue.value === 'object'
-        ? EditorState.moveFocusToEnd(
-            EditorState.createWithContent(
-              convertFromRaw(getRawContentStateFromRichText(cellValue.value))
-            )
-          )
-        : EditorState.moveFocusToEnd(EditorState.createEmpty())
-  } else {
-    state.editorState = EditorState.moveFocusToEnd(EditorState.createEmpty())
-  }
+  state.editorState = createEditorStateFromCellValue(cellValue)
 
   return state
 }
