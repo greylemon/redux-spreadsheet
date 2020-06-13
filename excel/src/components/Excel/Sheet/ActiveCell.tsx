@@ -12,7 +12,7 @@ import {
   selectFactoryActiveCellStyle,
   selectCellEditorState,
 } from '../../../redux/ExcelStore/selectors'
-import { ExcelStore } from '../../../redux/ExcelStore/store'
+import { ExcelActions } from '../../../redux/ExcelStore/store'
 
 const EditorCell = ({ style }: IEditorCellProps) => {
   const dispatch = useDispatch()
@@ -24,7 +24,7 @@ const EditorCell = ({ style }: IEditorCellProps) => {
 
   const handleChange = useCallback(
     (editorState) =>
-      dispatch(ExcelStore.actions.CELL_EDITOR_STATE_UPDATE(editorState)),
+      dispatch(ExcelActions.CELL_EDITOR_STATE_UPDATE(editorState)),
     [dispatch]
   )
 

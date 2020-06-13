@@ -1,6 +1,6 @@
 import {
-  ExcelStore,
   initialExcelState,
+  ExcelActions,
 } from '../../../../redux/ExcelStore/store'
 import { IPosition } from '../../../../@types/excel/state'
 import { mockStore } from '../../mockStore'
@@ -21,7 +21,7 @@ describe('cell mouse operations', () => {
       it('move to (5, 3)', () => {
         const position: IPosition = { x: 5, y: 3 }
 
-        store.dispatch(ExcelStore.actions.CELL_MOUSE_DOWN(position))
+        store.dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
 
         const activeCellPosition = selectActiveCellPosition(store.getState())
 
@@ -34,7 +34,7 @@ describe('cell mouse operations', () => {
           y: initialExcelState.rowCount,
         }
 
-        store.dispatch(ExcelStore.actions.CELL_MOUSE_DOWN(position))
+        store.dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
 
         const activeCellPosition = selectActiveCellPosition(store.getState())
 
@@ -46,7 +46,7 @@ describe('cell mouse operations', () => {
       it('move to negative position', () => {
         const position: IPosition = { x: -1, y: -1 }
 
-        store.dispatch(ExcelStore.actions.CELL_MOUSE_DOWN(position))
+        store.dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
 
         const activeCellPosition = selectActiveCellPosition(store.getState())
 
@@ -59,7 +59,7 @@ describe('cell mouse operations', () => {
           y: initialExcelState.rowCount + 1,
         }
 
-        store.dispatch(ExcelStore.actions.CELL_MOUSE_DOWN(position))
+        store.dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
 
         const activeCellPosition = selectActiveCellPosition(store.getState())
 

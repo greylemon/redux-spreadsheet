@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux'
-import { ExcelStore } from '../../redux/ExcelStore/store'
+import { ExcelActions } from '../../redux/ExcelStore/store'
 import { useTypedSelector } from '../../redux/store'
 import {
   selectSelectionArea,
@@ -21,7 +21,7 @@ const WindowListener = () => {
   const handleRedo = useCallback(() => dispatch(redo()), [dispatch])
 
   window.onmouseup = useCallback(() => {
-    if (selectionArea) dispatch(ExcelStore.actions.CELL_MOUSE_UP(selectionArea))
+    if (selectionArea) dispatch(ExcelActions.CELL_MOUSE_UP(selectionArea))
   }, [dispatch, selectionArea])
 
   window.onkeydown = useCallback(
@@ -36,7 +36,7 @@ const WindowListener = () => {
             handleUndo()
           }
         } else if (key.length === 1) {
-          dispatch(ExcelStore.actions.CELL_EDITOR_STATE_START())
+          dispatch(ExcelActions.CELL_EDITOR_STATE_START())
         }
       }
     },

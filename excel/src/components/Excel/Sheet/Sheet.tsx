@@ -15,7 +15,7 @@ import {
   selectColumnWidthsAdjusted,
 } from '../../../redux/ExcelStore/selectors'
 import BottomRightPane from './BottomRightPane'
-import { ExcelStore } from '../../../redux/ExcelStore/store'
+import { ExcelActions } from '../../../redux/ExcelStore/store'
 
 export const Sheet = ({ height, width }: Size) => {
   const dispatch = useDispatch()
@@ -53,16 +53,16 @@ export const Sheet = ({ height, width }: Size) => {
     } else {
       switch (key) {
         case 'ArrowDown':
-          dispatch(ExcelStore.actions.CELL_KEY_DOWN())
+          dispatch(ExcelActions.CELL_KEY_DOWN())
           break
         case 'ArrowRight':
-          dispatch(ExcelStore.actions.CELL_KEY_RIGHT())
+          dispatch(ExcelActions.CELL_KEY_RIGHT())
           break
         case 'ArrowLeft':
-          dispatch(ExcelStore.actions.CELL_KEY_LEFT())
+          dispatch(ExcelActions.CELL_KEY_LEFT())
           break
         case 'ArrowUp':
-          dispatch(ExcelStore.actions.CELL_KEY_UP())
+          dispatch(ExcelActions.CELL_KEY_UP())
           break
       }
     }

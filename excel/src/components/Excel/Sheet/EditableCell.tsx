@@ -1,7 +1,7 @@
 import React, { MouseEvent, FunctionComponent, Fragment } from 'react'
 import { ICellProps } from '../../../@types/excel/components'
 import { useDispatch } from 'react-redux'
-import { ExcelStore } from '../../../redux/ExcelStore/store'
+import { ExcelActions } from '../../../redux/ExcelStore/store'
 import {
   IRichText,
   IFragment,
@@ -53,23 +53,23 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
     const { ctrlKey, shiftKey } = event
 
     if (ctrlKey) {
-      dispatch(ExcelStore.actions.CELL_MOUSE_DOWN_CTRL(position))
+      dispatch(ExcelActions.CELL_MOUSE_DOWN_CTRL(position))
     } else if (shiftKey) {
-      dispatch(ExcelStore.actions.CELL_MOUSE_DOWN_SHIFT(position))
+      dispatch(ExcelActions.CELL_MOUSE_DOWN_SHIFT(position))
     } else {
-      dispatch(ExcelStore.actions.CELL_MOUSE_DOWN(position))
+      dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
     }
   }
 
   const handleMouseEnter = (event: MouseEvent) => {
     if (event.buttons === 1) {
       event.stopPropagation()
-      dispatch(ExcelStore.actions.CELL_MOUSE_ENTER(position))
+      dispatch(ExcelActions.CELL_MOUSE_ENTER(position))
     }
   }
 
   const handleDoubleClick = () => {
-    dispatch(ExcelStore.actions.CELL_DOUBLE_CLICK())
+    dispatch(ExcelActions.CELL_DOUBLE_CLICK())
   }
 
   const adjustedStyle = {
