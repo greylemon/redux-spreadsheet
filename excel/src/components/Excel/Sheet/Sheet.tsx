@@ -1,8 +1,8 @@
-import React, { KeyboardEvent } from 'react'
+import React from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../../redux/store'
-import { shallowEqual, useDispatch } from 'react-redux'
+import { shallowEqual } from 'react-redux'
 import Cell from './Cell'
 import {
   selectColumnCount,
@@ -15,10 +15,8 @@ import {
   selectColumnWidthsAdjusted,
 } from '../../../redux/ExcelStore/selectors'
 import BottomRightPane from './BottomRightPane'
-import { ExcelActions } from '../../../redux/ExcelStore/store'
 
 export const Sheet = ({ height, width }: Size) => {
-  const dispatch = useDispatch()
   const {
     columnCount,
     rowCount,
@@ -44,32 +42,8 @@ export const Sheet = ({ height, width }: Size) => {
 
   const itemData = { data, columnWidthsAdjusted, getRowHeight }
 
-  const handleKeyDown = (event: KeyboardEvent) => {
-    const { key, shiftKey } = event
-
-    if (shiftKey) {
-      // TODO
-      return
-    } else {
-      switch (key) {
-        case 'ArrowDown':
-          dispatch(ExcelActions.CELL_KEY_DOWN())
-          break
-        case 'ArrowRight':
-          dispatch(ExcelActions.CELL_KEY_RIGHT())
-          break
-        case 'ArrowLeft':
-          dispatch(ExcelActions.CELL_KEY_LEFT())
-          break
-        case 'ArrowUp':
-          dispatch(ExcelActions.CELL_KEY_UP())
-          break
-      }
-    }
-  }
-
   return (
-    <div tabIndex={-1} onKeyDown={handleKeyDown}>
+    <div tabIndex={-1}>
       <VariableSizeGrid
         className="sheet"
         columnCount={columnCount}

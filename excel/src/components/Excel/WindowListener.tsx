@@ -24,10 +24,11 @@ const WindowListener = () => {
     if (selectionArea) dispatch(ExcelActions.CELL_MOUSE_UP(selectionArea))
   }, [dispatch, selectionArea])
 
+  // Distinguish text submit from mouse move?
   window.onkeydown = useCallback(
     (event: KeyboardEvent) => {
       if (!isEditMode) {
-        const { ctrlKey, metaKey, key } = event
+        const { ctrlKey, metaKey, shiftKey, key } = event
 
         if (ctrlKey || metaKey) {
           if (key === 'y') {
@@ -37,11 +38,35 @@ const WindowListener = () => {
           }
         } else if (key.length === 1) {
           dispatch(ExcelActions.CELL_EDITOR_STATE_START())
+        } else {
+          if (shiftKey) {
+            // TODO
+            return
+          } else {
+            switch (key) {
+              case 'ArrowDown':
+                dispatch(ExcelActions.CELL_KEY_DOWN())
+                break
+              case 'ArrowRight':
+                dispatch(ExcelActions.CELL_KEY_RIGHT())
+                break
+              case 'ArrowLeft':
+                dispatch(ExcelActions.CELL_KEY_LEFT())
+                break
+              case 'ArrowUp':
+                dispatch(ExcelActions.CELL_KEY_UP())
+                break
+            }
+          }
         }
       }
     },
     [dispatch, isEditMode, handleUndo, handleRedo]
   )
+
+  window.ondblclick = useCallback(() => {
+    dispatch(ExcelActions.CELL_DOUBLE_CLICK())
+  }, [dispatch])
 
   return null
 }

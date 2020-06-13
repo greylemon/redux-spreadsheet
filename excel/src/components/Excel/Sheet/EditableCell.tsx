@@ -68,10 +68,6 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
     }
   }
 
-  const handleDoubleClick = () => {
-    dispatch(ExcelActions.CELL_DOUBLE_CLICK())
-  }
-
   const adjustedStyle = {
     ...style,
     width: columnWidthsAdjusted[columnIndex],
@@ -83,7 +79,6 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
       style={adjustedStyle}
       onMouseDown={handleMouseDown}
       onMouseEnter={handleMouseEnter}
-      onDoubleClick={handleDoubleClick}
     >
       {typeof value === 'object' ? (
         <RichTextCellValue value={value} />
