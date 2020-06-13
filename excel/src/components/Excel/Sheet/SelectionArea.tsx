@@ -4,7 +4,7 @@ import {
   selectSelectionArea,
   selectFactorySelectionAreaStyle,
 } from '../../../redux/ExcelStore/selectors'
-import { useTypedSelector } from '../../../redux'
+import { useTypedSelector } from '../../../redux/store'
 
 const SelectionArea = ({ computeSelectionAreaStyle }: ISelectionAreaProps) => {
   const { selectionArea, selectionAreaStyle } = useTypedSelector((state) => ({

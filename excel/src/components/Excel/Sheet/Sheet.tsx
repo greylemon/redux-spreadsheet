@@ -1,7 +1,7 @@
 import React, { KeyboardEvent } from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
-import { useTypedSelector } from '../../../redux'
+import { useTypedSelector } from '../../../redux/store'
 import { shallowEqual, useDispatch } from 'react-redux'
 import Cell from './Cell'
 import {

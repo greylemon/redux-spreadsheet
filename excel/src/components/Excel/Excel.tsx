@@ -1,15 +1,15 @@
 import React from 'react'
-import Sheet from './Sheet'
 
 // import './styles/styles.scss'
 import './styles/styles.scss'
 
 import WindowListener from './WindowListener'
+import SheetContainer from './Sheet/Sheet'
 
 const Excel = () => {
   return (
     <div className="view">
-      <Sheet />
+      <SheetContainer />
       <WindowListener />
     </div>
   )

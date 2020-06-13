@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { ExcelStore } from '../../redux/ExcelStore/store'
-import { useTypedSelector } from '../../redux'
+import { useTypedSelector } from '../../redux/store'
 import {
   selectSelectionArea,
   selectIsEditMode,

@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import { Editor, RichUtils, EditorState } from 'draft-js'
-import { useTypedSelector } from '../../../redux'
+import { useTypedSelector } from '../../../redux/store'
 import { shallowEqual, useDispatch } from 'react-redux'
 import {
   IActiveCellProps,

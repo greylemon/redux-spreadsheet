@@ -1,6 +1,6 @@
 import { combineReducers } from '@reduxjs/toolkit'
 
-import ExcelStore from './ExcelStore'
+import UndoxExcelStore from './ExcelStore/store'
 
 const rootReducer = combineReducers({
   /**
@@ -8,7 +8,7 @@ const rootReducer = combineReducers({
    * Created using createSlice. However, the ExcelStore uses the Undox middleware,
    * whose return type is the reducer itself
    */
-  Excel: ExcelStore,
+  Excel: UndoxExcelStore,
 })
 
 export default rootReducer
