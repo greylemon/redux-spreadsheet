@@ -7,7 +7,7 @@ import {
 import { getEntireSuperArea } from '../tools/merge'
 import {
   checkIsCellPositionValid,
-  createEditorStateFromCellValue,
+  createEditorStateFromCell,
 } from '../tools/cell'
 import {
   getOrderedAreaFromPositions,
@@ -169,7 +169,7 @@ export const CELL_DOUBLE_CLICK = (state: IExcelState) => {
 
   const cellValue = nSelectCell(state.data, state.activeCellPosition)
 
-  state.editorState = createEditorStateFromCellValue(cellValue)
+  state.editorState = createEditorStateFromCell(cellValue)
 
   return state
 }

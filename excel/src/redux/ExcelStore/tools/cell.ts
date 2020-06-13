@@ -4,8 +4,10 @@ import {
   IColumnCount,
   ICell,
 } from '../../../@types/excel/state'
-import { EditorState, convertFromRaw, ContentState } from 'draft-js'
-import { getRawContentStateFromRichText } from './text'
+import {
+  createEmptyEditorState,
+  createEditorStateFromNonEmptyValue,
+} from './text'
 
 export const changeActiveCell = (position: IPosition) => {
   return position
@@ -23,24 +25,7 @@ export const checkIsCellPositionValid = (
   rowCount &&
   rowCount >= position.y
 
-export const createEditorStateFromCellValue = (cell?: ICell) => {
-  let editorState: EditorState
-
-  if (cell && cell.value) {
-    const value = cell.value
-    editorState =
-      typeof value === 'object'
-        ? EditorState.moveFocusToEnd(
-            EditorState.createWithContent(
-              convertFromRaw(getRawContentStateFromRichText(value))
-            )
-          )
-        : EditorState.moveFocusToEnd(
-            EditorState.createWithContent(ContentState.createFromText(value))
-          )
-  } else {
-    editorState = EditorState.moveFocusToEnd(EditorState.createEmpty())
-  }
-
-  return editorState
-}
+export const createEditorStateFromCell = (cell?: ICell) =>
+  cell && cell.value
+    ? createEditorStateFromNonEmptyValue(cell.value)
+    : createEmptyEditorState()

@@ -5,6 +5,8 @@ import {
   RawDraftContentBlock,
   RawDraftContentState,
   DraftInlineStyleType,
+  convertFromRaw,
+  ContentState,
 } from 'draft-js'
 import {
   IValue,
@@ -236,3 +238,21 @@ export const getRawContentStateFromRichText = (
   ),
   entityMap: {},
 })
+
+export const createEditorStateFromRichText = (value: IRichText) =>
+  EditorState.createWithContent(
+    convertFromRaw(getRawContentStateFromRichText(value))
+  )
+
+export const createEditorStateFromText = (value: string) =>
+  EditorState.createWithContent(ContentState.createFromText(value))
+
+export const createEmptyEditorState = () =>
+  EditorState.moveFocusToEnd(EditorState.createEmpty())
+
+export const createEditorStateFromNonEmptyValue = (value: IValue) =>
+  EditorState.moveFocusToEnd(
+    typeof value === 'object'
+      ? createEditorStateFromRichText(value)
+      : createEditorStateFromText(value)
+  )
