@@ -9,6 +9,12 @@
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
+
+  &:focus {
+    outline-style: none;
+    box-shadow: none;
+    border-color: transparent;
+  }
 }
 
 .cell {

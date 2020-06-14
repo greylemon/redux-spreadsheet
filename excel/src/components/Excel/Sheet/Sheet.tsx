@@ -43,9 +43,8 @@ export const Sheet = ({ height, width }: Size) => {
   const itemData = { data, columnWidthsAdjusted, getRowHeight }
 
   return (
-    <div tabIndex={-1}>
+    <div className="sheet" tabIndex={-1}>
       <VariableSizeGrid
-        className="sheet"
         columnCount={columnCount}
         columnWidth={getColumnWidth}
         height={height}

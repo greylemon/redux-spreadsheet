@@ -1,1 +1,2 @@
-export const ASCIIRegex = /[\x00-\x7F]/
+export const ASCIIRegex = /[ -~]/
+export const numberRegex = /[0-9]/

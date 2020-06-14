@@ -1,4 +1,12 @@
+
+$toolbarHeight: 40px;
+
+.toolbar {
+  width: 100vw;
+  height: $toolbarHeight;
+}
+
 .view {
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - #{$toolbarHeight});
 }

@@ -26,7 +26,7 @@ export const initialExcelState: IExcelState = {
 
   inactiveSelectionAreas: [],
 
-  sheetName: '',
+  name: '',
 
   isEditMode: false,
   editorState: EditorState.createEmpty(),

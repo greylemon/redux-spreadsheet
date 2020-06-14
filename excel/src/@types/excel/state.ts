@@ -130,7 +130,7 @@ export type ISheet = {
 
   editorState: IEditorState
 
-  sheetName: ISheetName
+  name: ISheetName
 
   isEditMode: IIsEditMode
 
