@@ -54,7 +54,7 @@ export type IStyles = IBlockStyles & IInlineStyles
 
 export type IFragment = {
   key?: string
-  value?: string
+  text?: string
   styles?: IInlineStyles
 }
 

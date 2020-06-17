@@ -2,8 +2,8 @@ import { createSelector } from 'reselect'
 import {
   getColumnOffsets,
   getRowOffsets,
-  normalizeRowHeight,
-  normalizeColumnWidth,
+  normalizeRowHeightFromArray,
+  normalizeColumnWidthFromArray,
   getAreaDimensions,
 } from '../../components/Excel/tools/dimensions'
 import IRootStore from '../../@types/redux/store'
@@ -98,12 +98,14 @@ export const selectRowOffsets = createSelector(
 
 export const selectGetRowHeight = createSelector(
   [selectRowHeights],
-  (rowHeights) => (index: number) => normalizeRowHeight(index, rowHeights)
+  (rowHeights) => (index: number) =>
+    normalizeRowHeightFromArray(index, rowHeights)
 )
 
 export const selectGetColumnWidth = createSelector(
   [selectColumnWidths],
-  (columnWidths) => (index: number) => normalizeColumnWidth(index, columnWidths)
+  (columnWidths) => (index: number) =>
+    normalizeColumnWidthFromArray(index, columnWidths)
 )
 
 export const selectIsActiveCellPositionEqualSelectionArea = createSelector(
@@ -128,7 +130,7 @@ export const selectColumnWidthsAdjusted = createSelector(
     columnOffsets.map(
       (offset) =>
         columnOffsets[columnCount - 1] +
-        normalizeColumnWidth(columnCount - 1, columnWidths) -
+        normalizeColumnWidthFromArray(columnCount - 1, columnWidths) -
         offset
     )
 )
@@ -234,8 +236,14 @@ export const selectFactoryActiveCellStyle = memoize(
             top = rowOffsets[activeCellPosition.y]
             left = columnOffsets[activeCellPosition.x]
 
-            height = normalizeRowHeight(activeCellPosition.y, rowHeights)
-            width = normalizeColumnWidth(activeCellPosition.x, columnWidths)
+            height = normalizeRowHeightFromArray(
+              activeCellPosition.y,
+              rowHeights
+            )
+            width = normalizeColumnWidthFromArray(
+              activeCellPosition.x,
+              columnWidths
+            )
           }
 
           activeCellStyle = {
@@ -250,11 +258,11 @@ export const selectFactoryActiveCellStyle = memoize(
 
         activeCellStyle.maxWidth =
           columnOffsets[columnCount - 1] +
-          normalizeColumnWidth(columnCount, columnWidths) -
+          normalizeColumnWidthFromArray(columnCount, columnWidths) -
           columnOffsets[activeCellPosition.x]
         activeCellStyle.maxHeight =
           rowOffsets[rowCount - 1] +
-          normalizeRowHeight(rowCount, rowHeights) -
+          normalizeRowHeightFromArray(rowCount, rowHeights) -
           rowOffsets[activeCellPosition.y]
 
         return activeCellStyle

@@ -1,15 +1,17 @@
 import React, { ChangeEvent } from 'react'
 import Input from '@material-ui/core/Input'
-import { convertRawExcelToState } from '../tools/excel'
+import { useDispatch } from 'react-redux'
+import { loadWorkbook } from '../../../redux/ExcelStore/thunk'
 
 const FileUpload = () => {
+  const dispatch = useDispatch()
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
 
     if (files) {
-      const content = files[0]
+      const file = files[0]
 
-      convertRawExcelToState(content)
+      dispatch(loadWorkbook(file))
     }
   }
 

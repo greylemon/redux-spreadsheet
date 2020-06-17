@@ -25,7 +25,8 @@
 
   &__header {
     text-align: center;
-    background-color: #F7F8F9;
+    background-color: #F7F8F9 !important;
+    z-index: 1000000000000000000000000000000000000000000000 !important;
   }
 
   &__editable {

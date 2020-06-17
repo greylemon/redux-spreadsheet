@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux'
+import { useDispatch, shallowEqual } from 'react-redux'
 import { ExcelActions } from '../../redux/ExcelStore/store'
 import { useTypedSelector } from '../../redux/store'
 import {
@@ -11,10 +11,13 @@ import { undo, redo } from 'undox'
 const WindowListener = () => {
   const dispatch = useDispatch()
 
-  const { selectionArea, isEditMode } = useTypedSelector((state) => ({
-    selectionArea: selectSelectionArea(state),
-    isEditMode: selectIsEditMode(state),
-  }))
+  const { selectionArea, isEditMode } = useTypedSelector(
+    (state) => ({
+      selectionArea: selectSelectionArea(state),
+      isEditMode: selectIsEditMode(state),
+    }),
+    shallowEqual
+  )
 
   const handleUndo = useCallback(() => dispatch(undo()), [dispatch])
 

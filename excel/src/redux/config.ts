@@ -1,4 +1,5 @@
 import IRootStore from '../@types/redux/store'
+import thunk from 'redux-thunk'
 
 export const devTools = {
   stateSanitizer: (state: IRootStore) => ({
@@ -12,4 +13,4 @@ export const devTools = {
   }),
 }
 
-export const middleware = []
+export const middleware = [thunk]

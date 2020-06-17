@@ -4,7 +4,8 @@ import {
   Cell,
   CellRichTextValue,
   WorksheetView,
-  Column,
+  CellSharedFormulaValue,
+  CellFormulaValue,
 } from 'exceljs'
 import {
   IRows,
@@ -12,10 +13,18 @@ import {
   IRowIndex,
   IColumnIndex,
   IRichText,
+  IRichTextBlock,
+  IInlineStyles,
+  IValue,
 } from '../../../@types/excel/state'
 import { DEFAULT } from '../constants/defaults'
 import { numberRegex } from './regex'
-import { ValueType } from '../constants/exceljs'
+import { ValueType } from '../../../@types/exceljs'
+import uniqid from 'uniqid'
+import {
+  getTableColumnCount,
+  getTableRowCount,
+} from '../../../redux/ExcelStore/tools/table'
 
 // TODO
 export const getStylesFromCell = (_cell: Cell) => {
@@ -28,12 +37,62 @@ export const getStylesFromCell = (_cell: Cell) => {
   //   numFmt,
   //   protection
   // } = style
+  return
 }
 
 // TODO
-export const getRichTextFromCellValue = (_value: CellRichTextValue) => {
+export const getRichTextFromCellValue = (value: CellRichTextValue) => {
   const richText: IRichText = []
+
+  // TODO : find how block works in exceljs - for now only one block
+  const richTextBlock: IRichTextBlock = {
+    fragments: [],
+    key: uniqid(),
+  }
+
+  value.richText.forEach(({ font, text }) => {
+    const style: IInlineStyles = {}
+    if (font) {
+      const { bold, italic, strike, underline } = font
+
+      if (italic) style.fontStyle = 'italic'
+      if (bold) style.fontWeight = 'bold'
+
+      if (strike && underline) {
+        style.textDecoration = 'line-through underline'
+      } else if (strike) {
+        style.textDecoration = 'line-through'
+      } else if (underline) {
+        style.textDecoration = 'underline'
+      }
+
+      richTextBlock.fragments.push({
+        styles: style,
+        text,
+        key: uniqid(),
+      })
+    }
+  })
+
+  richText.push(richTextBlock)
+
   return richText
+}
+
+export const getFormulaFromCellValue = (
+  value: CellFormulaValue & CellSharedFormulaValue
+) => {
+  // const formula = {
+
+  // }
+
+  // if(value.formula) {
+
+  // } else {
+
+  // }
+
+  return ''
 }
 
 // | null | number | string | boolean | Date
@@ -42,14 +101,24 @@ export const getRichTextFromCellValue = (_value: CellRichTextValue) => {
 // | CellFormulaValue | CellSharedFormulaValue;
 
 export const getValueFromCell = (cell: Cell) => {
-  // const value = cell.value
+  const value = cell.value
+
+  let result: IValue | undefined = undefined
+
+  // console.log(cell.type)
+  // ValueType.
 
   switch (cell.type) {
     case ValueType.String:
+      result = value as string
       break
     case ValueType.Formula:
+      result = getFormulaFromCellValue(
+        value as CellFormulaValue & CellSharedFormulaValue
+      )
       break
     case ValueType.RichText:
+      result = getRichTextFromCellValue(value as CellRichTextValue)
       break
     case ValueType.Boolean:
       break
@@ -64,6 +133,8 @@ export const getValueFromCell = (cell: Cell) => {
     default:
       break
   }
+
+  return result
 }
 
 export const getBoundedRow = (rowIndex: IRowIndex) =>
@@ -74,10 +145,14 @@ export const getBoundedColumn = (columnIndex: IColumnIndex) =>
 export const getSheetDataFromSheet = (sheet: Worksheet) => {
   const data: IRows = {}
 
-  sheet.eachRow((row) => {
-    row.eachCell((_cell) => {
+  sheet.eachRow((row, rowIndex) => {
+    row.eachCell((cell, columnIndex) => {
+      if (!data[rowIndex]) data[rowIndex] = {}
+      data[rowIndex][columnIndex] = {
+        value: getValueFromCell(cell),
+      }
       // const styles = getStylesFromCell(cell)
-      // const value = getValueFromCell(cell)
+      // const value =
     })
   })
 
@@ -143,13 +218,16 @@ const getPaneDataFromSheetViews = (views: Array<Partial<WorksheetView>>) => {
   return paneData
 }
 
-export const getColumnDataFromColumns = (columns: Partial<Column>[]) => {
+export const getColumnDataFromColumns = (sheet: Worksheet) => {
   const columnWidths: { [key: string]: number } = {}
   const hiddenColumns: { [key: string]: boolean } = {}
 
+  const columns = sheet.columns
+
   columns.forEach(({ width, hidden }, index) => {
-    if (width) columnWidths[index] = width
-    if (hidden) hiddenColumns[index] = true
+    if (width) columnWidths[index + 1] = width
+
+    if (hidden) hiddenColumns[index + 1] = true
   })
 
   return {
@@ -159,13 +237,14 @@ export const getColumnDataFromColumns = (columns: Partial<Column>[]) => {
 }
 
 // ! Not needed because sheet data iterates over rows
-export const getRowDataFromSheet = (rows: Worksheet) => {
+export const getRowDataFromSheet = (sheet: Worksheet) => {
   const rowHeights: { [key: string]: number } = {}
   const hiddenRows: { [key: string]: boolean } = {}
 
-  rows.eachRow(({ height, hidden }, index) => {
-    if (height) rowHeights[index] = height
-    if (hidden) hiddenRows[index] = true
+  sheet.eachRow(({ height, hidden }, index) => {
+    if (height) rowHeights[index + 1] = height
+
+    if (hidden) hiddenRows[index + 1] = true
   })
 
   return {
@@ -175,7 +254,7 @@ export const getRowDataFromSheet = (rows: Worksheet) => {
 }
 
 const createStateFromWorkbook = (workbook: Workbook) => {
-  const sheetContentMap: {
+  const inactiveSheets: {
     [key: string]: {
       activeCellPosition: IPosition
       columnCount: number
@@ -190,18 +269,33 @@ const createStateFromWorkbook = (workbook: Workbook) => {
     }
   } = {}
 
-  workbook.eachSheet((sheet) => {
-    sheetContentMap[sheet.name] = {
+  let activeSheet: any
+
+  let activeTab = 1
+
+  workbook.views.forEach((view) => {
+    if (view.activeTab) activeTab = view.activeTab
+  })
+
+  workbook.eachSheet((sheet, index) => {
+    const content = {
       data: getSheetDataFromSheet(sheet),
-      columnCount: sheet.columnCount,
-      rowCount: sheet.rowCount,
+      columnCount: getTableColumnCount(sheet.columnCount),
+      rowCount: getTableRowCount(sheet.rowCount),
+      inactiveSelectionAreas: [],
       ...getPaneDataFromSheetViews(sheet.views),
-      ...getColumnDataFromColumns(sheet.columns),
+      ...getColumnDataFromColumns(sheet),
       ...getRowDataFromSheet(sheet),
+    }
+
+    if (activeTab === index) {
+      activeSheet = content
+    } else {
+      inactiveSheets[sheet.name] = content
     }
   })
 
-  return sheetContentMap
+  return { ...activeSheet, inactiveSheets }
 }
 
 export const convertRawExcelToState = async (file: File) => {

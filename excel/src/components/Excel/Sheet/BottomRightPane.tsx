@@ -15,7 +15,10 @@ import {
   IFreezeColumnCount,
   IFreezeRowCount,
 } from '../../../@types/excel/state'
-import { normalizeColumnWidth, normalizeRowHeight } from '../tools/dimensions'
+import {
+  normalizeColumnWidthFromArray,
+  normalizeRowHeightFromArray,
+} from '../tools/dimensions'
 
 const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
   columnWidths: IColumnWidths,
@@ -39,18 +42,24 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
 
   const topStart = rowOffsets[start.y]
   const leftStart = columnOffsets[start.x]
-  const widthStart = normalizeColumnWidth(start.x, columnWidths)
-  const heightStart = normalizeRowHeight(start.y, rowHeights)
+  const widthStart = normalizeColumnWidthFromArray(start.x, columnWidths)
+  const heightStart = normalizeRowHeightFromArray(start.y, rowHeights)
 
   const topEnd = rowOffsets[end.y]
   const leftEnd = columnOffsets[end.x]
-  const widthEnd = normalizeColumnWidth(end.x, columnWidths)
-  const heightEnd = normalizeRowHeight(end.y, rowHeights)
+  const widthEnd = normalizeColumnWidthFromArray(end.x, columnWidths)
+  const heightEnd = normalizeRowHeightFromArray(end.y, rowHeights)
 
   const topFrozenEnd = rowOffsets[freezeRowCount]
   const leftFrozenEnd = columnOffsets[freezeColumnCount]
-  const widthFrozenEnd = normalizeColumnWidth(freezeColumnCount, columnWidths)
-  const heightFrozenEnd = normalizeRowHeight(freezeRowCount, rowHeights)
+  const widthFrozenEnd = normalizeColumnWidthFromArray(
+    freezeColumnCount,
+    columnWidths
+  )
+  const heightFrozenEnd = normalizeRowHeightFromArray(
+    freezeRowCount,
+    rowHeights
+  )
 
   if (
     freezeColumnCount &&

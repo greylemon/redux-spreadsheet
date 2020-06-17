@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../../redux/store'
-import { shallowEqual } from 'react-redux'
 import Cell from './Cell'
 import {
   selectColumnCount,
@@ -15,8 +14,10 @@ import {
   selectColumnWidthsAdjusted,
 } from '../../../redux/ExcelStore/selectors'
 import BottomRightPane from './BottomRightPane'
+import { shallowEqual } from 'react-redux'
 
 export const Sheet = ({ height, width }: Size) => {
+  const gridRef = useRef<VariableSizeGrid>(null)
   const {
     columnCount,
     rowCount,
@@ -42,9 +43,16 @@ export const Sheet = ({ height, width }: Size) => {
 
   const itemData = { data, columnWidthsAdjusted, getRowHeight }
 
+  useEffect(() => {
+    const current = gridRef.current
+
+    if (current) current.resetAfterIndices({ columnIndex: 0, rowIndex: 0 })
+  }, [getColumnWidth, getRowHeight])
+
   return (
     <div className="sheet" tabIndex={-1}>
       <VariableSizeGrid
+        ref={gridRef}
         columnCount={columnCount}
         columnWidth={getColumnWidth}
         height={height}

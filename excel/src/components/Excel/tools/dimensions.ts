@@ -19,23 +19,31 @@ import {
   IArea,
 } from '../../../@types/excel/state'
 
+export const normalizeRowHeight = (rowHeight: IRowheight) =>
+  rowHeight ? rowHeight * EXCEL_ROW_HEIGHT_SCALE : EXCEL_SHEET_ROW_HEIGHT
+
 /**
  * Converts Excel scaled row height unit to normal scaled unit
  */
-export const normalizeRowHeight = (
+export const normalizeRowHeightFromArray = (
   index: number,
   rowHeights: IRowHeights
 ): IRowheight => {
   if (!index) return EXCEL_SHEET_ROW_HEIGHT_HEADER
 
   const rowHeight = rowHeights[index]
-  return rowHeight ? rowHeight * EXCEL_ROW_HEIGHT_SCALE : EXCEL_SHEET_ROW_HEIGHT
+  return normalizeRowHeight(rowHeight)
 }
+
+export const normalizeColumnWidth = (columnWidth: IColumnWidth) =>
+  columnWidth
+    ? columnWidth * EXCEL_COLUMN_WIDTH_SCALE
+    : EXCEL_SHEET_COLUMN_WIDTH
 
 /**
  * Converts Excel scaled column width unit to normal scaled unit
  */
-export const normalizeColumnWidth = (
+export const normalizeColumnWidthFromArray = (
   index: number,
   columnWidths: IColumnWidths
 ): IColumnWidth => {
@@ -43,11 +51,8 @@ export const normalizeColumnWidth = (
 
   const columnWidth = columnWidths[index]
 
-  return columnWidth
-    ? columnWidth * EXCEL_COLUMN_WIDTH_SCALE
-    : EXCEL_SHEET_COLUMN_WIDTH
+  return normalizeColumnWidth(columnWidth)
 }
-
 /**
  * Creates an offset list of the column widths
  */
@@ -62,7 +67,7 @@ export const getColumnOffsets = (
     column < columnCount;
     column++
   ) {
-    incrementor += normalizeColumnWidth(column - 1, columnWidths)
+    incrementor += normalizeColumnWidthFromArray(column - 1, columnWidths)
     leftOffsets.push(incrementor)
   }
 
@@ -83,7 +88,7 @@ export const getRowOffsets = (
     row < rowCount;
     row++
   ) {
-    incrementor += normalizeRowHeight(row - 1, rowHeights)
+    incrementor += normalizeRowHeightFromArray(row - 1, rowHeights)
     topOffsets.push(incrementor)
   }
 
@@ -99,10 +104,10 @@ export const getAreaDimensions = (
 ) => ({
   height:
     rowOffsets[area.end.y] +
-    normalizeRowHeight(area.end.y, rowHeights) -
+    normalizeRowHeightFromArray(area.end.y, rowHeights) -
     rowHeights[area.start.y],
   width:
     columnOffsets[area.end.x] +
-    normalizeColumnWidth(area.end.x, columnWidths) -
+    normalizeColumnWidthFromArray(area.end.x, columnWidths) -
     columnWidths[area.start.x],
 })

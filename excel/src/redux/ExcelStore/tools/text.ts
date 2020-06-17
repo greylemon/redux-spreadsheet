@@ -33,7 +33,7 @@ export const getTextFromRichText = (richText: IRichText) => {
   for (const block of richText) {
     const blockFragments = block.fragments
     for (let i = 0; i < blockFragments.length; i++) {
-      text += blockFragments[i].value
+      text += blockFragments[i].text
     }
   }
 
@@ -92,7 +92,7 @@ export const createValueFromEditorState = (
 
       const fragment: IFragment = {
         key: uniqid(),
-        value: rawBlock.text.substring(start, end + 1),
+        text: rawBlock.text.substring(start, end + 1),
       }
 
       for (let i = 0; i < inlineStyleRanges.length; i++) {
@@ -129,7 +129,7 @@ export const getRichTextBlockText = (block: IRichTextBlock) => {
 
   const fragments = block.fragments
   for (const fragment of fragments) {
-    text += fragment.value
+    text += fragment.text
   }
 
   return text
@@ -158,8 +158,8 @@ export const getRawInlineStyleRangesFromRichTextBlock = (
     const start = previousOffset + 1
     let end = start
 
-    if (fragment.value) {
-      text += fragment.value
+    if (fragment.text) {
+      text += fragment.text
       end = text.length - 1
     }
 

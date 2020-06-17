@@ -18,6 +18,7 @@ import {
   CELL_EDITOR_STATE_START,
 } from './keyboard/cell'
 import { EditorState } from 'draft-js'
+import { UPDATE_STATE } from './events'
 
 export const initialExcelState: IExcelState = {
   activeCellPosition: { x: 1, y: 1 },
@@ -62,6 +63,7 @@ export const ExcelStore = createSlice({
     CELL_DOUBLE_CLICK,
     CELL_EDITOR_STATE_UPDATE,
     CELL_EDITOR_STATE_START,
+    UPDATE_STATE,
   },
 })
 
@@ -80,6 +82,7 @@ const ignoredActionsMap = {
   [ExcelActions.CELL_EDITOR_STATE_UPDATE.type]: true,
   [ExcelActions.CELL_DOUBLE_CLICK.type]: true,
   [ExcelActions.CELL_EDITOR_STATE_START.type]: true,
+  [ExcelActions.UPDATE_STATE.type]: true,
 }
 
 const UndoxExcelStore = undox(

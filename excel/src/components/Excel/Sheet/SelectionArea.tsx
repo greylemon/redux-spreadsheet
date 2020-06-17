@@ -5,14 +5,18 @@ import {
   selectFactorySelectionAreaStyle,
 } from '../../../redux/ExcelStore/selectors'
 import { useTypedSelector } from '../../../redux/store'
+import { shallowEqual } from 'react-redux'
 
 const SelectionArea = ({ computeSelectionAreaStyle }: ISelectionAreaProps) => {
-  const { selectionArea, selectionAreaStyle } = useTypedSelector((state) => ({
-    selectionArea: selectSelectionArea(state),
-    selectionAreaStyle: selectFactorySelectionAreaStyle(
-      computeSelectionAreaStyle
-    )(state),
-  }))
+  const { selectionArea, selectionAreaStyle } = useTypedSelector(
+    (state) => ({
+      selectionArea: selectSelectionArea(state),
+      selectionAreaStyle: selectFactorySelectionAreaStyle(
+        computeSelectionAreaStyle
+      )(state),
+    }),
+    shallowEqual
+  )
 
   if (!selectionArea) return null
 

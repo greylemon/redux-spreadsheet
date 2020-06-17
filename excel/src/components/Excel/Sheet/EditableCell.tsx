@@ -8,7 +8,10 @@ import {
   IRichTextBlock,
 } from '../../../@types/excel/state'
 
-const RichTextFragment: FunctionComponent<IFragment> = ({ value, styles }) => (
+const RichTextFragment: FunctionComponent<IFragment> = ({
+  text: value,
+  styles,
+}) => (
   <div className="richText__cell" style={styles}>
     {value}
   </div>
