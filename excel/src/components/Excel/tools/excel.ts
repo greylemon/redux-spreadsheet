@@ -16,6 +16,7 @@ import {
   IRichTextBlock,
   IInlineStyles,
   IValue,
+  ISheetNames,
 } from '../../../@types/excel/state'
 import { DEFAULT } from '../constants/defaults'
 import { numberRegex } from './regex'
@@ -270,7 +271,7 @@ const createStateFromWorkbook = (workbook: Workbook) => {
   } = {}
 
   let activeSheet: any
-
+  const sheetNames: ISheetNames = []
   let activeTab = 1
 
   workbook.views.forEach((view) => {
@@ -278,6 +279,7 @@ const createStateFromWorkbook = (workbook: Workbook) => {
   })
 
   workbook.eachSheet((sheet, index) => {
+    sheetNames.push(sheet.name)
     const content = {
       data: getSheetDataFromSheet(sheet),
       columnCount: getTableColumnCount(sheet.columnCount),
@@ -295,7 +297,7 @@ const createStateFromWorkbook = (workbook: Workbook) => {
     }
   })
 
-  return { ...activeSheet, inactiveSheets }
+  return { ...activeSheet, inactiveSheets, sheetNames }
 }
 
 export const convertRawExcelToState = async (file: File) => {

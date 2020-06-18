@@ -1,12 +1,50 @@
+@import 
+  'variables',
+  'mixins';
 
-$toolbarHeight: 40px;
+.excel {
+  height: 100vh;
+  display: flex;
+  flex-flow: column nowrap;
+}
 
 .toolbar {
   width: 100vw;
   height: $toolbarHeight;
 }
 
-.view {
+.sheet {
+  // position: relative;
   width: 100vw;
-  height: calc(100vh - #{$toolbarHeight});
+  height: calc(100vh - #{$toolbarHeight} - #{$sheetNavigationHeight});
+}
+
+.sheetNavigation {
+  display: flex;
+  height: $sheetNavigationHeight;
+  padding-right: 20px;
+
+  &__sheets {
+    @include unselectable;
+
+    display: flex;
+    margin: auto 0;
+    overflow: auto;
+  } 
+  
+  &__sheet {
+    box-sizing: content-box;
+    list-style-type: none;
+    border: 1px solid lightgray;
+    border-radius: 1px;
+    padding: 0 10px;
+    background-color: rgba(238, 238, 238, 0.5);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 100px;
+    width: 100px;
+    max-width: 100px;
+  }
 }

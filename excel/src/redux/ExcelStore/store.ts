@@ -21,10 +21,12 @@ import { EditorState } from 'draft-js'
 import { UPDATE_STATE } from './events'
 
 export const initialExcelState: IExcelState = {
+  activeSheeName: 'Sheet1',
   activeCellPosition: { x: 1, y: 1 },
 
   data: {},
 
+  sheetNames: ['Sheet1'],
   inactiveSelectionAreas: [],
 
   name: '',

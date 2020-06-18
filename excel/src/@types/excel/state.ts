@@ -105,8 +105,6 @@ export type IFreezeRowCount = number
 
 export type IIsEditMode = boolean
 
-export type ISheetName = string
-
 export type IActiveCellPosition = IPosition
 
 export type IStagnantSelectionAreas = IArea[]
@@ -117,6 +115,8 @@ export type IInactiveSelectionAreas = Array<IArea>
 export type ISelectionAreaIndex = number
 
 export type IEditorState = EditorState
+export type ISheetName = string
+export type ISheetNames = ISheetName[]
 
 export type ISheet = {
   data: IRows
@@ -150,4 +150,7 @@ export type IInactiveSheets = {
   [key: string]: ISheet
 }
 
-export type IExcelState = ISheet & { inactiveSheets: IInactiveSheets }
+export type IExcelState = ISheet & { inactiveSheets: IInactiveSheets } & {
+  activeSheeName: ISheetName
+  sheetNames: ISheetNames
+}

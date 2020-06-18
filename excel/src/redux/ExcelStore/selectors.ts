@@ -83,6 +83,16 @@ export const selectInactiveSelectionAreas = createSelector(
   (excel) => excel.inactiveSelectionAreas
 )
 
+export const selectSheetNames = createSelector(
+  [selectExcel],
+  (excel) => excel.sheetNames
+)
+
+export const selectActiveSheetName = createSelector(
+  [selectExcel],
+  (excel) => excel.activeSheeName
+)
+
 // ===========================================================================
 // CUSTOM SELECTORS
 // ===========================================================================
@@ -133,6 +143,12 @@ export const selectColumnWidthsAdjusted = createSelector(
         normalizeColumnWidthFromArray(columnCount - 1, columnWidths) -
         offset
     )
+)
+
+export const selectActiveSheetNameIndex = createSelector(
+  [selectActiveSheetName, selectSheetNames],
+  (activeSheetName, sheetNames) =>
+    sheetNames.findIndex((name) => activeSheetName === name)
 )
 
 // ===========================================================================

@@ -50,7 +50,7 @@ export const Sheet = ({ height, width }: Size) => {
   }, [getColumnWidth, getRowHeight])
 
   return (
-    <div className="sheet" tabIndex={-1}>
+    <div className="sheetGrid" tabIndex={-1}>
       <VariableSizeGrid
         ref={gridRef}
         columnCount={columnCount}
@@ -76,6 +76,10 @@ const SheetSizer = ({ height, width }: Size) => (
   <Sheet height={height} width={width} />
 )
 
-const SheetContainer = () => <AutoSizer children={SheetSizer} />
+const SheetContainer = () => (
+  <div className="sheet">
+    <AutoSizer children={SheetSizer} />
+  </div>
+)
 
 export default SheetContainer
