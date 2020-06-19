@@ -28,7 +28,7 @@ export const Sheet = ({ height, width }: Size) => {
     tableFreezeColumnCount,
     tableFreezeRowCount,
     columnWidthsAdjusted,
-    activeSheetName
+    activeSheetName,
   } = useTypedSelector(
     (state) => ({
       columnCount: selectColumnCount(state),

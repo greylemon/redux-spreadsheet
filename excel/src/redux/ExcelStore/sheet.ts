@@ -3,7 +3,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 
 export const CHANGE_SHEET_ORDER = (
   state: IExcelState,
-  action: PayloadAction<{ oldIndex: number, newIndex: number }>
+  action: PayloadAction<{ oldIndex: number; newIndex: number }>
 ) => {
   const { oldIndex, newIndex } = action.payload
 

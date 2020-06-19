@@ -71,7 +71,7 @@ export const ExcelStore = createSlice({
     CELL_EDITOR_STATE_START,
     UPDATE_STATE,
     CHANGE_SHEET,
-    CHANGE_SHEET_ORDER
+    CHANGE_SHEET_ORDER,
   },
 })
 

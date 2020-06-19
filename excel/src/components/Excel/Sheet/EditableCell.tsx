@@ -77,7 +77,7 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
     width: columnWidthsAdjusted[columnIndex],
     whiteSpace: 'nowrap',
     overflow: 'hidden',
-    textOverflow: 'ellipsis'
+    textOverflow: 'ellipsis',
   }
 
   return (

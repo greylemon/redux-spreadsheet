@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { SortableContainer, SortableElement, SortEndHandler, SortStartHandler } from 'react-sortable-hoc'
+import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 
 import { ISheetName } from '../../../@types/excel/state'
 import { useTypedSelector } from '../../../redux/store'
@@ -42,14 +42,15 @@ const SheetNavigation = () => {
     shallowEqual
   )
 
-  const handleSortEnd = useCallback<SortEndHandler>(
+  const handleSortEnd = useCallback(
     ({ oldIndex, newIndex }) => {
-      if (oldIndex !== newIndex) dispatch(ExcelActions.CHANGE_SHEET_ORDER({ oldIndex, newIndex }))
+      if (oldIndex !== newIndex)
+        dispatch(ExcelActions.CHANGE_SHEET_ORDER({ oldIndex, newIndex }))
     },
     [dispatch]
   )
 
-  const handleSortStart = useCallback<SortStartHandler>(
+  const handleSortStart = useCallback(
     ({ index }) => {
       if (index !== activeSheetNameIndex) {
         dispatch(ExcelActions.CHANGE_SHEET(sheetNames[index]))
