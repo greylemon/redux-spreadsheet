@@ -19,6 +19,11 @@ import {
   IFreezeRowCount,
   ISelectionArea,
 } from '../../../@types/excel/state'
+import {
+  STYLE_SELECTION_BORDER_WIDTH,
+  STYLE_SELECTION_BORDER_COLOR,
+  STYLE_SELECTION_BORDER_STYLE,
+} from '../constants/styles'
 
 const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
   columnWidths: IColumnWidths,
@@ -36,7 +41,14 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
 
   const { start, end } = selectionArea!
 
-  const customSelectionStyle: CSSProperties = {}
+  const customSelectionStyle: CSSProperties = {
+    borderLeftWidth: STYLE_SELECTION_BORDER_WIDTH,
+    borderLeftColor: STYLE_SELECTION_BORDER_COLOR,
+    borderLeftStyle: STYLE_SELECTION_BORDER_STYLE,
+    borderTopWidth: STYLE_SELECTION_BORDER_WIDTH,
+    borderTopColor: STYLE_SELECTION_BORDER_COLOR,
+    borderTopStyle: STYLE_SELECTION_BORDER_STYLE,
+  }
 
   const topStart = rowOffsets[start.y]
   const leftStart = columnOffsets[start.x]
@@ -70,6 +82,10 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
     } else {
       selectionAreaWidth = leftStart + widthStart - minLeft
     }
+
+    customSelectionStyle.borderRightWidth = STYLE_SELECTION_BORDER_WIDTH
+    customSelectionStyle.borderRightColor = STYLE_SELECTION_BORDER_COLOR
+    customSelectionStyle.borderRightStyle = STYLE_SELECTION_BORDER_STYLE
   }
 
   const minTop = start.y < end.y ? topStart : topEnd
@@ -87,12 +103,16 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
     } else {
       selectionAreaHeight = topStart + heightStart - minTop
     }
+
+    customSelectionStyle.borderBottomWidth = STYLE_SELECTION_BORDER_WIDTH
+    customSelectionStyle.borderBottomColor = STYLE_SELECTION_BORDER_COLOR
+    customSelectionStyle.borderBottomStyle = STYLE_SELECTION_BORDER_STYLE
   }
 
   customSelectionStyle.left = left
   customSelectionStyle.top = top
-  customSelectionStyle.width = selectionAreaWidth
-  customSelectionStyle.height = selectionAreaHeight
+  customSelectionStyle.width = selectionAreaWidth - 2
+  customSelectionStyle.height = selectionAreaHeight - 2
 
   return customSelectionStyle
 }
