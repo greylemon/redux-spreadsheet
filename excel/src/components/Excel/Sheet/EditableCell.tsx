@@ -54,14 +54,16 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
   const position = { x: columnIndex, y: rowIndex }
 
   const handleMouseDown = (event: MouseEvent) => {
-    const { ctrlKey, shiftKey } = event
+    const { ctrlKey, shiftKey, buttons } = event
 
-    if (ctrlKey) {
-      dispatch(ExcelActions.CELL_MOUSE_DOWN_CTRL(position))
-    } else if (shiftKey) {
-      dispatch(ExcelActions.CELL_MOUSE_DOWN_SHIFT(position))
-    } else {
-      dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
+    if (buttons === 1) {
+      if (ctrlKey) {
+        dispatch(ExcelActions.CELL_MOUSE_DOWN_CTRL(position))
+      } else if (shiftKey) {
+        dispatch(ExcelActions.CELL_MOUSE_DOWN_SHIFT(position))
+      } else {
+        dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
+      }
     }
   }
 
