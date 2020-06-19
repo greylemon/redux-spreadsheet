@@ -6,7 +6,7 @@ export const DEFAULT = {
   freezeRowCount: 0,
   freezeColumnCount: 0,
 
-  maxRowCount: 1000,
+  maxRowCount: 4000,
   maxColumnCount: 100,
   activeCellPosition: { x: 1, y: 1 } as IPosition,
 }
