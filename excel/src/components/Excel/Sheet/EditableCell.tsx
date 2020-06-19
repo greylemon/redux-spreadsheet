@@ -7,6 +7,7 @@ import {
   IFragment,
   IRichTextBlock,
 } from '../../../@types/excel/state'
+import { CSSProperties } from '@material-ui/core/styles/withStyles'
 
 const RichTextFragment: FunctionComponent<IFragment> = ({
   text: value,
@@ -71,9 +72,12 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
     }
   }
 
-  const adjustedStyle = {
+  const adjustedStyle: CSSProperties = {
     ...style,
     width: columnWidthsAdjusted[columnIndex],
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis'
   }
 
   return (
