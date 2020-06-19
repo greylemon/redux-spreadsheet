@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, Fragment } from 'react'
 import { Editor, RichUtils, EditorState } from 'draft-js'
 import { useTypedSelector } from '../../../redux/store'
 import { shallowEqual, useDispatch } from 'react-redux'
@@ -11,6 +11,9 @@ import {
   selectIsEditMode,
   selectFactoryActiveCellStyle,
   selectCellEditorState,
+  selectActiveCellPosition,
+  selectFreezeColumnCount,
+  selectFreezeRowCount,
 } from '../../../redux/ExcelStore/selectors'
 import { ExcelActions } from '../../../redux/ExcelStore/store'
 
@@ -54,14 +57,35 @@ const NormalActiveCell = ({ style }: INormalActiveCellProps) => {
   return <div className="cell__active cell__active--normal" style={style} />
 }
 
-const ActiveCell = ({ computeActiveCellStyle }: IActiveCellProps) => {
-  const { isEditMode, style } = useTypedSelector(
+const ActiveCell = ({
+  computeActiveCellStyle,
+  checkIsActiveCellInCorrectPane,
+}: IActiveCellProps) => {
+  const {
+    isEditMode,
+    style,
+    activeCellPosition,
+    freezeColumnCount,
+    freezeRowCount,
+  } = useTypedSelector(
     (state) => ({
       isEditMode: selectIsEditMode(state),
       style: selectFactoryActiveCellStyle(computeActiveCellStyle)(state),
+      activeCellPosition: selectActiveCellPosition(state),
+      freezeColumnCount: selectFreezeColumnCount(state),
+      freezeRowCount: selectFreezeRowCount(state),
     }),
     shallowEqual
   )
+
+  if (
+    !checkIsActiveCellInCorrectPane(
+      activeCellPosition,
+      freezeColumnCount,
+      freezeRowCount
+    )
+  )
+    return <Fragment />
 
   return isEditMode ? (
     <EditorCell style={style} />

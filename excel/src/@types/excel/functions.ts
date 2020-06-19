@@ -17,8 +17,8 @@ export interface IComputeActiveCellStyle {
     position: IPosition,
     columnWidths: IColumnWidths,
     columnOffsets: IColumnOffsets,
-    rowheights: IRowHeights,
-    rowoffsets: IRowOffsets,
+    rowHeights: IRowHeights,
+    rowOffsets: IRowOffsets,
     freezeRowCount: IFreezeRowCount,
     data: IRows
   ): CSSProperties

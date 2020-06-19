@@ -15,6 +15,9 @@ import {
 } from '../../../redux/ExcelStore/selectors'
 import BottomRightPane from './BottomRightPane'
 import { shallowEqual } from 'react-redux'
+import TopLeftPane from './TopLeftPane'
+import TopRightPane from './TopRightPane'
+import BottomLeftPane from './BottomLeftPane'
 
 export const Sheet = ({ height, width }: Size) => {
   const gridRef = useRef<VariableSizeGrid>(null)
@@ -62,9 +65,10 @@ export const Sheet = ({ height, width }: Size) => {
         itemData={itemData}
         freezeColumnCount={tableFreezeColumnCount}
         freezeRowCount={tableFreezeRowCount}
-        extraBottomRightElement={
-          <BottomRightPane key="bottom-right-activity-pane" />
-        }
+        extraTopLeftElement={<TopLeftPane key="top-left-pane" />}
+        extraTopRightElement={<TopRightPane key="top-right-pane" />}
+        extraBottomRightElement={<BottomRightPane key="bottom-right-pane" />}
+        extraBottomLeftElement={<BottomLeftPane key="bottom-left-pane" />}
       >
         {Cell}
       </VariableSizeGrid>

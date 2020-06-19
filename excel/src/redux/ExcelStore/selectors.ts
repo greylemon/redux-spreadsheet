@@ -304,64 +304,62 @@ export const selectFactoryActiveCellStyle = memoize(
     )(state)
 )
 
-export const selectFactorySelectionAreaStyle = memoize(
-  (computeSelectionAreaStyle: IComputeSelectionAreaStyle) =>
-    createSelector(
-      [
-        selectColumnWidths,
-        selectColumnoffsets,
-        selectRowHeights,
-        selectRowOffsets,
-        selectFreezeColumnCount,
-        selectFreezeRowCount,
-        selectSelectionArea,
-      ],
-      computeSelectionAreaStyle
-    )
-)
+export const selectFactorySelectionAreaStyle = (
+  computeSelectionAreaStyle: IComputeSelectionAreaStyle
+) =>
+  createSelector(
+    [
+      selectColumnWidths,
+      selectColumnoffsets,
+      selectRowHeights,
+      selectRowOffsets,
+      selectFreezeColumnCount,
+      selectFreezeRowCount,
+      selectSelectionArea,
+    ],
+    computeSelectionAreaStyle
+  )
 
-export const selectFactoryInactiveSelectionAreasStyle = memoize(
-  (
-    computeSelectionAreaStyle: IComputeSelectionAreaStyle,
-    checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
-  ) =>
-    createSelector(
-      [
-        selectColumnWidths,
-        selectColumnoffsets,
-        selectRowHeights,
-        selectRowOffsets,
-        selectFreezeColumnCount,
-        selectFreezeRowCount,
-        selectInactiveSelectionAreas,
-      ],
-      (
-        columnWidths,
-        columnOffsets,
-        rowHeights,
-        rowOffsets,
-        freezeColumnCount,
-        freezeRowCount,
-        inactiveSelectionAreas
-      ) =>
-        inactiveSelectionAreas
-          .filter((inactiveSelectionArea) =>
-            checkIsAreaInRelevantPane(
-              freezeColumnCount,
-              freezeRowCount,
-              inactiveSelectionArea
-            )
+export const selectFactoryInactiveSelectionAreasStyle = (
+  computeSelectionAreaStyle: IComputeSelectionAreaStyle,
+  checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
+) =>
+  createSelector(
+    [
+      selectColumnWidths,
+      selectColumnoffsets,
+      selectRowHeights,
+      selectRowOffsets,
+      selectFreezeColumnCount,
+      selectFreezeRowCount,
+      selectInactiveSelectionAreas,
+    ],
+    (
+      columnWidths,
+      columnOffsets,
+      rowHeights,
+      rowOffsets,
+      freezeColumnCount,
+      freezeRowCount,
+      inactiveSelectionAreas
+    ) =>
+      inactiveSelectionAreas
+        .filter((inactiveSelectionArea) =>
+          checkIsAreaInRelevantPane(
+            freezeColumnCount,
+            freezeRowCount,
+            inactiveSelectionArea
           )
-          .map((inactiveSelectionArea) =>
-            computeSelectionAreaStyle(
-              columnWidths,
-              columnOffsets,
-              rowHeights,
-              rowOffsets,
-              freezeColumnCount,
-              freezeRowCount,
-              inactiveSelectionArea
-            )
+        )
+        .map((inactiveSelectionArea) =>
+          computeSelectionAreaStyle(
+            columnWidths,
+            columnOffsets,
+            rowHeights,
+            rowOffsets,
+            freezeColumnCount,
+            freezeRowCount,
+            inactiveSelectionArea
           )
-    )
-)
+        )
+  )
