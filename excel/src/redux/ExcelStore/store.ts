@@ -20,33 +20,36 @@ import {
 import { EditorState } from 'draft-js'
 import { UPDATE_STATE } from './events'
 
+// TODO
 export const initialExcelState: IExcelState = {
-  activeSheeName: 'Sheet1',
-  activeCellPosition: { x: 1, y: 1 },
-
-  data: {},
-
   sheetNames: ['Sheet1'],
-  inactiveSelectionAreas: [],
 
   name: '',
 
   isEditMode: false,
   editorState: EditorState.createEmpty(),
-
-  rowCount: 201,
-  columnCount: 27,
-
-  columnWidths: {},
-  rowHeights: {},
-
-  freezeColumnCount: 0,
-  freezeRowCount: 0,
-
-  inactiveSheets: {},
-  selectionAreaIndex: -1,
+  activeSheetName: 'Sheet1',
 
   error: {},
+
+  sheetsMap: {
+    Sheet1: {
+      rowCount: 201,
+      columnCount: 27,
+
+      columnWidths: {},
+      rowHeights: {},
+
+      freezeColumnCount: 0,
+      freezeRowCount: 0,
+
+      selectionAreaIndex: -1,
+      inactiveSelectionAreas: [],
+      activeCellPosition: { x: 1, y: 1 },
+
+      data: {},
+    },
+  },
 }
 
 export const ExcelStore = createSlice({

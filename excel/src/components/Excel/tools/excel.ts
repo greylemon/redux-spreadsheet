@@ -17,6 +17,7 @@ import {
   IInlineStyles,
   IValue,
   ISheetNames,
+  ISheetsMap,
 } from '../../../@types/excel/state'
 import { DEFAULT } from '../constants/defaults'
 import { numberRegex } from './regex'
@@ -255,22 +256,8 @@ export const getRowDataFromSheet = (sheet: Worksheet) => {
 }
 
 const createStateFromWorkbook = (workbook: Workbook) => {
-  const inactiveSheets: {
-    [key: string]: {
-      activeCellPosition: IPosition
-      columnCount: number
-      rowCount: number
-      columnWidths: { [key: string]: number }
-      rowHeights: { [key: string]: number }
-      hiddenColumns: { [key: string]: boolean }
-      hiddenRows: { [key: string]: boolean }
-      freezeColumnCount: number
-      freezeRowCount: number
-      data: IRows
-    }
-  } = {}
+  const sheetsMap: ISheetsMap = {}
 
-  let activeSheet: any
   const sheetNames: ISheetNames = []
   let activeTab = 1
 
@@ -278,26 +265,24 @@ const createStateFromWorkbook = (workbook: Workbook) => {
     if (view.activeTab) activeTab = view.activeTab
   })
 
-  workbook.eachSheet((sheet, index) => {
+  const activeSheetName = workbook.getWorksheet(activeTab).name
+
+  workbook.eachSheet((sheet) => {
     sheetNames.push(sheet.name)
-    const content = {
+
+    sheetsMap[sheet.name] = {
       data: getSheetDataFromSheet(sheet),
       columnCount: getTableColumnCount(sheet.columnCount),
       rowCount: getTableRowCount(sheet.rowCount),
       inactiveSelectionAreas: [],
+      selectionAreaIndex: -1,
       ...getPaneDataFromSheetViews(sheet.views),
       ...getColumnDataFromColumns(sheet),
       ...getRowDataFromSheet(sheet),
     }
-
-    if (activeTab === index) {
-      activeSheet = content
-    } else {
-      inactiveSheets[sheet.name] = content
-    }
   })
 
-  return { ...activeSheet, inactiveSheets, sheetNames }
+  return { sheetsMap, sheetNames, activeSheetName }
 }
 
 export const convertRawExcelToState = async (file: File) => {

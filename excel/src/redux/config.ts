@@ -7,7 +7,7 @@ export const devTools: any = {
       ...state.Excel,
       present: {
         ...state.Excel.present,
-        inactiveSheets: '<<LONG_BLOB>>',
+        sheetsMap: '<<LONG_BLOB>>',
       },
     },
   }),

@@ -117,6 +117,7 @@ export type ISelectionAreaIndex = number
 export type IEditorState = EditorState
 export type ISheetName = string
 export type ISheetNames = ISheetName[]
+export type IName = string
 
 export type ISheet = {
   data: IRows
@@ -128,12 +129,6 @@ export type ISheet = {
 
   selectionAreaIndex: ISelectionAreaIndex
 
-  editorState: IEditorState
-
-  name: ISheetName
-
-  isEditMode: IIsEditMode
-
   rowCount: IRowCount
   columnCount: IColumnCount
 
@@ -142,15 +137,18 @@ export type ISheet = {
 
   freezeColumnCount: IFreezeColumnCount
   freezeRowCount: IFreezeRowCount
-
-  error: IError
 }
 
-export type IInactiveSheets = {
+export type ISheetsMap = {
   [key: string]: ISheet
 }
 
-export type IExcelState = ISheet & { inactiveSheets: IInactiveSheets } & {
-  activeSheeName: ISheetName
+export type IExcelState = {
+  name: IName
+  activeSheetName: ISheetName
   sheetNames: ISheetNames
+  sheetsMap: ISheetsMap
+  isEditMode: IIsEditMode
+  editorState: IEditorState
+  error: IError
 }

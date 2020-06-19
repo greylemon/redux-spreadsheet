@@ -1,5 +1,5 @@
 import { IExcelState, IEditorState } from '../../../@types/excel/state'
-import { nSelectMergeCell } from '../tools/selectors'
+import { nSelectMergeCell, nSelectActiveSheet } from '../tools/selectors'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { EditorState } from 'draft-js'
 
@@ -8,16 +8,20 @@ export const CELL_KEY_DOWN_SHIFT = (state: IExcelState) => {
 }
 
 export const CELL_KEY_DOWN = (state: IExcelState) => {
-  if (state.activeCellPosition.y >= state.rowCount - 1) return state
+  const activeSheet = nSelectActiveSheet(state)
+  if (activeSheet.activeCellPosition.y >= activeSheet.rowCount - 1) return state
 
-  const mergeData = nSelectMergeCell(state.data, state.activeCellPosition)
+  const mergeData = nSelectMergeCell(
+    activeSheet.data,
+    activeSheet.activeCellPosition
+  )
 
-  state.activeCellPosition.y = mergeData
+  activeSheet.activeCellPosition.y = mergeData
     ? mergeData.end.y + 1
-    : state.activeCellPosition.y + 1
-  state.inactiveSelectionAreas = []
-  state.selectionAreaIndex = -1
-  state.selectionArea = undefined
+    : activeSheet.activeCellPosition.y + 1
+  activeSheet.inactiveSelectionAreas = []
+  activeSheet.selectionAreaIndex = -1
+  activeSheet.selectionArea = undefined
 
   return state
 }
@@ -27,16 +31,20 @@ export const CELL_KEY_UP_SHIFT = (state: IExcelState) => {
 }
 
 export const CELL_KEY_UP = (state: IExcelState) => {
-  if (state.activeCellPosition.y < 2) return state
+  const activeSheet = nSelectActiveSheet(state)
+  if (activeSheet.activeCellPosition.y < 2) return state
 
-  const mergeData = nSelectMergeCell(state.data, state.activeCellPosition)
+  const mergeData = nSelectMergeCell(
+    activeSheet.data,
+    activeSheet.activeCellPosition
+  )
 
-  state.activeCellPosition.y = mergeData
+  activeSheet.activeCellPosition.y = mergeData
     ? mergeData.end.y - 1
-    : state.activeCellPosition.y - 1
-  state.inactiveSelectionAreas = []
-  state.selectionAreaIndex = -1
-  state.selectionArea = undefined
+    : activeSheet.activeCellPosition.y - 1
+  activeSheet.inactiveSelectionAreas = []
+  activeSheet.selectionAreaIndex = -1
+  activeSheet.selectionArea = undefined
 
   return state
 }
@@ -46,16 +54,21 @@ export const CELL_KEY_RIGHT_SHIFT = (state: IExcelState) => {
 }
 
 export const CELL_KEY_RIGHT = (state: IExcelState) => {
-  if (state.activeCellPosition.x >= state.columnCount - 1) return state
+  const activeSheet = nSelectActiveSheet(state)
+  if (activeSheet.activeCellPosition.x >= activeSheet.columnCount - 1)
+    return state
 
-  const mergeData = nSelectMergeCell(state.data, state.activeCellPosition)
+  const mergeData = nSelectMergeCell(
+    activeSheet.data,
+    activeSheet.activeCellPosition
+  )
 
-  state.activeCellPosition.x = mergeData
+  activeSheet.activeCellPosition.x = mergeData
     ? mergeData.end.x + 1
-    : state.activeCellPosition.x + 1
-  state.inactiveSelectionAreas = []
-  state.selectionAreaIndex = -1
-  state.selectionArea = undefined
+    : activeSheet.activeCellPosition.x + 1
+  activeSheet.inactiveSelectionAreas = []
+  activeSheet.selectionAreaIndex = -1
+  activeSheet.selectionArea = undefined
 
   return state
 }
@@ -65,16 +78,20 @@ export const CELL_KEY_LEFT_SHIFT = (state: IExcelState) => {
 }
 
 export const CELL_KEY_LEFT = (state: IExcelState) => {
-  if (state.activeCellPosition.x < 2) return state
+  const activeSheet = nSelectActiveSheet(state)
+  if (activeSheet.activeCellPosition.x < 2) return state
 
-  const mergeData = nSelectMergeCell(state.data, state.activeCellPosition)
+  const mergeData = nSelectMergeCell(
+    activeSheet.data,
+    activeSheet.activeCellPosition
+  )
 
-  state.activeCellPosition.x = mergeData
+  activeSheet.activeCellPosition.x = mergeData
     ? mergeData.end.x - 1
-    : state.activeCellPosition.x - 1
-  state.inactiveSelectionAreas = []
-  state.selectionAreaIndex = -1
-  state.selectionArea = undefined
+    : activeSheet.activeCellPosition.x - 1
+  activeSheet.inactiveSelectionAreas = []
+  activeSheet.selectionAreaIndex = -1
+  activeSheet.selectionArea = undefined
 
   return state
 }

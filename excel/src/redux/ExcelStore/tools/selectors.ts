@@ -1,8 +1,14 @@
-import { IPosition, IRows } from '../../../@types/excel/state'
+import { IPosition, IRows, IExcelState } from '../../../@types/excel/state'
 
 // //////////////////////////////////////////////////////////////
 // FUNCTIONS TO FETCH EXCEL DATA FROM REDUCER
 // //////////////////////////////////////////////////////////////
+export const nSelectSheetsMap = (excel: IExcelState) => excel.sheetsMap
+export const nSelectActiveSheetName = (excel: IExcelState) =>
+  excel.activeSheetName
+export const nSelectActiveSheet = (excel: IExcelState) =>
+  nSelectSheetsMap(excel)[nSelectActiveSheetName(excel)]
+
 export const nSelectCell = (data: IRows, position: IPosition) =>
   data[position.y] ? data[position.y][position.x] : undefined
 

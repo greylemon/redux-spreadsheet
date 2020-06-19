@@ -26,27 +26,6 @@ export const selectExcel = createSelector(
 // ===========================================================================
 // EXCEL BASE SELECTORS
 // ===========================================================================
-export const selectColumnWidths = createSelector(
-  [selectExcel],
-  (excel) => excel.columnWidths
-)
-
-export const selectData = createSelector([selectExcel], (excel) => excel.data)
-
-export const selectColumnCount = createSelector(
-  [selectExcel],
-  (excel) => excel.columnCount
-)
-
-export const selectRowHeights = createSelector(
-  [selectExcel],
-  (excel) => excel.rowHeights
-)
-
-export const selectRowCount = createSelector(
-  [selectExcel],
-  (excel) => excel.rowCount
-)
 
 export const selectIsEditMode = createSelector(
   [selectExcel],
@@ -58,31 +37,6 @@ export const selectCellEditorState = createSelector(
   (excel) => excel.editorState
 )
 
-export const selectFreezeRowCount = createSelector(
-  [selectExcel],
-  (excel) => excel.freezeRowCount
-)
-
-export const selectFreezeColumnCount = createSelector(
-  [selectExcel],
-  (excel) => excel.freezeColumnCount
-)
-
-export const selectActiveCellPosition = createSelector(
-  [selectExcel],
-  (excel) => excel.activeCellPosition
-)
-
-export const selectSelectionArea = createSelector(
-  [selectExcel],
-  (excel) => excel.selectionArea
-)
-
-export const selectInactiveSelectionAreas = createSelector(
-  [selectExcel],
-  (excel) => excel.inactiveSelectionAreas
-)
-
 export const selectSheetNames = createSelector(
   [selectExcel],
   (excel) => excel.sheetNames
@@ -90,7 +44,71 @@ export const selectSheetNames = createSelector(
 
 export const selectActiveSheetName = createSelector(
   [selectExcel],
-  (excel) => excel.activeSheeName
+  (excel) => excel.activeSheetName
+)
+
+export const selectSheetsMap = createSelector(
+  [selectExcel],
+  (excel) => excel.sheetsMap
+)
+
+// ===========================================================================
+// ACTIVE SHEET
+// ===========================================================================
+
+export const selectActiveSheet = createSelector(
+  [selectSheetsMap, selectActiveSheetName],
+  (sheetsMap, activeSheeName) => sheetsMap[activeSheeName]
+)
+
+export const selectFreezeRowCount = createSelector(
+  [selectActiveSheet],
+  (activeSheet) => activeSheet.freezeRowCount
+)
+
+export const selectFreezeColumnCount = createSelector(
+  [selectActiveSheet],
+  (activeSheet) => activeSheet.freezeColumnCount
+)
+
+export const selectActiveCellPosition = createSelector(
+  [selectActiveSheet],
+  (activeSheet) => activeSheet.activeCellPosition
+)
+
+export const selectSelectionArea = createSelector(
+  [selectActiveSheet],
+  (activeSheet) => activeSheet.selectionArea
+)
+
+export const selectInactiveSelectionAreas = createSelector(
+  [selectActiveSheet],
+  (activeSheet) => activeSheet.inactiveSelectionAreas
+)
+
+export const selectColumnWidths = createSelector(
+  [selectActiveSheet],
+  (activeSheet) => activeSheet.columnWidths
+)
+
+export const selectData = createSelector(
+  [selectActiveSheet],
+  (activeSheet) => activeSheet.data
+)
+
+export const selectColumnCount = createSelector(
+  [selectActiveSheet],
+  (activeSheet) => activeSheet.columnCount
+)
+
+export const selectRowHeights = createSelector(
+  [selectActiveSheet],
+  (activeSheet) => activeSheet.rowHeights
+)
+
+export const selectRowCount = createSelector(
+  [selectActiveSheet],
+  (activeSheet) => activeSheet.rowCount
 )
 
 // ===========================================================================

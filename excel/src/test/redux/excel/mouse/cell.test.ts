@@ -7,6 +7,7 @@ import { mockStore } from '../../mockStore'
 import { mockState } from '../../mockState'
 import { selectActiveCellPosition } from '../../../../redux/ExcelStore/selectors'
 import rootReducer from '../../../../redux/reducers'
+import { nSelectActiveSheet } from '../../../../redux/ExcelStore/tools/selectors'
 
 describe('cell mouse operations', () => {
   let store: ReturnType<typeof mockStore>
@@ -29,9 +30,10 @@ describe('cell mouse operations', () => {
       })
 
       it('move to (initial column count, initial row count)', () => {
+        const activeSheet = nSelectActiveSheet(initialExcelState)
         const position: IPosition = {
-          x: initialExcelState.columnCount,
-          y: initialExcelState.rowCount,
+          x: activeSheet.columnCount,
+          y: activeSheet.rowCount,
         }
 
         store.dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
@@ -44,26 +46,28 @@ describe('cell mouse operations', () => {
 
     describe('move to invalid position', () => {
       it('move to negative position', () => {
+        const activeSheet = nSelectActiveSheet(initialExcelState)
         const position: IPosition = { x: -1, y: -1 }
 
         store.dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
 
         const activeCellPosition = selectActiveCellPosition(store.getState())
 
-        expect(activeCellPosition).toEqual(initialExcelState.activeCellPosition)
+        expect(activeCellPosition).toEqual(activeSheet.activeCellPosition)
       })
 
       it('move to out of bound positive position', () => {
+        const activeSheet = nSelectActiveSheet(initialExcelState)
         const position: IPosition = {
-          x: initialExcelState.columnCount + 1,
-          y: initialExcelState.rowCount + 1,
+          x: activeSheet.columnCount + 1,
+          y: activeSheet.rowCount + 1,
         }
 
         store.dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
 
         const activeCellPosition = selectActiveCellPosition(store.getState())
 
-        expect(activeCellPosition).toEqual(initialExcelState.activeCellPosition)
+        expect(activeCellPosition).toEqual(activeSheet.activeCellPosition)
       })
     })
   })
