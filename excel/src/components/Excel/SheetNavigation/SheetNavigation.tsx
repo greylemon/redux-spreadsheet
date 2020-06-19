@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { SortableContainer, SortableElement } from 'react-sortable-hoc'
+import { SortableContainer, SortableElement, SortEndHandler, SortStartHandler } from 'react-sortable-hoc'
 
 import { ISheetName } from '../../../@types/excel/state'
 import { useTypedSelector } from '../../../redux/store'
@@ -8,7 +8,8 @@ import {
   selectActiveSheetName,
   selectActiveSheetNameIndex,
 } from '../../../redux/ExcelStore/selectors'
-import { shallowEqual } from 'react-redux'
+import { shallowEqual, useDispatch } from 'react-redux'
+import { ExcelActions } from '../../../redux/ExcelStore/store'
 
 const SortableItem = SortableElement(
   ({ sheetName }: { sheetName: ISheetName }) => (
@@ -31,8 +32,8 @@ const SortableList = SortableContainer(
 )
 
 const SheetNavigation = () => {
-  // const dispatch = useDispatch()
-  const { sheetNames } = useTypedSelector(
+  const dispatch = useDispatch()
+  const { sheetNames, activeSheetNameIndex } = useTypedSelector(
     (state) => ({
       sheetNames: selectSheetNames(state),
       activeSheetName: selectActiveSheetName(state),
@@ -41,13 +42,20 @@ const SheetNavigation = () => {
     shallowEqual
   )
 
-  const handleSortEnd = useCallback(
+  const handleSortEnd = useCallback<SortEndHandler>(
     ({ oldIndex, newIndex }) => {
-      if (oldIndex === newIndex) {
-        // dispatch(ExcelActions)
+      if (oldIndex !== newIndex) dispatch(ExcelActions.CHANGE_SHEET_ORDER({ oldIndex, newIndex }))
+    },
+    [dispatch]
+  )
+
+  const handleSortStart = useCallback<SortStartHandler>(
+    ({ index }) => {
+      if (index !== activeSheetNameIndex) {
+        dispatch(ExcelActions.CHANGE_SHEET(sheetNames[index]))
       }
     },
-    [] // dispatch]
+    [dispatch, activeSheetNameIndex, sheetNames]
   )
 
   return (
@@ -56,6 +64,7 @@ const SheetNavigation = () => {
         axis="x"
         lockAxis="x"
         sheetNames={sheetNames}
+        onSortStart={handleSortStart}
         onSortEnd={handleSortEnd}
       />
     </div>

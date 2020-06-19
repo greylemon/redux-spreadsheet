@@ -12,6 +12,7 @@ import {
   selectGetRowHeight,
   selectGetColumnWidth,
   selectColumnWidthsAdjusted,
+  selectActiveSheetName,
 } from '../../../redux/ExcelStore/selectors'
 import BottomRightPane from './BottomRightPane'
 import { shallowEqual } from 'react-redux'
@@ -27,6 +28,7 @@ export const Sheet = ({ height, width }: Size) => {
     tableFreezeColumnCount,
     tableFreezeRowCount,
     columnWidthsAdjusted,
+    activeSheetName
   } = useTypedSelector(
     (state) => ({
       columnCount: selectColumnCount(state),
@@ -37,6 +39,7 @@ export const Sheet = ({ height, width }: Size) => {
       tableFreezeRowCount: selectFreezeRowCount(state) + 1,
       tableFreezeColumnCount: selectFreezeColumnCount(state) + 1,
       columnWidthsAdjusted: selectColumnWidthsAdjusted(state),
+      activeSheetName: selectActiveSheetName(state),
     }),
     shallowEqual
   )
@@ -47,7 +50,7 @@ export const Sheet = ({ height, width }: Size) => {
     const current = gridRef.current
 
     if (current) current.resetAfterIndices({ columnIndex: 0, rowIndex: 0 })
-  }, [getColumnWidth, getRowHeight])
+  }, [getColumnWidth, getRowHeight, activeSheetName])
 
   return (
     <div className="sheetGrid" tabIndex={-1}>
