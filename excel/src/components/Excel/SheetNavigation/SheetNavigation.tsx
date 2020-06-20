@@ -12,19 +12,38 @@ import { shallowEqual, useDispatch } from 'react-redux'
 import { ExcelActions } from '../../../redux/ExcelStore/store'
 
 const SortableItem = SortableElement(
-  ({ sheetName }: { sheetName: ISheetName }) => (
-    <li className="sheetNavigation__sheet">{sheetName}</li>
+  ({
+    sheetName,
+    activeSheetName,
+  }: {
+    sheetName: ISheetName
+    activeSheetName: ISheetName
+  }) => (
+    <li
+      className={`sheetNavigation__sheet ${
+        sheetName === activeSheetName ? 'sheetNavigation__sheet--active' : ''
+      }`}
+    >
+      {sheetName}
+    </li>
   )
 )
 
 const SortableList = SortableContainer(
-  ({ sheetNames }: { sheetNames: string[] }) => (
+  ({
+    sheetNames,
+    activeSheetName,
+  }: {
+    sheetNames: string[]
+    activeSheetName: ISheetName
+  }) => (
     <ul className="sheetNavigation__sheets">
       {sheetNames.map((sheetName, index) => (
         <SortableItem
           key={`item-${sheetName}`}
           index={index}
           sheetName={sheetName}
+          activeSheetName={activeSheetName}
         />
       ))}
     </ul>
@@ -33,7 +52,11 @@ const SortableList = SortableContainer(
 
 const SheetNavigation = () => {
   const dispatch = useDispatch()
-  const { sheetNames, activeSheetNameIndex } = useTypedSelector(
+  const {
+    sheetNames,
+    activeSheetNameIndex,
+    activeSheetName,
+  } = useTypedSelector(
     (state) => ({
       sheetNames: selectSheetNames(state),
       activeSheetName: selectActiveSheetName(state),
@@ -65,6 +88,7 @@ const SheetNavigation = () => {
         axis="x"
         lockAxis="x"
         sheetNames={sheetNames}
+        activeSheetName={activeSheetName}
         onSortStart={handleSortStart}
         onSortEnd={handleSortEnd}
       />

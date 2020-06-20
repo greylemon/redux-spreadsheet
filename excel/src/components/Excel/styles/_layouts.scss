@@ -45,5 +45,9 @@
     text-overflow: ellipsis;
     min-width: 100px;
     width: 100px;
+
+    &--active {
+      background-color: rgb(192, 192, 192);
+    }
   }
 }
