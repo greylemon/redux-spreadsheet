@@ -3,12 +3,10 @@ import thunk from 'redux-thunk'
 
 export const devTools: any = {
   stateSanitizer: (state: IRootStore) => ({
-    Excel: {
-      ...state.Excel,
-      present: {
-        ...state.Excel.present,
-        sheetsMap: '<<LONG_BLOB>>',
-      },
+    ...state,
+    present: {
+      ...state.present,
+      sheetsMap: '<<LONG_BLOB>>',
     },
   }),
 }

@@ -16,12 +16,7 @@ import { IPosition } from '../../@types/excel/state'
 import { CSSProperties } from 'react'
 import memoize from 'fast-memoize'
 
-export const selectUndoxExcel = (state: IRootStore) => state.Excel
-
-export const selectExcel = createSelector(
-  [selectUndoxExcel],
-  (undoxExcel) => undoxExcel.present
-)
+export const selectExcel = (undoxExcel: IRootStore) => undoxExcel.present
 
 // ===========================================================================
 // EXCEL BASE SELECTORS

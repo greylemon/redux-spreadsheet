@@ -1,10 +1,6 @@
 import { UndoxState, Action } from 'undox'
 import { IExcelState } from '../excel/state'
 
-export type IExcelStore = UndoxState<IExcelState, Action>
-
-type IRootStore = {
-  Excel: IExcelStore
-}
+type IRootStore = UndoxState<IExcelState, Action>
 
 export default IRootStore
