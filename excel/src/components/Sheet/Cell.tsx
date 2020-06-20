@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react'
-import { ICellProps } from '../../../@types/excel/components'
+import { ICellProps } from '../../@types/excel/components'
 import EditableCell from './EditableCell'
 import RowCell from './RowCell'
 import ColumnCell from './ColumnCell'

@@ -1,12 +1,8 @@
 import React, { MouseEvent, FunctionComponent, Fragment } from 'react'
-import { ICellProps } from '../../../@types/excel/components'
+import { ICellProps } from '../../@types/excel/components'
 import { useDispatch } from 'react-redux'
-import { ExcelActions } from '../../../redux/ExcelStore/store'
-import {
-  IRichText,
-  IFragment,
-  IRichTextBlock,
-} from '../../../@types/excel/state'
+import { ExcelActions } from '../../redux/ExcelStore/store'
+import { IRichText, IFragment, IRichTextBlock } from '../../@types/excel/state'
 import { CSSProperties } from '@material-ui/core/styles/withStyles'
 
 const RichTextFragment: FunctionComponent<IFragment> = ({

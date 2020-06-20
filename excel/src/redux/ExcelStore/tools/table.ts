@@ -1,4 +1,4 @@
-import { DEFAULT } from '../../../components/Excel/constants/defaults'
+import { DEFAULT } from '../../../components/constants/defaults'
 
 export const getTableColumnCount = (columnCount: number) =>
   Math.max(DEFAULT.minColumnCount, columnCount)

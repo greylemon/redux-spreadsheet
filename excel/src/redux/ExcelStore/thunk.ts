@@ -1,4 +1,4 @@
-import { convertRawExcelToState } from '../../components/Excel/tools/parser'
+import { convertRawExcelToState } from '../../components/tools/parser'
 import { ThunkAction } from 'redux-thunk'
 import IRootStore from '../../@types/redux/store'
 import { Action } from 'redux'

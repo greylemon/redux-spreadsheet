@@ -5,7 +5,7 @@ import {
   ICheckIsAreaInRelevantPane,
   ICheckIsActiveCellInCorrectPane,
   IComputeActiveCellStyle,
-} from '../../../@types/excel/functions'
+} from '../../@types/excel/functions'
 import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import {
   normalizeColumnWidthFromArray,
@@ -21,8 +21,8 @@ import {
   IFreezeColumnCount,
   IFreezeRowCount,
   ISelectionArea,
-} from '../../../@types/excel/state'
-import { nSelectMergeCell } from '../../../redux/ExcelStore/tools/selectors'
+} from '../../@types/excel/state'
+import { nSelectMergeCell } from '../../redux/ExcelStore/tools/selectors'
 import {
   STYLE_SELECTION_BORDER_WIDTH,
   STYLE_SELECTION_BORDER_COLOR,

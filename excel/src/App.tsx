@@ -1,5 +1,5 @@
 import React from 'react'
-import Excel from './components/Excel/Excel'
+import Excel from './Excel'
 
 const App = () => (
   <div>

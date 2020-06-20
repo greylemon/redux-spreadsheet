@@ -5,7 +5,7 @@ import {
   normalizeRowHeightFromArray,
   normalizeColumnWidthFromArray,
   getAreaDimensions,
-} from '../../components/Excel/tools/dimensions'
+} from '../../components/tools/dimensions'
 import IRootStore from '../../@types/redux/store'
 import {
   IComputeActiveCellStyle,

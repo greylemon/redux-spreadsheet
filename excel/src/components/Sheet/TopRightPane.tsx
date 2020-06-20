@@ -1,27 +1,27 @@
-import React, { Fragment, CSSProperties } from 'react'
-
-import {
-  ICheckIsActiveCellInCorrectPane,
-  IComputeSelectionAreaStyle,
-  ICheckIsAreaInRelevantPane,
-} from '../../../@types/excel/functions'
+import React, { Fragment } from 'react'
 import CommonActivityPane from './CommonPane'
 import {
-  IColumnWidths,
-  IColumnOffsets,
-  IRowHeights,
-  IRowOffsets,
-  ISelectionArea,
-  IFreezeColumnCount,
-  IFreezeRowCount,
-} from '../../../@types/excel/state'
+  IComputeSelectionAreaStyle,
+  ICheckIsAreaInRelevantPane,
+  ICheckIsActiveCellInCorrectPane,
+} from '../../@types/excel/functions'
+import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import {
   normalizeColumnWidthFromArray,
   normalizeRowHeightFromArray,
 } from '../tools/dimensions'
 import {
-  STYLE_SELECTION_BORDER_WIDTH,
+  IColumnWidths,
+  IColumnOffsets,
+  IRowHeights,
+  IRowOffsets,
+  IFreezeColumnCount,
+  IFreezeRowCount,
+  ISelectionArea,
+} from '../../@types/excel/state'
+import {
   STYLE_SELECTION_BORDER_COLOR,
+  STYLE_SELECTION_BORDER_WIDTH,
   STYLE_SELECTION_BORDER_STYLE,
 } from '../constants/styles'
 
@@ -39,17 +39,16 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
   let selectionAreaWidth
   let selectionAreaHeight
   let left
-  let top
 
   const { start, end } = selectionArea!
 
   const customSelectionStyle: CSSProperties = {
-    borderBottomWidth: STYLE_SELECTION_BORDER_WIDTH,
-    borderBottomColor: STYLE_SELECTION_BORDER_COLOR,
-    borderBottomStyle: STYLE_SELECTION_BORDER_STYLE,
     borderRightWidth: STYLE_SELECTION_BORDER_WIDTH,
     borderRightColor: STYLE_SELECTION_BORDER_COLOR,
     borderRightStyle: STYLE_SELECTION_BORDER_STYLE,
+    borderTopWidth: STYLE_SELECTION_BORDER_WIDTH,
+    borderTopColor: STYLE_SELECTION_BORDER_COLOR,
+    borderTopStyle: STYLE_SELECTION_BORDER_STYLE,
   }
 
   const topStart = rowOffsets[start.y]
@@ -79,13 +78,13 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
   ) {
     left = leftFrozenEnd + widthFrozenEnd
 
-    if (start.x <= end.x) {
+    if (start.x < end.x) {
       selectionAreaWidth = leftEnd + widthEnd - left
     } else {
       selectionAreaWidth = leftStart + widthStart - left
     }
   } else {
-    if (start.x <= end.x) {
+    if (start.x < end.x) {
       selectionAreaWidth = leftEnd + widthEnd - leftStart
       left = leftStart
     } else {
@@ -98,29 +97,21 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
     customSelectionStyle.borderLeftStyle = STYLE_SELECTION_BORDER_STYLE
   }
 
-  if (
-    freezeRowCount &&
-    (start.y <= freezeRowCount || end.y <= freezeRowCount)
-  ) {
-    top = topFrozenEnd + heightFrozenEnd
+  const minTop = start.y < end.y ? topStart : topEnd
+  const top = minTop
 
-    if (start.y <= end.y) {
-      selectionAreaHeight = topEnd + heightEnd - top
-    } else {
-      selectionAreaHeight = topStart + heightStart - top
-    }
+  if (start.y > freezeRowCount || end.y > freezeRowCount) {
+    selectionAreaHeight = topFrozenEnd + heightFrozenEnd - top
   } else {
-    if (start.y <= end.y) {
+    if (start.y < end.y) {
       selectionAreaHeight = topEnd + heightEnd - topStart
-      top = topStart
     } else {
       selectionAreaHeight = topStart + heightStart - topEnd
-      top = topEnd
     }
 
-    customSelectionStyle.borderTopWidth = STYLE_SELECTION_BORDER_WIDTH
-    customSelectionStyle.borderTopColor = STYLE_SELECTION_BORDER_COLOR
-    customSelectionStyle.borderTopStyle = STYLE_SELECTION_BORDER_STYLE
+    customSelectionStyle.borderBottomWidth = STYLE_SELECTION_BORDER_WIDTH
+    customSelectionStyle.borderBottomColor = STYLE_SELECTION_BORDER_COLOR
+    customSelectionStyle.borderBottomStyle = STYLE_SELECTION_BORDER_STYLE
   }
 
   customSelectionStyle.left = left
@@ -131,29 +122,28 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
   return customSelectionStyle
 }
 
-const checkIsActiveCellInCorrectPane: ICheckIsActiveCellInCorrectPane = (
-  position,
-  freezeColumnCount,
-  freezeRowCount
-) => position.x > freezeColumnCount && position.y > freezeRowCount
-
 const checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane = (
   freezeColumnCount,
   freezeRowCount,
   area
 ) =>
-  area !== undefined &&
   (area!.start.x > freezeColumnCount || area!.end.x > freezeColumnCount) &&
-  (area!.start.y > freezeRowCount || area!.end.y > freezeRowCount)
+  (area!.start.y <= freezeRowCount || area!.end.y <= freezeRowCount)
 
-const BottomRightPane = () => (
+const checkIsActiveCellInCorrectPane: ICheckIsActiveCellInCorrectPane = (
+  position,
+  freezeColumnCount,
+  freezeRowCount
+) => position.x > freezeColumnCount && position.y <= freezeRowCount
+
+const TopRightPane = () => (
   <Fragment>
     <CommonActivityPane
-      checkIsActiveCellInCorrectPane={checkIsActiveCellInCorrectPane}
-      checkIsAreaInRelevantPane={checkIsAreaInRelevantPane}
       computeSelectionAreaStyle={computeSelectionAreaStyle}
+      checkIsAreaInRelevantPane={checkIsAreaInRelevantPane}
+      checkIsActiveCellInCorrectPane={checkIsActiveCellInCorrectPane}
     />
   </Fragment>
 )
 
-export default BottomRightPane
+export default TopRightPane

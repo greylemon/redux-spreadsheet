@@ -1,4 +1,4 @@
-import { IPosition } from '../../../@types/excel/state'
+import { IPosition } from '../../@types/excel/state'
 
 export const DEFAULT = {
   rowCount: 0,

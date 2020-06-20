@@ -18,15 +18,15 @@ import {
   IValue,
   ISheetNames,
   ISheetsMap,
-} from '../../../@types/excel/state'
+} from '../../@types/excel/state'
 import { DEFAULT } from '../constants/defaults'
 import { numberRegex } from './regex'
-import { ValueType } from '../../../@types/exceljs'
+import { ValueType } from '../../@types/exceljs'
 import uniqid from 'uniqid'
 import {
   getTableColumnCount,
   getTableRowCount,
-} from '../../../redux/ExcelStore/tools/table'
+} from '../../redux/ExcelStore/tools/table'
 
 // TODO
 export const getStylesFromCell = (_cell: Cell) => {

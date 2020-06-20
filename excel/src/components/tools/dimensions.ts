@@ -17,7 +17,7 @@ import {
   IRowOffsets,
   IColumnOffsets,
   IArea,
-} from '../../../@types/excel/state'
+} from '../../@types/excel/state'
 
 export const normalizeRowHeight = (rowHeight: IRowheight) =>
   rowHeight ? rowHeight * EXCEL_ROW_HEIGHT_SCALE : EXCEL_SHEET_ROW_HEIGHT
