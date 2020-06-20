@@ -4,14 +4,14 @@ import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../../redux/store'
 import Cell from './Cell'
 import {
-  selectColumnCount,
-  selectRowCount,
   selectData,
-  selectFreezeRowCount,
-  selectFreezeColumnCount,
   selectGetRowHeight,
   selectGetColumnWidth,
   selectColumnWidthsAdjusted,
+  selectTableRowCount,
+  selectTableColumnCount,
+  selectTableFreezeRowCount,
+  selectTableFreezeColumnCount,
 } from '../../../redux/ExcelStore/selectors'
 import BottomRightPane from './BottomRightPane'
 import { shallowEqual } from 'react-redux'
@@ -22,8 +22,8 @@ import BottomLeftPane from './BottomLeftPane'
 export const Sheet = ({ height, width }: Size) => {
   const gridRef = useRef<VariableSizeGrid>(null)
   const {
-    columnCount,
-    rowCount,
+    tableColumnCount,
+    tableRowCount,
     data,
     getColumnWidth,
     getRowHeight,
@@ -32,13 +32,13 @@ export const Sheet = ({ height, width }: Size) => {
     columnWidthsAdjusted,
   } = useTypedSelector(
     (state) => ({
-      columnCount: selectColumnCount(state),
-      rowCount: selectRowCount(state),
+      tableColumnCount: selectTableColumnCount(state),
+      tableRowCount: selectTableRowCount(state),
       data: selectData(state),
       getColumnWidth: selectGetColumnWidth(state),
       getRowHeight: selectGetRowHeight(state),
-      tableFreezeRowCount: selectFreezeRowCount(state) + 1,
-      tableFreezeColumnCount: selectFreezeColumnCount(state) + 1,
+      tableFreezeRowCount: selectTableFreezeRowCount(state),
+      tableFreezeColumnCount: selectTableFreezeColumnCount(state),
       columnWidthsAdjusted: selectColumnWidthsAdjusted(state),
     }),
     shallowEqual
@@ -56,10 +56,10 @@ export const Sheet = ({ height, width }: Size) => {
     <div className="sheetGrid" tabIndex={-1}>
       <VariableSizeGrid
         ref={gridRef}
-        columnCount={columnCount}
+        columnCount={tableColumnCount}
         columnWidth={getColumnWidth}
         height={height}
-        rowCount={rowCount}
+        rowCount={tableRowCount}
         rowHeight={getRowHeight}
         width={width}
         itemData={itemData}

@@ -64,7 +64,7 @@ export const getColumnOffsets = (
 
   for (
     let column = 2, incrementor = EXCEL_SHEET_COLUMN_WIDTH_HEADER;
-    column < columnCount;
+    column <= columnCount;
     column++
   ) {
     incrementor += normalizeColumnWidthFromArray(column - 1, columnWidths)
@@ -85,7 +85,7 @@ export const getRowOffsets = (
 
   for (
     let row = 2, incrementor = EXCEL_SHEET_ROW_HEIGHT_HEADER;
-    row < rowCount;
+    row <= rowCount;
     row++
   ) {
     incrementor += normalizeRowHeightFromArray(row - 1, rowHeights)

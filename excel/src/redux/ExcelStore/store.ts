@@ -35,8 +35,8 @@ export const initialExcelState: IExcelState = {
 
   sheetsMap: {
     Sheet1: {
-      rowCount: 201,
-      columnCount: 27,
+      rowCount: 200,
+      columnCount: 26,
 
       columnWidths: {},
       rowHeights: {},

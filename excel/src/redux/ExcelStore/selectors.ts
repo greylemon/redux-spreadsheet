@@ -114,6 +114,26 @@ export const selectRowCount = createSelector(
 // ===========================================================================
 // CUSTOM SELECTORS
 // ===========================================================================
+export const selectTableColumnCount = createSelector(
+  [selectColumnCount],
+  (columnCount) => columnCount + 1
+)
+
+export const selectTableRowCount = createSelector(
+  [selectRowCount],
+  (rowCount) => rowCount + 1
+)
+
+export const selectTableFreezeColumnCount = createSelector(
+  [selectFreezeColumnCount],
+  (freezeColumnCount) => freezeColumnCount + 1
+)
+
+export const selectTableFreezeRowCount = createSelector(
+  [selectFreezeRowCount],
+  (freezeRowCount) => freezeRowCount + 1
+)
+
 export const selectColumnoffsets = createSelector(
   [selectColumnWidths, selectColumnCount],
   (columnWidths, columnCount) => getColumnOffsets(columnWidths, columnCount)
@@ -162,7 +182,7 @@ export const selectColumnWidthsAdjusted = createSelector(
   (columnWidths, columnOffsets, columnCount, freezeColumnCount) =>
     columnOffsets.map((offset, index) => {
       const boundedColumnIndex =
-        index <= freezeColumnCount ? freezeColumnCount : columnCount - 1
+        index <= freezeColumnCount ? freezeColumnCount : columnCount
 
       return (
         columnOffsets[boundedColumnIndex] +
@@ -300,11 +320,11 @@ export const selectFactoryActiveCellStyle = memoize(
         }
 
         activeCellStyle.maxWidth =
-          columnOffsets[columnCount - 1] +
+          columnOffsets[columnCount] +
           normalizeColumnWidthFromArray(columnCount, columnWidths) -
           columnOffsets[activeCellPosition.x]
         activeCellStyle.maxHeight =
-          rowOffsets[rowCount - 1] +
+          rowOffsets[rowCount] +
           normalizeRowHeightFromArray(rowCount, rowHeights) -
           rowOffsets[activeCellPosition.y]
 

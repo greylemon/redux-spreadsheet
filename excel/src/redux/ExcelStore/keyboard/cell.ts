@@ -9,7 +9,7 @@ export const CELL_KEY_DOWN_SHIFT = (state: IExcelState) => {
 
 export const CELL_KEY_DOWN = (state: IExcelState) => {
   const activeSheet = nSelectActiveSheet(state)
-  if (activeSheet.activeCellPosition.y >= activeSheet.rowCount - 1) return state
+  if (activeSheet.activeCellPosition.y >= activeSheet.rowCount) return state
 
   const mergeData = nSelectMergeCell(
     activeSheet.data,
@@ -55,8 +55,7 @@ export const CELL_KEY_RIGHT_SHIFT = (state: IExcelState) => {
 
 export const CELL_KEY_RIGHT = (state: IExcelState) => {
   const activeSheet = nSelectActiveSheet(state)
-  if (activeSheet.activeCellPosition.x >= activeSheet.columnCount - 1)
-    return state
+  if (activeSheet.activeCellPosition.x >= activeSheet.columnCount) return state
 
   const mergeData = nSelectMergeCell(
     activeSheet.data,
