@@ -43,10 +43,7 @@ const NormalCellValue: FunctionComponent<{ value?: string }> = ({ value }) => (
 const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
   const dispatch = useDispatch()
 
-  const {
-    data: sheetData,
-    // columnWidthsAdjusted
-  } = data
+  const { data: sheetData, columnWidthsAdjusted } = data
 
   const rowData = sheetData[rowIndex]
 
@@ -79,7 +76,7 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
 
   const adjustedStyle: CSSProperties = {
     ...style,
-    // width: columnWidthsAdjusted[columnIndex],
+    width: columnWidthsAdjusted[columnIndex],
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',

@@ -153,14 +153,23 @@ export const selectIsActiveCellPositionEqualSelectionArea = createSelector(
 )
 
 export const selectColumnWidthsAdjusted = createSelector(
-  [selectColumnWidths, selectColumnoffsets, selectColumnCount],
-  (columnWidths, columnOffsets, columnCount) =>
-    columnOffsets.map(
-      (offset) =>
-        columnOffsets[columnCount - 1] +
-        normalizeColumnWidthFromArray(columnCount - 1, columnWidths) -
+  [
+    selectColumnWidths,
+    selectColumnoffsets,
+    selectColumnCount,
+    selectFreezeColumnCount,
+  ],
+  (columnWidths, columnOffsets, columnCount, freezeColumnCount) =>
+    columnOffsets.map((offset, index) => {
+      const boundedColumnIndex =
+        index <= freezeColumnCount ? freezeColumnCount : columnCount - 1
+
+      return (
+        columnOffsets[boundedColumnIndex] +
+        normalizeColumnWidthFromArray(boundedColumnIndex, columnWidths) -
         offset
-    )
+      )
+    })
 )
 
 export const selectActiveSheetNameIndex = createSelector(
