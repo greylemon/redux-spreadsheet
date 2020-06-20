@@ -1,15 +1,15 @@
 import React, { useCallback } from 'react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 
-import { ISheetName } from '../../@types/excel/state'
-import { useTypedSelector } from '../../redux/store'
+import { ISheetName } from '../../@types/state'
+import { useTypedSelector } from '../../redux/redux'
 import {
   selectSheetNames,
   selectActiveSheetName,
   selectActiveSheetNameIndex,
-} from '../../redux/ExcelStore/selectors'
+} from '../../redux/selectors'
 import { shallowEqual, useDispatch } from 'react-redux'
-import { ExcelActions } from '../../redux/ExcelStore/store'
+import { ExcelActions } from '../../redux/store'
 
 const SortableItem = SortableElement(
   ({

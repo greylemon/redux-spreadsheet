@@ -4,7 +4,7 @@ import {
   ICheckIsActiveCellInCorrectPane,
   IComputeSelectionAreaStyle,
   ICheckIsAreaInRelevantPane,
-} from '../../@types/excel/functions'
+} from '../../@types/functions'
 import CommonActivityPane from './CommonPane'
 import {
   IColumnWidths,
@@ -14,16 +14,16 @@ import {
   ISelectionArea,
   IFreezeColumnCount,
   IFreezeRowCount,
-} from '../../@types/excel/state'
+} from '../../@types/state'
 import {
   normalizeColumnWidthFromArray,
   normalizeRowHeightFromArray,
-} from '../tools/dimensions'
+} from '../../tools/dimensions'
 import {
   STYLE_SELECTION_BORDER_WIDTH,
   STYLE_SELECTION_BORDER_COLOR,
   STYLE_SELECTION_BORDER_STYLE,
-} from '../constants/styles'
+} from '../../constants/styles'
 
 const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
   columnWidths: IColumnWidths,

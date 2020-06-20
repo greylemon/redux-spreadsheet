@@ -1,4 +1,4 @@
-import IRootStore from '../@types/redux/store'
+import IRootStore from '../@types/store'
 import thunk from 'redux-thunk'
 
 export const devTools: any = {

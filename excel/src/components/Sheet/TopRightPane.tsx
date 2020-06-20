@@ -4,12 +4,12 @@ import {
   IComputeSelectionAreaStyle,
   ICheckIsAreaInRelevantPane,
   ICheckIsActiveCellInCorrectPane,
-} from '../../@types/excel/functions'
+} from '../../@types/functions'
 import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import {
   normalizeColumnWidthFromArray,
   normalizeRowHeightFromArray,
-} from '../tools/dimensions'
+} from '../../tools/dimensions'
 import {
   IColumnWidths,
   IColumnOffsets,
@@ -18,12 +18,12 @@ import {
   IFreezeColumnCount,
   IFreezeRowCount,
   ISelectionArea,
-} from '../../@types/excel/state'
+} from '../../@types/state'
 import {
   STYLE_SELECTION_BORDER_COLOR,
   STYLE_SELECTION_BORDER_WIDTH,
   STYLE_SELECTION_BORDER_STYLE,
-} from '../constants/styles'
+} from '../../constants/styles'
 
 const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
   columnWidths: IColumnWidths,

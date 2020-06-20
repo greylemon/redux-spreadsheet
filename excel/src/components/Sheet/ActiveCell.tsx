@@ -1,12 +1,12 @@
 import React, { useCallback, Fragment } from 'react'
 import { Editor, RichUtils, EditorState } from 'draft-js'
-import { useTypedSelector } from '../../redux/store'
+import { useTypedSelector } from '../../redux/redux'
 import { shallowEqual, useDispatch } from 'react-redux'
 import {
   IActiveCellProps,
   INormalActiveCellProps,
   IEditorCellProps,
-} from '../../@types/excel/components'
+} from '../../@types/components'
 import {
   selectIsEditMode,
   selectFactoryActiveCellStyle,
@@ -14,8 +14,8 @@ import {
   selectActiveCellPosition,
   selectFreezeColumnCount,
   selectFreezeRowCount,
-} from '../../redux/ExcelStore/selectors'
-import { ExcelActions } from '../../redux/ExcelStore/store'
+} from '../../redux/selectors'
+import { ExcelActions } from '../../redux/store'
 
 const EditorCell = ({ style }: IEditorCellProps) => {
   const dispatch = useDispatch()

@@ -1,12 +1,12 @@
 import React, { Fragment } from 'react'
-import { ISelectionAreaProps } from '../../@types/excel/components'
+import { ISelectionAreaProps } from '../../@types/components'
 import {
   selectSelectionArea,
   selectFactorySelectionAreaStyle,
   selectFreezeRowCount,
   selectFreezeColumnCount,
-} from '../../redux/ExcelStore/selectors'
-import { useTypedSelector } from '../../redux/store'
+} from '../../redux/selectors'
+import { useTypedSelector } from '../../redux/redux'
 import { shallowEqual } from 'react-redux'
 
 const SelectionArea = ({

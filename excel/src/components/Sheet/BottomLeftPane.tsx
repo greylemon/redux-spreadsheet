@@ -5,14 +5,14 @@ import {
   ICheckIsAreaInRelevantPane,
   ICheckIsActiveCellInCorrectPane,
   IComputeActiveCellStyle,
-} from '../../@types/excel/functions'
+} from '../../@types/functions'
 import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import {
   normalizeColumnWidthFromArray,
   normalizeRowHeightFromArray,
   normalizeColumnWidth,
   normalizeRowHeight,
-} from '../tools/dimensions'
+} from '../../tools/dimensions'
 import {
   IColumnWidths,
   IColumnOffsets,
@@ -21,13 +21,13 @@ import {
   IFreezeColumnCount,
   IFreezeRowCount,
   ISelectionArea,
-} from '../../@types/excel/state'
-import { nSelectMergeCell } from '../../redux/ExcelStore/tools/selectors'
+} from '../../@types/state'
+import { nSelectMergeCell } from '../../redux/tools/selectors'
 import {
   STYLE_SELECTION_BORDER_WIDTH,
   STYLE_SELECTION_BORDER_COLOR,
   STYLE_SELECTION_BORDER_STYLE,
-} from '../constants/styles'
+} from '../../constants/styles'
 
 const computeActiveCellStyle: IComputeActiveCellStyle = (
   position,

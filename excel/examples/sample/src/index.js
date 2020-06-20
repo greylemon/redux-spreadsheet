@@ -1,19 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
-import './index.scss'
-import Excel from './Excel'
+import './index.css'
+import App from './App'
 import * as serviceWorker from './serviceWorker'
-import store from './redux/redux'
 
 ReactDOM.render(
-  // <React.StrictMode>
-  <div>
-    <Provider store={store}>
-      <Excel />
-    </Provider>
-  </div>,
-  // </React.StrictMode>
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
   document.getElementById('root')
 )
 

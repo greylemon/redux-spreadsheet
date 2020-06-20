@@ -1,10 +1,7 @@
 import { useDispatch, shallowEqual } from 'react-redux'
-import { ExcelActions } from '../redux/ExcelStore/store'
-import { useTypedSelector } from '../redux/store'
-import {
-  selectSelectionArea,
-  selectIsEditMode,
-} from '../redux/ExcelStore/selectors'
+import { ExcelActions } from '../redux/store'
+import { useTypedSelector } from '../redux/redux'
+import { selectSelectionArea, selectIsEditMode } from '../redux/selectors'
 import { useCallback } from 'react'
 import { undo, redo } from 'undox'
 

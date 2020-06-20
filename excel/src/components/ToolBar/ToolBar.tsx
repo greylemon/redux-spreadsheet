@@ -1,7 +1,7 @@
 import React, { ChangeEvent } from 'react'
 import Input from '@material-ui/core/Input'
 import { useDispatch } from 'react-redux'
-import { loadWorkbook } from '../../redux/ExcelStore/thunk'
+import { loadWorkbook } from '../../redux/thunk'
 
 const FileUpload = () => {
   const dispatch = useDispatch()

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { ICellProps } from '../../@types/excel/components'
+import { ICellProps } from '../../@types/components'
 
 const RowCell = ({ style, rowIndex }: ICellProps) => {
   return (
