@@ -4,19 +4,19 @@
 
 Currently, the excel project is configured for [yarn](https://yarnpkg.com/) package manager
 
-Command: ```yarn install```
+Command: `yarn install`
 
 ## Starting the Application
 
-Command: ```yarn start```
+Command: `yarn start`
 
 ## Format and Linting
 
 Change to the excel folder:
 
-- eslint: ```yarn fix:eslint```
+- eslint: `yarn fix:eslint`
 
-- Prettier formatting: ```yarn fix:prettier```
+- Prettier formatting: `yarn fix:prettier`
 
 Please check out the package.json of the excel for the scripts and other node configurations.
 
@@ -24,7 +24,7 @@ Please check out the package.json of the excel for the scripts and other node co
 
 Note: testing is only for the excel folder
 
-Command: ```yarn test```
+Command: `yarn test`
 
 ## Husky
 
