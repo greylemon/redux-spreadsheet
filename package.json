@@ -49,7 +49,6 @@
     "events": "^3.1.0",
     "exceljs": "^4.0.1",
     "fast-memoize": "^2.5.2",
-    "jest": "^26.0.1",
     "lint": "^0.7.0",
     "lint-staged": "^10.2.9",
     "node-sass": "^4.14.1",
@@ -125,15 +124,5 @@
       "yarn fix",
       "yarn test:staged"
     ]
-  },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "js"
-    ],
-    "transform": {
-      "\\.(ts|tsx)$": "ts-jest"
-    },
-    "testRegex": "/test/.*\\.test.(ts|tsx|js)$"
   }
 }
