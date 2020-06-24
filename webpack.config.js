@@ -5,18 +5,16 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
   .BundleAnalyzerPlugin
-const ManifestPlugin = require('webpack-manifest-plugin')
+// const ManifestPlugin = require('webpack-manifest-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
-  entry: path.join(__dirname, '/index.ts'),
+  entry: path.join(__dirname, '/src'),
   mode: 'development',
   output: {
     filename: '[name].bundle.js',
     chunkFilename: '[name].bundle.js',
     path: path.join(__dirname, '/dist'),
-    libraryTarget: 'umd',
-    library: 'spreadsheet-redux',
   },
   devtool: 'source-map',
   plugins: [
@@ -34,9 +32,8 @@ module.exports = {
     // new ManifestPlugin(),
   ],
   resolve: {
-    extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
+    extensions: ['*', '.js', '.jsx', '.tsx', '.ts']
   },
-  externals: { react: 'react', reactDOM: 'react-dom' },
   module: {
     rules: [
       {
@@ -50,12 +47,19 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: /node_modules/,
-      },
+        exclude: [
+          /node_modules/,
+          path.join(__dirname, '/sample'),
+        ]
+      }
     ],
   },
   optimization: {
     // minimize: true,
     // minimizer: [new TerserJSPlugin({}), new OptimizeCSSAssetsPlugin({})],
   },
+  // externals: {
+  //   react: 'React',
+  //   'react-dom' : 'ReactDOM',
+  // }
 }

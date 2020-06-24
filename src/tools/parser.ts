@@ -282,7 +282,7 @@ const createStateFromWorkbook = (workbook: Workbook) => {
   return { sheetsMap, sheetNames, activeSheetName }
 }
 
-export const convertRawExcelToState = async (file: File) => {
+export const convertRawExcelToState = async (file: any) => {
   const arrayBuffer = await file.arrayBuffer()
   const workbook = new Workbook()
   const data = await workbook.xlsx.load(arrayBuffer)
