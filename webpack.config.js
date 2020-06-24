@@ -32,7 +32,7 @@ module.exports = {
     // new ManifestPlugin(),
   ],
   resolve: {
-    extensions: ['*', '.js', '.jsx', '.tsx', '.ts']
+    extensions: ['*', '.js', '.jsx', '.tsx', '.ts'],
   },
   module: {
     rules: [
@@ -47,11 +47,8 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: [
-          /node_modules/,
-          path.join(__dirname, '/sample'),
-        ]
-      }
+        exclude: [/node_modules/, path.join(__dirname, '/sample')],
+      },
     ],
   },
   optimization: {
