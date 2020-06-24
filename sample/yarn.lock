@@ -10347,8 +10347,9 @@ split-string@^3.0.1, split-string@^3.0.2:
   dependencies:
     extend-shallow "^3.0.0"
 
-spreadsheet-redux@../:
+"spreadsheet-redux@https://github.com/greylemon/spreadsheet-redux#module":
   version "0.1.0"
+  resolved "https://github.com/greylemon/spreadsheet-redux#e4d7c3ee4efa9b4a74514231bf560de0606c0223"
   dependencies:
     "@material-ui/core" "^4.10.2"
     "@material-ui/icons" "^4.9.1"

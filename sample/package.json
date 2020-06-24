@@ -13,7 +13,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "spreadsheet-redux": "../",
+    "spreadsheet-redux": "https://github.com/greylemon/spreadsheet-redux#module",
     "typescript": "~3.7.2"
   },
   "scripts": {
