@@ -1,10 +1,9 @@
 import React from 'react';
-// import logo from './logo.svg';
-import { ExcelComponent } from 'spreadsheet-redux';
+import { ExcelComponent } from 'spreadsheet-redux'
 import './App.css';
+import '../node_modules/spreadsheet-redux/dist/main.cjs.css'
 
 function App() {
-  console.log(ExcelComponent)
   return (
     <div className="App">
       <ExcelComponent/>

@@ -244,3 +244,5 @@ export type IExcelState = {
   editorState: IEditorState
   error: IError
 }
+
+export type IExcelComponent = JSX.Element
