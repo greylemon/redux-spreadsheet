@@ -1,13 +1,13 @@
 {
-  "name": "spreadsheet-redux",
+  "name": "redux-spreadsheet",
   "version": "0.1.0",
   "main": "dist/main.cjs.js",
   "module": "dist/main.esm.js",
   "license": "MIT",
   "scripts": {
+    "start": "webpack-dev-server",
     "clean": "rimraf dist coverage dist",
     "build": "yarn build:rollup",
-    "build:webpack": "webpack --display-error-details",
     "build:rollup": "rollup -c",
     "test": "jest",
     "test:staged": "cross-env CI=true node scripts/test.js --env=jsdom --findRelatedTests",
@@ -15,8 +15,7 @@
     "fix:eslint": "yarn lint:eslint --fix",
     "fix:prettier": "yarn lint:prettier --write",
     "lint:eslint": "eslint \"**/*.{js,jsx,ts,tsx}\"",
-    "lint:prettier": "prettier --list-different \"**/*.{css,md,js,jsx,json,ts,tsx}\"",
-    "prepare": "yarn clean && yarn build"
+    "lint:prettier": "prettier --list-different \"**/*.{css,md,js,jsx,json,ts,tsx}\""
   },
   "files": [
     "dist",
@@ -81,6 +80,8 @@
     "eslint-plugin-import": "^2.21.2",
     "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.0",
+    "file-loader": "^6.0.0",
+    "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
     "jest": "24.9.0",
     "jest-environment-jsdom-fourteen": "1.0.1",
@@ -111,7 +112,8 @@
     "url-loader": "2.3.0",
     "webpack": "4.42.0",
     "webpack-bundle-analyzer": "^3.8.0",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
   },
   "eslintConfig": {
     "extends": "react-app"

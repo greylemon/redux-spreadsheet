@@ -1701,9 +1701,9 @@
   integrity sha512-bnoqK579sAYrQbp73wwglccjJ4sfRdKU7WNEZ5FW4K2U6Kc0/eZ5kvXG0JKsEKFB50zrFmfFt52/cvBbZa7eXg==
 
 "@types/node@^14.0.1", "@types/node@^14.0.13":
-  version "14.0.13"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.13.tgz#ee1128e881b874c371374c1f72201893616417c9"
-  integrity sha512-rouEWBImiRaSJsVA+ITTFM6ZxibuAlTuNOCyxVbwreu6k6+ujs7DfnU9o+PShFhET78pMBl3eH+AGSI5eOTkPA==
+  version "14.0.14"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.0.14.tgz#24a0b5959f16ac141aeb0c5b3cd7a15b7c64cbce"
+  integrity sha512-syUgf67ZQpaJj01/tRTknkMNoBBLWJOBODF0Zm4NrXmiSuxjymFrxnTu1QVYRubhVkRcZLYZG8STTwJRdVm/WQ==
 
 "@types/parse-json@^4.0.0":
   version "4.0.0"
@@ -1758,10 +1758,18 @@
   dependencies:
     "@types/react" "*"
 
-"@types/react@*", "@types/react@^16.9.0":
+"@types/react@*":
   version "16.9.38"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.38.tgz#868405dace93a4095d3e054f4c4a1de7a1ac0680"
   integrity sha512-pHAeZbjjNRa/hxyNuLrvbxhhnKyKNiLC6I5fRF2Zr/t/S6zS41MiyzH4+c+1I9vVfvuRt1VS2Lodjr4ZWnxrdA==
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
+"@types/react@^16.9.0":
+  version "16.9.41"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.9.41.tgz#925137ee4d2ff406a0ecf29e8e9237390844002e"
+  integrity sha512-6cFei7F7L4wwuM+IND/Q2cV1koQUvJ8iSV+Gwn0c3kvABZ691g7sp3hfEQHOUBJtccl1gPi+EyNjMIl9nGA0ug==
   dependencies:
     "@types/prop-types" "*"
     csstype "^2.2.0"
@@ -5628,9 +5636,9 @@ immer@1.10.0:
   integrity sha512-O3sR1/opvCDGLEVcvrGTMtLac8GJ5IwZC4puPrLuRj3l7ICKvkmA0vGuU9OW8mV9WIBRnaxp5GJh9IEAaNOoYg==
 
 immer@^7.0.3:
-  version "7.0.4"
-  resolved "https://registry.yarnpkg.com/immer/-/immer-7.0.4.tgz#f5d41ee61830f1620ac7f168b3b57078f0200d1a"
-  integrity sha512-HSBBQVdsJp6Bce6ggxwZiqWwPWMHvPCn3ZHzVgKZOAx7Ikr7U8s4x+Wgr5y5xyn3ZggWJYeWGnOEP3Z4g+r7RQ==
+  version "7.0.5"
+  resolved "https://registry.yarnpkg.com/immer/-/immer-7.0.5.tgz#8af347db5b60b40af8ae7baf1784ea4d35b5208e"
+  integrity sha512-TtRAKZyuqld2eYjvWgXISLJ0ZlOl1OOTzRmrmiY8SlB0dnAhZ1OiykIDL5KDFNaPHDXiLfGQFNJGtet8z8AEmg==
 
 immutable@~3.7.4:
   version "3.7.6"
@@ -9455,6 +9463,39 @@ redent@^3.0.0:
     indent-string "^4.0.0"
     strip-indent "^3.0.0"
 
+"redux-spreadsheet@file:..":
+  version "0.1.0"
+  dependencies:
+    "@material-ui/core" "^4.10.2"
+    "@material-ui/icons" "^4.9.1"
+    "@reduxjs/toolkit" "^1.3.6"
+    "@types/clone-deep" "^4.0.1"
+    "@types/draft-js" "^0.10.40"
+    "@types/enzyme" "^3.10.5"
+    "@types/enzyme-adapter-react-16" "^1.0.6"
+    "@types/jest" "^24.0.0"
+    "@types/node" "^14.0.13"
+    "@types/react" "^16.9.0"
+    "@types/react-dom" "^16.9.0"
+    "@types/react-redux" "^7.1.9"
+    "@types/react-virtualized-auto-sizer" "^1.0.0"
+    "@types/react-window" "^1.8.2"
+    "@types/redux-mock-store" "^1.0.2"
+    "@types/uniqid" "^5.2.0"
+    clone-deep "^4.0.1"
+    draft-js "^0.11.6"
+    exceljs "^4.0.1"
+    fast-memoize "^2.5.2"
+    react-redux "^7.2.0"
+    react-sortable-hoc "^1.11.0"
+    react-virtualized-auto-sizer "^1.0.2"
+    react-window "https://github.com/greylemon/react-window"
+    redux "^4.0.5"
+    redux-thunk "^2.3.0"
+    reselect "^4.0.0"
+    undox "https://github.com/greylemon/undox"
+    uniqid "^5.2.0"
+
 redux-thunk@^2.3.0:
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
@@ -10269,40 +10310,6 @@ split-string@^3.0.1, split-string@^3.0.2:
   integrity sha512-NzNVhJDYpwceVVii8/Hu6DKfD2G+NrQHlS/V/qgv763EYudVwEcMQNxd2lh+0VrUByXN/oJkl5grOhYWvQUYiw==
   dependencies:
     extend-shallow "^3.0.0"
-
-"spreadsheet-redux@https://github.com/greylemon/spreadsheet-redux#module":
-  version "0.1.0"
-  resolved "https://github.com/greylemon/spreadsheet-redux#374ef20d9d37d84898ba458e61a4845afd4be365"
-  dependencies:
-    "@material-ui/core" "^4.10.2"
-    "@material-ui/icons" "^4.9.1"
-    "@reduxjs/toolkit" "^1.3.6"
-    "@types/clone-deep" "^4.0.1"
-    "@types/draft-js" "^0.10.40"
-    "@types/enzyme" "^3.10.5"
-    "@types/enzyme-adapter-react-16" "^1.0.6"
-    "@types/jest" "^24.0.0"
-    "@types/node" "^14.0.13"
-    "@types/react" "^16.9.0"
-    "@types/react-dom" "^16.9.0"
-    "@types/react-redux" "^7.1.9"
-    "@types/react-virtualized-auto-sizer" "^1.0.0"
-    "@types/react-window" "^1.8.2"
-    "@types/redux-mock-store" "^1.0.2"
-    "@types/uniqid" "^5.2.0"
-    clone-deep "^4.0.1"
-    draft-js "^0.11.6"
-    exceljs "^4.0.1"
-    fast-memoize "^2.5.2"
-    react-redux "^7.2.0"
-    react-sortable-hoc "^1.11.0"
-    react-virtualized-auto-sizer "^1.0.2"
-    react-window "https://github.com/greylemon/react-window"
-    redux "^4.0.5"
-    redux-thunk "^2.3.0"
-    reselect "^4.0.0"
-    undox "https://github.com/greylemon/undox"
-    uniqid "^5.2.0"
 
 sprintf-js@~1.0.2:
   version "1.0.3"

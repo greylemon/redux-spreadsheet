@@ -1,4 +1,4 @@
-# spreadsheet-redux
+# Redux Spreadsheet
 
 ## Installation
 

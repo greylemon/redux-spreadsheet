@@ -9,7 +9,7 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1",
-    "spreadsheet-redux": "https://github.com/greylemon/spreadsheet-redux#module"
+    "redux-spreadsheet": "file:../"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -31,5 +31,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "devDependencies": {}
 }

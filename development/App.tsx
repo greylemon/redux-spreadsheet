@@ -1,8 +1,6 @@
 import React from 'react'
 // import logo from './logo.svg';
-import { ExcelComponent } from 'spreadsheet-redux'
-import 'spreadsheet-redux/dist/main.cjs.css'
-import './App.css'
+import { ExcelComponent } from '../src/Component'
 
 function App() {
   return (
