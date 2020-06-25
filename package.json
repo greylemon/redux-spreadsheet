@@ -4,7 +4,11 @@
   "main": "dist/main.cjs.js",
   "module": "dist/main.esm.js",
   "license": "MIT",
-  "homepage": "https://github.com/greylemon/redux-spreadsheet",
+  "homepage": "https://github.com/greylemon/redux-spreadsheet#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/greylemon/redux-spreadsheet.git"
+  },
   "scripts": {
     "start": "webpack-dev-server",
     "clean": "rimraf dist coverage dist",
