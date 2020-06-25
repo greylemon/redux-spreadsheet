@@ -28,11 +28,7 @@ module.exports = {
       {
         test: /\.tsx?$/,
         use: 'ts-loader',
-        exclude: [
-          /node_modules/,
-          path.join(__dirname, '/js-example'),
-          path.join(__dirname, '/ts-example'),
-        ],
+        exclude: [/node_modules/],
       },
       {
         test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
