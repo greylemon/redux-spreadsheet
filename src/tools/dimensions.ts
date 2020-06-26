@@ -1,11 +1,11 @@
 import {
-  EXCEL_SHEET_COLUMN_WIDTH_HEADER,
-  EXCEL_COLUMN_WIDTH_SCALE,
-  EXCEL_ROW_HEIGHT_SCALE,
-  EXCEL_SHEET_ROW_HEIGHT,
-  EXCEL_SHEET_COLUMN_WIDTH,
-  EXCEL_SHEET_ROW_HEIGHT_HEADER,
-} from '../components/constants'
+  SHEET_COLUMN_WIDTH_HEADER,
+  COLUMN_WIDTH_SCALE,
+  ROW_HEIGHT_SCALE,
+  SHEET_ROW_HEIGHT,
+  SHEET_COLUMN_WIDTH,
+  SHEET_ROW_HEIGHT_HEADER,
+} from '../constants/defaults'
 import {
   IRowheight,
   IColumnWidth,
@@ -20,7 +20,7 @@ import {
 } from '../@types/state'
 
 export const normalizeRowHeight = (rowHeight: IRowheight) =>
-  rowHeight ? rowHeight * EXCEL_ROW_HEIGHT_SCALE : EXCEL_SHEET_ROW_HEIGHT
+  rowHeight ? rowHeight * ROW_HEIGHT_SCALE : SHEET_ROW_HEIGHT
 
 /**
  * Converts Excel scaled row height unit to normal scaled unit
@@ -29,16 +29,14 @@ export const normalizeRowHeightFromArray = (
   index: number,
   rowHeights: IRowHeights
 ): IRowheight => {
-  if (!index) return EXCEL_SHEET_ROW_HEIGHT_HEADER
+  if (!index) return SHEET_ROW_HEIGHT_HEADER
 
   const rowHeight = rowHeights[index]
   return normalizeRowHeight(rowHeight)
 }
 
 export const normalizeColumnWidth = (columnWidth: IColumnWidth) =>
-  columnWidth
-    ? columnWidth * EXCEL_COLUMN_WIDTH_SCALE
-    : EXCEL_SHEET_COLUMN_WIDTH
+  columnWidth ? columnWidth * COLUMN_WIDTH_SCALE : SHEET_COLUMN_WIDTH
 
 /**
  * Converts Excel scaled column width unit to normal scaled unit
@@ -47,7 +45,7 @@ export const normalizeColumnWidthFromArray = (
   index: number,
   columnWidths: IColumnWidths
 ): IColumnWidth => {
-  if (!index) return EXCEL_SHEET_COLUMN_WIDTH_HEADER
+  if (!index) return SHEET_COLUMN_WIDTH_HEADER
 
   const columnWidth = columnWidths[index]
 
@@ -60,10 +58,10 @@ export const getColumnOffsets = (
   columnWidths: IColumnWidths,
   columnCount: IColumnCount
 ): Array<IOffset> => {
-  const leftOffsets = [0, EXCEL_SHEET_COLUMN_WIDTH_HEADER]
+  const leftOffsets = [0, SHEET_COLUMN_WIDTH_HEADER]
 
   for (
-    let column = 2, incrementor = EXCEL_SHEET_COLUMN_WIDTH_HEADER;
+    let column = 2, incrementor = SHEET_COLUMN_WIDTH_HEADER;
     column <= columnCount;
     column++
   ) {
@@ -81,10 +79,10 @@ export const getRowOffsets = (
   rowHeights: IRowHeights,
   rowCount: IRowCount
 ): Array<IOffset> => {
-  const topOffsets = [0, EXCEL_SHEET_ROW_HEIGHT_HEADER]
+  const topOffsets = [0, SHEET_ROW_HEIGHT_HEADER]
 
   for (
-    let row = 2, incrementor = EXCEL_SHEET_ROW_HEIGHT_HEADER;
+    let row = 2, incrementor = SHEET_ROW_HEIGHT_HEADER;
     row <= rowCount;
     row++
   ) {

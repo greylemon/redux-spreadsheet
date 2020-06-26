@@ -1,19 +1,15 @@
-import React from 'react'
+import React, { FunctionComponent, CSSProperties } from 'react'
+import { Provider } from 'react-redux'
+import './index.scss'
+import ExcelContent from './Content'
+import store from './redux/redux'
 
-import './styles/styles.scss'
-
-import WindowListener from './components/WindowListener'
-import SheetContainer from './components/Sheet/Sheet'
-import ToolBar from './components/ToolBar/ToolBar'
-import SheetNavigation from './components/SheetNavigation/SheetNavigation'
-
-const Excel = () => (
-  <div className="excel">
-    <ToolBar />
-    <SheetContainer />
-    <SheetNavigation />
-    <WindowListener />
-  </div>
+export const Excel: FunctionComponent<{ style?: CSSProperties }> = ({
+  style,
+}) => (
+  <Provider store={store}>
+    <ExcelContent style={style} />
+  </Provider>
 )
 
 export default Excel

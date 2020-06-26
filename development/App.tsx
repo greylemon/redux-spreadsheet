@@ -1,11 +1,11 @@
 import React from 'react'
-// import logo from './logo.svg';
-import { ExcelComponent } from '../src/Component'
+import { Excel } from '../src/Excel'
+import './App.scss'
 
 function App() {
   return (
-    <div>
-      <ExcelComponent />
+    <div className="App">
+      <Excel />
     </div>
   )
 }

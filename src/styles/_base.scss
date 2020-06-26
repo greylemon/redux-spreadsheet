@@ -28,7 +28,6 @@
   &__header {
     text-align: center;
     background-color: #F7F8F9 !important;
-    z-index: 1000000000000000000000000000000000000000000000 !important;
   }
 
   &__editable {
@@ -38,7 +37,7 @@
 
   &__active {
     position: absolute;
-    outline: 2px solid rgba(75, 135, 255, 0.8) !important;
+    outline: 2px solid rgba(75, 135, 255, 0.8);
     outline-offset: -2px;
 
     &--normal {

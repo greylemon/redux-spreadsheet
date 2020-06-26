@@ -4,19 +4,16 @@
 
 .excel {
   height: 100vh;
-  display: flex;
-  flex-flow: column nowrap;
 }
 
 .toolbar {
-  width: 100vw;
+  width: 100%;
   height: $toolbarHeight;
 }
 
 .sheet {
-  // position: relative;
-  width: 100vw;
-  height: calc(100vh - #{$toolbarHeight} - #{$sheetNavigationHeight});
+  width: 100%;
+  height: calc(100% - #{$toolbarHeight} - #{$sheetNavigationHeight});
 }
 
 .sheetNavigation {

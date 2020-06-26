@@ -19,7 +19,13 @@ import {
   ISheetNames,
   ISheetsMap,
 } from '../@types/state'
-import { DEFAULT } from '../constants/defaults'
+import {
+  SHEET_MAX_ROW_COUNT,
+  SHEET_MAX_COLUMN_COUNT,
+  ACTIVE_CELL_POSITION,
+  SHEET_FREEZE_COLUMN_COUNT,
+  SHEET_FREEZE_ROW_COUNT,
+} from '../constants/defaults'
 import { numberRegex } from './regex'
 import { ValueType } from '../@types/exceljs'
 import uniqid from 'uniqid'
@@ -137,9 +143,9 @@ export const getValueFromCell = (cell: Cell) => {
 }
 
 export const getBoundedRow = (rowIndex: IRowIndex) =>
-  rowIndex < DEFAULT.maxRowCount ? rowIndex : DEFAULT.maxRowCount
+  rowIndex < SHEET_MAX_ROW_COUNT ? rowIndex : SHEET_MAX_ROW_COUNT
 export const getBoundedColumn = (columnIndex: IColumnIndex) =>
-  columnIndex < DEFAULT.maxColumnCount ? columnIndex : DEFAULT.maxColumnCount
+  columnIndex < SHEET_MAX_COLUMN_COUNT ? columnIndex : SHEET_MAX_COLUMN_COUNT
 
 export const getSheetDataFromSheet = (sheet: Worksheet) => {
   const data: IRows = {}
@@ -192,9 +198,9 @@ const getBoundedPositionFromString = (stringPosition: string) => {
 
 const getPaneDataFromSheetViews = (views: Array<Partial<WorksheetView>>) => {
   const paneData = {
-    activeCellPosition: DEFAULT.activeCellPosition,
-    freezeColumnCount: DEFAULT.freezeColumnCount,
-    freezeRowCount: DEFAULT.freezeRowCount,
+    activeCellPosition: ACTIVE_CELL_POSITION,
+    freezeColumnCount: SHEET_FREEZE_COLUMN_COUNT,
+    freezeRowCount: SHEET_FREEZE_ROW_COUNT,
   }
 
   views.forEach((view) => {
