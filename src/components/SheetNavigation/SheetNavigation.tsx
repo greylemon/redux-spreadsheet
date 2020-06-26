@@ -10,6 +10,7 @@ import {
 } from '../../redux/selectors'
 import { shallowEqual, useDispatch } from 'react-redux'
 import { ExcelActions } from '../../redux/store'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 
 const SortableItem = SortableElement(
   ({
@@ -52,6 +53,8 @@ const SortableList = SortableContainer(
 
 const SheetNavigation = () => {
   const dispatch = useDispatch()
+  const history = useHistory()
+  const match = useRouteMatch()
   const {
     sheetNames,
     activeSheetNameIndex,
@@ -75,11 +78,9 @@ const SheetNavigation = () => {
 
   const handleSortStart = useCallback(
     ({ index }) => {
-      if (index !== activeSheetNameIndex) {
-        dispatch(ExcelActions.CHANGE_SHEET(sheetNames[index]))
-      }
+      if (index !== activeSheetNameIndex) history.push(sheetNames[index])
     },
-    [dispatch, activeSheetNameIndex, sheetNames]
+    [dispatch, activeSheetNameIndex, sheetNames, history, match]
   )
 
   return (

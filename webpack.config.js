@@ -11,7 +11,7 @@ module.exports = {
   devtool: 'inline-source-map',
   devServer: {
     contentBase: '.',
-    hot: true,
+    // hot: true,
     port: 3000,
     open: true,
     historyApiFallback: true,

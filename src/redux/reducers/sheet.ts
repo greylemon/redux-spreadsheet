@@ -23,7 +23,6 @@ export const CHANGE_SHEET = (
   action: PayloadAction<ISheetName>
 ) => {
   const sheetName = action.payload
-  if (state.activeSheetName === sheetName) return state
 
   state.activeSheetName = sheetName
 
