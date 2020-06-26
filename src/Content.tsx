@@ -11,10 +11,10 @@ import { Route, useRouteMatch, Switch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { ExcelActions } from './redux/store'
 
-export const ExcelContent: FunctionComponent<{ style?: CSSProperties, isRouted?: boolean }> = ({
-  style,
-  isRouted,
-}) => (
+export const ExcelContent: FunctionComponent<{
+  style?: CSSProperties
+  isRouted?: boolean
+}> = ({ style, isRouted }) => (
   <div className="excel" style={style}>
     <ToolBar />
     {/* <FormulaBar /> */}
@@ -46,7 +46,11 @@ export const ExcelRouter: FunctionComponent<{ style?: CSSProperties }> = ({
 
   return (
     <Switch>
-      <Route exact path={url} render={() => <ExcelContent style={style} isRouted />} />
+      <Route
+        exact
+        path={url}
+        render={() => <ExcelContent style={style} isRouted />}
+      />
       <Route
         exact
         path={`${url}${url === '/' ? '' : '/'}:activeSheetName`}

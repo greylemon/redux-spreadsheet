@@ -51,44 +51,24 @@ const SortableList = SortableContainer(
   )
 )
 
-const SheetNavigation: FunctionComponent<{ isRouted?: boolean }> = ({ isRouted }) => {
+const SheetNavigation: FunctionComponent<{
+  handleSortStart: ({ index }: { index: number }) => void
+}> = ({ handleSortStart }) => {
   const dispatch = useDispatch()
-  const history = useHistory()
-  const match = useRouteMatch()
-  const {
-    sheetNames,
-    activeSheetNameIndex,
-    activeSheetName,
-  } = useTypedSelector(
+  const { sheetNames, activeSheetName } = useTypedSelector(
     (state) => ({
       sheetNames: selectSheetNames(state),
       activeSheetName: selectActiveSheetName(state),
-      activeSheetNameIndex: selectActiveSheetNameIndex(state),
     }),
     shallowEqual
   )
 
   const handleSortEnd = useCallback(
     ({ oldIndex, newIndex }) => {
-      if (oldIndex !== newIndex) 
+      if (oldIndex !== newIndex)
         dispatch(ExcelActions.CHANGE_SHEET_ORDER({ oldIndex, newIndex }))
     },
     [dispatch]
-  )
-
-  const handleSortStart = useCallback(
-    ({ index }) => {
-      if (index !== activeSheetNameIndex) {
-        const sheetName = sheetNames[index]
-
-        if (isRouted) {
-          history.push(sheetName)
-        } else {
-          dispatch(ExcelActions.CHANGE_SHEET(sheetName))
-        }
-      }
-    },
-    [dispatch, activeSheetNameIndex, sheetNames, history, match, isRouted]
   )
 
   return (
@@ -105,4 +85,54 @@ const SheetNavigation: FunctionComponent<{ isRouted?: boolean }> = ({ isRouted }
   )
 }
 
-export default SheetNavigation
+const RoutedSheetNavigation = () => {
+  const history = useHistory()
+  const { sheetNames, activeSheetNameIndex } = useTypedSelector(
+    (state) => ({
+      sheetNames: selectSheetNames(state),
+      activeSheetNameIndex: selectActiveSheetNameIndex(state),
+    }),
+    shallowEqual
+  )
+
+  const handleSortStart = useCallback(
+    ({ index }) => {
+      if (index !== activeSheetNameIndex) {
+        const sheetName = sheetNames[index]
+        history.push(sheetName)
+      }
+    },
+    [activeSheetNameIndex, sheetNames, history]
+  )
+
+  return <SheetNavigation handleSortStart={handleSortStart} />
+}
+
+const NonRoutedSheetNavigation = () => {
+  const dispatch = useDispatch()
+  const { sheetNames, activeSheetNameIndex } = useTypedSelector(
+    (state) => ({
+      sheetNames: selectSheetNames(state),
+      activeSheetNameIndex: selectActiveSheetNameIndex(state),
+    }),
+    shallowEqual
+  )
+
+  const handleSortStart = useCallback(
+    ({ index }) => {
+      if (index !== activeSheetNameIndex) {
+        const sheetName = sheetNames[index]
+        dispatch(ExcelActions.CHANGE_SHEET(sheetName))
+      }
+    },
+    [dispatch, activeSheetNameIndex, sheetNames, history]
+  )
+
+  return <SheetNavigation handleSortStart={handleSortStart} />
+}
+
+const SheetNavigationContainer: FunctionComponent<{ isRouted?: boolean }> = ({
+  isRouted,
+}) => (isRouted ? <RoutedSheetNavigation /> : <NonRoutedSheetNavigation />)
+
+export default SheetNavigationContainer

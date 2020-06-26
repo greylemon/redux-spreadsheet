@@ -44,7 +44,7 @@ describe('cell mouse operations', () => {
     describe('move to invalid position', () => {
       it('move to negative position', () => {
         const activeSheet = nSelectActiveSheet(initialExcelState)
-        const position: IPosition = { x: -1, y: -1 }
+        const position: IPosition = { x: -1, y: -2 }
 
         store.dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
 

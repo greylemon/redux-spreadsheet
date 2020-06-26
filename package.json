@@ -134,7 +134,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx},!development": [
+    "**/*.{js,jsx,ts,tsx}": [
       "yarn fix",
       "yarn test"
     ]
@@ -147,6 +147,6 @@
     "transform": {
       "\\.(ts|tsx)$": "ts-jest"
     },
-    "testRegex": "/test/.*\\.test.(ts|tsx|js)$"
+    "testRegex": "src/test/.*\\.test.(ts|tsx|js)$"
   }
 }
