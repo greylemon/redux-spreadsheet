@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, FunctionComponent } from 'react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 
 import { ISheetName } from '../../@types/state'
@@ -51,7 +51,7 @@ const SortableList = SortableContainer(
   )
 )
 
-const SheetNavigation = () => {
+const SheetNavigation: FunctionComponent<{ isRouted?: boolean }> = ({ isRouted }) => {
   const dispatch = useDispatch()
   const history = useHistory()
   const match = useRouteMatch()
@@ -70,7 +70,7 @@ const SheetNavigation = () => {
 
   const handleSortEnd = useCallback(
     ({ oldIndex, newIndex }) => {
-      if (oldIndex !== newIndex)
+      if (oldIndex !== newIndex) 
         dispatch(ExcelActions.CHANGE_SHEET_ORDER({ oldIndex, newIndex }))
     },
     [dispatch]
@@ -78,9 +78,17 @@ const SheetNavigation = () => {
 
   const handleSortStart = useCallback(
     ({ index }) => {
-      if (index !== activeSheetNameIndex) history.push(sheetNames[index])
+      if (index !== activeSheetNameIndex) {
+        const sheetName = sheetNames[index]
+
+        if (isRouted) {
+          history.push(sheetName)
+        } else {
+          dispatch(ExcelActions.CHANGE_SHEET(sheetName))
+        }
+      }
     },
-    [dispatch, activeSheetNameIndex, sheetNames, history, match]
+    [dispatch, activeSheetNameIndex, sheetNames, history, match, isRouted]
   )
 
   return (
