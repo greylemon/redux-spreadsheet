@@ -63,9 +63,14 @@ export type IRichTextBlock = {
   fragments: IFragment[]
 }
 
-export type IRichText = IRichTextBlock[]
+export type IRichTextValue = IRichTextBlock[]
 
-export type IValue = string | IRichText
+export type IFormulaValue = {
+  formula?: string
+  result?: string
+}
+
+export type IValue = string | IRichTextValue | IFormulaValue
 
 export type IHyperlink = {
   type: 'external' | 'internal'
@@ -74,9 +79,9 @@ export type IHyperlink = {
 
 export type ICell = {
   value?: IValue
-  formula?: string
   hyperlink?: IHyperlink
   merged?: IArea
+  type?: string
 }
 
 export type IOffset = number

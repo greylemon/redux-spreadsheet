@@ -1,9 +1,20 @@
-import React, { MouseEvent, FunctionComponent, Fragment } from 'react'
+import React, { MouseEvent, FunctionComponent, Fragment, useMemo } from 'react'
 import { ICellProps } from '../../@types/components'
 import { useDispatch } from 'react-redux'
 import { ExcelActions } from '../../redux/store'
-import { IRichText, IFragment, IRichTextBlock } from '../../@types/state'
+import {
+  IRichTextValue,
+  IFragment,
+  IRichTextBlock,
+  IFormulaValue,
+} from '../../@types/state'
 import { CSSProperties } from '@material-ui/core/styles/withStyles'
+import {
+  TYPE_RICH_TEXT,
+  TYPE_FORMULA,
+  TYPE_TEXT,
+  TYPE_MERGE,
+} from '../../constants/cellTypes'
 
 const RichTextFragment: FunctionComponent<IFragment> = ({
   text: value,
@@ -22,7 +33,7 @@ const RichTextBlock: FunctionComponent<IRichTextBlock> = ({ fragments }) => (
   </div>
 )
 
-const RichTextCellValue: FunctionComponent<{ value: IRichText }> = ({
+const RichTextCellValue: FunctionComponent<{ value: IRichTextValue }> = ({
   value,
 }) => (
   <Fragment>
@@ -45,7 +56,7 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
 
   const cellData = rowData && rowData[columnIndex] ? rowData[columnIndex] : {}
 
-  const { value } = cellData
+  let { value, type } = cellData
 
   const position = { x: columnIndex, y: rowIndex }
 
@@ -78,6 +89,27 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
     textOverflow: 'ellipsis',
   }
 
+  const cellComponent = useMemo(() => {
+    let component
+    switch (type) {
+      case TYPE_RICH_TEXT:
+        component = <RichTextCellValue value={value as IRichTextValue} />
+        break
+      case TYPE_FORMULA:
+        value = value as IFormulaValue
+        component = <NormalCellValue value={value.result as string} />
+        break
+      case TYPE_MERGE:
+        break
+      case TYPE_TEXT:
+      default:
+        value = value as any
+        component = <NormalCellValue value={value as string | undefined} />
+        break
+    }
+    return component
+  }, [])
+
   return (
     <div
       className={`unselectable cell ${value ? 'cell__editable' : ''}`}
@@ -85,11 +117,7 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
       onMouseDown={handleMouseDown}
       onMouseEnter={handleMouseEnter}
     >
-      {typeof value === 'object' ? (
-        <RichTextCellValue value={value} />
-      ) : (
-        <NormalCellValue value={value} />
-      )}
+      {cellComponent}
     </div>
   )
 }

@@ -12,12 +12,14 @@ import {
   IPosition,
   IRowIndex,
   IColumnIndex,
-  IRichText,
+  IRichTextValue,
   IRichTextBlock,
   IInlineStyles,
   IValue,
   ISheetNames,
   ISheetsMap,
+  ICell,
+  IFormulaValue,
 } from '../@types/state'
 import {
   SHEET_MAX_ROW_COUNT,
@@ -30,6 +32,12 @@ import { numberRegex } from './regex'
 import { ValueType } from '../@types/exceljs'
 import uniqid from 'uniqid'
 import { getTableColumnCount, getTableRowCount } from '../redux/tools/table'
+import { checkIsPositionEqualOtherPosition } from '../redux/tools/area'
+import {
+  TYPE_RICH_TEXT,
+  TYPE_FORMULA,
+  TYPE_MERGE,
+} from '../constants/cellTypes'
 
 // TODO
 export const getStylesFromCell = (_cell: Cell) => {
@@ -47,7 +55,7 @@ export const getStylesFromCell = (_cell: Cell) => {
 
 // TODO
 export const getRichTextFromCellValue = (value: CellRichTextValue) => {
-  const richText: IRichText = []
+  const richText: IRichTextValue = []
 
   // TODO : find how block works in exceljs - for now only one block
   const richTextBlock: IRichTextBlock = {
@@ -84,46 +92,32 @@ export const getRichTextFromCellValue = (value: CellRichTextValue) => {
   return richText
 }
 
-export const getFormulaFromCellValue = (
-  value: CellFormulaValue & CellSharedFormulaValue
-) => {
-  // const formula = {
-
-  // }
-
-  // if(value.formula) {
-
-  // } else {
-
-  // }
-
-  return ''
-}
-
 // | null | number | string | boolean | Date
 // | CellErrorValue
 // | CellRichTextValue | CellHyperlinkValue
 // | CellFormulaValue | CellSharedFormulaValue;
 
-export const getValueFromCell = (cell: Cell) => {
+export const getCellContent = (data: IRows, cell: any) => {
   const value = cell.value
 
-  let result: IValue | undefined = undefined
-
-  // console.log(cell.type)
-  // ValueType.
+  const content: ICell = {}
 
   switch (cell.type) {
     case ValueType.String:
-      result = value as string
+      content.value = value as string
       break
     case ValueType.Formula:
-      result = getFormulaFromCellValue(
-        value as CellFormulaValue & CellSharedFormulaValue
-      )
+      const { formula, sharedFormula, result } = cell.value
+      content.value = {
+        formula: formula ? formula : sharedFormula,
+      } as IFormulaValue
+      content.type = TYPE_FORMULA
+
+      if (result) content.value.result = result
       break
     case ValueType.RichText:
-      result = getRichTextFromCellValue(value as CellRichTextValue)
+      content.value = getRichTextFromCellValue(value as CellRichTextValue)
+      content.type = TYPE_RICH_TEXT
       break
     case ValueType.Boolean:
       break
@@ -132,6 +126,25 @@ export const getValueFromCell = (cell: Cell) => {
     case ValueType.Error:
       break
     case ValueType.Merge:
+      const {
+        model: { address, master },
+      } = cell._value
+      const cellAddress = convertStringPositionToPosition(address)
+      const masterAddress = convertStringPositionToPosition(master)
+
+      const merged = {
+        start: masterAddress,
+        end: cellAddress,
+      }
+
+      content.merged = merged
+      content.type = TYPE_MERGE
+      if (address !== master) {
+        data[masterAddress.y][masterAddress.x] = {
+          ...data[masterAddress.y][masterAddress.x],
+          merged,
+        }
+      }
       break
     case ValueType.Number:
       break
@@ -139,7 +152,7 @@ export const getValueFromCell = (cell: Cell) => {
       break
   }
 
-  return result
+  return Object.keys(content).length ? content : undefined
 }
 
 export const getBoundedRow = (rowIndex: IRowIndex) =>
@@ -151,14 +164,18 @@ export const getSheetDataFromSheet = (sheet: Worksheet) => {
   const data: IRows = {}
 
   sheet.eachRow((row, rowIndex) => {
+    if (!data[rowIndex]) data[rowIndex] = {}
     row.eachCell((cell, columnIndex) => {
-      if (!data[rowIndex]) data[rowIndex] = {}
-      data[rowIndex][columnIndex] = {
-        value: getValueFromCell(cell),
-      }
-      // const styles = getStylesFromCell(cell)
-      // const value =
+      data[rowIndex][columnIndex] = {}
+      const content = getCellContent(data, cell)
+
+      if (!content || !Object.keys(content).length)
+        delete data[rowIndex][columnIndex]
+
+      if (content) data[rowIndex][columnIndex] = content
     })
+
+    if (!Object.keys(data[rowIndex]).length) delete data[rowIndex]
   })
 
   return data

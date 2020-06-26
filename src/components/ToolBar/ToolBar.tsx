@@ -1,7 +1,8 @@
-import React, { ChangeEvent } from 'react'
-import Input from '@material-ui/core/Input'
+import React, { ChangeEvent, Fragment } from 'react'
 import { useDispatch } from 'react-redux'
 import { loadWorkbook } from '../../redux/thunk'
+import { Publish } from '@material-ui/icons'
+import { SmallLabelButton } from '../misc/buttons'
 
 const FileUpload = () => {
   const dispatch = useDispatch()
@@ -16,11 +17,17 @@ const FileUpload = () => {
   }
 
   return (
-    <Input
-      type="file"
-      inputProps={{ accept: '.xlsx' }}
-      onChange={handleChange}
-    />
+    <SmallLabelButton>
+      <Fragment>
+        <Publish />
+        <input
+          type="file"
+          style={{ display: 'none' }}
+          accept=".xlsx, .xls"
+          onChange={handleChange}
+        />
+      </Fragment>
+    </SmallLabelButton>
   )
 }
 

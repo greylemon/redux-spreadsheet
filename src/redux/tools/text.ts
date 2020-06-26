@@ -11,7 +11,7 @@ import {
 import {
   IValue,
   IRange,
-  IRichText,
+  IRichTextValue,
   IFragment,
   IRichTextBlock,
 } from '../../@types/state'
@@ -27,7 +27,7 @@ export const getRangesFromInlineRanges = (
     return acc
   }, [] as Array<IRange>)
 
-export const getTextFromRichText = (richText: IRichText) => {
+export const getTextFromRichText = (richText: IRichTextValue) => {
   let text = ''
 
   for (const block of richText) {
@@ -74,7 +74,7 @@ export const updateStyleInPlace = (
 export const createValueFromEditorState = (
   editorState: EditorState
 ): IValue => {
-  const richText: IRichText = []
+  const richText: IRichTextValue = []
 
   const rawBlocks = convertToRaw(editorState.getCurrentContent()).blocks
 
@@ -231,7 +231,7 @@ export const createRawContentBlockFromRichTextBlock = (
 }
 
 export const getRawContentStateFromRichText = (
-  richText: IRichText
+  richText: IRichTextValue
 ): RawDraftContentState => ({
   blocks: richText.map((block) =>
     createRawContentBlockFromRichTextBlock(block)
@@ -239,7 +239,7 @@ export const getRawContentStateFromRichText = (
   entityMap: {},
 })
 
-export const createEditorStateFromRichText = (value: IRichText) =>
+export const createEditorStateFromRichText = (value: IRichTextValue) =>
   EditorState.createWithContent(
     convertFromRaw(getRawContentStateFromRichText(value))
   )
@@ -250,9 +250,12 @@ export const createEditorStateFromText = (value: string) =>
 export const createEmptyEditorState = () =>
   EditorState.moveFocusToEnd(EditorState.createEmpty())
 
-export const createEditorStateFromNonEmptyValue = (value: IValue) =>
-  EditorState.moveFocusToEnd(
+export const createEditorStateFromNonEmptyValue = (value: IValue) => {
+  let editorValue: IValue
+
+  return EditorState.moveFocusToEnd(
     typeof value === 'object'
-      ? createEditorStateFromRichText(value)
+      ? createEditorStateFromRichText(value as IRichTextValue)
       : createEditorStateFromText(value)
   )
+}
