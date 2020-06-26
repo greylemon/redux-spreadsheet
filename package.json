@@ -129,7 +129,7 @@
     }
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": [
+    "**/*.{js,jsx,ts,tsx},!development": [
       "yarn fix",
       "yarn test"
     ]
