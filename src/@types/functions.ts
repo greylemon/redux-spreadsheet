@@ -10,7 +10,9 @@ import {
   IRowHeights,
   IColumnOffsets,
   ISelectionArea,
+  IExcelState,
 } from './state'
+import IRootStore from './store'
 
 export interface IComputeActiveCellStyle {
   (
@@ -50,4 +52,8 @@ export interface ICheckIsActiveCellInCorrectPane {
     freezeColumnCount: IFreezeColumnCount,
     freezeRowCount: IFreezeRowCount
   ): boolean
+}
+
+export interface IHandleSave {
+  (excelState: IExcelState): any
 }

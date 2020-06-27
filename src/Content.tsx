@@ -10,23 +10,26 @@ import SheetNavigation from './components/sheetNavigation/SheetNavigation'
 import { Route, useRouteMatch, Switch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { ExcelActions } from './redux/store'
+import { IHandleSave } from './@types/functions'
 
 export const ExcelContent: FunctionComponent<{
   style?: CSSProperties
   isRouted?: boolean
-}> = ({ style, isRouted }) => (
+  handleSave?: IHandleSave
+}> = ({ style, isRouted, handleSave }) => (
   <div className="excel" style={style}>
     <ToolBar />
     {/* <FormulaBar /> */}
     <SheetContainer />
     <SheetNavigation isRouted={isRouted} />
-    <WindowListener />
+    <WindowListener handleSave={handleSave} />
   </div>
 )
 
-const ExcelRoute: FunctionComponent<{ style?: CSSProperties }> = ({
-  style,
-}) => {
+const ExcelRoute: FunctionComponent<{
+  style?: CSSProperties
+  handleSave?: IHandleSave
+}> = ({ style, handleSave }) => {
   const dispatch = useDispatch()
   const {
     params: { activeSheetName },
@@ -36,12 +39,13 @@ const ExcelRoute: FunctionComponent<{ style?: CSSProperties }> = ({
     dispatch(ExcelActions.CHANGE_SHEET(activeSheetName))
   }, [activeSheetName])
 
-  return <ExcelContent style={style} isRouted />
+  return <ExcelContent style={style} handleSave={handleSave} isRouted />
 }
 
-export const ExcelRouter: FunctionComponent<{ style?: CSSProperties }> = ({
-  style,
-}) => {
+export const ExcelRouter: FunctionComponent<{
+  style?: CSSProperties
+  handleSave?: IHandleSave
+}> = ({ style, handleSave }) => {
   const { url } = useRouteMatch()
 
   return (
@@ -49,12 +53,14 @@ export const ExcelRouter: FunctionComponent<{ style?: CSSProperties }> = ({
       <Route
         exact
         path={url}
-        render={() => <ExcelContent style={style} isRouted />}
+        render={() => (
+          <ExcelContent style={style} handleSave={handleSave} isRouted />
+        )}
       />
       <Route
         exact
         path={`${url}${url === '/' ? '' : '/'}:activeSheetName`}
-        render={() => <ExcelRoute style={style} />}
+        render={() => <ExcelRoute style={style} handleSave={handleSave} />}
       />
     </Switch>
   )

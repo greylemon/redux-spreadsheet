@@ -2,10 +2,14 @@ import { useDispatch, shallowEqual } from 'react-redux'
 import { ExcelActions } from '../redux/store'
 import { useTypedSelector } from '../redux/redux'
 import { selectSelectionArea, selectIsEditMode } from '../redux/selectors'
-import { useCallback } from 'react'
+import { useCallback, FunctionComponent } from 'react'
 import { undo, redo } from 'undox'
+import { IHandleSave } from '../@types/functions'
+import { saveWorkbook } from '../redux/thunk'
 
-const WindowListener = () => {
+const WindowListener: FunctionComponent<{ handleSave?: IHandleSave }> = ({
+  handleSave,
+}) => {
   const dispatch = useDispatch()
 
   const { selectionArea, isEditMode } = useTypedSelector(
@@ -31,10 +35,17 @@ const WindowListener = () => {
         const { ctrlKey, metaKey, shiftKey, key } = event
 
         if (ctrlKey || metaKey) {
-          if (key === 'y') {
-            handleRedo()
-          } else if (key === 'z') {
-            handleUndo()
+          switch (key) {
+            case 'y':
+              handleRedo()
+              break
+            case 'z':
+              handleUndo()
+              break
+            case 's':
+              if (handleSave) dispatch(saveWorkbook(handleSave))
+              event.preventDefault()
+              break
           }
         } else if (key.length === 1) {
           dispatch(ExcelActions.CELL_EDITOR_STATE_START())
@@ -61,7 +72,7 @@ const WindowListener = () => {
         }
       }
     },
-    [dispatch, isEditMode, handleUndo, handleRedo]
+    [dispatch, isEditMode, handleUndo, handleRedo, handleSave]
   )
 
   window.ondblclick = useCallback(() => {

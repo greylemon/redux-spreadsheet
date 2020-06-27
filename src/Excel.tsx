@@ -3,13 +3,19 @@ import { Provider } from 'react-redux'
 import './index.scss'
 import { ExcelRouter, ExcelContent } from './Content'
 import store from './redux/redux'
+import { IHandleSave } from './@types/functions'
 
 export const Excel: FunctionComponent<{
   style?: CSSProperties
   isRouted?: boolean
-}> = ({ style, isRouted }) => (
+  handleSave?: IHandleSave
+}> = ({ style, isRouted, handleSave }) => (
   <Provider store={store}>
-    {isRouted ? <ExcelRouter style={style} /> : <ExcelContent style={style} />}
+    {isRouted ? (
+      <ExcelRouter style={style} handleSave={handleSave} />
+    ) : (
+      <ExcelContent style={style} handleSave={handleSave} />
+    )}
   </Provider>
 )
 
