@@ -251,7 +251,7 @@ export const createEmptyEditorState = () =>
   EditorState.moveFocusToEnd(EditorState.createEmpty())
 
 export const createEditorStateFromNonEmptyValue = (value: IValue) => {
-  let editorValue: IValue
+  // let editorValue: IValue
 
   return EditorState.moveFocusToEnd(
     typeof value === 'object'

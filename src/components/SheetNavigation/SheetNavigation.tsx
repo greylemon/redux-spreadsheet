@@ -10,7 +10,7 @@ import {
 } from '../../redux/selectors'
 import { shallowEqual, useDispatch } from 'react-redux'
 import { ExcelActions } from '../../redux/store'
-import { useHistory, useRouteMatch } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 const SortableItem = SortableElement(
   ({

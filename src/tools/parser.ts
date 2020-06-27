@@ -4,8 +4,6 @@ import {
   Cell,
   CellRichTextValue,
   WorksheetView,
-  CellSharedFormulaValue,
-  CellFormulaValue,
 } from 'exceljs'
 import {
   IRows,
@@ -15,7 +13,6 @@ import {
   IRichTextValue,
   IRichTextBlock,
   IInlineStyles,
-  IValue,
   ISheetNames,
   ISheetsMap,
   ICell,
