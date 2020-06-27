@@ -1,5 +1,9 @@
 # Redux Spreadsheet
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/greylemon/redux-spreadsheet/blob/master/LICENSE)
+![npm](https://img.shields.io/npm/v/redux-spreadsheet?color=blue)
+![LGTM Grade](https://img.shields.io/lgtm/grade/javascript/github/greylemon/redux-spreadsheet)
+
 ## Setup
 
 ### Installation
@@ -107,6 +111,7 @@ Husky is used here for performing tasks before a git commit. The tasks performed
 | [ExcelJs](https://github.com/exceljs/exceljs)                                                        | parses Excel data and creates excel files                                                                                    |
 | [fast-formula-parser](https://github.com/LesterLyu/fast-formula-parser)                              | used to compute formula cells in excel format                                                                                |
 | [react-window](https://github.com/bvaughn/react-window)                                              | React components for efficiently rendering large lists and tabular data                                                      |
+| [undox](https://github.com/greylemon/undox)                                                          | Fork of [JannieBeck](https://github.com/JannicBeck/undox) with ignore history                                                |
 
 ## History - Redo and Undo
 
