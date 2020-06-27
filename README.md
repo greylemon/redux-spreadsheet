@@ -43,8 +43,6 @@ Command: `yarn start`
 
 ### Format and Linting
 
-Change to the excel folder:
-
 - eslint: `yarn fix:eslint`
 
 - Prettier formatting: `yarn fix:prettier`
@@ -52,8 +50,6 @@ Change to the excel folder:
 Please check out the package.json of the excel for the scripts and other node configurations.
 
 ### Testing
-
-Note: testing is only for the excel folder
 
 Command: `yarn test`
 
