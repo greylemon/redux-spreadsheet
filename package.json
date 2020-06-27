@@ -1,6 +1,6 @@
 {
   "name": "redux-spreadsheet",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "dist/main.cjs.js",
   "module": "dist/main.esm.js",
   "license": "MIT",

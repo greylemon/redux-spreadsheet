@@ -32,7 +32,6 @@ import { numberRegex } from './regex'
 import { ValueType } from '../@types/exceljs'
 import uniqid from 'uniqid'
 import { getTableColumnCount, getTableRowCount } from '../redux/tools/table'
-import { checkIsPositionEqualOtherPosition } from '../redux/tools/area'
 import {
   TYPE_RICH_TEXT,
   TYPE_FORMULA,
