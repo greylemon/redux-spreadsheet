@@ -5,14 +5,12 @@ import {
   IPosition,
   IFreezeColumnCount,
   IFreezeRowCount,
-  IArea,
   IColumnWidths,
   IRowHeights,
   IColumnOffsets,
   ISelectionArea,
   IExcelState,
 } from './state'
-import IRootStore from './store'
 
 export interface IComputeActiveCellStyle {
   (
