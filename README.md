@@ -15,7 +15,7 @@ const SomeComponent = () => {
   const handleSave = (excelState) => {
     // Do something with data
     ...
-  }  
+  }
   return <Excel handleSave={handleSave} isRouted />
 }
 ```
@@ -86,7 +86,7 @@ Husky is used here for performing tasks before a git commit. The tasks performed
   - [x] Page router
   - [x] No page router
   - [ ] Return link
-- Formulas  
+- Formulas
   - [ ] Formula reference map
 - Formula bar
   - [ ] Input
@@ -101,16 +101,16 @@ Husky is used here for performing tasks before a git commit. The tasks performed
 
 ## Main Libraries Used
 
-|Link | Usage |
-|-----|-------|
-|[React](https://reactjs.org/) (specifically [hooks](https://reactjs.org/docs/hooks-overview.html))   | used for building HTML components                 |
-|[Redux](https://redux.js.org/)                                                                       | used for application state and state management   |
-|[Redux Toolkit](https://redux-toolkit.js.org/)                                                       | tools which make Redux setup straightforward      |
-|[React Redux](https://react-redux.js.org/)                                                           | used to integrate Redux with React|
-|[Redux Mock Store](https://github.com/ananas7/redux-mock-store/tree/feature/extended-replaceReducer) | mocks the Redux store for testing purpose. Fork of [ananas7](https://github.com/ananas7) branch for replace reducer function |
-|[ExcelJs](https://github.com/exceljs/exceljs)                                                        | parses Excel data and creates excel files         |
-|[fast-formula-parser](https://github.com/LesterLyu/fast-formula-parser)                              | used to compute formula cells in excel format     |
-|[react-window](https://github.com/bvaughn/react-window)|React components for efficiently rendering large lists and tabular data|
+| Link                                                                                                 | Usage                                                                                                                        |
+| ---------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
+| [React](https://reactjs.org/) (specifically [hooks](https://reactjs.org/docs/hooks-overview.html))   | used for building HTML components                                                                                            |
+| [Redux](https://redux.js.org/)                                                                       | used for application state and state management                                                                              |
+| [Redux Toolkit](https://redux-toolkit.js.org/)                                                       | tools which make Redux setup straightforward                                                                                 |
+| [React Redux](https://react-redux.js.org/)                                                           | used to integrate Redux with React                                                                                           |
+| [Redux Mock Store](https://github.com/ananas7/redux-mock-store/tree/feature/extended-replaceReducer) | mocks the Redux store for testing purpose. Fork of [ananas7](https://github.com/ananas7) branch for replace reducer function |
+| [ExcelJs](https://github.com/exceljs/exceljs)                                                        | parses Excel data and creates excel files                                                                                    |
+| [fast-formula-parser](https://github.com/LesterLyu/fast-formula-parser)                              | used to compute formula cells in excel format                                                                                |
+| [react-window](https://github.com/bvaughn/react-window)                                              | React components for efficiently rendering large lists and tabular data                                                      |
 
 ## History - Redo and Undo
 
