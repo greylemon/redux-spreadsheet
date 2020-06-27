@@ -10,7 +10,7 @@
     "url": "git+https://github.com/greylemon/redux-spreadsheet.git"
   },
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com/"
+    "registry": "https://registry.npmjs.org"
   },
   "scripts": {
     "start": "webpack-dev-server",
