@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, FunctionComponent } from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../redux/redux'
@@ -19,7 +19,7 @@ import TopLeftPane from './TopLeftPane'
 import TopRightPane from './TopRightPane'
 import BottomLeftPane from './BottomLeftPane'
 
-export const Sheet = ({ height, width }: Size) => {
+export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const gridRef = useRef<VariableSizeGrid>(null)
   const {
     tableColumnCount,
@@ -76,11 +76,11 @@ export const Sheet = ({ height, width }: Size) => {
   )
 }
 
-const SheetSizer = ({ height, width }: Size) => (
+const SheetSizer: FunctionComponent<Size> = ({ height, width }) => (
   <Sheet height={height} width={width} />
 )
 
-const SheetContainer = () => (
+const SheetContainer: FunctionComponent = () => (
   <div className="sheet">
     <AutoSizer children={SheetSizer} />
   </div>

@@ -13,33 +13,33 @@ export type IAreaRange = {
 
 export type IColumnWidthsAdjusted = number[]
 
-export type IError = object
+export type IError = { [key: string]: string }
 
 export type ICSSLength = number | string
 export type ICSSPercentage = string
 
 export type IBlockStyles = {
-  borderTopColor?: any
-  borderTopWidth?: any
-  borderTopStyle?: any
+  borderTopColor?: string
+  borderTopWidth?: string
+  borderTopStyle?: string
 
-  borderLeftColor?: any
-  borderLeftWidth?: any
-  borderLeftStyle?: any
+  borderLeftColor?: string
+  borderLeftWidth?: string
+  borderLeftStyle?: string
 
-  borderRightColor?: any
-  borderRightWidth?: any
-  borderRightStyle?: any
+  borderRightColor?: string
+  borderRightWidth?: string
+  borderRightStyle?: string
 
-  borderBottomColor?: any
-  borderBottomWidth?: any
-  borderBottomStyle?: any
+  borderBottomColor?: string
+  borderBottomWidth?: string
+  borderBottomStyle?: string
 }
 
 export type IInlineStyles = {
   fontWeight?: 'normal' | 'bold'
   fontStyle?: 'normal' | 'italic'
-  fontFamily?: any
+  fontFamily?: string
   fontSize?: ICSSLength | ICSSPercentage
   textDecoration?:
     | 'underline'
@@ -47,7 +47,7 @@ export type IInlineStyles = {
     | 'underline line-through'
     | 'line-through underline'
   verticalAlign?: 'sub' | 'super'
-  color?: any
+  color?: string
 }
 
 export type IStyles = IBlockStyles & IInlineStyles
@@ -100,8 +100,8 @@ export type IGridMeasurements<T> = { [key: number]: T }
 export type IColumnWidth = number
 export type IColumnWidths = IGridMeasurements<IColumnWidth>
 
-export type IRowheight = number
-export type IRowHeights = IGridMeasurements<IRowheight>
+export type IRowHeight = number
+export type IRowHeights = IGridMeasurements<IRowHeight>
 
 export type IRowCount = number
 export type IColumnCount = number
@@ -123,6 +123,8 @@ export type IEditorState = EditorState
 export type ISheetName = string
 export type ISheetNames = ISheetName[]
 export type IName = string
+export type IHiddenColumns = { [key: string]: boolean }
+export type IHiddenRows = { [key: string]: boolean }
 
 export type ISheet = {
   data: IRows
@@ -139,6 +141,8 @@ export type ISheet = {
 
   columnWidths: IColumnWidths
   rowHeights: IRowHeights
+  hiddenColumns: IHiddenColumns
+  hiddenRows: IHiddenRows
 
   freezeColumnCount: IFreezeColumnCount
   freezeRowCount: IFreezeRowCount

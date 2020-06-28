@@ -5,7 +5,12 @@ import RowCell from './RowCell'
 import ColumnCell from './ColumnCell'
 import RootCell from './RootCell'
 
-const Cell = ({ data, style, columnIndex, rowIndex }: ICellProps) => {
+const Cell: FunctionComponent<ICellProps> = ({
+  data,
+  style,
+  columnIndex,
+  rowIndex,
+}) => {
   let CellComponent: FunctionComponent<ICellProps>
 
   if (columnIndex && rowIndex) {

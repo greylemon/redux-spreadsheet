@@ -1,13 +1,13 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, FunctionComponent } from 'react'
 import { IInactiveSelectionAreasProps } from '../../@types/components'
 import { useTypedSelector } from '../../redux/redux'
 import { selectFactoryInactiveSelectionAreasStyle } from '../../redux/selectors'
 import { shallowEqual } from 'react-redux'
 
-const InactiveSelectionAreas = ({
+const InactiveSelectionAreas: FunctionComponent<IInactiveSelectionAreasProps> = ({
   computeSelectionAreaStyle,
   checkIsAreaInRelevantPane,
-}: IInactiveSelectionAreasProps) => {
+}) => {
   const inactiveSelectionAreasStyle = useTypedSelector(
     (state) =>
       selectFactoryInactiveSelectionAreasStyle(

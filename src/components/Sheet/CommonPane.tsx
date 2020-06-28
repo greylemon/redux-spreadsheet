@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, FunctionComponent } from 'react'
 
 import ActiveCell from './ActiveCell'
 // import ActiveSelectionArea from './ActiveSelectionArea'
@@ -7,12 +7,12 @@ import { ICommonPaneProps } from '../../@types/components'
 import SelectionArea from './SelectionArea'
 import InactiveSelectionAreas from './InactiveSelectionAreas'
 
-const CommonActivityPane = ({
+const CommonActivityPane: FunctionComponent<ICommonPaneProps> = ({
   computeActiveCellStyle,
   checkIsActiveCellInCorrectPane,
   computeSelectionAreaStyle,
   checkIsAreaInRelevantPane,
-}: ICommonPaneProps) => (
+}) => (
   <Fragment>
     <ActiveCell
       computeActiveCellStyle={computeActiveCellStyle}

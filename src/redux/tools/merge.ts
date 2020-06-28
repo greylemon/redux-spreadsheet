@@ -10,7 +10,10 @@ import cloneDeep from 'clone-deep'
 /**
  * Sets the new area to be the smallest area which covers both newArea and mergeArea in place
  */
-const changeAreaToSuperAreaInPlace = (mergeArea: IArea, newArea: IArea) => {
+const changeAreaToSuperAreaInPlace = (
+  mergeArea: IArea,
+  newArea: IArea
+): void => {
   const { start, end } = mergeArea
 
   const minMergedX = Math.min(start.x, end.x)
@@ -32,7 +35,7 @@ const getPartialSuperAreaFromColumnRange = (
   area: IArea,
   row: IRowIndex,
   data: IRows
-) => {
+): IArea => {
   const newArea = cloneDeep(area)
 
   const rowData = data[row]
@@ -55,14 +58,16 @@ const getPartialSuperAreaFromRowRange = (
   area: IArea,
   column: IColumnIndex,
   data: IRows
-) => {
+): IArea => {
   const newArea = cloneDeep(area)
 
   for (let row = yRange.start; row <= yRange.end; row++) {
     const rowData = data[row]
 
-    if (rowData && rowData[column] && rowData[column].merged)
-      changeAreaToSuperAreaInPlace(rowData[column].merged!, newArea)
+    if (rowData && rowData[column]) {
+      const mergedArea = rowData[column].merged
+      if (mergedArea) changeAreaToSuperAreaInPlace(mergedArea, newArea)
+    }
   }
 
   return newArea
@@ -76,7 +81,7 @@ const getPartialSuperAreaFromRowRange = (
  *
  * Use getEntireSuperArea if you need the full area
  */
-const getPartialSuperAreaFromArea = (area: IArea, data: IRows) => {
+const getPartialSuperAreaFromArea = (area: IArea, data: IRows): IArea => {
   const { start, end } = area
 
   let newArea = cloneDeep(area)
@@ -126,7 +131,7 @@ const getPartialSuperAreaFromArea = (area: IArea, data: IRows) => {
  *
  * Ordered area represents an area which is ordered: start represents min values, end represents max values
  */
-export const getEntireSuperArea = (orderedArea: IArea, data: IRows) => {
+export const getEntireSuperArea = (orderedArea: IArea, data: IRows): IArea => {
   let subArea = cloneDeep(orderedArea)
   let superArea = getPartialSuperAreaFromArea(subArea, data)
 

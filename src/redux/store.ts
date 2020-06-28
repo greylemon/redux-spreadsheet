@@ -43,6 +43,8 @@ export const initialExcelState: IExcelState = {
 
       freezeColumnCount: 0,
       freezeRowCount: 0,
+      hiddenColumns: {},
+      hiddenRows: {},
 
       selectionAreaIndex: -1,
       inactiveSelectionAreas: [],

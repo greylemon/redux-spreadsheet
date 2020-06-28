@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, FunctionComponent } from 'react'
 import { ISelectionAreaProps } from '../../@types/components'
 import {
   selectSelectionArea,
@@ -9,10 +9,10 @@ import {
 import { useTypedSelector } from '../../redux/redux'
 import { shallowEqual } from 'react-redux'
 
-const SelectionArea = ({
+const SelectionArea: FunctionComponent<ISelectionAreaProps> = ({
   computeSelectionAreaStyle,
   checkIsAreaInRelevantPane,
-}: ISelectionAreaProps) => {
+}) => {
   const {
     selectionArea,
     selectionAreaStyle,

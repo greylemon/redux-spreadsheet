@@ -1,4 +1,4 @@
-import React, { useCallback, Fragment } from 'react'
+import React, { useCallback, Fragment, FunctionComponent } from 'react'
 import { Editor, RichUtils, EditorState } from 'draft-js'
 import { useTypedSelector } from '../../redux/redux'
 import { shallowEqual, useDispatch } from 'react-redux'
@@ -17,7 +17,7 @@ import {
 } from '../../redux/selectors'
 import { ExcelActions } from '../../redux/store'
 
-const EditorCell = ({ style }: IEditorCellProps) => {
+const EditorCell: FunctionComponent<IEditorCellProps> = ({ style }) => {
   const dispatch = useDispatch()
 
   const editorState = useTypedSelector(

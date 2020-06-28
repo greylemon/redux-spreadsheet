@@ -10,7 +10,7 @@ export const loadWorkbook = (
   file: File
 ): ThunkAction<void, IRootStore, unknown, Action<string>> => (dispatch) => {
   convertRawExcelToState(file).then((content) => {
-    dispatch(ExcelActions.UPDATE_STATE(content as any))
+    dispatch(ExcelActions.UPDATE_STATE(content))
   })
 }
 

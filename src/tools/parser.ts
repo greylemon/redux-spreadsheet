@@ -1,10 +1,4 @@
-import {
-  Workbook,
-  Worksheet,
-  Cell,
-  CellRichTextValue,
-  WorksheetView,
-} from 'exceljs'
+import { Workbook, Worksheet, CellRichTextValue, WorksheetView } from 'exceljs'
 import {
   IRows,
   IPosition,
@@ -17,6 +11,14 @@ import {
   ISheetsMap,
   ICell,
   IFormulaValue,
+  IActiveCellPosition,
+  IFreezeColumnCount,
+  IFreezeRowCount,
+  IColumnWidths,
+  IHiddenColumns,
+  IRowHeights,
+  IHiddenRows,
+  IExcelState,
 } from '../@types/state'
 import {
   SHEET_MAX_ROW_COUNT,
@@ -34,9 +36,10 @@ import {
   TYPE_FORMULA,
   TYPE_MERGE,
 } from '../constants/cellTypes'
+import { initialExcelState } from '../redux/store'
 
 // TODO
-export const getStylesFromCell = (_cell: Cell) => {
+export const getStylesFromCell = (): void => {
   // const style = cell.style
   // const {
   //   alignment,
@@ -50,7 +53,9 @@ export const getStylesFromCell = (_cell: Cell) => {
 }
 
 // TODO
-export const getRichTextFromCellValue = (value: CellRichTextValue) => {
+export const getRichTextFromCellValue = (
+  value: CellRichTextValue
+): IRichTextValue => {
   const richText: IRichTextValue = []
 
   // TODO : find how block works in exceljs - for now only one block
@@ -93,7 +98,7 @@ export const getRichTextFromCellValue = (value: CellRichTextValue) => {
 // | CellRichTextValue | CellHyperlinkValue
 // | CellFormulaValue | CellSharedFormulaValue;
 
-export const getCellContent = (data: IRows, cell: any) => {
+export const getCellContent = (data: IRows, cell: any): ICell | undefined => {
   const value = cell.value
 
   const content: ICell = {}
@@ -102,7 +107,7 @@ export const getCellContent = (data: IRows, cell: any) => {
     case ValueType.String:
       content.value = value as string
       break
-    case ValueType.Formula:
+    case ValueType.Formula: {
       const { formula, sharedFormula, result } = cell.value
       content.value = {
         formula: formula ? formula : sharedFormula,
@@ -110,7 +115,9 @@ export const getCellContent = (data: IRows, cell: any) => {
       content.type = TYPE_FORMULA
 
       if (result) content.value.result = result
+
       break
+    }
     case ValueType.RichText:
       content.value = getRichTextFromCellValue(value as CellRichTextValue)
       content.type = TYPE_RICH_TEXT
@@ -121,12 +128,16 @@ export const getCellContent = (data: IRows, cell: any) => {
       break
     case ValueType.Error:
       break
-    case ValueType.Merge:
+    case ValueType.Merge: {
       const {
         model: { address, master },
       } = cell._value
-      const cellAddress = convertStringPositionToPosition(address)
-      const masterAddress = convertStringPositionToPosition(master)
+      const cellAddress = convertStringPositionToPosition(
+        cell._value.model.address
+      )
+      const masterAddress = convertStringPositionToPosition(
+        cell._value.model.master
+      )
 
       const merged = {
         start: masterAddress,
@@ -141,7 +152,9 @@ export const getCellContent = (data: IRows, cell: any) => {
           merged,
         }
       }
+
       break
+    }
     case ValueType.Number:
       break
     default:
@@ -151,12 +164,12 @@ export const getCellContent = (data: IRows, cell: any) => {
   return Object.keys(content).length ? content : undefined
 }
 
-export const getBoundedRow = (rowIndex: IRowIndex) =>
+export const getBoundedRow = (rowIndex: IRowIndex): IRowIndex =>
   rowIndex < SHEET_MAX_ROW_COUNT ? rowIndex : SHEET_MAX_ROW_COUNT
-export const getBoundedColumn = (columnIndex: IColumnIndex) =>
+export const getBoundedColumn = (columnIndex: IColumnIndex): IColumnIndex =>
   columnIndex < SHEET_MAX_COLUMN_COUNT ? columnIndex : SHEET_MAX_COLUMN_COUNT
 
-export const getSheetDataFromSheet = (sheet: Worksheet) => {
+export const getSheetDataFromSheet = (sheet: Worksheet): IRows => {
   const data: IRows = {}
 
   sheet.eachRow((row, rowIndex) => {
@@ -178,7 +191,7 @@ export const getSheetDataFromSheet = (sheet: Worksheet) => {
 }
 
 // https://stackoverflow.com/questions/667802/what-is-the-algorithm-to-convert-an-excel-column-letter-into-its-number
-export const getColumnNumberFromColumnName = (name: string) => {
+export const getColumnNumberFromColumnName = (name: string): IColumnIndex => {
   let sum = 0
 
   for (let i = 0; i < name.length; i++) {
@@ -201,7 +214,7 @@ export const convertStringPositionToPosition = (
   }
 }
 
-const getBoundedPositionFromString = (stringPosition: string) => {
+const getBoundedPositionFromString = (stringPosition: string): IPosition => {
   const activeCellPosition = convertStringPositionToPosition(stringPosition)
   activeCellPosition.x = getBoundedColumn(activeCellPosition.x)
   activeCellPosition.y = getBoundedRow(activeCellPosition.y)
@@ -209,7 +222,13 @@ const getBoundedPositionFromString = (stringPosition: string) => {
   return activeCellPosition
 }
 
-const getPaneDataFromSheetViews = (views: Array<Partial<WorksheetView>>) => {
+const getPaneDataFromSheetViews = (
+  views: Array<Partial<WorksheetView>>
+): {
+  activeCellPosition: IActiveCellPosition
+  freezeColumnCount: IFreezeColumnCount
+  freezeRowCount: IFreezeRowCount
+} => {
   const paneData = {
     activeCellPosition: ACTIVE_CELL_POSITION,
     freezeColumnCount: SHEET_FREEZE_COLUMN_COUNT,
@@ -225,8 +244,8 @@ const getPaneDataFromSheetViews = (views: Array<Partial<WorksheetView>>) => {
       case 'normal':
         break
       case 'frozen':
-        paneData.freezeColumnCount = view.xSplit!
-        paneData.freezeRowCount = view.ySplit!
+        paneData.freezeColumnCount = view.xSplit ? view.xSplit : 0
+        paneData.freezeRowCount = view.ySplit ? view.ySplit : 0
         break
       case 'split':
         break
@@ -236,9 +255,11 @@ const getPaneDataFromSheetViews = (views: Array<Partial<WorksheetView>>) => {
   return paneData
 }
 
-export const getColumnDataFromColumns = (sheet: Worksheet) => {
-  const columnWidths: { [key: string]: number } = {}
-  const hiddenColumns: { [key: string]: boolean } = {}
+export const getColumnDataFromColumns = (
+  sheet: Worksheet
+): { columnWidths: IColumnWidths; hiddenColumns: IHiddenColumns } => {
+  const columnWidths: IColumnWidths = {}
+  const hiddenColumns: IHiddenColumns = {}
 
   const columns = sheet.columns
 
@@ -255,9 +276,11 @@ export const getColumnDataFromColumns = (sheet: Worksheet) => {
 }
 
 // ! Not needed because sheet data iterates over rows
-export const getRowDataFromSheet = (sheet: Worksheet) => {
-  const rowHeights: { [key: string]: number } = {}
-  const hiddenRows: { [key: string]: boolean } = {}
+export const getRowDataFromSheet = (
+  sheet: Worksheet
+): { rowHeights: IRowHeights; hiddenRows: IHiddenRows } => {
+  const rowHeights: IRowHeights = {}
+  const hiddenRows: IHiddenRows = {}
 
   sheet.eachRow(({ height, hidden }, index) => {
     if (height) rowHeights[index + 1] = height
@@ -271,7 +294,7 @@ export const getRowDataFromSheet = (sheet: Worksheet) => {
   }
 }
 
-const createStateFromWorkbook = (workbook: Workbook) => {
+const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
   const sheetsMap: ISheetsMap = {}
 
   const sheetNames: ISheetNames = []
@@ -298,15 +321,15 @@ const createStateFromWorkbook = (workbook: Workbook) => {
     }
   })
 
-  return { sheetsMap, sheetNames, activeSheetName }
+  return { ...initialExcelState, sheetsMap, sheetNames, activeSheetName }
 }
 
-export const convertRawExcelToState = async (file: any) => {
+export const convertRawExcelToState = async (
+  file: File
+): Promise<IExcelState> => {
   const arrayBuffer = await file.arrayBuffer()
   const workbook = new Workbook()
   const data = await workbook.xlsx.load(arrayBuffer)
 
-  const content = createStateFromWorkbook(data)
-
-  return content
+  return createStateFromWorkbook(data)
 }

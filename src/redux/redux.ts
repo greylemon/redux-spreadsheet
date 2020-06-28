@@ -8,7 +8,7 @@ export const useTypedSelector: TypedUseSelectorHook<IRootStore> = useSelector
 
 const store = configureStore({
   reducer: rootReducer,
-  devTools,
+  // devTools,
   middleware,
 })
 

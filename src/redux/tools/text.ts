@@ -14,20 +14,28 @@ import {
   IRichTextValue,
   IFragment,
   IRichTextBlock,
+  IInlineStyles,
+  ICell,
 } from '../../@types/state'
 import uniqid from 'uniqid'
 import { getElementaryRanges, mergeRanges } from './range'
 import { IInlineStylesRange } from '../../@types/general'
+import { CellValue } from 'exceljs'
+import {
+  TYPE_RICH_TEXT,
+  TYPE_TEXT,
+  TYPE_FORMULA,
+} from '../../constants/cellTypes'
 
 export const getRangesFromInlineRanges = (
   inlineStyleRanges: RawDraftInlineStyleRange[]
-) =>
+): IRange[] =>
   inlineStyleRanges.reduce((acc, { offset, length }) => {
     acc.push({ start: offset, end: offset + length - 1 })
     return acc
   }, [] as Array<IRange>)
 
-export const getTextFromRichText = (richText: IRichTextValue) => {
+export const getTextFromRichText = (richText: IRichTextValue): string => {
   let text = ''
 
   for (const block of richText) {
@@ -42,27 +50,27 @@ export const getTextFromRichText = (richText: IRichTextValue) => {
 
 export const updateStyleInPlace = (
   inlineRange: RawDraftInlineStyleRange,
-  fragment: IFragment
-) => {
+  styles: IInlineStyles
+): void => {
   switch (inlineRange.style) {
     case 'BOLD':
-      fragment.styles!.fontWeight = 'bold'
+      styles.fontWeight = 'bold'
       break
     case 'ITALIC':
-      fragment.styles!.fontStyle = 'italic'
+      styles.fontStyle = 'italic'
       break
     case 'STRIKETHROUGH':
-      if (fragment.styles!.textDecoration) {
-        fragment.styles!.textDecoration += ' line-through'
+      if (styles.textDecoration) {
+        styles.textDecoration += ' line-through'
       } else {
-        fragment.styles!.textDecoration = 'line-through'
+        styles.textDecoration = 'line-through'
       }
       break
     case 'UNDERLINE':
-      if (fragment.styles!.textDecoration) {
-        fragment.styles!.textDecoration += ' underline'
+      if (styles.textDecoration) {
+        styles.textDecoration += ' underline'
       } else {
-        fragment.styles!.textDecoration = 'underline'
+        styles.textDecoration = 'underline'
       }
       break
 
@@ -73,7 +81,7 @@ export const updateStyleInPlace = (
 
 export const createValueFromEditorState = (
   editorState: EditorState
-): IValue => {
+): Partial<ICell> => {
   const richText: IRichTextValue = []
 
   const rawBlocks = convertToRaw(editorState.getCurrentContent()).blocks
@@ -103,7 +111,7 @@ export const createValueFromEditorState = (
         if (inlineStart <= start && end <= inlineEnd) {
           if (!fragment.styles) fragment.styles = {}
 
-          updateStyleInPlace(inlineRange, fragment)
+          updateStyleInPlace(inlineRange, fragment.styles)
         }
       }
 
@@ -121,10 +129,27 @@ export const createValueFromEditorState = (
     }
   }
 
-  return isRichText ? richText : getTextFromRichText(richText)
+  const cell: ICell = {}
+
+  const text = getTextFromRichText(richText)
+
+  if (isRichText) {
+    cell.value = richText
+    cell.type = TYPE_RICH_TEXT
+  } else if (text.includes('=')) {
+    cell.value = {
+      formula: text.substring(1),
+    }
+    cell.type = TYPE_FORMULA
+  } else {
+    cell.value = text
+    cell.type = TYPE_TEXT
+  }
+
+  return cell
 }
 
-export const getRichTextBlockText = (block: IRichTextBlock) => {
+export const getRichTextBlockText = (block: IRichTextBlock): string => {
   let text = ''
 
   const fragments = block.fragments
@@ -138,7 +163,7 @@ export const getRichTextBlockText = (block: IRichTextBlock) => {
 // Currently the fragment styles are in elementary ranges, unlike overlapping ranges.. may not matter at all
 export const getRawInlineStyleRangesFromRichTextBlock = (
   block: IRichTextBlock
-) => {
+): { text: string; inlineStyleRanges: RawDraftInlineStyleRange[] } => {
   // Any fragment with style is an inline style
   const inlineStyleRanges: RawDraftInlineStyleRange[] = []
   let text = ''
@@ -152,7 +177,7 @@ export const getRawInlineStyleRangesFromRichTextBlock = (
     UNDERLINE: [],
   }
 
-  let previousOffset: number = -1
+  let previousOffset = -1
 
   for (const fragment of fragments) {
     const start = previousOffset + 1
@@ -239,18 +264,22 @@ export const getRawContentStateFromRichText = (
   entityMap: {},
 })
 
-export const createEditorStateFromRichText = (value: IRichTextValue) =>
+export const createEditorStateFromRichText = (
+  value: IRichTextValue
+): EditorState =>
   EditorState.createWithContent(
     convertFromRaw(getRawContentStateFromRichText(value))
   )
 
-export const createEditorStateFromText = (value: string) =>
+export const createEditorStateFromText = (value: string): EditorState =>
   EditorState.createWithContent(ContentState.createFromText(value))
 
-export const createEmptyEditorState = () =>
+export const createEmptyEditorState = (): EditorState =>
   EditorState.moveFocusToEnd(EditorState.createEmpty())
 
-export const createEditorStateFromNonEmptyValue = (value: IValue) => {
+export const createEditorStateFromNonEmptyValue = (
+  value: IValue
+): EditorState => {
   // let editorValue: IValue
 
   return EditorState.moveFocusToEnd(

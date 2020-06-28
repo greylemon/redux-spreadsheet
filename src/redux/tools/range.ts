@@ -1,6 +1,9 @@
 import { IRange } from '../../@types/state'
 // https://stackoverflow.com/questions/55480499/split-set-of-intervals-into-minimal-set-of-disjoint-intervals
-export const getElementaryRanges = (ranges: IRange[], length: number) => {
+export const getElementaryRanges = (
+  ranges: IRange[],
+  length: number
+): IRange[] => {
   const points: IRange[] = []
   if (ranges.length) {
     const first = ranges[0]
@@ -22,9 +25,10 @@ export const getElementaryRanges = (ranges: IRange[], length: number) => {
     .map((x) => {
       // make an interval for every section that is inside any input interval
       const ret =
-        x.start > prev! && count !== 0
-          ? { start: prev!, end: x.start - 1 }
+        prev !== null && x.start > prev && count !== 0
+          ? { start: prev, end: x.start - 1 }
           : null
+
       prev = x.start
       count += x.end
       return ret
@@ -55,7 +59,7 @@ export const getElementaryRanges = (ranges: IRange[], length: number) => {
 }
 
 // https://leetcode.com/problems/merge-intervals/solution/
-export const mergeRanges = (ranges: IRange[]) => {
+export const mergeRanges = (ranges: IRange[]): IRange[] => {
   const mergedRanges: IRange[] = []
 
   for (const range of ranges) {

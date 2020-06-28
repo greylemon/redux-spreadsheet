@@ -19,7 +19,7 @@ import { createValueFromEditorState } from '../../tools/text'
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
   action: PayloadAction<IPosition>
-) => {
+): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   const position = action.payload
 
@@ -54,7 +54,7 @@ export const CELL_MOUSE_DOWN_CTRL = (
 export const CELL_MOUSE_DOWN_SHIFT = (
   state: IExcelState,
   action: PayloadAction<IPosition>
-) => {
+): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   const position = action.payload
 
@@ -83,7 +83,7 @@ export const CELL_MOUSE_DOWN_SHIFT = (
 export const CELL_MOUSE_DOWN = (
   state: IExcelState,
   action: PayloadAction<IPosition>
-) => {
+): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   const position = action.payload
 
@@ -106,7 +106,8 @@ export const CELL_MOUSE_DOWN = (
       activeSheet.data[activeSheet.activeCellPosition.y] = {
         ...activeSheet.data[activeSheet.activeCellPosition.y],
         [activeSheet.activeCellPosition.x]: {
-          value: cellValue,
+          ...[activeSheet.activeCellPosition.x],
+          ...cellValue,
         },
       }
     }
@@ -123,7 +124,7 @@ export const CELL_MOUSE_DOWN = (
 export const CELL_MOUSE_ENTER = (
   state: IExcelState,
   action: PayloadAction<IPosition>
-) => {
+): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   if (activeSheet.selectionArea) {
     const position = action.payload
@@ -144,7 +145,7 @@ export const CELL_MOUSE_ENTER = (
 export const CELL_MOUSE_UP = (
   state: IExcelState,
   action: PayloadAction<ISelectionArea>
-) => {
+): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   if (!activeSheet.selectionArea) return state
 
@@ -190,7 +191,7 @@ export const CELL_MOUSE_UP = (
   return state
 }
 
-export const CELL_DOUBLE_CLICK = (state: IExcelState) => {
+export const CELL_DOUBLE_CLICK = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   state.isEditMode = true
 

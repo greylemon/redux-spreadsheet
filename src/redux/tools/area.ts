@@ -30,18 +30,20 @@ export const getOrderedAreaFromPositions = (
   },
 })
 
-export const getOrderedAreaFromArea = (area: IArea) => ({
+export const getOrderedAreaFromArea = (area: IArea): IArea => ({
   start: getMinPositionFromArea(area),
   end: getMaxPositionFromArea(area),
 })
 
-export const getAreaRanges = (area: IArea) => {
+export const getAreaRanges = (area: IArea): IAreaRange => {
   const orderedArea = getOrderedAreaFromArea(area)
 
   return getAreaRangesFromOrderedArea(orderedArea)
 }
 
-export const getAreaRangesFromOrderedArea = (orderedArea: IArea) => ({
+export const getAreaRangesFromOrderedArea = (
+  orderedArea: IArea
+): IAreaRange => ({
   xRange: { start: orderedArea.start.x, end: orderedArea.end.x } as IRange,
   yRange: { start: orderedArea.start.y, end: orderedArea.end.y } as IRange,
 })
@@ -49,14 +51,17 @@ export const getAreaRangesFromOrderedArea = (orderedArea: IArea) => ({
 export const checkIsPositionEqualOtherPosition = (
   position: IPosition,
   otherPosition: IPosition
-) => position.x === otherPosition.x && position.y === otherPosition.y
+): boolean => position.x === otherPosition.x && position.y === otherPosition.y
 
-export const getAreaFromPosition = (position: IPosition) => ({
+export const getAreaFromPosition = (position: IPosition): IArea => ({
   start: { ...position },
   end: { ...position },
 })
 
-export const getAreaDifference = (areaToSubtract: IArea, area: IArea) => {
+export const getAreaDifference = (
+  areaToSubtract: IArea,
+  area: IArea
+): IArea[] => {
   const areaDifference: Array<IArea> = []
 
   const areaRange = getAreaRanges(area)
@@ -124,13 +129,19 @@ export const getAndAddAreaFromSuperAreaIndex = (
   superAreaIndex: number,
   area: IArea,
   areas: Array<IArea>
-) => [
+): IArea[] => [
   ...areas.slice(0, superAreaIndex),
   ...getAreaDifference(area, areas[superAreaIndex]),
   ...areas.slice(superAreaIndex + 1),
 ]
 
-export const getAndAddArea = (area: IArea, areas: Array<IArea>) => {
+export const getAndAddArea = (
+  area: IArea,
+  areas: Array<IArea>
+): {
+  superAreaIndex: number
+  newAreas: IArea[]
+} => {
   let newAreas: Array<IArea>
 
   const superAreaIndex = getFirstSuperAreaIndex(area, areas)
@@ -147,7 +158,10 @@ export const getAndAddArea = (area: IArea, areas: Array<IArea>) => {
 /**
  * Finds the index of the first superset of area
  */
-export const getFirstSuperAreaIndex = (area: IArea, areas: Array<IArea>) => {
+export const getFirstSuperAreaIndex = (
+  area: IArea,
+  areas: Array<IArea>
+): number => {
   const orderedArea = getOrderedAreaFromArea(area)
 
   const areaRanges = getAreaRangesFromOrderedArea(orderedArea)
@@ -168,16 +182,16 @@ export const getFirstSuperAreaIndex = (area: IArea, areas: Array<IArea>) => {
 export const checkIsAreaRangeContainedInOtherAreaRange = (
   areaRange: IAreaRange,
   otherAreaRange: IAreaRange
-) =>
+): boolean =>
   checkIsRangeContainedInOtherRange(areaRange.xRange, otherAreaRange.xRange) &&
   checkIsRangeContainedInOtherRange(areaRange.yRange, otherAreaRange.yRange)
 
 export const checkIsSelectionAreaEqualPosition = ({
   start,
   end,
-}: ISelectionArea) => start.x === end.x && start.y === end.y
+}: ISelectionArea): boolean => start.x === end.x && start.y === end.y
 
 export const checkIsRangeContainedInOtherRange = (
   range: IRange,
   otherRange: IRange
-) => otherRange.start <= range.start && range.end <= otherRange.end
+): boolean => otherRange.start <= range.start && range.end <= otherRange.end

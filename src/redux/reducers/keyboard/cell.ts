@@ -3,11 +3,11 @@ import { nSelectMergeCell, nSelectActiveSheet } from '../../tools/selectors'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { EditorState } from 'draft-js'
 
-export const CELL_KEY_DOWN_SHIFT = (state: IExcelState) => {
+export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_DOWN = (state: IExcelState) => {
+export const CELL_KEY_DOWN = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   if (activeSheet.activeCellPosition.y >= activeSheet.rowCount) return state
 
@@ -26,11 +26,11 @@ export const CELL_KEY_DOWN = (state: IExcelState) => {
   return state
 }
 
-export const CELL_KEY_UP_SHIFT = (state: IExcelState) => {
+export const CELL_KEY_UP_SHIFT = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_UP = (state: IExcelState) => {
+export const CELL_KEY_UP = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   if (activeSheet.activeCellPosition.y < 2) return state
 
@@ -49,11 +49,11 @@ export const CELL_KEY_UP = (state: IExcelState) => {
   return state
 }
 
-export const CELL_KEY_RIGHT_SHIFT = (state: IExcelState) => {
+export const CELL_KEY_RIGHT_SHIFT = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_RIGHT = (state: IExcelState) => {
+export const CELL_KEY_RIGHT = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   if (activeSheet.activeCellPosition.x >= activeSheet.columnCount) return state
 
@@ -72,11 +72,11 @@ export const CELL_KEY_RIGHT = (state: IExcelState) => {
   return state
 }
 
-export const CELL_KEY_LEFT_SHIFT = (state: IExcelState) => {
+export const CELL_KEY_LEFT_SHIFT = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_LEFT = (state: IExcelState) => {
+export const CELL_KEY_LEFT = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   if (activeSheet.activeCellPosition.x < 2) return state
 
@@ -98,13 +98,13 @@ export const CELL_KEY_LEFT = (state: IExcelState) => {
 export const CELL_EDITOR_STATE_UPDATE = (
   state: IExcelState,
   action: PayloadAction<IEditorState>
-) => {
+): IExcelState => {
   const editorState = action.payload
   state.editorState = editorState
   return state
 }
 
-export const CELL_EDITOR_STATE_START = (state: IExcelState) => {
+export const CELL_EDITOR_STATE_START = (state: IExcelState): IExcelState => {
   state.isEditMode = true
   state.editorState = EditorState.moveFocusToEnd(EditorState.createEmpty())
   return state

@@ -4,7 +4,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 export const CHANGE_SHEET_ORDER = (
   state: IExcelState,
   action: PayloadAction<{ oldIndex: number; newIndex: number }>
-) => {
+): IExcelState => {
   const { oldIndex, newIndex } = action.payload
 
   const sheetName = state.sheetNames[oldIndex]
@@ -21,7 +21,7 @@ export const CHANGE_SHEET_ORDER = (
 export const CHANGE_SHEET = (
   state: IExcelState,
   action: PayloadAction<ISheetName>
-) => {
+): IExcelState => {
   const sheetName = action.payload
 
   state.activeSheetName = sheetName

@@ -1,8 +1,12 @@
+import { IColumnIndex } from '../@types/state'
+
 /**
  * Convert a column name to a number.
  * ! Taken from xlsx-populate/lib/addressConverter
  */
-export const columnNameToNumber = (name: string | undefined) => {
+export const columnNameToNumber = (
+  name: string | undefined
+): IColumnIndex | undefined => {
   if (!name || typeof name !== 'string') return
 
   name = name.toUpperCase()
@@ -19,7 +23,7 @@ export const columnNameToNumber = (name: string | undefined) => {
  * Convert a column number to a name.
  * ! Taken from xlsx-populate/lib/addressConverter
  */
-export const columnNumberToName = (number: number) => {
+export const columnNumberToName = (number: number): string => {
   let dividend = number
   let name = ''
   let modulo = 0

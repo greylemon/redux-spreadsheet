@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, FunctionComponent } from 'react'
 import CommonActivityPane from './CommonPane'
 import {
   IComputeSelectionAreaStyle,
@@ -95,7 +95,7 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
   let selectionAreaHeight
   let top
 
-  const { start, end } = selectionArea!
+  const { start, end } = selectionArea
 
   const customSelectionStyle: CSSProperties = {
     borderLeftWidth: STYLE_SELECTION_BORDER_WIDTH,
@@ -183,15 +183,15 @@ const checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane = (
   freezeRowCount,
   area
 ) =>
-  (area!.start.x <= freezeColumnCount || area!.end.x <= freezeColumnCount) &&
-  (area!.start.y > freezeRowCount || area!.end.y > freezeRowCount)
+  (area.start.x <= freezeColumnCount || area.end.x <= freezeColumnCount) &&
+  (area.start.y > freezeRowCount || area.end.y > freezeRowCount)
 const checkIsActiveCellInCorrectPane: ICheckIsActiveCellInCorrectPane = (
   position,
   freezeColumnCount,
   freezeRowCount
 ) => position.x <= freezeColumnCount && position.y > freezeRowCount
 
-const BottomLeftPane = () => (
+const BottomLeftPane: FunctionComponent = () => (
   <Fragment>
     <CommonActivityPane
       computeSelectionAreaStyle={computeSelectionAreaStyle}

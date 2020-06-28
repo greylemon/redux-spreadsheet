@@ -12,11 +12,11 @@ import {
   IComputeSelectionAreaStyle,
   ICheckIsAreaInRelevantPane,
 } from '../@types/functions'
-import { IPosition } from '../@types/state'
+import { IPosition, IExcelState, IColumns, ICell, IArea } from '../@types/state'
 import { CSSProperties } from 'react'
-import memoize from 'fast-memoize'
 
-export const selectExcel = (undoxExcel: IRootStore) => undoxExcel.present
+export const selectExcel = (undoxExcel: IRootStore): IExcelState =>
+  undoxExcel.present
 
 // ===========================================================================
 // EXCEL BASE SELECTORS
@@ -196,194 +196,157 @@ export const selectActiveSheetNameIndex = createSelector(
 // ===========================================================================
 // CUSTOM SELECTOR FACTORIES
 // ===========================================================================
-export const selectRowDataFactory = memoize((row: number) =>
-  createSelector([selectData], (data) => data[row])
-)
+export const selectRowDataFactory = (row: number) => (
+  state: IRootStore
+): IColumns | undefined => selectData(state)[row]
 
-export const selectCellFactory = memoize((position: IPosition) =>
-  createSelector([selectRowDataFactory(position.y)], (rowData) =>
-    rowData ? rowData[position.x] : undefined
-  )
-)
+export const selectCellFactory = (position: IPosition) => (
+  state: IRootStore
+): ICell | undefined => {
+  const rowData = selectRowDataFactory(position.y)(state)
 
-export const selectCellMergeFactory = memoize((position: IPosition) =>
-  createSelector([selectCellFactory(position)], (cell) =>
-    cell ? cell.merged : undefined
-  )
-)
+  return rowData ? rowData[position.x] : undefined
+}
 
-export const selectFactoryIsAreaInRelevantPane = memoize(
-  (checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane) =>
-    createSelector(
-      [selectFreezeColumnCount, selectFreezeRowCount, selectSelectionArea],
-      checkIsAreaInRelevantPane
+export const selectCellMergeFactory = (position: IPosition) => (
+  state: IRootStore
+): IArea | undefined => {
+  const cell = selectCellFactory(position)(state)
+  return cell ? cell.merged : undefined
+}
+
+export const selectFactoryIsAreaInRelevantPane = (
+  checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
+) => (state: IRootStore): boolean | undefined => {
+  const selectionArea = selectSelectionArea(state)
+  return (
+    selectionArea &&
+    checkIsAreaInRelevantPane(
+      selectFreezeColumnCount(state),
+      selectFreezeRowCount(state),
+      selectionArea
     )
-)
+  )
+}
 
-export const selectFactoryActiveCellStyle = memoize(
-  (computeActiveCellStyle?: IComputeActiveCellStyle) => (state: IRootStore) =>
-    createSelector(
-      [
-        selectFreezeRowCount,
+export const selectFactoryActiveCellStyle = (
+  computeActiveCellStyle?: IComputeActiveCellStyle
+) => (state: IRootStore): CSSProperties => {
+  const freezeRowCount = selectFreezeRowCount(state)
+  const columnCount = selectColumnCount(state)
+  const rowCount = selectRowCount(state)
+  const columnWidths = selectColumnWidths(state)
+  const rowHeights = selectRowHeights(state)
+  const columnOffsets = selectColumnoffsets(state)
+  const rowOffsets = selectRowOffsets(state)
+  const data = selectData(state)
+  const activeCellPosition = selectActiveCellPosition(state)
 
-        selectColumnCount,
-        selectRowCount,
+  let activeCellStyle: CSSProperties
 
-        selectColumnWidths,
-        selectRowHeights,
+  if (computeActiveCellStyle) {
+    activeCellStyle = computeActiveCellStyle(
+      activeCellPosition,
+      columnWidths,
+      columnOffsets,
+      rowHeights,
+      rowOffsets,
+      freezeRowCount,
+      data
+    )
+    activeCellStyle.minHeight = activeCellStyle.height
+    activeCellStyle.minWidth = activeCellStyle.width
+  } else {
+    let height, width, top, left
 
-        selectColumnoffsets,
-        selectRowOffsets,
+    const cellMergeArea = selectCellMergeFactory(activeCellPosition)(state)
 
-        selectData,
-
-        selectActiveCellPosition,
-      ],
-      (
-        freezeRowCount,
-
-        columnCount,
-        rowCount,
-
-        columnWidths,
-        rowHeights,
-
-        columnOffsets,
+    if (cellMergeArea) {
+      const mergeDimensions = getAreaDimensions(
+        cellMergeArea,
         rowOffsets,
+        columnOffsets,
+        columnWidths,
+        rowHeights
+      )
 
-        data,
+      height = mergeDimensions.height
+      width = mergeDimensions.width
 
-        activeCellPosition
-      ) => {
-        let activeCellStyle: CSSProperties
+      top = rowOffsets[cellMergeArea.start.y]
+      left = columnOffsets[cellMergeArea.start.x]
+    } else {
+      top = rowOffsets[activeCellPosition.y]
+      left = columnOffsets[activeCellPosition.x]
 
-        if (computeActiveCellStyle) {
-          activeCellStyle = computeActiveCellStyle(
-            activeCellPosition,
-            columnWidths,
-            columnOffsets,
-            rowHeights,
-            rowOffsets,
-            freezeRowCount,
-            data
-          )
-          activeCellStyle.minHeight = activeCellStyle.height
-          activeCellStyle.minWidth = activeCellStyle.width
-        } else {
-          let height, width, top, left
+      height = normalizeRowHeightFromArray(activeCellPosition.y, rowHeights)
+      width = normalizeColumnWidthFromArray(activeCellPosition.x, columnWidths)
+    }
 
-          const cellMergeArea = selectCellMergeFactory(activeCellPosition)(
-            state
-          )
+    activeCellStyle = {
+      top,
+      left,
+      height,
+      width,
+      minHeight: height,
+      minWidth: width,
+    }
+  }
 
-          if (cellMergeArea) {
-            const mergeDimensions = getAreaDimensions(
-              cellMergeArea,
-              rowOffsets,
-              columnOffsets,
-              columnWidths,
-              rowHeights
-            )
+  activeCellStyle.maxWidth =
+    columnOffsets[columnCount] +
+    normalizeColumnWidthFromArray(columnCount, columnWidths) -
+    columnOffsets[activeCellPosition.x]
+  activeCellStyle.maxHeight =
+    rowOffsets[rowCount] +
+    normalizeRowHeightFromArray(rowCount, rowHeights) -
+    rowOffsets[activeCellPosition.y]
 
-            height = mergeDimensions.height
-            width = mergeDimensions.width
-
-            top = rowOffsets[cellMergeArea.start.y]
-            left = columnOffsets[cellMergeArea.start.x]
-          } else {
-            top = rowOffsets[activeCellPosition.y]
-            left = columnOffsets[activeCellPosition.x]
-
-            height = normalizeRowHeightFromArray(
-              activeCellPosition.y,
-              rowHeights
-            )
-            width = normalizeColumnWidthFromArray(
-              activeCellPosition.x,
-              columnWidths
-            )
-          }
-
-          activeCellStyle = {
-            top,
-            left,
-            height,
-            width,
-            minHeight: height,
-            minWidth: width,
-          }
-        }
-
-        activeCellStyle.maxWidth =
-          columnOffsets[columnCount] +
-          normalizeColumnWidthFromArray(columnCount, columnWidths) -
-          columnOffsets[activeCellPosition.x]
-        activeCellStyle.maxHeight =
-          rowOffsets[rowCount] +
-          normalizeRowHeightFromArray(rowCount, rowHeights) -
-          rowOffsets[activeCellPosition.y]
-
-        return activeCellStyle
-      }
-    )(state)
-)
+  return activeCellStyle
+}
 
 export const selectFactorySelectionAreaStyle = (
   computeSelectionAreaStyle: IComputeSelectionAreaStyle
-) =>
-  createSelector(
-    [
-      selectColumnWidths,
-      selectColumnoffsets,
-      selectRowHeights,
-      selectRowOffsets,
-      selectFreezeColumnCount,
-      selectFreezeRowCount,
-      selectSelectionArea,
-    ],
-    computeSelectionAreaStyle
+) => (state: IRootStore): CSSProperties =>
+  computeSelectionAreaStyle(
+    selectColumnWidths(state),
+    selectColumnoffsets(state),
+    selectRowHeights(state),
+    selectRowOffsets(state),
+    selectFreezeColumnCount(state),
+    selectFreezeRowCount(state),
+    selectSelectionArea(state)
   )
 
 export const selectFactoryInactiveSelectionAreasStyle = (
   computeSelectionAreaStyle: IComputeSelectionAreaStyle,
   checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
-) =>
-  createSelector(
-    [
-      selectColumnWidths,
-      selectColumnoffsets,
-      selectRowHeights,
-      selectRowOffsets,
-      selectFreezeColumnCount,
-      selectFreezeRowCount,
-      selectInactiveSelectionAreas,
-    ],
-    (
-      columnWidths,
-      columnOffsets,
-      rowHeights,
-      rowOffsets,
-      freezeColumnCount,
-      freezeRowCount,
-      inactiveSelectionAreas
-    ) =>
-      inactiveSelectionAreas
-        .filter((inactiveSelectionArea) =>
-          checkIsAreaInRelevantPane(
-            freezeColumnCount,
-            freezeRowCount,
-            inactiveSelectionArea
-          )
-        )
-        .map((inactiveSelectionArea) =>
-          computeSelectionAreaStyle(
-            columnWidths,
-            columnOffsets,
-            rowHeights,
-            rowOffsets,
-            freezeColumnCount,
-            freezeRowCount,
-            inactiveSelectionArea
-          )
-        )
-  )
+) => (state: IRootStore): CSSProperties[] => {
+  const columnWidths = selectColumnWidths(state)
+  const columnOffsets = selectColumnoffsets(state)
+  const rowHeights = selectRowHeights(state)
+  const rowOffsets = selectRowOffsets(state)
+  const freezeColumnCount = selectFreezeColumnCount(state)
+  const freezeRowCount = selectFreezeRowCount(state)
+  const inactiveSelectionAreas = selectInactiveSelectionAreas(state)
+
+  return inactiveSelectionAreas
+    .filter((inactiveSelectionArea) =>
+      checkIsAreaInRelevantPane(
+        freezeColumnCount,
+        freezeRowCount,
+        inactiveSelectionArea
+      )
+    )
+    .map((inactiveSelectionArea) =>
+      computeSelectionAreaStyle(
+        columnWidths,
+        columnOffsets,
+        rowHeights,
+        rowOffsets,
+        freezeColumnCount,
+        freezeRowCount,
+        inactiveSelectionArea
+      )
+    )
+}

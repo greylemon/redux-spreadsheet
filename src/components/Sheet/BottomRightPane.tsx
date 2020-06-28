@@ -1,4 +1,4 @@
-import React, { Fragment, CSSProperties } from 'react'
+import React, { Fragment, CSSProperties, FunctionComponent } from 'react'
 
 import {
   ICheckIsActiveCellInCorrectPane,
@@ -41,7 +41,7 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
   let left
   let top
 
-  const { start, end } = selectionArea!
+  const { start, end } = selectionArea
 
   const customSelectionStyle: CSSProperties = {
     borderBottomWidth: STYLE_SELECTION_BORDER_WIDTH,
@@ -142,11 +142,10 @@ const checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane = (
   freezeRowCount,
   area
 ) =>
-  area !== undefined &&
-  (area!.start.x > freezeColumnCount || area!.end.x > freezeColumnCount) &&
-  (area!.start.y > freezeRowCount || area!.end.y > freezeRowCount)
+  (area.start.x > freezeColumnCount || area.end.x > freezeColumnCount) &&
+  (area.start.y > freezeRowCount || area.end.y > freezeRowCount)
 
-const BottomRightPane = () => (
+const BottomRightPane: FunctionComponent = () => (
   <Fragment>
     <CommonActivityPane
       checkIsActiveCellInCorrectPane={checkIsActiveCellInCorrectPane}

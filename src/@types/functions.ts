@@ -40,7 +40,7 @@ export interface ICheckIsAreaInRelevantPane {
   (
     freezeColumnCount: IFreezeColumnCount,
     freezeRowCount: IFreezeRowCount,
-    area?: ISelectionArea
+    area: ISelectionArea
   ): boolean
 }
 
@@ -53,5 +53,5 @@ export interface ICheckIsActiveCellInCorrectPane {
 }
 
 export interface IHandleSave {
-  (excelState: IExcelState): any
+  (excelState: IExcelState): void
 }

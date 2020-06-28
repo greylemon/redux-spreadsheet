@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { ICellProps } from '../../@types/components'
 
-const RootCell = ({ style }: ICellProps) => {
+const RootCell: FunctionComponent<ICellProps> = ({ style }) => {
   return <div className="unselectable cell cell__header" style={style} />
 }
 

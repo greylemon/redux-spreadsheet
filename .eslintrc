@@ -3,7 +3,9 @@
     "plugin:import/typescript",
     "prettier",
     "prettier/@typescript-eslint",
-    "prettier/react"
+    "prettier/react",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended"
   ],
   "plugins": ["@typescript-eslint", "import", "react", "prettier"],
   "parser": "@typescript-eslint/parser",
@@ -44,7 +46,7 @@
     "import/no-mutable-exports": "error",
     "import/no-named-as-default": "error",
     "import/no-named-as-default-member": "error",
-    "import/no-unresolved": "error",
+    // "import/no-unresolved": "error",
     "linebreak-style": "error",
     "no-array-constructor": "error",
     "no-class-assign": "error",

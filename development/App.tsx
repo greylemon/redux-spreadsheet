@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { FunctionComponent } from 'react'
 import { Excel } from '../src/Excel'
 import './App.scss'
 import { IExcelState } from '../src/@types/state'
+import { IHandleSave } from '../src/@types/functions'
 
-function App() {
-  const handleSave = (_excelState: IExcelState) => {}
+const App: FunctionComponent = () => {
+  const handleSave: IHandleSave = (_excelState: IExcelState) => {
+    return
+  }
 
   return (
     <div className="App">

@@ -47,7 +47,12 @@ const NormalCellValue: FunctionComponent<{ value?: string }> = ({ value }) => (
   <Fragment>{value}</Fragment>
 )
 
-const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
+const EditableCell: FunctionComponent<ICellProps> = ({
+  style,
+  data,
+  columnIndex,
+  rowIndex,
+}) => {
   const dispatch = useDispatch()
 
   const { data: sheetData, columnWidthsAdjusted } = data
@@ -56,7 +61,7 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
 
   const cellData = rowData && rowData[columnIndex] ? rowData[columnIndex] : {}
 
-  let { value, type } = cellData
+  const { value, type } = cellData
 
   const position = { x: columnIndex, y: rowIndex }
 
@@ -96,19 +101,19 @@ const EditableCell = ({ style, data, columnIndex, rowIndex }: ICellProps) => {
         component = <RichTextCellValue value={value as IRichTextValue} />
         break
       case TYPE_FORMULA:
-        value = value as IFormulaValue
-        component = <NormalCellValue value={value.result as string} />
+        component = (
+          <NormalCellValue value={(value as IFormulaValue).result as string} />
+        )
         break
       case TYPE_MERGE:
         break
       case TYPE_TEXT:
       default:
-        value = value as any
         component = <NormalCellValue value={value as string | undefined} />
         break
     }
     return component
-  }, [])
+  }, [value])
 
   return (
     <div

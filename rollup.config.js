@@ -4,6 +4,7 @@ import typescript from 'rollup-plugin-typescript'
 import scss from 'rollup-plugin-scss'
 import resolve from '@rollup/plugin-node-resolve'
 
+// disable-eslint
 const external = (id) => !id.startsWith('.') && !path.isAbsolute(id)
 const input = './src/index.ts'
 

@@ -1,10 +1,10 @@
-import React, { ChangeEvent, Fragment } from 'react'
+import React, { ChangeEvent, Fragment, FunctionComponent } from 'react'
 import { useDispatch } from 'react-redux'
 import { loadWorkbook } from '../../redux/thunk'
 import { Publish } from '@material-ui/icons'
 import { SmallLabelButton } from '../misc/buttons'
 
-const FileUpload = () => {
+const FileUpload: FunctionComponent = () => {
   const dispatch = useDispatch()
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files
@@ -31,7 +31,7 @@ const FileUpload = () => {
   )
 }
 
-const ToolBar = () => {
+const ToolBar: FunctionComponent = () => {
   return (
     <div className="toolbar">
       <FileUpload />

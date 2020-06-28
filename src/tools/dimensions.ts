@@ -7,7 +7,7 @@ import {
   SHEET_ROW_HEIGHT_HEADER,
 } from '../constants/defaults'
 import {
-  IRowheight,
+  IRowHeight,
   IColumnWidth,
   IColumnWidths,
   IColumnCount,
@@ -19,7 +19,7 @@ import {
   IArea,
 } from '../@types/state'
 
-export const normalizeRowHeight = (rowHeight: IRowheight) =>
+export const normalizeRowHeight = (rowHeight: IRowHeight): IRowHeight =>
   rowHeight ? rowHeight * ROW_HEIGHT_SCALE : SHEET_ROW_HEIGHT
 
 /**
@@ -28,14 +28,14 @@ export const normalizeRowHeight = (rowHeight: IRowheight) =>
 export const normalizeRowHeightFromArray = (
   index: number,
   rowHeights: IRowHeights
-): IRowheight => {
+): IRowHeight => {
   if (!index) return SHEET_ROW_HEIGHT_HEADER
 
   const rowHeight = rowHeights[index]
   return normalizeRowHeight(rowHeight)
 }
 
-export const normalizeColumnWidth = (columnWidth: IColumnWidth) =>
+export const normalizeColumnWidth = (columnWidth: IColumnWidth): IColumnWidth =>
   columnWidth ? columnWidth * COLUMN_WIDTH_SCALE : SHEET_COLUMN_WIDTH
 
 /**
@@ -57,7 +57,7 @@ export const normalizeColumnWidthFromArray = (
 export const getColumnOffsets = (
   columnWidths: IColumnWidths,
   columnCount: IColumnCount
-): Array<IOffset> => {
+): IOffset[] => {
   const leftOffsets = [0, SHEET_COLUMN_WIDTH_HEADER]
 
   for (
@@ -78,7 +78,7 @@ export const getColumnOffsets = (
 export const getRowOffsets = (
   rowHeights: IRowHeights,
   rowCount: IRowCount
-): Array<IOffset> => {
+): IOffset[] => {
   const topOffsets = [0, SHEET_ROW_HEIGHT_HEADER]
 
   for (
@@ -99,7 +99,7 @@ export const getAreaDimensions = (
   columnOffsets: IColumnOffsets,
   columnWidths: IColumnWidths,
   rowHeights: IRowHeights
-) => ({
+): { height: IRowHeight; width: IColumnWidth } => ({
   height:
     rowOffsets[area.end.y] +
     normalizeRowHeightFromArray(area.end.y, rowHeights) -
