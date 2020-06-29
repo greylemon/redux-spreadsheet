@@ -14,6 +14,7 @@ import {
 } from '../@types/functions'
 import { IPosition, IExcelState, IColumns, ICell, IArea } from '../@types/state'
 import { CSSProperties } from 'react'
+import { STYLE_ACTIVE_CELL_Z_INDEX } from '../constants/styles'
 
 export const selectExcel = (undoxExcel: IRootStore): IExcelState =>
   undoxExcel.present
@@ -301,6 +302,7 @@ export const selectFactoryActiveCellStyle = (
     rowOffsets[rowCount] +
     normalizeRowHeightFromArray(rowCount, rowHeights) -
     rowOffsets[activeCellPosition.y]
+  activeCellStyle.zIndex = STYLE_ACTIVE_CELL_Z_INDEX
 
   return activeCellStyle
 }

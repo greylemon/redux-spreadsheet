@@ -20,7 +20,6 @@ import {
 import uniqid from 'uniqid'
 import { getElementaryRanges, mergeRanges } from './range'
 import { IInlineStylesRange } from '../../@types/general'
-import { CellValue } from 'exceljs'
 import {
   TYPE_RICH_TEXT,
   TYPE_TEXT,

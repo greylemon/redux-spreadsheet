@@ -1,5 +1,9 @@
 @import 'variables';
 
+$customBorderColor: rgb(221, 221, 221);
+$customBorderWidth: 'thin';
+$customBorderStyle: 'solid';
+
 .sheetGrid {
   user-select: none;
   -moz-user-select: none;
@@ -20,9 +24,24 @@
 }
 
 .cell {
-  outline: 1px solid rgb(221, 221, 221);
-  outline-offset: -1px;
-  padding: 2px;
+  border: 1px solid rgb(221, 221, 221);
+  border-top-color: $customBorderColor;
+  border-top-width: $customBorderWidth;
+  border-top-style: $customBorderStyle;
+
+  border-bottom-color: $customBorderColor;
+  border-bottom-width: $customBorderWidth;
+  border-bottom-style: $customBorderStyle;
+
+  border-left-color: $customBorderColor;
+  border-left-width: $customBorderWidth; 
+  border-left-style: $customBorderStyle;
+
+  border-right-color: $customBorderColor;
+  border-right-width: $customBorderWidth;
+  border-right-style: $customBorderStyle;
+
+  
   box-sizing: border-box;
 
   &__header {
@@ -35,6 +54,15 @@
     width: fit-content;
   }
 
+  &__content {
+    padding: 2px 5px;
+  }
+
+  &__block {
+    padding: 2px 5px;
+    z-index: 0;
+  }
+
   &__active {
     position: absolute;
     outline: 2px solid rgba(75, 135, 255, 0.8);
@@ -45,11 +73,11 @@
     }
 
     &--edit {
-      padding: 2px;
-      box-sizing: border-box;
+      padding: 2px 5px;
       background-color: white;
       height: fit-content !important;
       width: fit-content !important;
+      box-sizing: border-box;
     }
   }
 }
@@ -65,6 +93,7 @@
 }
 
 .selectionArea {
+  z-index: 3;
   &__active {
     position: absolute;
     pointer-events: none;

@@ -27,6 +27,7 @@ import {
   STYLE_SELECTION_BORDER_WIDTH,
   STYLE_SELECTION_BORDER_COLOR,
   STYLE_SELECTION_BORDER_STYLE,
+  STYLE_SELECTION_AREA_Z_INDEX,
 } from '../../constants/styles'
 
 const computeActiveCellStyle: IComputeActiveCellStyle = (
@@ -104,6 +105,7 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
     borderBottomWidth: STYLE_SELECTION_BORDER_WIDTH,
     borderBottomColor: STYLE_SELECTION_BORDER_COLOR,
     borderBottomStyle: STYLE_SELECTION_BORDER_STYLE,
+    zIndex: STYLE_SELECTION_AREA_Z_INDEX,
   }
 
   const topStart = rowOffsets[start.y]

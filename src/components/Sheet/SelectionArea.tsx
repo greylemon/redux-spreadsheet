@@ -36,7 +36,12 @@ const SelectionArea: FunctionComponent<ISelectionAreaProps> = ({
   )
     return <Fragment />
 
-  return <div className="selectionArea__active" style={selectionAreaStyle} />
+  return (
+    <div
+      className="selectionArea selectionArea__active"
+      style={selectionAreaStyle}
+    />
+  )
 }
 
 export default SelectionArea

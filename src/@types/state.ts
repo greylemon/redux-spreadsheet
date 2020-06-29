@@ -1,4 +1,5 @@
 import { EditorState } from 'draft-js'
+import { CSSProperties } from 'react'
 
 export type IPosition = { x: number; y: number }
 
@@ -50,7 +51,7 @@ export type IInlineStyles = {
   color?: string
 }
 
-export type IStyles = IBlockStyles & IInlineStyles
+export type IStyles = IBlockStyles & IInlineStyles & CSSProperties
 
 export type IFragment = {
   key?: string
@@ -82,6 +83,7 @@ export type ICell = {
   hyperlink?: IHyperlink
   merged?: IArea
   type?: string
+  styles?: IStyles
 }
 
 export type IOffset = number

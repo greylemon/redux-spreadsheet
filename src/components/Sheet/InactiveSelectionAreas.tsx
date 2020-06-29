@@ -22,7 +22,7 @@ const InactiveSelectionAreas: FunctionComponent<IInactiveSelectionAreasProps> = 
       {inactiveSelectionAreasStyle.map((inactiveSelectionAreaStyle, index) => (
         <div
           key={`inactive-selection-area-${index}`}
-          className="selectionArea__inactive"
+          className="selectionArea selectionArea__inactive"
           style={inactiveSelectionAreaStyle}
         />
       ))}

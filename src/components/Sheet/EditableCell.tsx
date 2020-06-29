@@ -7,14 +7,20 @@ import {
   IFragment,
   IRichTextBlock,
   IFormulaValue,
+  IStyles,
 } from '../../@types/state'
-import { CSSProperties } from '@material-ui/core/styles/withStyles'
+import { CSSProperties } from 'react'
 import {
   TYPE_RICH_TEXT,
   TYPE_FORMULA,
   TYPE_TEXT,
   TYPE_MERGE,
 } from '../../constants/cellTypes'
+import {
+  STYLE_OVERLAP_Z_INDEX,
+  STYLE_BLOCK_Z_INDEX,
+  STYLE_CONTENT_Z_INDEX,
+} from '../../constants/styles'
 
 const RichTextFragment: FunctionComponent<IFragment> = ({
   text: value,
@@ -61,7 +67,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 
   const cellData = rowData && rowData[columnIndex] ? rowData[columnIndex] : {}
 
-  const { value, type } = cellData
+  const { value, type, styles } = cellData
 
   const position = { x: columnIndex, y: rowIndex }
 
@@ -86,12 +92,26 @@ const EditableCell: FunctionComponent<ICellProps> = ({
     }
   }
 
-  const adjustedStyle: CSSProperties = {
+  const contentStyle: CSSProperties | IStyles = {
     ...style,
     width: columnWidthsAdjusted[columnIndex],
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
+    zIndex: STYLE_CONTENT_Z_INDEX + columnIndex,
+  }
+
+  const overlapStyle: CSSProperties = {
+    ...style,
+    width: columnWidthsAdjusted[columnIndex],
+    zIndex: STYLE_OVERLAP_Z_INDEX + columnIndex + (value ? 1 : 0),
+  }
+
+  const blockStyle: CSSProperties = {
+    ...style,
+    ...styles,
+    boxSizing: 'border-box',
+    zIndex: STYLE_BLOCK_Z_INDEX + columnIndex + (value ? 1 : 0),
   }
 
   const cellComponent = useMemo(() => {
@@ -116,13 +136,12 @@ const EditableCell: FunctionComponent<ICellProps> = ({
   }, [value])
 
   return (
-    <div
-      className={`unselectable cell ${value ? 'cell__editable' : ''}`}
-      style={adjustedStyle}
-      onMouseDown={handleMouseDown}
-      onMouseEnter={handleMouseEnter}
-    >
-      {cellComponent}
+    <div onMouseDown={handleMouseDown} onMouseEnter={handleMouseEnter}>
+      <span style={contentStyle} className={`unselectable cell cell__content`}>
+        {cellComponent}
+      </span>
+      <span className={value ? 'cell__editable' : ''} style={overlapStyle} />
+      <span className="cell__block" style={blockStyle} />
     </div>
   )
 }

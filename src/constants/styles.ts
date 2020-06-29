@@ -1,3 +1,9 @@
 export const STYLE_SELECTION_BORDER_COLOR = 'rgba(75, 135, 255, 0.95)'
 export const STYLE_SELECTION_BORDER_WIDTH = '1px'
 export const STYLE_SELECTION_BORDER_STYLE = 'solid'
+
+export const STYLE_CONTENT_Z_INDEX = 4
+export const STYLE_OVERLAP_Z_INDEX = 2
+export const STYLE_BLOCK_Z_INDEX = 2
+export const STYLE_SELECTION_AREA_Z_INDEX = 10000
+export const STYLE_ACTIVE_CELL_Z_INDEX = 10000

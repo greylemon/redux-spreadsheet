@@ -23,6 +23,7 @@ import {
   STYLE_SELECTION_BORDER_WIDTH,
   STYLE_SELECTION_BORDER_COLOR,
   STYLE_SELECTION_BORDER_STYLE,
+  STYLE_SELECTION_AREA_Z_INDEX,
 } from '../../constants/styles'
 
 const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
@@ -48,6 +49,7 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
     borderTopWidth: STYLE_SELECTION_BORDER_WIDTH,
     borderTopColor: STYLE_SELECTION_BORDER_COLOR,
     borderTopStyle: STYLE_SELECTION_BORDER_STYLE,
+    zIndex: STYLE_SELECTION_AREA_Z_INDEX,
   }
 
   const topStart = rowOffsets[start.y]

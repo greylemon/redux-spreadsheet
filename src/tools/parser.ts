@@ -1,4 +1,14 @@
-import { Workbook, Worksheet, CellRichTextValue, WorksheetView } from 'exceljs'
+import {
+  Workbook,
+  Worksheet,
+  CellRichTextValue,
+  WorksheetView,
+  Cell,
+  Borders,
+  Border,
+  Color as ExcelColor,
+  Fill,
+} from 'exceljs'
 import {
   IRows,
   IPosition,
@@ -19,6 +29,7 @@ import {
   IRowHeights,
   IHiddenRows,
   IExcelState,
+  IStyles,
 } from '../@types/state'
 import {
   SHEET_MAX_ROW_COUNT,
@@ -37,19 +48,121 @@ import {
   TYPE_MERGE,
 } from '../constants/cellTypes'
 import { initialExcelState } from '../redux/store'
+import { indexedColors, themes } from '../constants/colors'
+import { applyTintToColor } from './color'
+import Color from 'color'
 
-// TODO
-export const getStylesFromCell = (): void => {
-  // const style = cell.style
-  // const {
-  //   alignment,
-  //   border,
-  //   fill,
-  //   font,
-  //   numFmt,
-  //   protection
-  // } = style
-  return
+const getFormattedColor = (
+  color: Partial<ExcelColor> & {
+    indexed?: number
+    tint?: number
+  }
+): string => {
+  let formattedColor = ''
+
+  const { argb, indexed, theme, tint } = color
+
+  if (argb) {
+    formattedColor = `#${argb.substring(2)}`
+  } else if (indexed) {
+    formattedColor = indexedColors[indexed % indexedColors.length]
+  } else if (theme) {
+    formattedColor = themes[theme % themes.length]
+
+    if (tint) formattedColor = applyTintToColor(new Color(formattedColor), tint)
+  }
+
+  return formattedColor
+}
+
+const getBorderStyleInPlace = (
+  section: 'Top' | 'Bottom' | 'Left' | 'Right',
+  border: Partial<Border>,
+  styles: IStyles
+) => {
+  const { style, color } = border
+
+  styles[
+    `border${section}Style` as
+      | 'borderTopStyle'
+      | 'borderLeftStyle'
+      | 'borderBottomStyle'
+      | 'borderLeftStyle'
+  ] = 'solid'
+
+  if (style) {
+    styles[
+      `border${section}Width` as
+        | 'borderTopWidth'
+        | 'borderLeftWidth'
+        | 'borderBottomWidth'
+        | 'borderLeftWidth'
+    ] = style
+  }
+
+  if (color) {
+    const borderColor: string = getFormattedColor(color)
+
+    if (borderColor)
+      styles[
+        `border${section}Color` as
+          | 'borderTopColor'
+          | 'borderRightColor'
+          | 'borderBottomColor'
+          | 'borderLeftColor'
+      ] = borderColor
+  }
+}
+
+const getAllBorderStylesInPlace = (
+  borders: Partial<Borders>,
+  styles: IStyles
+) => {
+  const { bottom, left, top, right } = borders
+
+  if (bottom) getBorderStyleInPlace('Bottom', bottom, styles)
+  if (left) getBorderStyleInPlace('Left', left, styles)
+  if (top) getBorderStyleInPlace('Top', top, styles)
+  if (right) getBorderStyleInPlace('Right', right, styles)
+}
+
+// TODO : Pattern
+// TODO : Gradient
+const getFillInPlace = (fill: Fill, styles: IStyles) => {
+  switch (fill.type) {
+    case 'gradient':
+      break
+
+    case 'pattern':
+    default: {
+      const { fgColor } = fill
+
+      if (fgColor) {
+        styles.backgroundColor = getFormattedColor(fgColor)
+      }
+
+      break
+    }
+  }
+}
+
+export const getStylesFromCell = (cell: Cell): IStyles | undefined => {
+  const styles: IStyles = {}
+  const style = cell.style
+  const {
+    // alignment,
+    border,
+    fill,
+    // font,
+    // numFmt,
+    // protection
+  } = style
+
+  if (fill) getFillInPlace(fill, styles)
+
+  if (border) getAllBorderStylesInPlace(border, styles)
+
+  return Object.keys(styles).length ? styles : undefined
 }
 
 // TODO
@@ -102,6 +215,9 @@ export const getCellContent = (data: IRows, cell: any): ICell | undefined => {
   const value = cell.value
 
   const content: ICell = {}
+
+  const styles = getStylesFromCell(cell)
+  if (styles) content.styles = styles
 
   switch (cell.type) {
     case ValueType.String:
@@ -172,16 +288,19 @@ export const getBoundedColumn = (columnIndex: IColumnIndex): IColumnIndex =>
 export const getSheetDataFromSheet = (sheet: Worksheet): IRows => {
   const data: IRows = {}
 
-  sheet.eachRow((row, rowIndex) => {
+  sheet.eachRow({ includeEmpty: true }, (row, rowIndex) => {
     if (!data[rowIndex]) data[rowIndex] = {}
-    row.eachCell((cell, columnIndex) => {
-      data[rowIndex][columnIndex] = {}
-      const content = getCellContent(data, cell)
 
-      if (!content || !Object.keys(content).length)
-        delete data[rowIndex][columnIndex]
+    row.eachCell({ includeEmpty: true }, (cell, columnIndex) => {
+      if (Object.keys(cell).length) {
+        data[rowIndex][columnIndex] = {}
+        const content = getCellContent(data, cell)
 
-      if (content) data[rowIndex][columnIndex] = content
+        if (!content || !Object.keys(content).length)
+          delete data[rowIndex][columnIndex]
+
+        if (content) data[rowIndex][columnIndex] = content
+      }
     })
 
     if (!Object.keys(data[rowIndex]).length) delete data[rowIndex]
@@ -261,13 +380,14 @@ export const getColumnDataFromColumns = (
   const columnWidths: IColumnWidths = {}
   const hiddenColumns: IHiddenColumns = {}
 
-  const columns = sheet.columns
+  const columnCount = sheet.columnCount
 
-  columns.forEach(({ width, hidden }, index) => {
-    if (width) columnWidths[index + 1] = width
+  for (let i = 1; i <= columnCount; i++) {
+    const { width, hidden } = sheet.getColumn(i)
 
-    if (hidden) hiddenColumns[index + 1] = true
-  })
+    if (width) columnWidths[i] = width
+    if (hidden) hiddenColumns[i] = true
+  }
 
   return {
     columnWidths,
@@ -281,12 +401,14 @@ export const getRowDataFromSheet = (
 ): { rowHeights: IRowHeights; hiddenRows: IHiddenRows } => {
   const rowHeights: IRowHeights = {}
   const hiddenRows: IHiddenRows = {}
+  const rowCount = sheet.rowCount
 
-  sheet.eachRow(({ height, hidden }, index) => {
-    if (height) rowHeights[index + 1] = height
+  for (let i = 1; i <= rowCount; i++) {
+    const { height, hidden } = sheet.getRow(i)
 
-    if (hidden) hiddenRows[index + 1] = true
-  })
+    if (height) rowHeights[i] = height
+    if (hidden) hiddenRows[i] = true
+  }
 
   return {
     rowHeights,
@@ -308,11 +430,14 @@ const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
 
   workbook.eachSheet((sheet) => {
     sheetNames.push(sheet.name)
+    const columnCount = getTableColumnCount(sheet.columnCount)
+    const rowCount = getTableRowCount(sheet.rowCount)
+    const data = getSheetDataFromSheet(sheet)
 
     sheetsMap[sheet.name] = {
-      data: getSheetDataFromSheet(sheet),
-      columnCount: getTableColumnCount(sheet.columnCount),
-      rowCount: getTableRowCount(sheet.rowCount),
+      data,
+      columnCount,
+      rowCount,
       inactiveSelectionAreas: [],
       selectionAreaIndex: -1,
       ...getPaneDataFromSheetViews(sheet.views),
