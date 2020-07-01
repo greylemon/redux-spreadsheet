@@ -9,7 +9,6 @@ import {
   ContentState,
 } from 'draft-js'
 import {
-  IValue,
   IRange,
   IRichTextValue,
   IFragment,

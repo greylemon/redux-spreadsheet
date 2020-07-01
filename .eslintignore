@@ -9,3 +9,4 @@ site/out/
 tmp/
 next.config.js
 src/serviceWorker.ts
+rollup.config.js

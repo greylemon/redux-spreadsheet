@@ -16,7 +16,7 @@
     "start": "webpack-dev-server",
     "clean": "rimraf dist coverage dist",
     "build": "rollup -c",
-    "test": "jest",
+    "test": "jest --passWithNoTests",
     "test:coveralls": "jest --coverage && coveralls < coverage/lcov.info",
     "fix": "yarn fix:prettier && yarn fix:eslint",
     "fix:eslint": "yarn lint:eslint --fix",

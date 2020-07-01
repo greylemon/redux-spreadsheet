@@ -57,10 +57,10 @@ const NormalActiveCell = ({ style }: INormalActiveCellProps) => {
   return <div className="cell__active cell__active--normal" style={style} />
 }
 
-const ActiveCell = ({
+const ActiveCell: FunctionComponent<IActiveCellProps> = ({
   computeActiveCellStyle,
   checkIsActiveCellInCorrectPane,
-}: IActiveCellProps) => {
+}) => {
   const {
     isEditMode,
     style,
