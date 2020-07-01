@@ -1,4 +1,6 @@
 import { IColumnIndex } from '../@types/state'
+import { columnNameRegex } from './regex'
+import { isFloat } from './validation'
 
 /**
  * Convert a column name to a number.
@@ -6,8 +8,13 @@ import { IColumnIndex } from '../@types/state'
  */
 export const columnNameToNumber = (
   name: string | undefined
-): IColumnIndex | undefined => {
-  if (!name || typeof name !== 'string') return
+): IColumnIndex | null => {
+  if (
+    name === undefined ||
+    typeof name !== 'string' ||
+    !columnNameRegex.test(name)
+  )
+    return null
 
   name = name.toUpperCase()
   let sum = 0
@@ -23,7 +30,9 @@ export const columnNameToNumber = (
  * Convert a column number to a name.
  * ! Taken from xlsx-populate/lib/addressConverter
  */
-export const columnNumberToName = (number: number): string => {
+export const columnNumberToName = (number: number): string | null => {
+  if (number < 1 || isFloat(number)) return null
+
   let dividend = number
   let name = ''
   let modulo = 0

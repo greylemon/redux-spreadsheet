@@ -16,7 +16,7 @@
     "start": "webpack-dev-server",
     "clean": "rimraf dist coverage dist",
     "build": "rollup -c",
-    "test": "jest --passWithNoTests --coverage",
+    "test": "jest",
     "test:coveralls": "jest --coverage && coveralls < coverage/lcov.info",
     "fix": "yarn fix:prettier && yarn fix:eslint",
     "fix:eslint": "yarn lint:eslint --fix",
@@ -151,6 +151,6 @@
     "transform": {
       "\\.(ts|tsx)$": "ts-jest"
     },
-    "testRegex": "src/test/.*\\.test.(ts|tsx|js)$"
+    "testRegex": "test/.*\\.test.(ts|tsx|js)$"
   }
 }

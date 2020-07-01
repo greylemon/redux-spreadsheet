@@ -1,8 +1,8 @@
 import createMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 import { mockState } from './mockState'
-import IRootStore from '../@types/store'
-import rootReducer from '../redux/store'
+import IRootStore from '../../src/@types/store'
+import rootReducer from '../../src/redux/store'
 
 const middleWares = [thunk]
 

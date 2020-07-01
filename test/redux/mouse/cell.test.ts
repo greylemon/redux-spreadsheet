@@ -1,10 +1,10 @@
-import { initialExcelState, ExcelActions } from '../../redux/store'
-import { IPosition } from '../../@types/state'
+import { initialExcelState, ExcelActions } from '../../../src/redux/store'
+import { IPosition } from '../../../src/@types/state'
 import { mockStore } from '../mockStore'
 import { mockState } from '../mockState'
-import { selectActiveCellPosition } from '../../redux/selectors'
-import rootReducer from '../../redux/store'
-import { nSelectActiveSheet } from '../../redux/tools/selectors'
+import { selectActiveCellPosition } from '../../../src/redux/selectors'
+import rootReducer from '../../../src/redux/store'
+import { nSelectActiveSheet } from '../../../src/redux/tools/selectors'
 
 describe('cell mouse operations', () => {
   let store: ReturnType<typeof mockStore>
