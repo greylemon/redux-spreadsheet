@@ -16,6 +16,7 @@
 
 ```tsx
 import { Excel } from 'redux-spreadsheet'
+import 'redux-spreadsheet/dist/main.cjs.css'
 
 const SomeComponent = () => {
   const handleSave = (excelState) => {
