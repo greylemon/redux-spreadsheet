@@ -1,3 +1,3 @@
 declare module 'redux-spreadsheet' {
-  function ExcelComponent(): JSX.Element
+  function Excel(): JSX.Element
 }
