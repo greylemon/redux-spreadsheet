@@ -154,11 +154,18 @@ export type ISheetsMap = {
   [key: string]: ISheet
 }
 
+export type IFormulaMap = {
+  [key: string]: {
+    [key: string]: string[]
+  }
+}
+
 export type IExcelState = {
   name: IName
   activeSheetName: ISheetName
   sheetNames: ISheetNames
   sheetsMap: ISheetsMap
+  formulaMap: IFormulaMap
   isEditMode: IIsEditMode
   editorState: IEditorState
   error: IError

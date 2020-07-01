@@ -3,6 +3,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/greylemon/redux-spreadsheet/blob/master/LICENSE)
 ![npm](https://img.shields.io/npm/v/redux-spreadsheet?color=blue)
 ![LGTM Grade](https://img.shields.io/lgtm/grade/javascript/github/greylemon/redux-spreadsheet)
+[![Build Status](https://travis-ci.org/greylemon/redux-spreadsheet.svg?branch=master)](https://travis-ci.org/greylemon/redux-spreadsheet)
 
 ## Setup
 
@@ -71,6 +72,7 @@ Husky is used here for performing tasks before a git commit. The tasks performed
   - [x] Save
   - [x] Arrow keys
   - [ ] Shift arrow keys
+  - [ ] Delete Area
 - Selection
   - [x] Single selection
   - [x] Multi-selection

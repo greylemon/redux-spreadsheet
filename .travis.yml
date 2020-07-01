@@ -1,3 +1,4 @@
+# https://github.com/ianstormtaylor/slate/blob/master/.travis.yml
 language: node_js
 node_js: [node]
 
@@ -6,7 +7,7 @@ cache: yarn
 env:
   # Do multiple runs for testing and linting.
   matrix:
-    - TEST_TYPE=test
+    - TEST_TYPE=test:coveralls
     - TEST_TYPE=fix:eslint
     - TEST_TYPE=fix:prettier
 

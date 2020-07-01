@@ -195,12 +195,9 @@ export const CELL_DOUBLE_CLICK = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   state.isEditMode = true
 
-  const cellValue = nSelectCell(
-    activeSheet.data,
-    activeSheet.activeCellPosition
-  )
+  const cell = nSelectCell(activeSheet.data, activeSheet.activeCellPosition)
 
-  state.editorState = createEditorStateFromCell(cellValue)
+  state.editorState = createEditorStateFromCell(cell)
 
   return state
 }

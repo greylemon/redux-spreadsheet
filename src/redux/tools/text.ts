@@ -266,24 +266,16 @@ export const getRawContentStateFromRichText = (
 export const createEditorStateFromRichText = (
   value: IRichTextValue
 ): EditorState =>
-  EditorState.createWithContent(
-    convertFromRaw(getRawContentStateFromRichText(value))
+  EditorState.moveFocusToEnd(
+    EditorState.createWithContent(
+      convertFromRaw(getRawContentStateFromRichText(value))
+    )
   )
 
 export const createEditorStateFromText = (value: string): EditorState =>
-  EditorState.createWithContent(ContentState.createFromText(value))
+  EditorState.moveFocusToEnd(
+    EditorState.createWithContent(ContentState.createFromText(value))
+  )
 
 export const createEmptyEditorState = (): EditorState =>
   EditorState.moveFocusToEnd(EditorState.createEmpty())
-
-export const createEditorStateFromNonEmptyValue = (
-  value: IValue
-): EditorState => {
-  // let editorValue: IValue
-
-  return EditorState.moveFocusToEnd(
-    typeof value === 'object'
-      ? createEditorStateFromRichText(value as IRichTextValue)
-      : createEditorStateFromText(value)
-  )
-}

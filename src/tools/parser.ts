@@ -30,6 +30,7 @@ import {
   IHiddenRows,
   IExcelState,
   IStyles,
+  IFormulaMap,
 } from '../@types/state'
 import {
   SHEET_MAX_ROW_COUNT,
@@ -38,7 +39,7 @@ import {
   SHEET_FREEZE_COLUMN_COUNT,
   SHEET_FREEZE_ROW_COUNT,
 } from '../constants/defaults'
-import { numberRegex } from './regex'
+import { numberRegex, cellRegex, rangeRegex } from './regex'
 import { ValueType } from '../@types/exceljs'
 import uniqid from 'uniqid'
 import { getTableColumnCount, getTableRowCount } from '../redux/tools/table'
@@ -211,7 +212,13 @@ export const getRichTextFromCellValue = (
 // | CellRichTextValue | CellHyperlinkValue
 // | CellFormulaValue | CellSharedFormulaValue;
 
-export const getCellContent = (data: IRows, cell: any): ICell | undefined => {
+export const getCellContent = (
+  data: IRows,
+  cell: any,
+  formulaMap: IFormulaMap,
+  rowIndex: IRowIndex,
+  columnIndex: IColumnIndex
+): ICell | undefined => {
   const value = cell.value
 
   const content: ICell = {}
@@ -225,11 +232,21 @@ export const getCellContent = (data: IRows, cell: any): ICell | undefined => {
       break
     case ValueType.Formula: {
       const { formula, sharedFormula, result } = cell.value
-      content.value = {
-        formula: formula ? formula : sharedFormula,
-      } as IFormulaValue
-      content.type = TYPE_FORMULA
+      const formulaValue: string = formula ? formula : sharedFormula
 
+      if (!formulaMap[rowIndex]) formulaMap[rowIndex] = {}
+      const cellFormulas = formulaValue.match(cellRegex) as string[]
+      const cellRangeFormulas = formulaValue.match(rangeRegex) as string[]
+      formulaMap[rowIndex][columnIndex] = [
+        ...(cellFormulas ? cellFormulas : []),
+        ...(cellRangeFormulas ? cellRangeFormulas : []),
+      ]
+
+      content.value = {
+        formula: formulaValue,
+      } as IFormulaValue
+
+      content.type = TYPE_FORMULA
       if (result) content.value.result = result
 
       break
@@ -285,7 +302,10 @@ export const getBoundedRow = (rowIndex: IRowIndex): IRowIndex =>
 export const getBoundedColumn = (columnIndex: IColumnIndex): IColumnIndex =>
   columnIndex < SHEET_MAX_COLUMN_COUNT ? columnIndex : SHEET_MAX_COLUMN_COUNT
 
-export const getSheetDataFromSheet = (sheet: Worksheet): IRows => {
+export const getSheetDataFromSheet = (
+  sheet: Worksheet,
+  formulaMap: IFormulaMap
+): IRows => {
   const data: IRows = {}
 
   sheet.eachRow({ includeEmpty: true }, (row, rowIndex) => {
@@ -294,7 +314,13 @@ export const getSheetDataFromSheet = (sheet: Worksheet): IRows => {
     row.eachCell({ includeEmpty: true }, (cell, columnIndex) => {
       if (Object.keys(cell).length) {
         data[rowIndex][columnIndex] = {}
-        const content = getCellContent(data, cell)
+        const content = getCellContent(
+          data,
+          cell,
+          formulaMap,
+          rowIndex,
+          columnIndex
+        )
 
         if (!content || !Object.keys(content).length)
           delete data[rowIndex][columnIndex]
@@ -418,6 +444,7 @@ export const getRowDataFromSheet = (
 
 const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
   const sheetsMap: ISheetsMap = {}
+  const formulaMap: IFormulaMap = {}
 
   const sheetNames: ISheetNames = []
   let activeTab = 1
@@ -432,7 +459,7 @@ const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
     sheetNames.push(sheet.name)
     const columnCount = getTableColumnCount(sheet.columnCount)
     const rowCount = getTableRowCount(sheet.rowCount)
-    const data = getSheetDataFromSheet(sheet)
+    const data = getSheetDataFromSheet(sheet, formulaMap)
 
     sheetsMap[sheet.name] = {
       data,
@@ -446,7 +473,13 @@ const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
     }
   })
 
-  return { ...initialExcelState, sheetsMap, sheetNames, activeSheetName }
+  return {
+    ...initialExcelState,
+    formulaMap,
+    sheetsMap,
+    sheetNames,
+    activeSheetName,
+  }
 }
 
 export const convertRawExcelToState = async (
