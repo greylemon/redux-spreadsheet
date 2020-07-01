@@ -4,6 +4,7 @@
 ![npm](https://img.shields.io/npm/v/redux-spreadsheet?color=blue)
 ![LGTM Grade](https://img.shields.io/lgtm/grade/javascript/github/greylemon/redux-spreadsheet)
 [![Build Status](https://travis-ci.org/greylemon/redux-spreadsheet.svg?branch=master)](https://travis-ci.org/greylemon/redux-spreadsheet)
+[![Coverage Status](https://coveralls.io/repos/github/greylemon/redux-spreadsheet/badge.svg?branch=master)](https://coveralls.io/github/greylemon/redux-spreadsheet?branch=master)
 
 ## Setup
 
