@@ -1,0 +1,26 @@
+language: node_js
+node_js: [node]
+
+cache: yarn
+
+env:
+  # Do multiple runs for testing and linting.
+  matrix:
+    - TEST_TYPE=test
+    - TEST_TYPE=fix:eslint
+    - TEST_TYPE=fix:prettier
+
+before_script:
+  # When linting, build the dependencies so they can be resolved.
+  - |
+    set -e
+    if [[ $TEST_TYPE == 'fix:eslint' ]]; then
+      yarn build
+    fi
+    set +e
+script:
+  # Run testing or linting depending on the environment.
+  - |
+    set -e
+    yarn $TEST_TYPE
+    set +e
