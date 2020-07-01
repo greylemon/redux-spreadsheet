@@ -1,4 +1,4 @@
-# Redux Spreadsheet
+# Redux Spreadsheet (Beta)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/greylemon/redux-spreadsheet/blob/master/LICENSE)
 ![npm](https://img.shields.io/npm/v/redux-spreadsheet?color=blue)
