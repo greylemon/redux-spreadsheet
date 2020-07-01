@@ -107,6 +107,16 @@ export const selectRowCount = createSelector(
   (activeSheet) => activeSheet.rowCount
 )
 
+export const selectActiveCellPositionRow = createSelector(
+  [selectActiveCellPosition],
+  (activeCellPosition) => activeCellPosition.y
+)
+
+export const selectActiveCellPositionColumn = createSelector(
+  [selectActiveCellPosition],
+  (activeCellPosition) => activeCellPosition.x
+)
+
 // ===========================================================================
 // CUSTOM SELECTORS
 // ===========================================================================
