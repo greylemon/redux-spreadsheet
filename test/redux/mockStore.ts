@@ -8,5 +8,8 @@ const middleWares = [thunk]
 
 export const mockStore = createMockStore<IRootStore>(middleWares)
 
-const store = mockStore(mockState)
-store.replaceReducer(rootReducer)
+export const createRootMockStore = (initialMockState = mockState) => {
+  const store = mockStore(initialMockState)
+  store.replaceReducer(rootReducer)
+  return store
+}

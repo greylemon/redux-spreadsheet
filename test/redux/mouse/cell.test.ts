@@ -1,22 +1,19 @@
 import { initialExcelState, ExcelActions } from '../../../src/redux/store'
 import { IPosition } from '../../../src/@types/state'
-import { mockStore } from '../mockStore'
-import { mockState } from '../mockState'
+import { mockStore, createRootMockStore } from '../mockStore'
 import { selectActiveCellPosition } from '../../../src/redux/selectors'
-import rootReducer from '../../../src/redux/store'
 import { nSelectActiveSheet } from '../../../src/redux/tools/selectors'
 
-describe('cell mouse operations', () => {
+describe('Cell mouse operations', () => {
   let store: ReturnType<typeof mockStore>
 
   beforeEach(() => {
-    store = mockStore(mockState)
-    store.replaceReducer(rootReducer)
+    store = createRootMockStore()
   })
 
-  describe('cell mouse down', () => {
-    describe('move to valid position', () => {
-      it('move to (5, 3)', () => {
+  describe('Cell mouse down', () => {
+    describe('Move to valid position', () => {
+      it('Move to bounded position', () => {
         const position: IPosition = { x: 5, y: 3 }
 
         store.dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
@@ -26,7 +23,7 @@ describe('cell mouse operations', () => {
         expect(activeCellPosition).toEqual(position)
       })
 
-      it('move to (initial column count, initial row count)', () => {
+      it('Move to (initial column count, initial row count)', () => {
         const activeSheet = nSelectActiveSheet(initialExcelState)
         const position: IPosition = {
           x: activeSheet.columnCount,
@@ -41,8 +38,8 @@ describe('cell mouse operations', () => {
       })
     })
 
-    describe('move to invalid position', () => {
-      it('move to negative position', () => {
+    describe('Move to invalid position', () => {
+      it('Move to negative position', () => {
         const activeSheet = nSelectActiveSheet(initialExcelState)
         const position: IPosition = { x: -1, y: -2 }
 
@@ -53,7 +50,7 @@ describe('cell mouse operations', () => {
         expect(activeCellPosition).toEqual(activeSheet.activeCellPosition)
       })
 
-      it('move to out of bound positive position', () => {
+      it('Move to out of bound positive position', () => {
         const activeSheet = nSelectActiveSheet(initialExcelState)
         const position: IPosition = {
           x: activeSheet.columnCount + 1,
