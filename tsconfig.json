@@ -10,6 +10,7 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "isolatedModules": true,
+    "sourceMap": true,
     "module": "commonjs",
     "jsx": "react"
   },

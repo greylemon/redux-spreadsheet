@@ -54,14 +54,14 @@ export const initialExcelState: IExcelState = {
       activeCellPosition: { x: 1, y: 1 },
 
       data: {
-        1: {
-          1: {
-            value: {
-              formula: 'SUM(A2)',
-            },
-            type: TYPE_FORMULA,
-          },
-        },
+        // 1: {
+        //   1: {
+        //     value: {
+        //       formula: 'SUM(A2)',
+        //     },
+        //     type: TYPE_FORMULA,
+        //   },
+        // },
       },
     },
   },
