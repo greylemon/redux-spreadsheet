@@ -10,6 +10,7 @@ env:
     - TEST_TYPE=test:coveralls
     - TEST_TYPE=fix:eslint
     - TEST_TYPE=fix:prettier
+    - TEST_TYPE=publish:storybook
 
 before_script:
   # When linting, build the dependencies so they can be resolved.
