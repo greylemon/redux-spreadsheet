@@ -8,7 +8,7 @@
 
 ## Demos
 
-[Storybook](https://greylemon.github.io/redux-spreadsheet/)
+[Storybook](https://greylemon.github.io/redux-spreadsheet/) - Currently has performance issues. The normal build doesn't have the issue.
 
 ## Setup
 
