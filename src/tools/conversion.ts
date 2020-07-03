@@ -1,6 +1,8 @@
-import { IColumnIndex } from '../@types/state'
+import { IColumnIndex, IAreaRange } from '../@types/state'
 import { columnNameRegex } from './regex'
 import { isFloat } from './validation'
+import { convertStringPositionToPosition } from './parser'
+import { getAreaRanges } from '../redux/tools/area'
 
 /**
  * Convert a column name to a number.
@@ -44,4 +46,13 @@ export const columnNumberToName = (number: number): string | null => {
   }
 
   return name
+}
+
+export const addressRangeToRange = (range: string): IAreaRange => {
+  const [topLeftAdr, bottomRightAdr] = range.split(':')
+
+  return getAreaRanges({
+    start: convertStringPositionToPosition(topLeftAdr),
+    end: convertStringPositionToPosition(bottomRightAdr),
+  })
 }

@@ -20,7 +20,6 @@ import {
 import { EditorState } from 'draft-js'
 import { UPDATE_STATE } from './reducers/events'
 import { CHANGE_SHEET, CHANGE_SHEET_ORDER } from './reducers/sheet'
-import { TYPE_FORMULA } from '../constants/cellTypes'
 
 // TODO
 export const initialExcelState: IExcelState = {

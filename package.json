@@ -60,6 +60,7 @@
     "color": "^3.1.2",
     "draft-js": "^0.11.6",
     "exceljs": "^4.0.1",
+    "fast-formula-parser": "^1.0.6",
     "fast-memoize": "^2.5.2",
     "jest": "^26.1.0",
     "react-redux": "^7.2.0",

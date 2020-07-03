@@ -1,24 +1,27 @@
 import IRootStore from '../@types/store'
 import thunk from 'redux-thunk'
+import { ExcelActions } from './store'
+
+const BLOB_PLACEHOLDER = '<<LONG_BLOB>>'
 
 export const devTools: any = {
   stateSanitizer: (state: IRootStore) => ({
     ...state,
     present: {
       ...state.present,
-      sheetsMap: '<<LONG_BLOB>>',
-      formulaMap: '<<LONG_BLOB>>',
+      sheetsMap: BLOB_PLACEHOLDER,
+      formulaMap: BLOB_PLACEHOLDER,
     },
   }),
   actionSanitizer: (action: any) => {
     switch (action.type) {
-      case 'EXCEL/UPDATE_STATE':
+      case ExcelActions.UPDATE_STATE.type:
         return {
           ...action,
           payload: {
             ...action.payload,
-            sheetsMap: '<<LONG_BLOB>>',
-            formulaMap: '<<LONG_BLOB>>',
+            sheetsMap: BLOB_PLACEHOLDER,
+            formulaMap: BLOB_PLACEHOLDER,
           },
         }
       default:

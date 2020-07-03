@@ -31,6 +31,8 @@ import {
   IExcelState,
   IStyles,
   IFormulaMap,
+  IAreaRange,
+  IFormulaMapValue,
 } from '../@types/state'
 import {
   SHEET_MAX_ROW_COUNT,
@@ -47,11 +49,14 @@ import {
   TYPE_RICH_TEXT,
   TYPE_FORMULA,
   TYPE_MERGE,
+  TYPE_TEXT,
 } from '../constants/cellTypes'
 import { initialExcelState } from '../redux/store'
 import { indexedColors, themes } from '../constants/colors'
 import { applyTintToColor } from './color'
+import FormulaParser, { FormulaError } from 'fast-formula-parser'
 import Color from 'color'
+import { addressRangeToRange } from './conversion'
 
 const getFormattedColor = (
   color: Partial<ExcelColor> & {
@@ -207,10 +212,56 @@ export const getRichTextFromCellValue = (
   return richText
 }
 
-// | null | number | string | boolean | Date
-// | CellErrorValue
-// | CellRichTextValue | CellHyperlinkValue
-// | CellFormulaValue | CellSharedFormulaValue;
+const createFormulaParser = (sheetsMap: ISheetsMap) =>
+  new FormulaParser({
+    onCell: ({ sheet, row, col }) => {
+      const sheetContent = sheetsMap[sheet]
+
+      if (sheetContent) {
+        const sheetData = sheetContent.data
+        if (sheetData[row] && sheetData[row][col]) {
+          const cell = sheetData[row][col]
+          let value: string | null = null
+
+          switch (cell.type) {
+            case TYPE_FORMULA: {
+              const cellValue = cell.value as IFormulaValue
+              value = cellValue.formula
+              break
+            }
+            case TYPE_TEXT:
+              value = cell.value as string
+              break
+          }
+
+          return value
+        }
+      }
+    },
+  })
+
+// const computeWorkbookFormulas = (parser: any) => (sheetsMap: ISheetsMap, formulaMap: IFormulaMap) => {
+
+// }
+
+const getFormulaMapValue = (formulaValue: string) => {
+  const formulaMapValue: IFormulaMapValue = {}
+
+  const cells = ((formulaValue.match(cellRegex) ||
+    []) as string[]).map((cellFormula) =>
+    convertStringPositionToPosition(cellFormula)
+  ) as IPosition[]
+
+  const ranges = ((formulaValue.match(rangeRegex) ||
+    []) as string[]).map((cellRangeFormula) =>
+    addressRangeToRange(cellRangeFormula)
+  ) as IAreaRange[]
+
+  if (cells) formulaMapValue.cells = cells
+  if (ranges) formulaMapValue.ranges = ranges
+
+  return formulaMapValue
+}
 
 export const getCellContent = (
   data: IRows,
@@ -235,12 +286,8 @@ export const getCellContent = (
       const formulaValue: string = formula ? formula : sharedFormula
 
       if (!formulaMap[rowIndex]) formulaMap[rowIndex] = {}
-      const cellFormulas = formulaValue.match(cellRegex) as string[]
-      const cellRangeFormulas = formulaValue.match(rangeRegex) as string[]
-      formulaMap[rowIndex][columnIndex] = [
-        ...(cellFormulas ? cellFormulas : []),
-        ...(cellRangeFormulas ? cellRangeFormulas : []),
-      ]
+
+      formulaMap[rowIndex][columnIndex] = getFormulaMapValue(formulaValue)
 
       content.value = {
         formula: formulaValue,
@@ -260,6 +307,9 @@ export const getCellContent = (
     case ValueType.Date:
       break
     case ValueType.Error:
+      break
+    case ValueType.Number:
+      content.value = value as string
       break
     case ValueType.Merge: {
       const {
@@ -288,8 +338,6 @@ export const getCellContent = (
 
       break
     }
-    case ValueType.Number:
-      break
     default:
       break
   }
@@ -457,14 +505,11 @@ const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
 
   workbook.eachSheet((sheet) => {
     sheetNames.push(sheet.name)
-    const columnCount = getTableColumnCount(sheet.columnCount)
-    const rowCount = getTableRowCount(sheet.rowCount)
-    const data = getSheetDataFromSheet(sheet, formulaMap)
 
     sheetsMap[sheet.name] = {
-      data,
-      columnCount,
-      rowCount,
+      data: getSheetDataFromSheet(sheet, formulaMap),
+      columnCount: getTableColumnCount(sheet.columnCount),
+      rowCount: getTableRowCount(sheet.rowCount),
       inactiveSelectionAreas: [],
       selectionAreaIndex: -1,
       ...getPaneDataFromSheetViews(sheet.views),
@@ -472,6 +517,8 @@ const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
       ...getRowDataFromSheet(sheet),
     }
   })
+
+  // computeWorkbookFormulas(createFormulaParser(sheetsMap))(sheetsMap, formulaMap)
 
   return {
     ...initialExcelState,

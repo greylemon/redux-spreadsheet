@@ -154,9 +154,14 @@ export type ISheetsMap = {
   [key: string]: ISheet
 }
 
+export type IFormulaMapValue = {
+  cells?: IPosition[]
+  ranges?: IAreaRange[]
+}
+
 export type IFormulaMap = {
   [key: string]: {
-    [key: string]: string[]
+    [key: string]: IFormulaMapValue
   }
 }
 
