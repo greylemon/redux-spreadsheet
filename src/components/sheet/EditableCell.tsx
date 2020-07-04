@@ -145,7 +145,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
         break
     }
     return component
-  }, [value])
+  }, [value, formulaResults])
 
   return (
     <div onMouseDown={handleMouseDown} onMouseEnter={handleMouseEnter}>

@@ -104,7 +104,6 @@ export const CELL_MOUSE_DOWN = (
       activeSheet.data[state.activeCellPosition.y] = {
         ...activeSheet.data[state.activeCellPosition.y],
         [state.activeCellPosition.x]: {
-          ...[state.activeCellPosition.x],
           ...cellValue,
         },
       }

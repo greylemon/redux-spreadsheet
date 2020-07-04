@@ -31,13 +31,13 @@ export const visitFormulaCell = (
   } = {}
 
   const addresses = formula.match(sheetNameRegex)
-  if (!visited[sheetName]) visited[sheetName] = {}
+  // if (!visited[sheetName]) visited[sheetName] = {}
 
-  const visitedSheet = visited[sheetName]
+  // const visitedSheet = visited[sheetName]
 
-  if (!visitedSheet[curPosition.y]) visitedSheet[curPosition.y] = {}
-  if (!visitedSheet[curPosition.y][curPosition.x])
-    visitedSheet[curPosition.y][curPosition.x] = true
+  // if (!visitedSheet[curPosition.y]) visitedSheet[curPosition.y] = {}
+  // if (!visitedSheet[curPosition.y][curPosition.x])
+  //   visitedSheet[curPosition.y][curPosition.x] = true
 
   // Get the references in the formula
   if (addresses) {
@@ -76,6 +76,8 @@ export const visitFormulaCell = (
     })
   }
 
+  // console.log(cellRefMap)
+
   for (const refSheetName in cellRefMap) {
     if (!visited[refSheetName]) visited[refSheetName] = {}
 
@@ -98,6 +100,7 @@ export const visitFormulaCell = (
               const cell = row[columnIndex]
 
               if (cell.type === TYPE_FORMULA) {
+                // console.log('formula')
                 visitFormulaCell(
                   formulaMap,
                   sheetsData,
@@ -115,8 +118,8 @@ export const visitFormulaCell = (
     }
   }
 
-  if (!formulaMap[sheetName]) formulaMap[sheetName] = {}
-  if (!formulaMap[sheetName][curPosition.y])
+  if (formulaMap[sheetName] === undefined) formulaMap[sheetName] = {}
+  if (formulaMap[sheetName][curPosition.y] === undefined)
     formulaMap[sheetName][curPosition.y] = {}
 
   try {

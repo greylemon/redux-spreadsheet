@@ -235,8 +235,8 @@ export const selectFormulaResults = createSelector(
           const cell = row[columnIndex]
 
           if (cell.type === TYPE_FORMULA) {
-            if (!formulaMap[sheetName]) formulaMap[sheetName] = {}
-            if (!formulaMap[sheetName][rowIndex])
+            if (formulaMap[sheetName] === undefined) formulaMap[sheetName] = {}
+            if (formulaMap[sheetName][rowIndex] === undefined)
               formulaMap[sheetName][rowIndex] = {}
             if (formulaMap[sheetName][rowIndex][columnIndex] === undefined) {
               visitFormulaCell(
