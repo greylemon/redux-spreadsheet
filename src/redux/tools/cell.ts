@@ -3,7 +3,6 @@ import {
   IRowCount,
   IColumnCount,
   ICell,
-  IFormulaValue,
   IRichTextValue,
 } from '../../@types/state'
 import {
@@ -16,6 +15,7 @@ import {
   TYPE_FORMULA,
   TYPE_TEXT,
   TYPE_RICH_TEXT,
+  TYPE_NUMBER,
 } from '../../constants/cellTypes'
 
 export const changeActiveCell = (position: IPosition): IPosition => {
@@ -39,16 +39,16 @@ export const createEditorStateFromCell = (cell?: ICell): EditorState => {
 
   if (cell && cell.value) {
     switch (cell.type) {
-      case TYPE_FORMULA: {
-        const formulaValue = (cell.value as IFormulaValue).formula
-        if (formulaValue)
-          editorState = createEditorStateFromText(`=${formulaValue}`)
+      case TYPE_FORMULA:
+        editorState = createEditorStateFromText(`=${cell.value}`)
         break
-      }
       case TYPE_RICH_TEXT:
         editorState = createEditorStateFromRichText(
           cell.value as IRichTextValue
         )
+        break
+      case TYPE_NUMBER:
+        editorState = createEditorStateFromText(cell.value.toString() as string)
         break
       case TYPE_TEXT:
       default:

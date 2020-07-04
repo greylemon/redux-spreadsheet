@@ -7,9 +7,16 @@ import {
   IComputeSelectionAreaStyle,
 } from './functions'
 
+export type IFormulaResult = {
+  [key: string]: {
+    [key: string]: number | string
+  }
+}
+
 export type IItemData = {
   data: IRows
   columnWidthsAdjusted: IColumnWidthsAdjusted
+  formulaResults: IFormulaResult
   getRowHeight: (index: number) => number
 }
 

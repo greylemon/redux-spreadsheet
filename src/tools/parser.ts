@@ -20,7 +20,6 @@ import {
   ISheetNames,
   ISheetsMap,
   ICell,
-  IFormulaValue,
   IActiveCellPosition,
   IFreezeColumnCount,
   IFreezeRowCount,
@@ -30,9 +29,6 @@ import {
   IHiddenRows,
   IExcelState,
   IStyles,
-  IFormulaMap,
-  IAreaRange,
-  IFormulaMapValue,
 } from '../@types/state'
 import {
   SHEET_MAX_ROW_COUNT,
@@ -41,7 +37,7 @@ import {
   SHEET_FREEZE_COLUMN_COUNT,
   SHEET_FREEZE_ROW_COUNT,
 } from '../constants/defaults'
-import { numberRegex, cellRegex, rangeRegex } from './regex'
+import { numberRegex } from './regex'
 import { ValueType } from '../@types/exceljs'
 import uniqid from 'uniqid'
 import { getTableColumnCount, getTableRowCount } from '../redux/tools/table'
@@ -50,13 +46,14 @@ import {
   TYPE_FORMULA,
   TYPE_MERGE,
   TYPE_TEXT,
+  TYPE_NUMBER,
 } from '../constants/cellTypes'
 import { initialExcelState } from '../redux/store'
 import { indexedColors, themes } from '../constants/colors'
 import { applyTintToColor } from './color'
-import FormulaParser, { FormulaError } from 'fast-formula-parser'
+import FormulaParser from 'fast-formula-parser'
 import Color from 'color'
-import { addressRangeToRange } from './conversion'
+import { IFormulaMap } from '../@types/objects'
 
 const getFormattedColor = (
   color: Partial<ExcelColor> & {
@@ -212,25 +209,28 @@ export const getRichTextFromCellValue = (
   return richText
 }
 
-const createFormulaParser = (sheetsMap: ISheetsMap) =>
+export const createFormulaParser = (
+  sheetsData: {
+    [key: string]: IRows
+  },
+  formulaMap: IFormulaMap
+): FormulaParser =>
   new FormulaParser({
-    onCell: ({ sheet, row, col }) => {
-      const sheetContent = sheetsMap[sheet]
-
+    onCell: ({ sheet, row: rowIndex, col: columnIndex }) => {
+      const sheetContent = sheetsData[sheet]
       if (sheetContent) {
-        const sheetData = sheetContent.data
-        if (sheetData[row] && sheetData[row][col]) {
-          const cell = sheetData[row][col]
-          let value: string | null = null
+        if (sheetContent[rowIndex] && sheetContent[rowIndex][columnIndex]) {
+          const cell = sheetContent[rowIndex][columnIndex]
+          let value: string | number | null = 0
 
           switch (cell.type) {
-            case TYPE_FORMULA: {
-              const cellValue = cell.value as IFormulaValue
-              value = cellValue.formula
+            case TYPE_FORMULA:
+              if (formulaMap[sheet] && formulaMap[sheet][rowIndex])
+                value = formulaMap[sheet][rowIndex][columnIndex]
               break
-            }
+            case TYPE_NUMBER:
             case TYPE_TEXT:
-              value = cell.value as string
+              value = cell.value as string | number
               break
           }
 
@@ -238,38 +238,49 @@ const createFormulaParser = (sheetsMap: ISheetsMap) =>
         }
       }
     },
+    onRange: ({ from, to, sheet }) => {
+      const rangeData = []
+      const sheetContent = sheetsData[sheet]
+
+      if (sheetContent) {
+        for (let rowIndex = from.row; rowIndex <= to.row; rowIndex++) {
+          const row = sheetContent[rowIndex]
+          const rowArray = []
+          if (row) {
+            for (
+              let columnIndex = from.col;
+              columnIndex <= to.col;
+              columnIndex++
+            ) {
+              const cell = row[columnIndex]
+              let value: string | number | null = 0
+
+              if (cell) {
+                switch (cell.type) {
+                  case TYPE_FORMULA:
+                    if (formulaMap[sheet] && formulaMap[sheet][rowIndex])
+                      value = formulaMap[sheet][rowIndex][columnIndex]
+                    break
+                  case TYPE_NUMBER:
+                  case TYPE_TEXT:
+                    value = cell.value as string | number
+                    break
+                }
+
+                rowArray.push(value)
+              }
+            }
+          }
+
+          rangeData.push(rowArray)
+        }
+      }
+
+      return rangeData
+    },
   })
 
-// const computeWorkbookFormulas = (parser: any) => (sheetsMap: ISheetsMap, formulaMap: IFormulaMap) => {
-
-// }
-
-const getFormulaMapValue = (formulaValue: string) => {
-  const formulaMapValue: IFormulaMapValue = {}
-
-  const cells = ((formulaValue.match(cellRegex) ||
-    []) as string[]).map((cellFormula) =>
-    convertStringPositionToPosition(cellFormula)
-  ) as IPosition[]
-
-  const ranges = ((formulaValue.match(rangeRegex) ||
-    []) as string[]).map((cellRangeFormula) =>
-    addressRangeToRange(cellRangeFormula)
-  ) as IAreaRange[]
-
-  if (cells) formulaMapValue.cells = cells
-  if (ranges) formulaMapValue.ranges = ranges
-
-  return formulaMapValue
-}
-
-export const getCellContent = (
-  data: IRows,
-  cell: any,
-  formulaMap: IFormulaMap,
-  rowIndex: IRowIndex,
-  columnIndex: IColumnIndex
-): ICell | undefined => {
+export const getCellContent = (data: IRows, cell: any): ICell | undefined => {
   const value = cell.value
 
   const content: ICell = {}
@@ -278,23 +289,20 @@ export const getCellContent = (
   if (styles) content.styles = styles
 
   switch (cell.type) {
+    case ValueType.Number:
+      content.value = value
+      content.type = TYPE_NUMBER
+      break
     case ValueType.String:
-      content.value = value as string
+      content.value = value
+      content.type = TYPE_TEXT
       break
     case ValueType.Formula: {
-      const { formula, sharedFormula, result } = cell.value
+      const { formula, sharedFormula } = cell.value
       const formulaValue: string = formula ? formula : sharedFormula
 
-      if (!formulaMap[rowIndex]) formulaMap[rowIndex] = {}
-
-      formulaMap[rowIndex][columnIndex] = getFormulaMapValue(formulaValue)
-
-      content.value = {
-        formula: formulaValue,
-      } as IFormulaValue
-
+      content.value = formulaValue
       content.type = TYPE_FORMULA
-      if (result) content.value.result = result
 
       break
     }
@@ -307,9 +315,6 @@ export const getCellContent = (
     case ValueType.Date:
       break
     case ValueType.Error:
-      break
-    case ValueType.Number:
-      content.value = value as string
       break
     case ValueType.Merge: {
       const {
@@ -350,10 +355,7 @@ export const getBoundedRow = (rowIndex: IRowIndex): IRowIndex =>
 export const getBoundedColumn = (columnIndex: IColumnIndex): IColumnIndex =>
   columnIndex < SHEET_MAX_COLUMN_COUNT ? columnIndex : SHEET_MAX_COLUMN_COUNT
 
-export const getSheetDataFromSheet = (
-  sheet: Worksheet,
-  formulaMap: IFormulaMap
-): IRows => {
+export const getSheetDataFromSheet = (sheet: Worksheet): IRows => {
   const data: IRows = {}
 
   sheet.eachRow({ includeEmpty: true }, (row, rowIndex) => {
@@ -362,13 +364,7 @@ export const getSheetDataFromSheet = (
     row.eachCell({ includeEmpty: true }, (cell, columnIndex) => {
       if (Object.keys(cell).length) {
         data[rowIndex][columnIndex] = {}
-        const content = getCellContent(
-          data,
-          cell,
-          formulaMap,
-          rowIndex,
-          columnIndex
-        )
+        const content = getCellContent(data, cell)
 
         if (!content || !Object.keys(content).length)
           delete data[rowIndex][columnIndex]
@@ -492,7 +488,6 @@ export const getRowDataFromSheet = (
 
 const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
   const sheetsMap: ISheetsMap = {}
-  const formulaMap: IFormulaMap = {}
 
   const sheetNames: ISheetNames = []
   let activeTab = 1
@@ -507,22 +502,19 @@ const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
     sheetNames.push(sheet.name)
 
     sheetsMap[sheet.name] = {
-      data: getSheetDataFromSheet(sheet, formulaMap),
+      data: getSheetDataFromSheet(sheet),
       columnCount: getTableColumnCount(sheet.columnCount),
       rowCount: getTableRowCount(sheet.rowCount),
-      inactiveSelectionAreas: [],
-      selectionAreaIndex: -1,
       ...getPaneDataFromSheetViews(sheet.views),
       ...getColumnDataFromColumns(sheet),
       ...getRowDataFromSheet(sheet),
     }
   })
 
-  // computeWorkbookFormulas(createFormulaParser(sheetsMap))(sheetsMap, formulaMap)
-
   return {
     ...initialExcelState,
-    formulaMap,
+    selectionAreaIndex: -1,
+    inactiveSelectionAreas: [],
     sheetsMap,
     sheetNames,
     activeSheetName,

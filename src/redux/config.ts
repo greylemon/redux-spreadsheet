@@ -10,7 +10,6 @@ export const devTools: any = {
     present: {
       ...state.present,
       sheetsMap: BLOB_PLACEHOLDER,
-      formulaMap: BLOB_PLACEHOLDER,
     },
   }),
   actionSanitizer: (action: any) => {
@@ -21,7 +20,6 @@ export const devTools: any = {
           payload: {
             ...action.payload,
             sheetsMap: BLOB_PLACEHOLDER,
-            formulaMap: BLOB_PLACEHOLDER,
           },
         }
       default:

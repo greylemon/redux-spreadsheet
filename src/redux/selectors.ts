@@ -15,6 +15,11 @@ import {
 import { IPosition, IExcelState, IColumns, ICell, IArea } from '../@types/state'
 import { CSSProperties } from 'react'
 import { STYLE_ACTIVE_CELL_Z_INDEX } from '../constants/styles'
+import { createFormulaParser } from '../tools/parser'
+import { IFormulaMap } from '../@types/objects'
+import { TYPE_FORMULA } from '../constants/cellTypes'
+import { visitFormulaCell } from './tools/formula'
+// import { memoize } from 'lodash'
 
 export const selectExcel = (undoxExcel: IRootStore): IExcelState =>
   undoxExcel.present
@@ -48,6 +53,31 @@ export const selectSheetsMap = createSelector(
   (excel) => excel.sheetsMap
 )
 
+export const selectSelectionArea = createSelector(
+  [selectExcel],
+  (excel) => excel.selectionArea
+)
+
+export const selectActiveCellPosition = createSelector(
+  [selectExcel],
+  (excel) => excel.activeCellPosition
+)
+
+export const selectActiveCellPositionRow = createSelector(
+  [selectActiveCellPosition],
+  (activeCellPosition) => activeCellPosition.y
+)
+
+export const selectActiveCellPositionColumn = createSelector(
+  [selectActiveCellPosition],
+  (activeCellPosition) => activeCellPosition.x
+)
+
+export const selectInactiveSelectionAreas = createSelector(
+  [selectExcel],
+  (excel) => excel.inactiveSelectionAreas
+)
+
 // ===========================================================================
 // ACTIVE SHEET
 // ===========================================================================
@@ -65,21 +95,6 @@ export const selectFreezeRowCount = createSelector(
 export const selectFreezeColumnCount = createSelector(
   [selectActiveSheet],
   (activeSheet) => activeSheet.freezeColumnCount
-)
-
-export const selectActiveCellPosition = createSelector(
-  [selectActiveSheet],
-  (activeSheet) => activeSheet.activeCellPosition
-)
-
-export const selectSelectionArea = createSelector(
-  [selectActiveSheet],
-  (activeSheet) => activeSheet.selectionArea
-)
-
-export const selectInactiveSelectionAreas = createSelector(
-  [selectActiveSheet],
-  (activeSheet) => activeSheet.inactiveSelectionAreas
 )
 
 export const selectColumnWidths = createSelector(
@@ -105,16 +120,6 @@ export const selectRowHeights = createSelector(
 export const selectRowCount = createSelector(
   [selectActiveSheet],
   (activeSheet) => activeSheet.rowCount
-)
-
-export const selectActiveCellPositionRow = createSelector(
-  [selectActiveCellPosition],
-  (activeCellPosition) => activeCellPosition.y
-)
-
-export const selectActiveCellPositionColumn = createSelector(
-  [selectActiveCellPosition],
-  (activeCellPosition) => activeCellPosition.x
 )
 
 // ===========================================================================
@@ -204,6 +209,60 @@ export const selectActiveSheetNameIndex = createSelector(
     sheetNames.findIndex((name) => activeSheetName === name)
 )
 
+const selectSheetsData = createSelector([selectSheetsMap], (sheetsMap) => {
+  const sheetsData = {}
+
+  for (const sheetName in sheetsMap) {
+    sheetsData[sheetName] = sheetsMap[sheetName].data
+  }
+
+  return sheetsData
+})
+
+export const selectFormulaResults = createSelector(
+  [selectSheetsData],
+  (sheetsData) => {
+    const formulaMap: IFormulaMap = {}
+    const parser = createFormulaParser(sheetsData, formulaMap)
+    const visited = {}
+
+    for (const sheetName in sheetsData) {
+      const sheet = sheetsData[sheetName]
+      for (const rowIndex in sheet) {
+        const row = sheet[rowIndex]
+
+        for (const columnIndex in row) {
+          const cell = row[columnIndex]
+
+          if (cell.type === TYPE_FORMULA) {
+            if (!formulaMap[sheetName]) formulaMap[sheetName] = {}
+            if (!formulaMap[sheetName][rowIndex])
+              formulaMap[sheetName][rowIndex] = {}
+            if (formulaMap[sheetName][rowIndex][columnIndex] === undefined) {
+              visitFormulaCell(
+                formulaMap,
+                sheet,
+                visited,
+                parser,
+                sheetName,
+                { x: +columnIndex, y: +rowIndex },
+                cell.value
+              )
+            }
+          }
+        }
+      }
+    }
+
+    return formulaMap
+  }
+)
+
+export const selectActiveSheetFormulaResults = createSelector(
+  [selectFormulaResults, selectActiveSheetName],
+  (formulaResults, activeSheetName) => formulaResults[activeSheetName]
+)
+
 // ===========================================================================
 // CUSTOM SELECTOR FACTORIES
 // ===========================================================================
@@ -268,7 +327,7 @@ export const selectFactoryActiveCellStyle = (
     activeCellStyle.minHeight = activeCellStyle.height
     activeCellStyle.minWidth = activeCellStyle.width
   } else {
-    let height, width, top, left
+    let height: number, width: number, top: number, left: number
 
     const cellMergeArea = selectCellMergeFactory(activeCellPosition)(state)
 

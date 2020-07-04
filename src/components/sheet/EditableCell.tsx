@@ -6,7 +6,6 @@ import {
   IRichTextValue,
   IFragment,
   IRichTextBlock,
-  IFormulaValue,
   IStyles,
 } from '../../@types/state'
 import { CSSProperties } from 'react'
@@ -15,6 +14,7 @@ import {
   TYPE_FORMULA,
   TYPE_TEXT,
   TYPE_MERGE,
+  TYPE_NUMBER,
 } from '../../constants/cellTypes'
 import {
   STYLE_OVERLAP_Z_INDEX,
@@ -61,7 +61,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 }) => {
   const dispatch = useDispatch()
 
-  const { data: sheetData, columnWidthsAdjusted } = data
+  const { data: sheetData, columnWidthsAdjusted, formulaResults } = data
 
   const rowData = sheetData[rowIndex]
 
@@ -115,17 +115,29 @@ const EditableCell: FunctionComponent<ICellProps> = ({
   }
 
   const cellComponent = useMemo(() => {
-    let component
+    let component: JSX.Element
+
     switch (type) {
       case TYPE_RICH_TEXT:
         component = <RichTextCellValue value={value as IRichTextValue} />
         break
-      case TYPE_FORMULA:
-        component = (
-          <NormalCellValue value={(value as IFormulaValue).result as string} />
-        )
+      case TYPE_FORMULA: {
+        let value: undefined | string
+
+        try {
+          const formulaValue = formulaResults[rowIndex][columnIndex]
+          value = formulaValue.toString()
+        } catch (error) {
+          value = ''
+        }
+
+        component = <NormalCellValue value={value} />
         break
+      }
       case TYPE_MERGE:
+        break
+      case TYPE_NUMBER:
+        component = <NormalCellValue value={value.toString()} />
         break
       case TYPE_TEXT:
       default:

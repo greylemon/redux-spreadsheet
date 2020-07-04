@@ -48,7 +48,7 @@ export const columnNumberToName = (number: number): string | null => {
   return name
 }
 
-export const addressRangeToRange = (range: string): IAreaRange => {
+export const convertAddressRangeToRange = (range: string): IAreaRange => {
   const [topLeftAdr, bottomRightAdr] = range.split(':')
 
   return getAreaRanges({

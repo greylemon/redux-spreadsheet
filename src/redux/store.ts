@@ -21,7 +21,6 @@ import { EditorState } from 'draft-js'
 import { UPDATE_STATE } from './reducers/events'
 import { CHANGE_SHEET, CHANGE_SHEET_ORDER } from './reducers/sheet'
 
-// TODO
 export const initialExcelState: IExcelState = {
   sheetNames: ['Sheet1'],
 
@@ -33,7 +32,9 @@ export const initialExcelState: IExcelState = {
 
   error: {},
 
-  formulaMap: {},
+  selectionAreaIndex: -1,
+  activeCellPosition: { x: 1, y: 1 },
+  inactiveSelectionAreas: [],
 
   sheetsMap: {
     Sheet1: {
@@ -48,20 +49,9 @@ export const initialExcelState: IExcelState = {
       hiddenColumns: {},
       hiddenRows: {},
 
-      selectionAreaIndex: -1,
-      inactiveSelectionAreas: [],
       activeCellPosition: { x: 1, y: 1 },
 
-      data: {
-        // 1: {
-        //   1: {
-        //     value: {
-        //       formula: 'SUM(A2)',
-        //     },
-        //     type: TYPE_FORMULA,
-        //   },
-        // },
-      },
+      data: {},
     },
   },
 }

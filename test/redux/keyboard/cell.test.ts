@@ -51,7 +51,7 @@ describe('Cell keyboard operations', () => {
 
     it('Bottom endpoint', () => {
       const state = cloneDeep(mockState)
-      state.present.sheetsMap.Sheet1.activeCellPosition.y =
+      state.present.activeCellPosition.y =
         state.present.sheetsMap.Sheet1.rowCount
       store = createRootMockStore(state)
 
@@ -71,7 +71,7 @@ describe('Cell keyboard operations', () => {
 
     it('Bottom endpoint', () => {
       const state = cloneDeep(mockState)
-      state.present.sheetsMap.Sheet1.activeCellPosition.x =
+      state.present.activeCellPosition.x =
         state.present.sheetsMap.Sheet1.columnCount
       store = createRootMockStore(state)
 

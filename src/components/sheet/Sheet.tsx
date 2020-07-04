@@ -12,6 +12,7 @@ import {
   selectTableColumnCount,
   selectTableFreezeRowCount,
   selectTableFreezeColumnCount,
+  selectActiveSheetFormulaResults,
 } from '../../redux/selectors'
 import BottomRightPane from './BottomRightPane'
 import { shallowEqual } from 'react-redux'
@@ -22,6 +23,7 @@ import BottomLeftPane from './BottomLeftPane'
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const gridRef = useRef<VariableSizeGrid>(null)
   const {
+    formulaResults,
     tableColumnCount,
     tableRowCount,
     data,
@@ -32,6 +34,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     columnWidthsAdjusted,
   } = useTypedSelector(
     (state) => ({
+      formulaResults: selectActiveSheetFormulaResults(state),
       tableColumnCount: selectTableColumnCount(state),
       tableRowCount: selectTableRowCount(state),
       data: selectData(state),
@@ -44,7 +47,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     shallowEqual
   )
 
-  const itemData = { data, columnWidthsAdjusted, getRowHeight }
+  const itemData = { data, columnWidthsAdjusted, getRowHeight, formulaResults }
 
   useEffect(() => {
     const current = gridRef.current
@@ -67,8 +70,8 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
         freezeRowCount={tableFreezeRowCount}
         extraTopLeftElement={<TopLeftPane key="top-left-pane" />}
         extraTopRightElement={<TopRightPane key="top-right-pane" />}
-        extraBottomRightElement={<BottomRightPane key="bottom-right-pane" />}
         extraBottomLeftElement={<BottomLeftPane key="bottom-left-pane" />}
+        extraBottomRightElement={<BottomRightPane key="bottom-right-pane" />}
       >
         {Cell}
       </VariableSizeGrid>

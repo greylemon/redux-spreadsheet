@@ -32,20 +32,18 @@ export const CELL_MOUSE_DOWN_CTRL = (
   )
     return state
 
-  if (
-    !checkIsPositionEqualOtherPosition(activeSheet.activeCellPosition, position)
-  ) {
-    if (!activeSheet.inactiveSelectionAreas.length) {
-      activeSheet.inactiveSelectionAreas = [
-        getAreaFromPosition(activeSheet.activeCellPosition),
+  if (!checkIsPositionEqualOtherPosition(state.activeCellPosition, position)) {
+    if (!state.inactiveSelectionAreas.length) {
+      state.inactiveSelectionAreas = [
+        getAreaFromPosition(state.activeCellPosition),
       ]
     }
   }
 
-  activeSheet.selectionArea = { start: position, end: position }
-  activeSheet.selectionAreaIndex = activeSheet.inactiveSelectionAreas.length + 1
+  state.selectionArea = { start: position, end: position }
+  state.selectionAreaIndex = state.inactiveSelectionAreas.length + 1
 
-  activeSheet.activeCellPosition = position
+  state.activeCellPosition = position
   state.isEditMode = false
 
   return state
@@ -69,12 +67,12 @@ export const CELL_MOUSE_DOWN_SHIFT = (
 
   const orderedArea = getOrderedAreaFromPositions(
     position,
-    activeSheet.activeCellPosition
+    state.activeCellPosition
   )
 
-  activeSheet.selectionArea = getEntireSuperArea(orderedArea, activeSheet.data)
-  activeSheet.selectionAreaIndex = 0
-  activeSheet.inactiveSelectionAreas = []
+  state.selectionArea = getEntireSuperArea(orderedArea, activeSheet.data)
+  state.selectionAreaIndex = 0
+  state.inactiveSelectionAreas = []
   state.isEditMode = false
 
   return state
@@ -98,24 +96,24 @@ export const CELL_MOUSE_DOWN = (
 
   if (
     state.isEditMode &&
-    !checkIsPositionEqualOtherPosition(activeSheet.activeCellPosition, position)
+    !checkIsPositionEqualOtherPosition(state.activeCellPosition, position)
   ) {
     const cellValue = createValueFromEditorState(state.editorState)
 
     if (cellValue) {
-      activeSheet.data[activeSheet.activeCellPosition.y] = {
-        ...activeSheet.data[activeSheet.activeCellPosition.y],
-        [activeSheet.activeCellPosition.x]: {
-          ...[activeSheet.activeCellPosition.x],
+      activeSheet.data[state.activeCellPosition.y] = {
+        ...activeSheet.data[state.activeCellPosition.y],
+        [state.activeCellPosition.x]: {
+          ...[state.activeCellPosition.x],
           ...cellValue,
         },
       }
     }
   }
 
-  activeSheet.activeCellPosition = position
-  activeSheet.inactiveSelectionAreas = []
-  activeSheet.selectionArea = { start: position, end: position }
+  state.activeCellPosition = position
+  state.inactiveSelectionAreas = []
+  state.selectionArea = { start: position, end: position }
   state.isEditMode = false
 
   return state
@@ -126,17 +124,14 @@ export const CELL_MOUSE_ENTER = (
   action: PayloadAction<IPosition>
 ): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  if (activeSheet.selectionArea) {
+  if (state.selectionArea) {
     const position = action.payload
     const orderedArea = getOrderedAreaFromPositions(
       position,
-      activeSheet.activeCellPosition
+      state.activeCellPosition
     )
 
-    activeSheet.selectionArea = getEntireSuperArea(
-      orderedArea,
-      activeSheet.data
-    )
+    state.selectionArea = getEntireSuperArea(orderedArea, activeSheet.data)
   }
 
   return state
@@ -146,47 +141,44 @@ export const CELL_MOUSE_UP = (
   state: IExcelState,
   action: PayloadAction<ISelectionArea>
 ): IExcelState => {
-  const activeSheet = nSelectActiveSheet(state)
-  if (!activeSheet.selectionArea) return state
+  if (!state.selectionArea) return state
 
   const selectionArea = action.payload
 
   if (selectionArea) {
     const { newAreas, superAreaIndex } = getAndAddArea(
       selectionArea,
-      activeSheet.inactiveSelectionAreas
+      state.inactiveSelectionAreas
     )
     if (
-      activeSheet.inactiveSelectionAreas.length > 0 ||
-      (activeSheet.inactiveSelectionAreas.length === 1 &&
-        !checkIsSelectionAreaEqualPosition(
-          activeSheet.inactiveSelectionAreas[0]
-        )) ||
+      state.inactiveSelectionAreas.length > 0 ||
+      (state.inactiveSelectionAreas.length === 1 &&
+        !checkIsSelectionAreaEqualPosition(state.inactiveSelectionAreas[0])) ||
       !checkIsSelectionAreaEqualPosition(selectionArea)
     ) {
-      activeSheet.inactiveSelectionAreas = newAreas
+      state.inactiveSelectionAreas = newAreas
       if (superAreaIndex > -1 && superAreaIndex < newAreas.length) {
         // Area difference does not completely eliminate an area
-        activeSheet.activeCellPosition = getMinPositionFromArea(
-          activeSheet.inactiveSelectionAreas[superAreaIndex]
+        state.activeCellPosition = getMinPositionFromArea(
+          state.inactiveSelectionAreas[superAreaIndex]
         )
 
-        activeSheet.selectionAreaIndex = superAreaIndex
+        state.selectionAreaIndex = superAreaIndex
       } else if (superAreaIndex > 0) {
         // Area eliminated a block, but there are still other areas for active cell position to occupy
-        activeSheet.selectionAreaIndex = superAreaIndex - 1
-        activeSheet.activeCellPosition = getMinPositionFromArea(
-          activeSheet.inactiveSelectionAreas[activeSheet.selectionAreaIndex]
+        state.selectionAreaIndex = superAreaIndex - 1
+        state.activeCellPosition = getMinPositionFromArea(
+          state.inactiveSelectionAreas[state.selectionAreaIndex]
         )
       } else {
         // Last area to eliminate - no more possible occupation
-        activeSheet.selectionAreaIndex = -1
+        state.selectionAreaIndex = -1
       }
     }
   }
 
-  activeSheet.selectionAreaIndex = activeSheet.selectionAreaIndex + 1
-  activeSheet.selectionArea = undefined
+  state.selectionAreaIndex = state.selectionAreaIndex + 1
+  state.selectionArea = undefined
 
   return state
 }
@@ -195,7 +187,7 @@ export const CELL_DOUBLE_CLICK = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   state.isEditMode = true
 
-  const cell = nSelectCell(activeSheet.data, activeSheet.activeCellPosition)
+  const cell = nSelectCell(activeSheet.data, state.activeCellPosition)
 
   state.editorState = createEditorStateFromCell(cell)
 

@@ -50,7 +50,7 @@
     "linebreak-style": "error",
     "no-array-constructor": "error",
     "no-class-assign": "error",
-    "no-console": "error",
+    "no-console": ["error", { "allow": ["warn", "error"] }],
     "no-const-assign": "error",
     "no-debugger": "error",
     "no-dupe-args": "error",

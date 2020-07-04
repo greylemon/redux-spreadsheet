@@ -23,7 +23,9 @@ import {
   TYPE_RICH_TEXT,
   TYPE_TEXT,
   TYPE_FORMULA,
+  TYPE_NUMBER,
 } from '../../constants/cellTypes'
+import { exactNumberRegex } from '../../tools/regex'
 
 export const getRangesFromInlineRanges = (
   inlineStyleRanges: RawDraftInlineStyleRange[]
@@ -135,10 +137,11 @@ export const createValueFromEditorState = (
     cell.value = richText
     cell.type = TYPE_RICH_TEXT
   } else if (text.includes('=')) {
-    cell.value = {
-      formula: text.substring(1),
-    }
+    cell.value = text.substring(1)
     cell.type = TYPE_FORMULA
+  } else if (text.match(exactNumberRegex)) {
+    cell.value = +text
+    cell.type = TYPE_NUMBER
   } else {
     cell.value = text
     cell.type = TYPE_TEXT

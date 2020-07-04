@@ -46,14 +46,13 @@ describe('Cell mouse operations', () => {
 
     describe('Move to invalid position', () => {
       it('Move to negative position', () => {
-        const activeSheet = nSelectActiveSheet(initialExcelState)
         const position: IPosition = { x: -1, y: -2 }
 
         store.dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
 
         const activeCellPosition = selectActiveCellPosition(store.getState())
 
-        expect(activeCellPosition).toEqual(activeSheet.activeCellPosition)
+        expect(activeCellPosition).toEqual(initialExcelState.activeCellPosition)
       })
 
       it('Move to out of bound positive position', () => {
@@ -67,7 +66,7 @@ describe('Cell mouse operations', () => {
 
         const activeCellPosition = selectActiveCellPosition(store.getState())
 
-        expect(activeCellPosition).toEqual(activeSheet.activeCellPosition)
+        expect(activeCellPosition).toEqual(initialExcelState.activeCellPosition)
       })
     })
   })

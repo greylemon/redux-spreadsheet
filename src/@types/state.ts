@@ -66,12 +66,7 @@ export type IRichTextBlock = {
 
 export type IRichTextValue = IRichTextBlock[]
 
-export type IFormulaValue = {
-  formula?: string
-  result?: string
-}
-
-export type IValue = string | IRichTextValue | IFormulaValue
+export type IValue = string | number | IRichTextValue
 
 export type IHyperlink = {
   type: 'external' | 'internal'
@@ -131,12 +126,9 @@ export type IHiddenRows = { [key: string]: boolean }
 export type ISheet = {
   data: IRows
 
-  inactiveSelectionAreas: IInactiveSelectionAreas
+  // inactiveSelectionAreas: IInactiveSelectionAreas
 
   activeCellPosition: IActiveCellPosition
-  selectionArea?: ISelectionArea
-
-  selectionAreaIndex: ISelectionAreaIndex
 
   rowCount: IRowCount
   columnCount: IColumnCount
@@ -154,24 +146,18 @@ export type ISheetsMap = {
   [key: string]: ISheet
 }
 
-export type IFormulaMapValue = {
-  cells?: IPosition[]
-  ranges?: IAreaRange[]
-}
-
-export type IFormulaMap = {
-  [key: string]: {
-    [key: string]: IFormulaMapValue
-  }
-}
-
 export type IExcelState = {
   name: IName
   activeSheetName: ISheetName
   sheetNames: ISheetNames
   sheetsMap: ISheetsMap
-  formulaMap: IFormulaMap
   isEditMode: IIsEditMode
   editorState: IEditorState
   error: IError
+
+  // sheet specific - optimized state
+  selectionAreaIndex: ISelectionAreaIndex
+  selectionArea?: ISelectionArea
+  activeCellPosition: IActiveCellPosition
+  inactiveSelectionAreas: IInactiveSelectionAreas
 }

@@ -9,19 +9,16 @@ export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
 
 export const CELL_KEY_DOWN = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  if (activeSheet.activeCellPosition.y >= activeSheet.rowCount) return state
+  if (state.activeCellPosition.y >= activeSheet.rowCount) return state
 
-  const mergeData = nSelectMergeCell(
-    activeSheet.data,
-    activeSheet.activeCellPosition
-  )
+  const mergeData = nSelectMergeCell(activeSheet.data, state.activeCellPosition)
 
-  activeSheet.activeCellPosition.y = mergeData
+  state.activeCellPosition.y = mergeData
     ? mergeData.end.y + 1
-    : activeSheet.activeCellPosition.y + 1
-  activeSheet.inactiveSelectionAreas = []
-  activeSheet.selectionAreaIndex = -1
-  activeSheet.selectionArea = undefined
+    : state.activeCellPosition.y + 1
+  state.inactiveSelectionAreas = []
+  state.selectionAreaIndex = -1
+  state.selectionArea = undefined
 
   return state
 }
@@ -32,19 +29,16 @@ export const CELL_KEY_UP_SHIFT = (state: IExcelState): IExcelState => {
 
 export const CELL_KEY_UP = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  if (activeSheet.activeCellPosition.y < 2) return state
+  if (state.activeCellPosition.y < 2) return state
 
-  const mergeData = nSelectMergeCell(
-    activeSheet.data,
-    activeSheet.activeCellPosition
-  )
+  const mergeData = nSelectMergeCell(activeSheet.data, state.activeCellPosition)
 
-  activeSheet.activeCellPosition.y = mergeData
+  state.activeCellPosition.y = mergeData
     ? mergeData.end.y - 1
-    : activeSheet.activeCellPosition.y - 1
-  activeSheet.inactiveSelectionAreas = []
-  activeSheet.selectionAreaIndex = -1
-  activeSheet.selectionArea = undefined
+    : state.activeCellPosition.y - 1
+  state.inactiveSelectionAreas = []
+  state.selectionAreaIndex = -1
+  state.selectionArea = undefined
 
   return state
 }
@@ -55,19 +49,16 @@ export const CELL_KEY_RIGHT_SHIFT = (state: IExcelState): IExcelState => {
 
 export const CELL_KEY_RIGHT = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  if (activeSheet.activeCellPosition.x >= activeSheet.columnCount) return state
+  if (state.activeCellPosition.x >= activeSheet.columnCount) return state
 
-  const mergeData = nSelectMergeCell(
-    activeSheet.data,
-    activeSheet.activeCellPosition
-  )
+  const mergeData = nSelectMergeCell(activeSheet.data, state.activeCellPosition)
 
-  activeSheet.activeCellPosition.x = mergeData
+  state.activeCellPosition.x = mergeData
     ? mergeData.end.x + 1
-    : activeSheet.activeCellPosition.x + 1
-  activeSheet.inactiveSelectionAreas = []
-  activeSheet.selectionAreaIndex = -1
-  activeSheet.selectionArea = undefined
+    : state.activeCellPosition.x + 1
+  state.inactiveSelectionAreas = []
+  state.selectionAreaIndex = -1
+  state.selectionArea = undefined
 
   return state
 }
@@ -78,19 +69,16 @@ export const CELL_KEY_LEFT_SHIFT = (state: IExcelState): IExcelState => {
 
 export const CELL_KEY_LEFT = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  if (activeSheet.activeCellPosition.x < 2) return state
+  if (state.activeCellPosition.x < 2) return state
 
-  const mergeData = nSelectMergeCell(
-    activeSheet.data,
-    activeSheet.activeCellPosition
-  )
+  const mergeData = nSelectMergeCell(activeSheet.data, state.activeCellPosition)
 
-  activeSheet.activeCellPosition.x = mergeData
+  state.activeCellPosition.x = mergeData
     ? mergeData.end.x - 1
-    : activeSheet.activeCellPosition.x - 1
-  activeSheet.inactiveSelectionAreas = []
-  activeSheet.selectionAreaIndex = -1
-  activeSheet.selectionArea = undefined
+    : state.activeCellPosition.x - 1
+  state.inactiveSelectionAreas = []
+  state.selectionAreaIndex = -1
+  state.selectionArea = undefined
 
   return state
 }
