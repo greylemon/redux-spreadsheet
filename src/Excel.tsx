@@ -6,8 +6,11 @@ import store from './redux/redux'
 import { IHandleSave } from './@types/functions'
 
 export const Excel: FunctionComponent<{
+  /** Inline react styles */
   style?: CSSProperties
+  /** Determines whether Excel uses react-router */
   isRouted?: boolean
+  /** Function to process save events */
   handleSave?: IHandleSave
 }> = ({ style, isRouted, handleSave }) => (
   <Provider store={store}>
