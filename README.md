@@ -95,7 +95,8 @@ Husky is used here for performing tasks before a git commit. The tasks performed
   - [x] No page router
   - [ ] Return link
 - Formulas
-  - [ ] Formula reference map
+  - [x] Formula reference map
+  - [x] Formula computation - Derived from sheet data using selectors (this is really expensive, may switch to storing it in state in the future)
 - Formula bar
   - [ ] Input
 - File upload
@@ -105,7 +106,7 @@ Husky is used here for performing tasks before a git commit. The tasks performed
   - [x] Change sheet name
   - [ ] Delete sheet name
   - [ ] Update sheet name
-- ...
+- ...many more to do
 
 ## Main Libraries Used
 
