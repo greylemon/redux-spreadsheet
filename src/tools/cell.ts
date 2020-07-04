@@ -4,7 +4,7 @@ import {
   IColumnCount,
   ICell,
   IRichTextValue,
-} from '../../@types/state'
+} from '../@types/state'
 import {
   createEmptyEditorState,
   createEditorStateFromText,
@@ -16,7 +16,7 @@ import {
   TYPE_TEXT,
   TYPE_RICH_TEXT,
   TYPE_NUMBER,
-} from '../../constants/cellTypes'
+} from '../constants/cellTypes'
 
 export const changeActiveCell = (position: IPosition): IPosition => {
   return position

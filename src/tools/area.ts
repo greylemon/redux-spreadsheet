@@ -4,7 +4,7 @@ import {
   IRange,
   IArea,
   IAreaRange,
-} from '../../@types/state'
+} from '../@types/state'
 
 export const getMinPositionFromArea = ({ start, end }: IArea): IPosition => ({
   x: Math.min(start.x, end.x),
@@ -15,6 +15,23 @@ export const getMaxPositionFromArea = ({ start, end }: IArea): IPosition => ({
   x: Math.max(start.x, end.x),
   y: Math.max(start.y, end.y),
 })
+
+export const checkIsAreaRangeContainedInOtherAreaRange = (
+  areaRange: IAreaRange,
+  otherAreaRange: IAreaRange
+): boolean =>
+  checkIsRangeContainedInOtherRange(areaRange.xRange, otherAreaRange.xRange) &&
+  checkIsRangeContainedInOtherRange(areaRange.yRange, otherAreaRange.yRange)
+
+export const checkIsSelectionAreaEqualPosition = ({
+  start,
+  end,
+}: ISelectionArea): boolean => start.x === end.x && start.y === end.y
+
+export const checkIsRangeContainedInOtherRange = (
+  range: IRange,
+  otherRange: IRange
+): boolean => otherRange.start <= range.start && range.end <= otherRange.end
 
 export const getOrderedAreaFromPositions = (
   position: IPosition,
@@ -179,19 +196,23 @@ export const getFirstSuperAreaIndex = (
   })
 }
 
-export const checkIsAreaRangeContainedInOtherAreaRange = (
-  areaRange: IAreaRange,
-  otherAreaRange: IAreaRange
-): boolean =>
-  checkIsRangeContainedInOtherRange(areaRange.xRange, otherAreaRange.xRange) &&
-  checkIsRangeContainedInOtherRange(areaRange.yRange, otherAreaRange.yRange)
+export const getCellMapSetFromAreas = (areas: IArea[]) => {
+  const cellMapSet: { [key: number]: Set<number> } = {}
 
-export const checkIsSelectionAreaEqualPosition = ({
-  start,
-  end,
-}: ISelectionArea): boolean => start.x === end.x && start.y === end.y
+  areas.forEach((area) => {
+    const { xRange, yRange } = getAreaRanges(area)
 
-export const checkIsRangeContainedInOtherRange = (
-  range: IRange,
-  otherRange: IRange
-): boolean => otherRange.start <= range.start && range.end <= otherRange.end
+    for (let rowIndex = yRange.start; rowIndex <= yRange.end; rowIndex++) {
+      if (!cellMapSet[rowIndex]) cellMapSet[rowIndex] = new Set()
+
+      for (
+        let columnIndex = xRange.start;
+        columnIndex <= xRange.end;
+        columnIndex++
+      )
+        cellMapSet[rowIndex].add(columnIndex)
+    }
+  })
+
+  return cellMapSet
+}

@@ -1,9 +1,9 @@
-import { IFormulaMap } from '../../@types/objects'
-import { IPosition, ISheetName, IRows } from '../../@types/state'
-import { convertStringPositionToPosition } from '../../tools/parser'
-import { sheetNameRegex } from '../../tools/regex'
-import { convertAddressRangeToRange } from '../../tools/conversion'
-import { TYPE_FORMULA } from '../../constants/cellTypes'
+import { IFormulaMap } from '../@types/objects'
+import { IPosition, ISheetName, IRows } from '../@types/state'
+import { convertStringPositionToPosition } from './parser'
+import { sheetNameRegex } from './regex'
+import { convertAddressRangeToRange } from './conversion'
+import { TYPE_FORMULA } from '../constants/cellTypes'
 
 export const visitFormulaCell = (
   formulaMap: IFormulaMap,
@@ -31,13 +31,13 @@ export const visitFormulaCell = (
   } = {}
 
   const addresses = formula.match(sheetNameRegex)
-  // if (!visited[sheetName]) visited[sheetName] = {}
+  if (!visited[sheetName]) visited[sheetName] = {}
 
-  // const visitedSheet = visited[sheetName]
+  const visitedSheet = visited[sheetName]
 
-  // if (!visitedSheet[curPosition.y]) visitedSheet[curPosition.y] = {}
-  // if (!visitedSheet[curPosition.y][curPosition.x])
-  //   visitedSheet[curPosition.y][curPosition.x] = true
+  if (!visitedSheet[curPosition.y]) visitedSheet[curPosition.y] = {}
+  if (!visitedSheet[curPosition.y][curPosition.x])
+    visitedSheet[curPosition.y][curPosition.x] = true
 
   // Get the references in the formula
   if (addresses) {

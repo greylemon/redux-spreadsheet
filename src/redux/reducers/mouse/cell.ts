@@ -1,10 +1,10 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { IPosition, IExcelState, ISelectionArea } from '../../../@types/state'
-import { getEntireSuperArea } from '../../tools/merge'
+import { getEntireSuperArea } from '../../../tools/merge'
 import {
   checkIsCellPositionValid,
   createEditorStateFromCell,
-} from '../../tools/cell'
+} from '../../../tools/cell'
 import {
   getOrderedAreaFromPositions,
   getAndAddArea,
@@ -12,9 +12,9 @@ import {
   checkIsSelectionAreaEqualPosition,
   checkIsPositionEqualOtherPosition,
   getAreaFromPosition,
-} from '../../tools/area'
+} from '../../../tools/area'
 import { nSelectCell, nSelectActiveSheet } from '../../tools/selectors'
-import { createValueFromEditorState } from '../../tools/text'
+import { createValueFromEditorState } from '../../../tools/text'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,

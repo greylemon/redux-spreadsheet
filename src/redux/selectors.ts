@@ -18,7 +18,7 @@ import { STYLE_ACTIVE_CELL_Z_INDEX } from '../constants/styles'
 import { createFormulaParser } from '../tools/parser'
 import { IFormulaMap } from '../@types/objects'
 import { TYPE_FORMULA } from '../constants/cellTypes'
-import { visitFormulaCell } from './tools/formula'
+import { visitFormulaCell } from '../tools/formula'
 // import { memoize } from 'lodash'
 
 export const selectExcel = (undoxExcel: IRootStore): IExcelState =>

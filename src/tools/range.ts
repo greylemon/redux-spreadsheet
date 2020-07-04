@@ -1,4 +1,4 @@
-import { IRange } from '../../@types/state'
+import { IRange } from '../@types/state'
 // https://stackoverflow.com/questions/55480499/split-set-of-intervals-into-minimal-set-of-disjoint-intervals
 export const getElementaryRanges = (
   ranges: IRange[],

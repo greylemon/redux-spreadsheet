@@ -1,10 +1,4 @@
-import {
-  IRows,
-  IArea,
-  IRange,
-  IColumnIndex,
-  IRowIndex,
-} from '../../@types/state'
+import { IRows, IArea, IRange, IColumnIndex, IRowIndex } from '../@types/state'
 import cloneDeep from 'clone-deep'
 
 /**

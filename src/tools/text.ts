@@ -15,17 +15,17 @@ import {
   IRichTextBlock,
   IInlineStyles,
   ICell,
-} from '../../@types/state'
+} from '../@types/state'
 import uniqid from 'uniqid'
 import { getElementaryRanges, mergeRanges } from './range'
-import { IInlineStylesRange } from '../../@types/general'
+import { IInlineStylesRange } from '../@types/general'
 import {
   TYPE_RICH_TEXT,
   TYPE_TEXT,
   TYPE_FORMULA,
   TYPE_NUMBER,
-} from '../../constants/cellTypes'
-import { exactNumberRegex } from '../../tools/regex'
+} from '../constants/cellTypes'
+import { exactNumberRegex } from './regex'
 
 export const getRangesFromInlineRanges = (
   inlineStyleRanges: RawDraftInlineStyleRange[]

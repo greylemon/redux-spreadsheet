@@ -2,7 +2,7 @@ import { IColumnIndex, IAreaRange } from '../@types/state'
 import { columnNameRegex } from './regex'
 import { isFloat } from './validation'
 import { convertStringPositionToPosition } from './parser'
-import { getAreaRanges } from '../redux/tools/area'
+import { getAreaRanges } from './area'
 
 /**
  * Convert a column name to a number.

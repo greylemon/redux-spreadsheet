@@ -2,6 +2,7 @@ import { IExcelState, IEditorState } from '../../../@types/state'
 import { nSelectMergeCell, nSelectActiveSheet } from '../../tools/selectors'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { EditorState } from 'draft-js'
+import { getCellMapSetFromAreas } from '../../../tools/area'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state
@@ -95,5 +96,16 @@ export const CELL_EDITOR_STATE_UPDATE = (
 export const CELL_EDITOR_STATE_START = (state: IExcelState): IExcelState => {
   state.isEditMode = true
   state.editorState = EditorState.moveFocusToEnd(EditorState.createEmpty())
+  return state
+}
+
+export const CELL_KEY_DELETE = (state: IExcelState): IExcelState => {
+  // const activeCell = state.activeCellPosition
+  // const cellMapSet = getCellMapSetFromAreas([ ...state.inactiveSelectionAreas, { start: activeCell, end: activeCell } ])
+
+  // for (let rowIndex in cellMapSet) {
+
+  // }
+
   return state
 }
