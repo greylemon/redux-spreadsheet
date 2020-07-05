@@ -1,11 +1,29 @@
 import { CSSProperties } from 'react'
-import { IRows, IColumnIndex, IRowIndex, IColumnWidthsAdjusted } from './state'
+import {
+  IRows,
+  IColumnIndex,
+  IRowIndex,
+  IColumnWidthsAdjusted,
+  IExcelState,
+} from './state'
 import {
   ICheckIsActiveCellInCorrectPane,
   ICheckIsAreaInRelevantPane,
   IComputeActiveCellStyle,
   IComputeSelectionAreaStyle,
+  IHandleSave,
 } from './functions'
+
+export type ExcelComponentProps = {
+  /** Initial excel state */
+  initialState?: IExcelState
+  /** Inline react styles */
+  style?: CSSProperties
+  /** Determines whether Excel uses react-router */
+  isRouted?: boolean
+  /** Function to process save events */
+  handleSave?: IHandleSave
+}
 
 export type IFormulaResult = {
   [key: string]: {

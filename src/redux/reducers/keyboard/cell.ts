@@ -2,7 +2,6 @@ import { IExcelState, IEditorState } from '../../../@types/state'
 import { nSelectMergeCell, nSelectActiveSheet } from '../../tools/selectors'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { EditorState } from 'draft-js'
-import { getCellMapSetFromAreas } from '../../../tools/area'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state

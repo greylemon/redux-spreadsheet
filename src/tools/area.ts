@@ -196,7 +196,9 @@ export const getFirstSuperAreaIndex = (
   })
 }
 
-export const getCellMapSetFromAreas = (areas: IArea[]) => {
+export const getCellMapSetFromAreas = (
+  areas: IArea[]
+): { [key: string]: Set<number> } => {
   const cellMapSet: { [key: number]: Set<number> } = {}
 
   areas.forEach((area) => {

@@ -37,6 +37,8 @@ const SomeComponent = () => {
 
 ##### Props
 
+- `initialState?`: initial excel state (note that Undox wraps the excel state for redo and undo)
+- `styles?`: style of the Excel's root div
 - `handleSave?`: gets called with store data when save event triggers
 - `isRouted?`: determines whether react-router is used for active sheet
 
@@ -100,6 +102,7 @@ Husky is used here for performing tasks before a git commit. The tasks performed
 - Formula bar
   - [ ] Input
 - File upload
+  - [x] Initial state
   - [x] Basic data
 - Block-styles
 - Sheet navigation

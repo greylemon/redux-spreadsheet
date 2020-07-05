@@ -1,4 +1,4 @@
-import React, { FunctionComponent, CSSProperties, useEffect } from 'react'
+import React, { FunctionComponent, useEffect } from 'react'
 
 import './styles/styles.scss'
 
@@ -10,26 +10,36 @@ import SheetNavigation from './components/sheetNavigation/SheetNavigation'
 import { Route, useRouteMatch, Switch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { ExcelActions } from './redux/store'
-import { IHandleSave } from './@types/functions'
+import { ExcelComponentProps } from './@types/components'
 
-export const ExcelContent: FunctionComponent<{
-  style?: CSSProperties
-  isRouted?: boolean
-  handleSave?: IHandleSave
-}> = ({ style, isRouted, handleSave }) => (
-  <div className="excel" style={style}>
-    <ToolBar />
-    {/* <FormulaBar /> */}
-    <SheetContainer />
-    <SheetNavigation isRouted={isRouted} />
-    <WindowListener handleSave={handleSave} />
-  </div>
-)
+export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
+  style,
+  isRouted,
+  initialState,
+  handleSave,
+}) => {
+  const dispatch = useDispatch()
 
-const ExcelRoute: FunctionComponent<{
-  style?: CSSProperties
-  handleSave?: IHandleSave
-}> = ({ style, handleSave }) => {
+  useEffect(() => {
+    if (initialState) dispatch(ExcelActions.UPDATE_STATE(initialState))
+  }, [dispatch, initialState])
+
+  return (
+    <div className="excel" style={style}>
+      <ToolBar />
+      {/* <FormulaBar /> */}
+      <SheetContainer />
+      <SheetNavigation isRouted={isRouted} />
+      <WindowListener handleSave={handleSave} />
+    </div>
+  )
+}
+
+const ExcelRoute: FunctionComponent<Partial<ExcelComponentProps>> = ({
+  style,
+  initialState,
+  handleSave,
+}) => {
   const dispatch = useDispatch()
   const {
     params: { activeSheetName },
@@ -39,13 +49,21 @@ const ExcelRoute: FunctionComponent<{
     dispatch(ExcelActions.CHANGE_SHEET(activeSheetName))
   }, [activeSheetName])
 
-  return <ExcelContent style={style} handleSave={handleSave} isRouted />
+  return (
+    <ExcelContent
+      style={style}
+      initialState={initialState}
+      handleSave={handleSave}
+      isRouted
+    />
+  )
 }
 
-export const ExcelRouter: FunctionComponent<{
-  style?: CSSProperties
-  handleSave?: IHandleSave
-}> = ({ style, handleSave }) => {
+export const ExcelRouter: FunctionComponent<Partial<ExcelComponentProps>> = ({
+  initialState,
+  style,
+  handleSave,
+}) => {
   const { url } = useRouteMatch()
 
   return (
@@ -54,13 +72,24 @@ export const ExcelRouter: FunctionComponent<{
         exact
         path={url}
         render={() => (
-          <ExcelContent style={style} handleSave={handleSave} isRouted />
+          <ExcelContent
+            style={style}
+            initialState={initialState}
+            handleSave={handleSave}
+            isRouted
+          />
         )}
       />
       <Route
         exact
         path={`${url}${url === '/' ? '' : '/'}:activeSheetName`}
-        render={() => <ExcelRoute style={style} handleSave={handleSave} />}
+        render={() => (
+          <ExcelRoute
+            style={style}
+            initialState={initialState}
+            handleSave={handleSave}
+          />
+        )}
       />
     </Switch>
   )
