@@ -20,15 +20,23 @@ import {
 import { EditorState } from 'draft-js'
 import { UPDATE_STATE } from './reducers/events'
 import { CHANGE_SHEET, CHANGE_SHEET_ORDER } from './reducers/sheet'
+import {
+  SHEET_NAME,
+  SHEET_NAMES,
+  SHEET_ROW_COUNT,
+  SHEET_COLUMN_COUNT,
+  SHEET_FREEZE_COLUMN_COUNT,
+  SHEET_FREEZE_ROW_COUNT,
+} from '../constants/defaults'
 
 export const initialExcelState: IExcelState = {
-  sheetNames: ['Sheet1'],
+  sheetNames: SHEET_NAMES,
 
   name: '',
 
   isEditMode: false,
   editorState: EditorState.createEmpty(),
-  activeSheetName: 'Sheet1',
+  activeSheetName: SHEET_NAME,
 
   error: {},
 
@@ -37,15 +45,15 @@ export const initialExcelState: IExcelState = {
   inactiveSelectionAreas: [],
 
   sheetsMap: {
-    Sheet1: {
-      rowCount: 200,
-      columnCount: 26,
+    [SHEET_NAME]: {
+      rowCount: SHEET_ROW_COUNT,
+      columnCount: SHEET_COLUMN_COUNT,
 
       columnWidths: {},
       rowHeights: {},
 
-      freezeColumnCount: 0,
-      freezeRowCount: 0,
+      freezeColumnCount: SHEET_FREEZE_COLUMN_COUNT,
+      freezeRowCount: SHEET_FREEZE_ROW_COUNT,
       hiddenColumns: {},
       hiddenRows: {},
 

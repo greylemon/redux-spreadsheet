@@ -18,7 +18,7 @@ export const SHEET_COLUMN_WIDTH_HIDDEN = 2
 export const SHEET_ROW_HEIGHT_HEADER = SHEET_ROW_HEIGHT
 export const SHEET_COLUMN_WIDTH_HEADER = 40
 
-export const ACTIVE_SHEET_NAME = 'Sheet1'
+export const SHEET_NAME = 'Sheet1'
 
 export const SHEET_FREEZE_COLUMN_COUNT = 0
 export const SHEET_FREEZE_ROW_COUNT = 0
@@ -29,7 +29,7 @@ export const ACTIVE_CELL_SELECTION_AREA_INDEX = -1
 export const CELL_ORIGIN_ROW = 1
 export const CELL_ORIGIN_COLUMN = 1
 
-export const SHEET_NAMES = []
+export const SHEET_NAMES = [SHEET_NAME]
 export const SHEET_CELL_DATA = []
 
 export const SHEET_COLUMN_WIDTHS = []
