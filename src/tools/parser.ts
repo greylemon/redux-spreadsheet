@@ -54,6 +54,7 @@ import { applyTintToColor } from './color'
 import FormulaParser from 'fast-formula-parser'
 import Color from 'color'
 import { IFormulaMap } from '../@types/objects'
+import fs from 'fs'
 
 const getFormattedColor = (
   color: Partial<ExcelColor> & {
@@ -522,11 +523,28 @@ const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
 }
 
 export const convertRawExcelToState = async (
-  file: File
+  file: File | string
 ): Promise<IExcelState> => {
-  const arrayBuffer = await file.arrayBuffer()
   const workbook = new Workbook()
-  const data = await workbook.xlsx.load(arrayBuffer)
+  let data: Workbook
+
+  if (file instanceof File) {
+    const arrayBuffer = await file.arrayBuffer()
+    data = await workbook.xlsx.load(arrayBuffer)
+  } else {
+    data = await workbook.xlsx.readFile(file)
+  }
 
   return createStateFromWorkbook(data)
 }
+
+export const readFileFromPath = async (path: string): Promise<Buffer> =>
+  new Promise((resolve, reject) => {
+    fs.readFile(path, (error, data) => {
+      if (error) {
+        reject(error)
+      } else {
+        resolve(data)
+      }
+    })
+  })

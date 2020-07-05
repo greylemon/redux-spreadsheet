@@ -76,8 +76,6 @@ export const visitFormulaCell = (
     })
   }
 
-  // console.log(cellRefMap)
-
   for (const refSheetName in cellRefMap) {
     if (!visited[refSheetName]) visited[refSheetName] = {}
 
@@ -100,7 +98,6 @@ export const visitFormulaCell = (
               const cell = row[columnIndex]
 
               if (cell.type === TYPE_FORMULA) {
-                // console.log('formula')
                 visitFormulaCell(
                   formulaMap,
                   sheetsData,
