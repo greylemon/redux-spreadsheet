@@ -19,8 +19,8 @@ describe('Parser', () => {
   // https://stackoverflow.com/a/46568146
   describe('Parse formula', () => {
     it('Load workbook', async () => {
-      const file = require.resolve('../../samples/formula.xlsx')
-      const fileJSON = require.resolve('../../samples/formula.json')
+      const file = require.resolve('../../samples/formulas.xlsx')
+      const fileJSON = require.resolve('../../samples/formulas.json')
       const excelState = await convertRawExcelToState(file)
       const state = createRootStoreFromExcelState(excelState)
 
