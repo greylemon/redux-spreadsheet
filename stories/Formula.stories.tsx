@@ -12,4 +12,6 @@ const initialState: IExcelState = {
   editorState: EditorState.createEmpty(),
 }
 
-export const Formulas: any = () => <Excel initialState={initialState} />
+export const Formulas: any = () => (
+  <Excel key="formula" initialState={initialState} />
+)
