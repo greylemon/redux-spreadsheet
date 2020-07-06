@@ -1,346 +1,346 @@
 {
   "1": {
-   "1": {
-    "value": "Coin flips",
-    "type": "text",
-    "merged": {
-     "start": {
-      "x": 1,
-      "y": 1
-     },
-     "end": {
-      "x": 4,
-      "y": 2
-     }
+    "1": {
+      "value": "Coin flips",
+      "type": "text",
+      "merged": {
+        "start": {
+          "x": 1,
+          "y": 1
+        },
+        "end": {
+          "x": 4,
+          "y": 2
+        }
+      }
+    },
+    "2": {
+      "merged": {
+        "start": {
+          "x": 1,
+          "y": 1
+        },
+        "end": {
+          "x": 2,
+          "y": 1
+        }
+      },
+      "type": "merge"
+    },
+    "3": {
+      "merged": {
+        "start": {
+          "x": 1,
+          "y": 1
+        },
+        "end": {
+          "x": 3,
+          "y": 1
+        }
+      },
+      "type": "merge"
+    },
+    "4": {
+      "merged": {
+        "start": {
+          "x": 1,
+          "y": 1
+        },
+        "end": {
+          "x": 4,
+          "y": 1
+        }
+      },
+      "type": "merge"
+    },
+    "6": {
+      "value": "Counts",
+      "type": "text",
+      "merged": {
+        "start": {
+          "x": 6,
+          "y": 1
+        },
+        "end": {
+          "x": 8,
+          "y": 2
+        }
+      }
+    },
+    "7": {
+      "merged": {
+        "start": {
+          "x": 6,
+          "y": 1
+        },
+        "end": {
+          "x": 7,
+          "y": 1
+        }
+      },
+      "type": "merge"
+    },
+    "8": {
+      "merged": {
+        "start": {
+          "x": 6,
+          "y": 1
+        },
+        "end": {
+          "x": 8,
+          "y": 1
+        }
+      },
+      "type": "merge"
     }
-   },
-   "2": {
-    "merged": {
-     "start": {
-      "x": 1,
-      "y": 1
-     },
-     "end": {
-      "x": 2,
-      "y": 1
-     }
-    },
-    "type": "merge"
-   },
-   "3": {
-    "merged": {
-     "start": {
-      "x": 1,
-      "y": 1
-     },
-     "end": {
-      "x": 3,
-      "y": 1
-     }
-    },
-    "type": "merge"
-   },
-   "4": {
-    "merged": {
-     "start": {
-      "x": 1,
-      "y": 1
-     },
-     "end": {
-      "x": 4,
-      "y": 1
-     }
-    },
-    "type": "merge"
-   },
-   "6": {
-    "value": "Counts",
-    "type": "text",
-    "merged": {
-     "start": {
-      "x": 6,
-      "y": 1
-     },
-     "end": {
-      "x": 8,
-      "y": 2
-     }
-    }
-   },
-   "7": {
-    "merged": {
-     "start": {
-      "x": 6,
-      "y": 1
-     },
-     "end": {
-      "x": 7,
-      "y": 1
-     }
-    },
-    "type": "merge"
-   },
-   "8": {
-    "merged": {
-     "start": {
-      "x": 6,
-      "y": 1
-     },
-     "end": {
-      "x": 8,
-      "y": 1
-     }
-    },
-    "type": "merge"
-   }
   },
   "2": {
-   "1": {
-    "styles": {
-     "borderBottomStyle": "solid",
-     "borderBottomWidth": "thin",
-     "borderBottomColor": "#000000"
+    "1": {
+      "styles": {
+        "borderBottomStyle": "solid",
+        "borderBottomWidth": "thin",
+        "borderBottomColor": "#000000"
+      },
+      "merged": {
+        "start": {
+          "x": 1,
+          "y": 1
+        },
+        "end": {
+          "x": 1,
+          "y": 2
+        }
+      },
+      "type": "merge"
     },
-    "merged": {
-     "start": {
-      "x": 1,
-      "y": 1
-     },
-     "end": {
-      "x": 1,
-      "y": 2
-     }
+    "2": {
+      "styles": {
+        "borderBottomStyle": "solid",
+        "borderBottomWidth": "thin",
+        "borderBottomColor": "#000000"
+      },
+      "merged": {
+        "start": {
+          "x": 1,
+          "y": 1
+        },
+        "end": {
+          "x": 2,
+          "y": 2
+        }
+      },
+      "type": "merge"
     },
-    "type": "merge"
-   },
-   "2": {
-    "styles": {
-     "borderBottomStyle": "solid",
-     "borderBottomWidth": "thin",
-     "borderBottomColor": "#000000"
+    "3": {
+      "styles": {
+        "borderBottomStyle": "solid",
+        "borderBottomWidth": "thin",
+        "borderBottomColor": "#000000"
+      },
+      "merged": {
+        "start": {
+          "x": 1,
+          "y": 1
+        },
+        "end": {
+          "x": 3,
+          "y": 2
+        }
+      },
+      "type": "merge"
     },
-    "merged": {
-     "start": {
-      "x": 1,
-      "y": 1
-     },
-     "end": {
-      "x": 2,
-      "y": 2
-     }
+    "4": {
+      "styles": {
+        "borderBottomStyle": "solid",
+        "borderBottomWidth": "thin",
+        "borderBottomColor": "#000000"
+      },
+      "merged": {
+        "start": {
+          "x": 1,
+          "y": 1
+        },
+        "end": {
+          "x": 4,
+          "y": 2
+        }
+      },
+      "type": "merge"
     },
-    "type": "merge"
-   },
-   "3": {
-    "styles": {
-     "borderBottomStyle": "solid",
-     "borderBottomWidth": "thin",
-     "borderBottomColor": "#000000"
+    "6": {
+      "merged": {
+        "start": {
+          "x": 6,
+          "y": 1
+        },
+        "end": {
+          "x": 6,
+          "y": 2
+        }
+      },
+      "type": "merge"
     },
-    "merged": {
-     "start": {
-      "x": 1,
-      "y": 1
-     },
-     "end": {
-      "x": 3,
-      "y": 2
-     }
+    "7": {
+      "merged": {
+        "start": {
+          "x": 6,
+          "y": 1
+        },
+        "end": {
+          "x": 7,
+          "y": 2
+        }
+      },
+      "type": "merge"
     },
-    "type": "merge"
-   },
-   "4": {
-    "styles": {
-     "borderBottomStyle": "solid",
-     "borderBottomWidth": "thin",
-     "borderBottomColor": "#000000"
-    },
-    "merged": {
-     "start": {
-      "x": 1,
-      "y": 1
-     },
-     "end": {
-      "x": 4,
-      "y": 2
-     }
-    },
-    "type": "merge"
-   },
-   "6": {
-    "merged": {
-     "start": {
-      "x": 6,
-      "y": 1
-     },
-     "end": {
-      "x": 6,
-      "y": 2
-     }
-    },
-    "type": "merge"
-   },
-   "7": {
-    "merged": {
-     "start": {
-      "x": 6,
-      "y": 1
-     },
-     "end": {
-      "x": 7,
-      "y": 2
-     }
-    },
-    "type": "merge"
-   },
-   "8": {
-    "merged": {
-     "start": {
-      "x": 6,
-      "y": 1
-     },
-     "end": {
-      "x": 8,
-      "y": 2
-     }
-    },
-    "type": "merge"
-   }
+    "8": {
+      "merged": {
+        "start": {
+          "x": 6,
+          "y": 1
+        },
+        "end": {
+          "x": 8,
+          "y": 2
+        }
+      },
+      "type": "merge"
+    }
   },
   "3": {
-   "2": {
-    "value": "Set 1",
-    "type": "text"
-   },
-   "3": {
-    "value": "Set 2",
-    "type": "text"
-   },
-   "4": {
-    "value": "Set 3",
-    "type": "text"
-   },
-   "7": {
-    "value": "Heads",
-    "type": "text"
-   },
-   "8": {
-    "value": "Tails",
-    "type": "text"
-   }
+    "2": {
+      "value": "Set 1",
+      "type": "text"
+    },
+    "3": {
+      "value": "Set 2",
+      "type": "text"
+    },
+    "4": {
+      "value": "Set 3",
+      "type": "text"
+    },
+    "7": {
+      "value": "Heads",
+      "type": "text"
+    },
+    "8": {
+      "value": "Tails",
+      "type": "text"
+    }
   },
   "4": {
-   "1": {
-    "value": "Trial 1",
-    "type": "text"
-   },
-   "2": {
-    "value": 0,
-    "type": "number"
-   },
-   "3": {
-    "value": 1,
-    "type": "number"
-   },
-   "4": {
-    "value": 0,
-    "type": "number"
-   },
-   "6": {
-    "value": "Count",
-    "type": "text"
-   },
-   "7": {
-    "value": "COUNTIF(B4:D7,1)",
-    "type": "formula"
-   },
-   "8": {
-    "value": "COUNTIF(B4:D7,0)",
-    "type": "formula"
-   }
+    "1": {
+      "value": "Trial 1",
+      "type": "text"
+    },
+    "2": {
+      "value": 0,
+      "type": "number"
+    },
+    "3": {
+      "value": 1,
+      "type": "number"
+    },
+    "4": {
+      "value": 0,
+      "type": "number"
+    },
+    "6": {
+      "value": "Count",
+      "type": "text"
+    },
+    "7": {
+      "value": "COUNTIF(B4:D7,1)",
+      "type": "formula"
+    },
+    "8": {
+      "value": "COUNTIF(B4:D7,0)",
+      "type": "formula"
+    }
   },
   "5": {
-   "1": {
-    "value": "Trial 2",
-    "type": "text"
-   },
-   "2": {
-    "value": 1,
-    "type": "number"
-   },
-   "3": {
-    "value": 0,
-    "type": "number"
-   },
-   "4": {
-    "value": 0,
-    "type": "number"
-   }
+    "1": {
+      "value": "Trial 2",
+      "type": "text"
+    },
+    "2": {
+      "value": 1,
+      "type": "number"
+    },
+    "3": {
+      "value": 0,
+      "type": "number"
+    },
+    "4": {
+      "value": 0,
+      "type": "number"
+    }
   },
   "6": {
-   "1": {
-    "value": "Trial 3",
-    "type": "text"
-   },
-   "2": {
-    "value": 1,
-    "type": "number"
-   },
-   "3": {
-    "value": 1,
-    "type": "number"
-   },
-   "4": {
-    "value": 1,
-    "type": "number"
-   }
+    "1": {
+      "value": "Trial 3",
+      "type": "text"
+    },
+    "2": {
+      "value": 1,
+      "type": "number"
+    },
+    "3": {
+      "value": 1,
+      "type": "number"
+    },
+    "4": {
+      "value": 1,
+      "type": "number"
+    }
   },
   "7": {
-   "1": {
-    "value": "Trial 4",
-    "type": "text"
-   },
-   "2": {
-    "value": 1,
-    "type": "number"
-   },
-   "3": {
-    "value": 0,
-    "type": "number"
-   },
-   "4": {
-    "value": 1,
-    "type": "number"
-   }
+    "1": {
+      "value": "Trial 4",
+      "type": "text"
+    },
+    "2": {
+      "value": 1,
+      "type": "number"
+    },
+    "3": {
+      "value": 0,
+      "type": "number"
+    },
+    "4": {
+      "value": 1,
+      "type": "number"
+    }
   },
   "8": {
-   "1": {
-    "styles": {
-     "backgroundColor": "#70AD47"
+    "1": {
+      "styles": {
+        "backgroundColor": "#70AD47"
+      },
+      "value": "Outcome",
+      "type": "text"
     },
-    "value": "Outcome",
-    "type": "text"
-   },
-   "2": {
-    "styles": {
-     "backgroundColor": "#70AD47"
+    "2": {
+      "styles": {
+        "backgroundColor": "#70AD47"
+      },
+      "value": "AVERAGE(B4:B7)",
+      "type": "formula"
     },
-    "value": "AVERAGE(B4:B7)",
-    "type": "formula"
-   },
-   "3": {
-    "styles": {
-     "backgroundColor": "#70AD47"
+    "3": {
+      "styles": {
+        "backgroundColor": "#70AD47"
+      },
+      "value": "AVERAGE(C4:C7)",
+      "type": "formula"
     },
-    "value": "AVERAGE(C4:C7)",
-    "type": "formula"
-   },
-   "4": {
-    "styles": {
-     "backgroundColor": "#70AD47"
-    },
-    "value": "C8",
-    "type": "formula"
-   }
+    "4": {
+      "styles": {
+        "backgroundColor": "#70AD47"
+      },
+      "value": "C8",
+      "type": "formula"
+    }
   }
- }
+}
