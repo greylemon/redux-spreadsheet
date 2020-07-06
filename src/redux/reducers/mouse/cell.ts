@@ -101,15 +101,12 @@ export const CELL_MOUSE_DOWN = (
     const cellValue = createValueFromEditorState(state.editorState)
 
     if (cellValue) {
-      activeSheet.data[state.activeCellPosition.y] = {
-        ...activeSheet.data[state.activeCellPosition.y],
-        [state.activeCellPosition.x]: {
-          ...activeSheet.data[state.activeCellPosition.y][
-            state.activeCellPosition.x
-          ],
-          ...cellValue,
-        },
-      }
+      const { x, y } = state.activeCellPosition
+
+      if (!activeSheet.data[y]) activeSheet.data[y] = {}
+      if (!activeSheet.data[y][x]) activeSheet.data[y][x] = {}
+
+      activeSheet.data[y][x] = { ...activeSheet.data[y][x], ...cellValue }
     }
   }
 
