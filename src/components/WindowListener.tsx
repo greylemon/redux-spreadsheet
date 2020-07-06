@@ -49,6 +49,8 @@ const WindowListener: FunctionComponent<{ handleSave?: IHandleSave }> = ({
           }
         } else if (key.length === 1) {
           dispatch(ExcelActions.CELL_EDITOR_STATE_START())
+        } else if (key === 'Delete') {
+          dispatch(ExcelActions.CELL_KEY_DELETE())
         } else {
           if (shiftKey) {
             // TODO

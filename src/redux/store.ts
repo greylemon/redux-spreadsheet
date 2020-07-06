@@ -16,6 +16,7 @@ import {
   CELL_KEY_LEFT,
   CELL_EDITOR_STATE_UPDATE,
   CELL_EDITOR_STATE_START,
+  CELL_KEY_DELETE,
 } from './reducers/keyboard/cell'
 import { EditorState } from 'draft-js'
 import { UPDATE_STATE } from './reducers/events'
@@ -77,6 +78,7 @@ export const ExcelStore = createSlice({
     CELL_KEY_UP,
     CELL_KEY_RIGHT,
     CELL_KEY_LEFT,
+    CELL_KEY_DELETE,
     CELL_DOUBLE_CLICK,
     CELL_EDITOR_STATE_UPDATE,
     CELL_EDITOR_STATE_START,

@@ -17,6 +17,8 @@ export const nSelectActiveSheetName = (excel: IExcelState): string =>
   excel.activeSheetName
 export const nSelectActiveSheet = (excel: IExcelState): ISheet =>
   nSelectSheetsMap(excel)[nSelectActiveSheetName(excel)]
+export const nSelectActiveSheetData = (excel: IExcelState): IRows =>
+  nSelectActiveSheet(excel).data
 
 export const nSelectCell = (
   data: IRows,

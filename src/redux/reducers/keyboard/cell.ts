@@ -1,7 +1,13 @@
 import { IExcelState, IEditorState } from '../../../@types/state'
-import { nSelectMergeCell, nSelectActiveSheet } from '../../tools/selectors'
+import {
+  nSelectMergeCell,
+  nSelectActiveSheet,
+  nSelectActiveSheetData,
+} from '../../tools/selectors'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { EditorState } from 'draft-js'
+import { getCellMapSetFromAreas } from '../../../tools/area'
+import { TYPE_TEXT, TYPE_MERGE } from '../../../constants/cellTypes'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state
@@ -99,12 +105,29 @@ export const CELL_EDITOR_STATE_START = (state: IExcelState): IExcelState => {
 }
 
 export const CELL_KEY_DELETE = (state: IExcelState): IExcelState => {
-  // const activeCell = state.activeCellPosition
-  // const cellMapSet = getCellMapSetFromAreas([ ...state.inactiveSelectionAreas, { start: activeCell, end: activeCell } ])
+  const activeCell = state.activeCellPosition
+  const cellMapSet = getCellMapSetFromAreas([
+    ...state.inactiveSelectionAreas,
+    { start: activeCell, end: activeCell },
+  ])
+  const data = nSelectActiveSheetData(state)
 
-  // for (let rowIndex in cellMapSet) {
+  for (const rowIndex in cellMapSet) {
+    const columnIndices = cellMapSet[rowIndex]
 
-  // }
+    const row = data[+rowIndex]
+
+    if (row) {
+      columnIndices.forEach((columnIndex) => {
+        const cell = row[columnIndex]
+
+        if (cell && cell.type !== TYPE_MERGE) {
+          cell.type = TYPE_TEXT
+          delete cell.value
+        }
+      })
+    }
+  }
 
   return state
 }
