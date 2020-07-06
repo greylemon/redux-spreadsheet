@@ -79,8 +79,8 @@ Husky is used here for performing tasks before a git commit. The tasks performed
 - Commands
   - [x] Save
   - [x] Arrow keys
+  - [x] Delete Area
   - [ ] Shift arrow keys
-  - [ ] Delete Area
 - Selection
   - [x] Single selection
   - [x] Multi-selection
