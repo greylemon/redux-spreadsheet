@@ -1,13 +1,13 @@
-import { createRootMockStore, mockStore } from '../mockStore'
-import { ExcelActions } from '../../../src/redux/store'
+import { createRootMockStore, mockStore } from '../../../mockStore'
+import { ExcelActions } from '../../../../../src/redux/store'
 import {
   selectActiveCellPositionRow,
   selectColumnCount,
   selectRowCount,
   selectActiveCellPositionColumn,
-} from '../../../src/redux/selectors'
+} from '../../../../../src/redux/selectors'
 import cloneDeep from 'clone-deep'
-import { mockState } from '../mockState'
+import { mockState } from '../../../mockState'
 
 describe('Cell keyboard operations', () => {
   let store: ReturnType<typeof mockStore>
