@@ -1,0 +1,150 @@
+{
+  "present": {
+    "sheetNames": ["Sheet1"],
+    "name": "",
+    "isEditMode": false,
+    "editorState": {
+      "_immutable": {
+        "allowUndo": true,
+        "currentContent": {
+          "entityMap": {},
+          "blockMap": {
+            "5klql": {
+              "key": "5klql",
+              "type": "unstyled",
+              "text": "",
+              "characterList": [],
+              "depth": 0,
+              "data": {}
+            }
+          },
+          "selectionBefore": {
+            "anchorKey": "5klql",
+            "anchorOffset": 0,
+            "focusKey": "5klql",
+            "focusOffset": 0,
+            "isBackward": false,
+            "hasFocus": false
+          },
+          "selectionAfter": {
+            "anchorKey": "5klql",
+            "anchorOffset": 0,
+            "focusKey": "5klql",
+            "focusOffset": 0,
+            "isBackward": false,
+            "hasFocus": false
+          }
+        },
+        "decorator": null,
+        "directionMap": { "5klql": "LTR" },
+        "forceSelection": false,
+        "inCompositionMode": false,
+        "inlineStyleOverride": null,
+        "lastChangeType": null,
+        "nativelyRenderedContent": null,
+        "redoStack": [],
+        "selection": {
+          "anchorKey": "5klql",
+          "anchorOffset": 0,
+          "focusKey": "5klql",
+          "focusOffset": 0,
+          "isBackward": false,
+          "hasFocus": false
+        },
+        "treeMap": {
+          "5klql": [
+            {
+              "start": 0,
+              "end": 0,
+              "decoratorKey": null,
+              "leaves": [{ "start": 0, "end": 0 }]
+            }
+          ]
+        },
+        "undoStack": []
+      }
+    },
+    "activeSheetName": "Sheet1",
+    "error": {},
+    "selectionAreaIndex": -1,
+    "activeCellPosition": { "x": 1, "y": 1 },
+    "inactiveSelectionAreas": [],
+    "sheetsMap": {
+      "Sheet1": {
+        "data": {
+          "1": {
+            "1": { "value": "Coin flips", "type": "text" },
+            "6": { "value": "Counts", "type": "text" }
+          },
+          "3": {
+            "2": { "value": "Set 1", "type": "text" },
+            "3": { "value": "Set 2", "type": "text" },
+            "4": { "value": "Set 3", "type": "text" },
+            "7": { "value": "Heads", "type": "text" },
+            "8": { "value": "Tails", "type": "text" }
+          },
+          "4": {
+            "1": { "value": "Trial 1", "type": "text" },
+            "2": { "value": 0, "type": "number" },
+            "3": { "value": 1, "type": "number" },
+            "4": { "value": 0, "type": "number" },
+            "6": { "value": "Count", "type": "text" },
+            "7": { "value": "COUNTIF(B4:D7,1)", "type": "formula" },
+            "8": { "value": "COUNTIF(B4:D7,0)", "type": "formula" }
+          },
+          "5": {
+            "1": { "value": "Trial 2", "type": "text" },
+            "2": { "value": 1, "type": "number" },
+            "3": { "value": 0, "type": "number" },
+            "4": { "value": 0, "type": "number" }
+          },
+          "6": {
+            "1": { "value": "Trial 3", "type": "text" },
+            "2": { "value": 1, "type": "number" },
+            "3": { "value": 1, "type": "number" },
+            "4": { "value": 1, "type": "number" }
+          },
+          "7": {
+            "1": { "value": "Trial 4", "type": "text" },
+            "2": { "value": 1, "type": "number" },
+            "3": { "value": 0, "type": "number" },
+            "4": { "value": 1, "type": "number" }
+          },
+          "8": {
+            "1": {
+              "styles": { "backgroundColor": "#70AD47" },
+              "value": "Outcome",
+              "type": "text"
+            },
+            "2": {
+              "styles": { "backgroundColor": "#70AD47" },
+              "value": "AVERAGE(B4:B7)",
+              "type": "formula"
+            },
+            "3": {
+              "styles": { "backgroundColor": "#70AD47" },
+              "value": "AVERAGE(C4:C7)",
+              "type": "formula"
+            },
+            "4": {
+              "styles": { "backgroundColor": "#70AD47" },
+              "value": "C8",
+              "type": "formula"
+            }
+          }
+        },
+        "columnCount": 26,
+        "rowCount": 200,
+        "activeCellPosition": { "x": 6, "y": 9 },
+        "freezeColumnCount": 0,
+        "freezeRowCount": 0,
+        "columnWidths": {},
+        "hiddenColumns": {},
+        "rowHeights": {},
+        "hiddenRows": {}
+      }
+    }
+  },
+  "history": [],
+  "index": 0
+}

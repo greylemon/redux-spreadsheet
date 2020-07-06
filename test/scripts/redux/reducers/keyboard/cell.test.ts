@@ -5,7 +5,6 @@ import {
   selectColumnCount,
   selectRowCount,
   selectActiveCellPositionColumn,
-  selectActiveSheet,
   selectData,
 } from '../../../../../src/redux/selectors'
 import cloneDeep from 'clone-deep'

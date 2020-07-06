@@ -9,5 +9,5 @@ export const NonRoute: any = () => {
       return
     }
 
-  return <Excel isRouted={false} handleSave={handleSave} />
+  return <Excel handleSave={handleSave} />
 }
