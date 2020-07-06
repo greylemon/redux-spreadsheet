@@ -23,5 +23,9 @@ module.exports = ({ config }) => {
     ...customWebpackConfig.resolve.extensions,
   ]
 
+  config.node = {
+    fs: 'empty',
+  }
+
   return config
 }
