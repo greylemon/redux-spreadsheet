@@ -37,6 +37,9 @@ module.exports = {
       },
     ],
   },
+  node: {
+    fs: 'empty',
+  },
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, '/public/index.html'),
