@@ -147,7 +147,7 @@ export const createValueFromEditorState = (
     cell.type = TYPE_TEXT
   }
 
-  return cell
+  return cell.value === undefined ? undefined : cell
 }
 
 export const getRichTextBlockText = (block: IRichTextBlock): string => {

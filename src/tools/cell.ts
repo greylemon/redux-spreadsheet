@@ -37,7 +37,7 @@ export const checkIsCellPositionValid = (
 export const createEditorStateFromCell = (cell?: ICell): EditorState => {
   let editorState: EditorState | null = null
 
-  if (cell && cell.value) {
+  if (cell && cell.value !== undefined) {
     switch (cell.type) {
       case TYPE_FORMULA:
         editorState = createEditorStateFromText(`=${cell.value}`)
