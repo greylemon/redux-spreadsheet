@@ -254,7 +254,7 @@ export const createFormulaParser = (
               columnIndex++
             ) {
               const cell = row[columnIndex]
-              let value: string | number | null = 0
+              let value: string | number | null = null
 
               if (cell) {
                 switch (cell.type) {
@@ -267,9 +267,9 @@ export const createFormulaParser = (
                     value = cell.value as string | number
                     break
                 }
-
-                rowArray.push(value)
               }
+
+              rowArray.push(value)
             }
           }
 
@@ -509,6 +509,7 @@ const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
       ...getPaneDataFromSheetViews(sheet.views),
       ...getColumnDataFromColumns(sheet),
       ...getRowDataFromSheet(sheet),
+      inactiveSelectionAreas: [],
     }
   })
 

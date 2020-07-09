@@ -6,7 +6,10 @@ const ColumnCell: FunctionComponent<ICellProps> = ({ style, columnIndex }) => {
   const columnName = columnNumberToName(columnIndex)
 
   return (
-    <div className="unselectable cell cell__header" style={style}>
+    <div
+      className="unselectable cell cellHeader cellHeader--column"
+      style={style}
+    >
       {columnName}
     </div>
   )

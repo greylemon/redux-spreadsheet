@@ -55,3 +55,7 @@ export interface ICheckIsActiveCellInCorrectPane {
 export interface IHandleSave {
   (excelState: IExcelState): void
 }
+
+export interface IHandleSheetPress {
+  ({ index }: { index: number }): void
+}

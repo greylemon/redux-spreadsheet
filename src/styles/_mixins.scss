@@ -4,3 +4,9 @@
   -ms-user-select: none;      /* IE 10+ */
   user-select: none;          /* Likely future */  
 }
+
+@mixin box-shadow($value) {
+  -webkit-box-shadow: $value;
+  -moz-box-shadow: $value;
+  box-shadow: $value;
+}

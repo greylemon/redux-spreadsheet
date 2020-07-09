@@ -126,7 +126,7 @@ export type IHiddenRows = { [key: string]: boolean }
 export type ISheet = {
   data: IRows
 
-  // inactiveSelectionAreas: IInactiveSelectionAreas
+  inactiveSelectionAreas: IInactiveSelectionAreas
 
   activeCellPosition: IActiveCellPosition
 
@@ -151,11 +151,11 @@ export type IExcelState = {
   activeSheetName: ISheetName
   sheetNames: ISheetNames
   sheetsMap: ISheetsMap
-  isEditMode: IIsEditMode
-  editorState: IEditorState
   error: IError
 
   // sheet specific - optimized state
+  editorState: IEditorState
+  isEditMode: IIsEditMode
   selectionAreaIndex: ISelectionAreaIndex
   selectionArea?: ISelectionArea
   activeCellPosition: IActiveCellPosition
