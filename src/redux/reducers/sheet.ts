@@ -1,5 +1,8 @@
 import { IExcelState, ISheetName } from '../../@types/state'
 import { PayloadAction } from '@reduxjs/toolkit'
+import { generateNewSheetName } from '../../tools/sheet'
+import { createSheetState } from '../tools/state'
+import { changeSheetInPlace } from '../tools/sheet'
 
 export const CHANGE_SHEET_ORDER = (
   state: IExcelState,
@@ -24,7 +27,19 @@ export const CHANGE_SHEET = (
 ): IExcelState => {
   const sheetName = action.payload
 
-  state.activeSheetName = sheetName
+  changeSheetInPlace(sheetName, state)
+
+  return state
+}
+
+export const ADD_SHEET = (state: IExcelState): IExcelState => {
+  const newSheetName = generateNewSheetName(state.sheetNames)
+
+  state.sheetNames.push(newSheetName)
+
+  state.sheetsMap[newSheetName] = createSheetState()
+
+  changeSheetInPlace(newSheetName, state)
 
   return state
 }

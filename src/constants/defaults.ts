@@ -9,8 +9,8 @@ export const SHEET_MIN_COLUMN_COUNT = 26
 export const SHEET_MAX_ROW_COUNT = 4000
 export const SHEET_MAX_COLUMN_COUNT = 100
 
-export const SHEET_ROW_HEIGHT = 25
-export const SHEET_COLUMN_WIDTH = 100
+export const SHEET_ROW_HEIGHT = 23
+export const SHEET_COLUMN_WIDTH = 105
 
 export const SHEET_ROW_HEIGHT_HIDDEN = 2
 export const SHEET_COLUMN_WIDTH_HIDDEN = 2
