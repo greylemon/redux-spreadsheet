@@ -1,8 +1,6 @@
 import React, { Fragment, FunctionComponent } from 'react'
 
 import ActiveCell from './ActiveCell'
-// import ActiveSelectionArea from './ActiveSelectionArea'
-// import StagnantSelectionAreas from './StagnantSelectionAreas'
 import { ICommonPaneProps } from '../../@types/components'
 import SelectionArea from './SelectionArea'
 import InactiveSelectionAreas from './InactiveSelectionAreas'

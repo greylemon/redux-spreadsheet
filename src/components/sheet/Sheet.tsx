@@ -19,6 +19,8 @@ import { shallowEqual } from 'react-redux'
 import TopLeftPane from './TopLeftPane'
 import TopRightPane from './TopRightPane'
 import BottomLeftPane from './BottomLeftPane'
+import { ContextMenuTrigger } from 'react-contextmenu'
+import CustomContextMenu from './CustomContextMenu'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const gridRef = useRef<VariableSizeGrid>(null)
@@ -80,12 +82,15 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
 }
 
 const SheetSizer: FunctionComponent<Size> = ({ height, width }) => (
-  <Sheet height={height} width={width} />
+  <ContextMenuTrigger id="react-context-menu">
+    <Sheet height={height} width={width} />
+  </ContextMenuTrigger>
 )
 
 const SheetContainer: FunctionComponent = () => (
   <div className="sheet">
     <AutoSizer children={SheetSizer} />
+    <CustomContextMenu />
   </div>
 )
 

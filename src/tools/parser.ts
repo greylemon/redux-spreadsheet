@@ -509,6 +509,7 @@ const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
       ...getPaneDataFromSheetViews(sheet.views),
       ...getColumnDataFromColumns(sheet),
       ...getRowDataFromSheet(sheet),
+      inactiveSelectionAreas: [],
     }
   })
 

@@ -11,6 +11,22 @@ import {
 import { shallowEqual, useDispatch } from 'react-redux'
 import { ExcelActions } from '../../redux/store'
 import { useHistory } from 'react-router-dom'
+import { IHandleSheetPress } from '../../@types/functions'
+import AddIcon from '@material-ui/icons/Add'
+import { Button } from '@material-ui/core'
+import { ArrowDropDown } from '@material-ui/icons'
+
+const SheetOptionButton: FunctionComponent<{ isActive: boolean }> = ({
+  isActive,
+}) => (
+  <Button
+    className="sheetNavigationSheet__option"
+    size="small"
+    disabled={!isActive}
+  >
+    <ArrowDropDown style={{ color: isActive ? 'green' : 'gray' }} />
+  </Button>
+)
 
 const SortableItem = SortableElement(
   ({
@@ -19,15 +35,24 @@ const SortableItem = SortableElement(
   }: {
     sheetName: ISheetName
     activeSheetName: ISheetName
-  }) => (
-    <li
-      className={`sheetNavigation__sheet ${
-        sheetName === activeSheetName ? 'sheetNavigation__sheet--active' : ''
-      }`}
-    >
-      {sheetName}
-    </li>
-  )
+  }) => {
+    const isActiveSheet = sheetName === activeSheetName
+
+    return (
+      <li
+        className={`sheetNavigationSheetContainer ${
+          isActiveSheet
+            ? 'sheetNavigationSheetContainer--active'
+            : 'sheetNavigationSheetContainer--inactive'
+        }`}
+      >
+        <div className="sheetNavigationSheet">
+          <span className="sheetNavigationSheet__sheetName">{sheetName}</span>
+          <SheetOptionButton isActive={isActiveSheet} />
+        </div>
+      </li>
+    )
+  }
 )
 
 const SortableList = SortableContainer(
@@ -45,15 +70,54 @@ const SortableList = SortableContainer(
           index={index}
           sheetName={sheetName}
           activeSheetName={activeSheetName}
+          // disabled={true}
         />
       ))}
     </ul>
   )
 )
 
+const SheetAdder: FunctionComponent = () => {
+  const dispatch = useDispatch()
+
+  const handleAddSheet = useCallback(() => {
+    dispatch(ExcelActions.ADD_SHEET())
+  }, [dispatch])
+
+  return (
+    <Button
+      className="sheetNavigationOptions__addSheet"
+      onClick={handleAddSheet}
+    >
+      <AddIcon fontSize="small" />
+    </Button>
+  )
+}
+
+const SheetSelector: FunctionComponent<{
+  handleSheetPress: IHandleSheetPress
+}> = () =>
+  // {
+  //   handleSheetPress
+  // }
+  {
+    return <div />
+  }
+
+const SheetNavigationOptions: FunctionComponent<{
+  handleSheetPress: IHandleSheetPress
+}> = ({ handleSheetPress }) => {
+  return (
+    <div className=" sheetNavigationOptions">
+      <SheetSelector handleSheetPress={handleSheetPress} />
+      <SheetAdder />
+    </div>
+  )
+}
+
 const SheetNavigation: FunctionComponent<{
-  handleSortStart: ({ index }: { index: number }) => void
-}> = ({ handleSortStart }) => {
+  handleSheetPress: IHandleSheetPress
+}> = ({ handleSheetPress }) => {
   const dispatch = useDispatch()
   const { sheetNames, activeSheetName } = useTypedSelector(
     (state) => ({
@@ -73,12 +137,13 @@ const SheetNavigation: FunctionComponent<{
 
   return (
     <div className="sheetNavigation">
+      <SheetNavigationOptions handleSheetPress={handleSheetPress} />
       <SortableList
         axis="x"
         lockAxis="x"
         sheetNames={sheetNames}
         activeSheetName={activeSheetName}
-        onSortStart={handleSortStart}
+        updateBeforeSortStart={handleSheetPress}
         onSortEnd={handleSortEnd}
       />
     </div>
@@ -95,7 +160,7 @@ const RoutedSheetNavigation = () => {
     shallowEqual
   )
 
-  const handleSortStart = useCallback(
+  const handleSheetPress = useCallback(
     ({ index }) => {
       if (index !== activeSheetNameIndex) {
         const sheetName = sheetNames[index]
@@ -105,7 +170,7 @@ const RoutedSheetNavigation = () => {
     [activeSheetNameIndex, sheetNames, history]
   )
 
-  return <SheetNavigation handleSortStart={handleSortStart} />
+  return <SheetNavigation handleSheetPress={handleSheetPress} />
 }
 
 const NonRoutedSheetNavigation = () => {
@@ -118,7 +183,7 @@ const NonRoutedSheetNavigation = () => {
     shallowEqual
   )
 
-  const handleSortStart = useCallback(
+  const handleSheetPress = useCallback(
     ({ index }) => {
       if (index !== activeSheetNameIndex) {
         const sheetName = sheetNames[index]
@@ -128,7 +193,7 @@ const NonRoutedSheetNavigation = () => {
     [dispatch, activeSheetNameIndex, sheetNames, history]
   )
 
-  return <SheetNavigation handleSortStart={handleSortStart} />
+  return <SheetNavigation handleSheetPress={handleSheetPress} />
 }
 
 const SheetNavigationContainer: FunctionComponent<{ isRouted?: boolean }> = ({

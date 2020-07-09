@@ -17,6 +17,22 @@ module.exports = ({ config }) => {
       test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
       use: ['file-loader'],
     },
+    {
+      test: /\.stories\.jsx?$/,
+      loaders: [
+        {
+          loader: '@storybook/source-loader',
+          options: {
+            parser: 'typescript',
+            prettierConfig: {
+              printWidth: 100,
+              singleQuote: false,
+            },
+          },
+        },
+      ],
+      enforce: 'pre',
+    },
   ]
   config.resolve.extensions = [
     ...config.resolve.extensions,
