@@ -47,13 +47,13 @@ import {
   TYPE_MERGE,
   TYPE_TEXT,
   TYPE_NUMBER,
-} from '../constants/cellTypes'
+} from '../constants/types'
 import { initialExcelState } from '../redux/store'
 import { indexedColors, themes } from '../constants/colors'
 import { applyTintToColor } from './color'
-import FormulaParser from 'fast-formula-parser'
+
 import Color from 'color'
-import { IFormulaMap } from '../@types/objects'
+
 import fs from 'fs'
 
 const getFormattedColor = (
@@ -209,77 +209,6 @@ export const getRichTextFromCellValue = (
 
   return richText
 }
-
-export const createFormulaParser = (
-  sheetsData: {
-    [key: string]: IRows
-  },
-  formulaMap: IFormulaMap
-): FormulaParser =>
-  new FormulaParser({
-    onCell: ({ sheet, row: rowIndex, col: columnIndex }) => {
-      const sheetContent = sheetsData[sheet]
-      if (sheetContent) {
-        if (sheetContent[rowIndex] && sheetContent[rowIndex][columnIndex]) {
-          const cell = sheetContent[rowIndex][columnIndex]
-          let value: string | number | null = 0
-
-          switch (cell.type) {
-            case TYPE_FORMULA:
-              if (formulaMap[sheet] && formulaMap[sheet][rowIndex])
-                value = formulaMap[sheet][rowIndex][columnIndex]
-              break
-            case TYPE_NUMBER:
-            case TYPE_TEXT:
-              value = cell.value as string | number
-              break
-          }
-
-          return value
-        }
-      }
-    },
-    onRange: ({ from, to, sheet }) => {
-      const rangeData = []
-      const sheetContent = sheetsData[sheet]
-
-      if (sheetContent) {
-        for (let rowIndex = from.row; rowIndex <= to.row; rowIndex++) {
-          const row = sheetContent[rowIndex]
-          const rowArray = []
-          if (row) {
-            for (
-              let columnIndex = from.col;
-              columnIndex <= to.col;
-              columnIndex++
-            ) {
-              const cell = row[columnIndex]
-              let value: string | number | null = null
-
-              if (cell) {
-                switch (cell.type) {
-                  case TYPE_FORMULA:
-                    if (formulaMap[sheet] && formulaMap[sheet][rowIndex])
-                      value = formulaMap[sheet][rowIndex][columnIndex]
-                    break
-                  case TYPE_NUMBER:
-                  case TYPE_TEXT:
-                    value = cell.value as string | number
-                    break
-                }
-              }
-
-              rowArray.push(value)
-            }
-          }
-
-          rangeData.push(rowArray)
-        }
-      }
-
-      return rangeData
-    },
-  })
 
 export const getCellContent = (data: IRows, cell: any): ICell | undefined => {
   const value = cell.value

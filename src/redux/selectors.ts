@@ -15,11 +15,6 @@ import {
 import { IPosition, IExcelState, IColumns, ICell, IArea } from '../@types/state'
 import { CSSProperties } from 'react'
 import { STYLE_ACTIVE_CELL_Z_INDEX } from '../constants/styles'
-import { createFormulaParser } from '../tools/parser'
-import { IFormulaMap } from '../@types/objects'
-import { TYPE_FORMULA } from '../constants/cellTypes'
-import { visitFormulaCell } from '../tools/formula'
-// import { memoize } from 'lodash'
 
 export const selectExcel = (undoxExcel: IRootStore): IExcelState =>
   undoxExcel.present
@@ -78,9 +73,19 @@ export const selectInactiveSelectionAreas = createSelector(
   (excel) => excel.inactiveSelectionAreas
 )
 
+export const selectResults = createSelector(
+  [selectExcel],
+  (excel) => excel.results
+)
+
 // ===========================================================================
 // ACTIVE SHEET
 // ===========================================================================
+
+export const selectActiveResults = createSelector(
+  [selectResults, selectActiveSheetName],
+  (results, activeSheetName) => results[activeSheetName]
+)
 
 export const selectActiveSheet = createSelector(
   [selectSheetsMap, selectActiveSheetName],
@@ -207,60 +212,6 @@ export const selectActiveSheetNameIndex = createSelector(
   [selectActiveSheetName, selectSheetNames],
   (activeSheetName, sheetNames) =>
     sheetNames.findIndex((name) => activeSheetName === name)
-)
-
-const selectSheetsData = createSelector([selectSheetsMap], (sheetsMap) => {
-  const sheetsData = {}
-
-  for (const sheetName in sheetsMap) {
-    sheetsData[sheetName] = sheetsMap[sheetName].data
-  }
-
-  return sheetsData
-})
-
-export const selectFormulaResults = createSelector(
-  [selectSheetsData],
-  (sheetsData) => {
-    const formulaMap: IFormulaMap = {}
-    const parser = createFormulaParser(sheetsData, formulaMap)
-    const visited = {}
-
-    for (const sheetName in sheetsData) {
-      const sheet = sheetsData[sheetName]
-      for (const rowIndex in sheet) {
-        const row = sheet[rowIndex]
-
-        for (const columnIndex in row) {
-          const cell = row[columnIndex]
-
-          if (cell.type === TYPE_FORMULA) {
-            if (formulaMap[sheetName] === undefined) formulaMap[sheetName] = {}
-            if (formulaMap[sheetName][rowIndex] === undefined)
-              formulaMap[sheetName][rowIndex] = {}
-            if (formulaMap[sheetName][rowIndex][columnIndex] === undefined) {
-              visitFormulaCell(
-                formulaMap,
-                sheet,
-                visited,
-                parser,
-                sheetName,
-                { x: +columnIndex, y: +rowIndex },
-                cell.value
-              )
-            }
-          }
-        }
-      }
-    }
-
-    return formulaMap
-  }
-)
-
-export const selectActiveSheetFormulaResults = createSelector(
-  [selectFormulaResults, selectActiveSheetName],
-  (formulaResults, activeSheetName) => formulaResults[activeSheetName]
 )
 
 // ===========================================================================

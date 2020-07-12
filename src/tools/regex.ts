@@ -12,6 +12,6 @@ export const rangeRegex = /[A-Z]+[1-9][0-9]*:[A-Z]+[1-9][0-9]*/
 // reference cell/range regex
 // (([A-Z]+[1-9][0-9]*):([A-Z]+[1-9][0-9]*)|([A-Z]+[1-9][0-9]*))?
 
-export const sheetNameRegex = /((('([a-zA-Z0-9]|[-!$%^&()_+|~=`{}:";<>,.])+')|(([a-zA-Z0-9])+))!)?(([A-Z]+[1-9][0-9]*):([A-Z]+[1-9][0-9]*)|([A-Z]+[1-9][0-9]*))/g
+export const sheetNameAdressRegex = /((('([a-zA-Z0-9]|[-!$%^&@()_+|~=`{}:";<>,.])+')|(([a-zA-Z0-9])+))!)?(([A-Z]+[1-9][0-9]*):([A-Z]+[1-9][0-9]*)|([A-Z]+[1-9][0-9]*))/g
 
-export const normalSheetNameRegex = /^Sheet(\d+)$/
+export const sheetNameRegex = /^Sheet(\d+)$/

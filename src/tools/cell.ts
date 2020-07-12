@@ -16,7 +16,7 @@ import {
   TYPE_TEXT,
   TYPE_RICH_TEXT,
   TYPE_NUMBER,
-} from '../constants/cellTypes'
+} from '../constants/types'
 
 export const changeActiveCell = (position: IPosition): IPosition => {
   return position

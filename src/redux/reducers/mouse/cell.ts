@@ -15,6 +15,7 @@ import {
 } from '../../../tools/area'
 import { nSelectCell, nSelectActiveSheet } from '../../tools/selectors'
 import { createValueFromEditorState } from '../../../tools/text'
+import { updateActiveCellRef } from '../../../tools/formula'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -108,6 +109,8 @@ export const CELL_MOUSE_DOWN = (
 
       activeSheet.data[y][x] = { ...activeSheet.data[y][x], ...cellValue }
     }
+
+    updateActiveCellRef(state)
   }
 
   state.activeCellPosition = position

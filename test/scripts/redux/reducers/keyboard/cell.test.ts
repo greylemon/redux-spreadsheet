@@ -10,7 +10,7 @@ import {
 import cloneDeep from 'clone-deep'
 import { mockState } from '../../../mockState'
 import { createEditorStateFromText } from '../../../../../src/tools/text'
-import { TYPE_TEXT } from '../../../../../src/constants/cellTypes'
+import { TYPE_TEXT } from '../../../../../src/constants/types'
 
 describe('Cell keyboard operations', () => {
   let store: ReturnType<typeof mockStore>

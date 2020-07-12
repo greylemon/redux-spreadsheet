@@ -7,7 +7,7 @@ import {
 import { PayloadAction } from '@reduxjs/toolkit'
 import { EditorState } from 'draft-js'
 import { getCellMapSetFromAreas } from '../../../tools/area'
-import { TYPE_TEXT, TYPE_MERGE } from '../../../constants/cellTypes'
+import { TYPE_TEXT, TYPE_MERGE } from '../../../constants/types'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state
