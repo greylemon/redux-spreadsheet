@@ -55,6 +55,8 @@ import { applyTintToColor } from './color'
 import Color from 'color'
 
 import fs from 'fs'
+import { updateWorkbookReference } from './formula'
+import cloneDeep from 'clone-deep'
 
 const getFormattedColor = (
   color: Partial<ExcelColor> & {
@@ -443,7 +445,7 @@ const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
   })
 
   return {
-    ...initialExcelState,
+    ...cloneDeep(initialExcelState),
     selectionAreaIndex: -1,
     inactiveSelectionAreas: [],
     sheetsMap,
@@ -465,7 +467,7 @@ export const convertRawExcelToState = async (
     data = await workbook.xlsx.readFile(file)
   }
 
-  return createStateFromWorkbook(data)
+  return updateWorkbookReference(createStateFromWorkbook(data))
 }
 
 export const readFileFromPath = async (path: string): Promise<Buffer> =>

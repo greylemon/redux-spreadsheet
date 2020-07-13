@@ -16,10 +16,11 @@ import { TYPE_FORMULA, TYPE_NUMBER, TYPE_TEXT } from '../constants/types'
 import { nSelectActiveCell } from '../redux/tools/selectors'
 import FormulaParser from 'fast-formula-parser'
 import { Queue } from './data_structures/queue'
+import cloneDeep from 'clone-deep'
 
 export const createFormulaParser = (
   sheetsMap: ISheetsMap,
-  result: IResults
+  results: IResults
 ): FormulaParser =>
   new FormulaParser({
     onCell: ({ sheet, row: rowIndex, col: columnIndex }) => {
@@ -32,8 +33,8 @@ export const createFormulaParser = (
 
           switch (cell.type) {
             case TYPE_FORMULA:
-              if (result[sheet] && result[sheet][rowIndex])
-                value = result[sheet][rowIndex][columnIndex]
+              if (results[sheet] && results[sheet][rowIndex] !== undefined)
+                value = results[sheet][rowIndex][columnIndex]
               break
             case TYPE_NUMBER:
             case TYPE_TEXT:
@@ -65,8 +66,11 @@ export const createFormulaParser = (
               if (cell) {
                 switch (cell.type) {
                   case TYPE_FORMULA:
-                    if (result[sheet] && result[sheet][rowIndex])
-                      value = result[sheet][rowIndex][columnIndex]
+                    if (
+                      results[sheet] &&
+                      results[sheet][rowIndex] !== undefined
+                    )
+                      value = results[sheet][rowIndex][columnIndex]
                     break
                   case TYPE_NUMBER:
                   case TYPE_TEXT:
@@ -159,6 +163,7 @@ const assignSheetIndependents = (
   dependentPosition: IPosition
 ): void => {
   const { x, y } = position
+  if (!independents[sheetName]) independents[sheetName] = {}
   if (!independents[sheetName][y]) independents[sheetName][y] = {}
   if (!independents[sheetName][y][x]) independents[sheetName][y][x] = {}
   if (!independents[sheetName][y][x][dependentSheetName])
@@ -179,21 +184,20 @@ const assignResult = (
   sheetsMap: ISheetsMap,
   results: IResults,
   sheetName: ISheetName,
-  position: IPosition,
-  parser: FormulaParser
+  position: IPosition
 ) => {
   try {
     if (!results[sheetName]) results[sheetName] = {}
     if (!results[sheetName][position.y]) results[sheetName][position.y] = {}
 
-    results[sheetName][position.y][position.x] = parser.parse(
-      sheetsMap[sheetName].data[position.y][position.x].value,
-      {
-        sheet: sheetName,
-        row: position.y,
-        col: position.x,
-      }
-    )
+    results[sheetName][position.y][position.x] = createFormulaParser(
+      sheetsMap,
+      results
+    ).parse(sheetsMap[sheetName].data[position.y][position.x].value, {
+      sheet: sheetName,
+      row: position.y,
+      col: position.x,
+    })
   } catch (error) {
     console.error(
       `Error at [ sheet name: ${sheetName} | position:  ${JSON.stringify(
@@ -203,10 +207,8 @@ const assignResult = (
   }
 }
 
-// TODO
 const computeDependents = (
   sheetsMap: ISheetsMap,
-  parser: FormulaParser,
   sheetName: ISheetName,
   position: IPosition,
   results: IResults,
@@ -251,7 +253,7 @@ const computeDependents = (
       !visited[sheetName][position.y].has(+position.x)
     ) {
       visited[sheetName][position.y].add(position.x)
-      assignResult(sheetsMap, results, sheetName, position, parser)
+      assignResult(sheetsMap, results, sheetName, position)
     }
 
     if (
@@ -402,13 +404,7 @@ export const updateReferenceCell = (
       }
 
       // ! Recompute value
-      assignResult(
-        sheetsMap,
-        results,
-        focusedSheetName,
-        focusedCellPosition,
-        parser
-      )
+      assignResult(sheetsMap, results, focusedSheetName, focusedCellPosition)
 
       visited[focusedSheetName] = {
         [focusedCellPosition.y]: new Set(),
@@ -425,7 +421,6 @@ export const updateReferenceCell = (
   // Look at dependents of this cell and recompute...
   computeDependents(
     state.sheetsMap,
-    parser,
     focusedSheetName,
     focusedCellPosition,
     results,
@@ -437,14 +432,14 @@ export const updateReferenceCell = (
 export const visitFormulaCell = (
   state: IExcelState,
   visited: IVisited,
-  parser: FormulaParser,
   sheetName: ISheetName,
   curPosition: IPosition,
   formula: string
 ): void => {
   const results = state.results
   const sheetsMap = state.sheetsMap
-  // const independents = state.independentReferences
+  const independents = state.independentReferences
+  const dependents = state.dependentReferences
 
   const cellRefMap = createCellRefMap(formula, sheetName)
 
@@ -456,77 +451,137 @@ export const visitFormulaCell = (
   if (!visitedSheet[curPosition.y].has(+curPosition.x))
     visitedSheet[curPosition.y].add(+curPosition.x)
 
+  if (!dependents[sheetName]) dependents[sheetName] = {}
+  if (!dependents[sheetName][curPosition.y])
+    dependents[sheetName][curPosition.y] = {}
+  if (!dependents[sheetName][curPosition.y][curPosition.x])
+    dependents[sheetName][curPosition.y][curPosition.x] = {}
+
+  const formulaIndependents =
+    dependents[sheetName][curPosition.y][curPosition.x]
+
   for (const refSheetName in cellRefMap) {
-    if (!visited[refSheetName]) visited[refSheetName] = {}
+    if (sheetsMap[refSheetName]) {
+      if (!visited[refSheetName]) visited[refSheetName] = {}
 
-    // areaRange
-    const { positions } = cellRefMap[refSheetName]
-    const visitedSheet = visited[refSheetName]
+      const { areaRanges, positions } = cellRefMap[refSheetName]
+      const visitedSheet = visited[refSheetName]
 
-    for (const position of positions) {
-      const { x, y } = position
+      if (!formulaIndependents[refSheetName])
+        formulaIndependents[refSheetName] = {}
 
-      if (!visitedSheet[y]) visitedSheet[y] = new Set()
-      if (!visitedSheet[y].has(x)) {
-        visitedSheet[y].add(x)
+      if (areaRanges) formulaIndependents[refSheetName].areaRanges = areaRanges
+      if (positions) formulaIndependents[refSheetName].positions = positions
 
-        const refSheet = sheetsMap[refSheetName].data
+      const refSheet = sheetsMap[refSheetName].data
 
-        if (refSheet) {
-          for (const rowIndex in refSheet) {
-            const row = refSheet[rowIndex]
-            for (const columnIndex in row) {
-              const cell = row[columnIndex]
+      for (const position of positions) {
+        const { x, y } = position
 
-              if (cell.type === TYPE_FORMULA) {
-                visitFormulaCell(
-                  state,
-                  visited,
-                  parser,
-                  refSheetName,
-                  { x: +columnIndex, y: +rowIndex },
-                  cell.value as string
-                )
+        if (!visitedSheet[y]) visitedSheet[y] = new Set()
+        if (!visitedSheet[y].has(x)) {
+          visitedSheet[y].add(x)
+
+          if (refSheet[y] && refSheet[y][x]) {
+            const cell = refSheet[y][x]
+
+            if (cell.type === TYPE_FORMULA) {
+              visitFormulaCell(
+                state,
+                visited,
+                refSheetName,
+                position,
+                cell.value as string
+              )
+            }
+          }
+        }
+
+        assignSheetIndependents(
+          independents,
+          refSheetName,
+          sheetName,
+          position,
+          curPosition
+        )
+      }
+
+      for (const areaRange of areaRanges) {
+        const { xRange, yRange } = areaRange
+
+        for (let rowIndex = yRange.start; rowIndex <= yRange.end; rowIndex++) {
+          const row = refSheet[rowIndex]
+          if (!visitedSheet[rowIndex]) visitedSheet[rowIndex] = new Set()
+
+          for (
+            let columnIndex = xRange.start;
+            columnIndex <= xRange.end;
+            columnIndex++
+          ) {
+            const position = { x: +columnIndex, y: +rowIndex }
+
+            if (!visitedSheet[rowIndex].has(columnIndex)) {
+              visitedSheet[rowIndex].add(columnIndex)
+
+              if (refSheet[rowIndex] && refSheet[rowIndex][columnIndex]) {
+                const cell = row[columnIndex]
+                if (cell.type === TYPE_FORMULA) {
+                  visitFormulaCell(
+                    state,
+                    visited,
+                    refSheetName,
+                    position,
+                    cell.value as string
+                  )
+                }
               }
             }
+
+            assignSheetIndependents(
+              independents,
+              refSheetName,
+              sheetName,
+              position,
+              curPosition
+            )
           }
         }
       }
     }
   }
 
-  assignResult(sheetsMap, results, sheetName, curPosition, parser)
-  // assignSheetIndependents(independents, sheetName, )
+  assignResult(sheetsMap, results, sheetName, curPosition)
 }
 
 /**
  * Visits cells from top down
  */
-export const updateWorkbookReference = (state: IExcelState): void => {
-  const results: IResults = {}
-  const parser = createFormulaParser(state.sheetsMap, results)
-  const visited = {}
+export const updateWorkbookReference = (state: IExcelState): IExcelState => {
+  const visited: IVisited = {}
 
   const sheetsMap = state.sheetsMap
+
   for (const sheetName in sheetsMap) {
     const sheet = sheetsMap[sheetName].data
+
+    if (!visited[sheetName]) visited[sheetName] = {}
 
     for (const rowIndex in sheet) {
       const row = sheet[rowIndex]
 
+      if (!visited[sheetName][rowIndex])
+        visited[sheetName][rowIndex] = new Set()
+
       for (const columnIndex in row) {
         const cell = row[columnIndex]
 
-        if (cell.type === TYPE_FORMULA) {
-          if (results[sheetName] === undefined) results[sheetName] = {}
-          if (results[sheetName][rowIndex] === undefined)
-            results[sheetName][rowIndex] = {}
+        if (!visited[sheetName][rowIndex].has(+columnIndex)) {
+          visited[sheetName][rowIndex].add(+columnIndex)
 
-          if (results[sheetName][rowIndex][columnIndex] === undefined) {
+          if (cell.type === TYPE_FORMULA) {
             visitFormulaCell(
               state,
               visited,
-              parser,
               sheetName,
               { x: +columnIndex, y: +rowIndex },
               cell.value as string
@@ -536,4 +591,11 @@ export const updateWorkbookReference = (state: IExcelState): void => {
       }
     }
   }
+
+  // Update references
+  state.independentReferences = cloneDeep(state.independentReferences)
+  state.dependentReferences = cloneDeep(state.dependentReferences)
+  state.results = cloneDeep(state.results)
+
+  return state
 }
