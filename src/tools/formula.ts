@@ -275,8 +275,6 @@ const computeDependents = (
 
           for (const columnIndex in rowDependents) {
             if (!visited[sheetName][rowIndex].has(+columnIndex)) {
-              visited[sheetName][rowIndex].add(+columnIndex)
-
               queue.enqueue({
                 position: { x: +columnIndex, y: +rowIndex },
                 sheetName,
@@ -297,7 +295,6 @@ export const updateActiveCellRef = (state: IExcelState): void => {
   updateReferenceCell(
     state,
     {},
-    createFormulaParser(state.sheetsMap, state.results),
     focusedCell,
     focusedCellPosition,
     focusedSheetName
@@ -307,7 +304,6 @@ export const updateActiveCellRef = (state: IExcelState): void => {
 export const updateReferenceCell = (
   state: IExcelState,
   visited: IVisited,
-  parser: FormulaParser,
   focusedCell: ICell,
   focusedCellPosition: IPosition,
   focusedSheetName: ISheetName
