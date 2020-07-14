@@ -1,16 +1,5 @@
 import { IPosition, IAreaRange, ISheetName } from './state'
 
-export type IFormulaMap = {
-  // sheet name
-  [key: string]: {
-    // row
-    [key: string]: {
-      // column
-      [key: string]: string
-    }
-  }
-}
-
 export type ICellRefMapData = {
   positions: IPosition[]
   areaRanges: IAreaRange[]
