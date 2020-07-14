@@ -336,44 +336,45 @@ export const updateReferenceCell = (
     dependents[focusedSheetName][focusedCellPosition.y] &&
     dependents[focusedSheetName][focusedCellPosition.y][focusedCellPosition.x]
   ) {
-    const sheetIndependents =
-      dependents[focusedSheetName][focusedCellPosition.y][focusedCellPosition.x]
-
     delete dependents[focusedSheetName][focusedCellPosition.y][
       focusedCellPosition.x
     ]
 
-    for (const sheetName in sheetIndependents) {
-      const { areaRanges, positions } = sheetIndependents[sheetName]
+    // const sheetIndependents =
+    //   dependents[focusedSheetName][focusedCellPosition.y][focusedCellPosition.x]
 
-      if (positions) {
-        for (const position of positions) {
-          const { x, y } = position
+    // ! This doesn't work.. how to remove independents properly?
+    // for (const sheetName in sheetIndependents) {
+    //   const { areaRanges, positions } = sheetIndependents[sheetName]
 
-          delete independents[sheetName][y][x]
-        }
-      }
+    //   if (positions) {
+    //     for (const position of positions) {
+    //       const { x, y } = position
 
-      if (areaRanges) {
-        for (const areaRange of areaRanges) {
-          const { xRange, yRange } = areaRange
+    //       delete independents[sheetName][y][x]
+    //     }
+    //   }
 
-          for (
-            let rowIndex = yRange.start;
-            rowIndex <= yRange.end;
-            rowIndex++
-          ) {
-            for (
-              let columnIndex = xRange.start;
-              columnIndex <= xRange.end;
-              columnIndex++
-            ) {
-              delete independents[sheetName][rowIndex][columnIndex]
-            }
-          }
-        }
-      }
-    }
+    //   if (areaRanges) {
+    //     for (const areaRange of areaRanges) {
+    //       const { xRange, yRange } = areaRange
+
+    //       for (
+    //         let rowIndex = yRange.start;
+    //         rowIndex <= yRange.end;
+    //         rowIndex++
+    //       ) {
+    //         for (
+    //           let columnIndex = xRange.start;
+    //           columnIndex <= xRange.end;
+    //           columnIndex++
+    //         ) {
+    //           delete independents[sheetName][rowIndex][columnIndex]
+    //         }
+    //       }
+    //     }
+    //   }
+    // }
   }
 
   // Dependents and independents need to be created due to formula
