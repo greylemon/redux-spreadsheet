@@ -146,6 +146,65 @@ export type ISheetsMap = {
   [key: string]: ISheet
 }
 
+export type IDependentReferenceData = {
+  positions?: IPosition[]
+  areaRanges?: IAreaRange[]
+}
+
+export type IDependentReference = {
+  [key: string]: IDependentReferenceData
+}
+
+export type IColumnDependentReference = {
+  [key: string]: IDependentReference
+}
+
+export type IRowDependentReference = {
+  [key: string]: IColumnDependentReference
+}
+
+export type IDependentReferences = {
+  [key: string]: IRowDependentReference
+}
+
+// Independent references
+
+export type IIndependentDependentColumnReference = {
+  [key: string]: boolean
+}
+
+export type IIndependentDependentRowReference = {
+  [key: string]: IIndependentDependentColumnReference
+}
+
+export type IIndependentDependentReference = {
+  [key: string]: IIndependentDependentRowReference
+}
+
+export type IColumnIndependentReference = {
+  [key: string]: IIndependentDependentReference
+}
+
+export type IRowIndependentReference = {
+  [key: string]: IColumnIndependentReference
+}
+
+export type IIndependentReferences = {
+  [key: string]: IRowIndependentReference
+}
+
+export type IColumnResults = {
+  [key: string]: string | number
+}
+
+export type IRowResults = {
+  [key: string]: IColumnResults
+}
+
+export type IResults = {
+  [key: string]: IRowResults
+}
+
 export type IExcelState = {
   name: IName
   activeSheetName: ISheetName
@@ -160,4 +219,7 @@ export type IExcelState = {
   selectionArea?: ISelectionArea
   activeCellPosition: IActiveCellPosition
   inactiveSelectionAreas: IInactiveSelectionAreas
+  dependentReferences: IDependentReferences
+  independentReferences: IIndependentReferences
+  results: IResults
 }

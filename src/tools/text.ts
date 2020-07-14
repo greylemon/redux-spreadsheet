@@ -24,7 +24,7 @@ import {
   TYPE_TEXT,
   TYPE_FORMULA,
   TYPE_NUMBER,
-} from '../constants/cellTypes'
+} from '../constants/types'
 import { exactNumberRegex } from './regex'
 
 export const getRangesFromInlineRanges = (

@@ -5,6 +5,7 @@ import {
   IRowIndex,
   IColumnWidthsAdjusted,
   IExcelState,
+  IRowResults,
 } from './state'
 import {
   ICheckIsActiveCellInCorrectPane,
@@ -25,17 +26,11 @@ export type ExcelComponentProps = {
   handleSave?: IHandleSave
 }
 
-export type IFormulaResult = {
-  [key: string]: {
-    [key: string]: number | string
-  }
-}
-
 export type IItemData = {
   data: IRows
   columnWidthsAdjusted: IColumnWidthsAdjusted
-  formulaResults: IFormulaResult
   getRowHeight: (index: number) => number
+  sheetResults: IRowResults
 }
 
 export interface ICellProps {

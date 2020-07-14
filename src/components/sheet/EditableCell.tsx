@@ -15,7 +15,7 @@ import {
   TYPE_TEXT,
   TYPE_MERGE,
   TYPE_NUMBER,
-} from '../../constants/cellTypes'
+} from '../../constants/types'
 import {
   STYLE_OVERLAP_Z_INDEX,
   STYLE_BLOCK_Z_INDEX,
@@ -61,7 +61,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 }) => {
   const dispatch = useDispatch()
 
-  const { data: sheetData, columnWidthsAdjusted, formulaResults } = data
+  const { data: sheetData, columnWidthsAdjusted, sheetResults } = data
 
   const rowData = sheetData[rowIndex]
 
@@ -125,7 +125,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
         let value: undefined | string
 
         try {
-          const formulaValue = formulaResults[rowIndex][columnIndex]
+          const formulaValue = sheetResults[rowIndex][columnIndex]
           value = formulaValue.toString()
         } catch (error) {
           value = ''
@@ -145,7 +145,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
         break
     }
     return component
-  }, [value, formulaResults])
+  }, [value, sheetResults])
 
   return (
     <div onMouseDown={handleMouseDown} onMouseEnter={handleMouseEnter}>

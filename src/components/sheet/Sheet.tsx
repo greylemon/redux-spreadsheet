@@ -12,7 +12,7 @@ import {
   selectTableColumnCount,
   selectTableFreezeRowCount,
   selectTableFreezeColumnCount,
-  selectActiveSheetFormulaResults,
+  selectActiveResults,
 } from '../../redux/selectors'
 import BottomRightPane from './BottomRightPane'
 import { shallowEqual } from 'react-redux'
@@ -25,7 +25,7 @@ import CustomContextMenu from './CustomContextMenu'
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const gridRef = useRef<VariableSizeGrid>(null)
   const {
-    formulaResults,
+    sheetResults,
     tableColumnCount,
     tableRowCount,
     data,
@@ -36,7 +36,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     columnWidthsAdjusted,
   } = useTypedSelector(
     (state) => ({
-      formulaResults: selectActiveSheetFormulaResults(state),
+      sheetResults: selectActiveResults(state),
       tableColumnCount: selectTableColumnCount(state),
       tableRowCount: selectTableRowCount(state),
       data: selectData(state),
@@ -49,7 +49,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     shallowEqual
   )
 
-  const itemData = { data, columnWidthsAdjusted, getRowHeight, formulaResults }
+  const itemData = { data, columnWidthsAdjusted, getRowHeight, sheetResults }
 
   useEffect(() => {
     const current = gridRef.current

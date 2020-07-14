@@ -9,7 +9,7 @@ import {
   TYPE_TEXT,
   TYPE_NUMBER,
   TYPE_RICH_TEXT,
-} from '../../../src/constants/cellTypes'
+} from '../../../src/constants/types'
 import cloneDeep from 'clone-deep'
 
 describe('Text tools', () => {

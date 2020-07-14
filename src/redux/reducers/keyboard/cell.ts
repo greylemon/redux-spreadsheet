@@ -7,7 +7,8 @@ import {
 import { PayloadAction } from '@reduxjs/toolkit'
 import { EditorState } from 'draft-js'
 import { getCellMapSetFromAreas } from '../../../tools/area'
-import { TYPE_TEXT, TYPE_MERGE } from '../../../constants/cellTypes'
+import { TYPE_TEXT, TYPE_MERGE } from '../../../constants/types'
+import { updateReferenceCell } from '../../../tools'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state
@@ -121,9 +122,19 @@ export const CELL_KEY_DELETE = (state: IExcelState): IExcelState => {
       columnIndices.forEach((columnIndex) => {
         const cell = row[columnIndex]
 
-        if (cell && cell.type !== TYPE_MERGE) {
-          cell.type = TYPE_TEXT
-          delete cell.value
+        if (cell) {
+          if (cell.type !== TYPE_MERGE) {
+            cell.type = TYPE_TEXT
+            delete cell.value
+          }
+
+          updateReferenceCell(
+            state,
+            {},
+            cell,
+            { x: +columnIndex, y: +rowIndex },
+            state.activeSheetName
+          )
         }
       })
     }

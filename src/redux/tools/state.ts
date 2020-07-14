@@ -57,4 +57,8 @@ export const createInitialExcelState = (): IExcelState => ({
   inactiveSelectionAreas: [],
 
   sheetsMap: createSheetsMap(),
+
+  dependentReferences: {},
+  independentReferences: {},
+  results: {},
 })

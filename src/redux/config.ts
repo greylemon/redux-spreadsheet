@@ -1,15 +1,23 @@
 import IRootStore from '../@types/store'
 import thunk from 'redux-thunk'
 import { ExcelActions } from './store'
+import { IExcelState } from '../@types/state'
 
 const BLOB_PLACEHOLDER = '<<LONG_BLOB>>'
+
+const BIG_DATA: Partial<IExcelState> | any = {
+  sheetsMap: BLOB_PLACEHOLDER,
+  results: BLOB_PLACEHOLDER,
+  dependentReferences: BLOB_PLACEHOLDER,
+  independentReferences: BLOB_PLACEHOLDER,
+}
 
 export const devTools: any = {
   stateSanitizer: (state: IRootStore) => ({
     ...state,
     present: {
       ...state.present,
-      sheetsMap: BLOB_PLACEHOLDER,
+      ...BIG_DATA,
     },
   }),
   actionSanitizer: (action: any) => {
@@ -19,7 +27,7 @@ export const devTools: any = {
           ...action,
           payload: {
             ...action.payload,
-            sheetsMap: BLOB_PLACEHOLDER,
+            ...BIG_DATA,
           },
         }
       default:
