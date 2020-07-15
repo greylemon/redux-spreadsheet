@@ -1,20 +1,19 @@
 import { useDispatch, shallowEqual } from 'react-redux'
 import { ExcelActions } from '../redux/store'
 import { useTypedSelector } from '../redux/redux'
-import { selectSelectionArea, selectIsEditMode } from '../redux/selectors'
+import { selectIsEditMode } from '../redux/selectors'
 import { useCallback, FunctionComponent } from 'react'
 import { undo, redo } from 'undox'
 import { IHandleSave } from '../@types/functions'
 import { saveWorkbook } from '../redux/thunk'
 
-const WindowListener: FunctionComponent<{ handleSave?: IHandleSave }> = ({
-  handleSave,
-}) => {
+const WindowKeyboardListener: FunctionComponent<{
+  handleSave?: IHandleSave
+}> = ({ handleSave }) => {
   const dispatch = useDispatch()
 
-  const { selectionArea, isEditMode } = useTypedSelector(
+  const { isEditMode } = useTypedSelector(
     (state) => ({
-      selectionArea: selectSelectionArea(state),
       isEditMode: selectIsEditMode(state),
     }),
     shallowEqual
@@ -23,10 +22,6 @@ const WindowListener: FunctionComponent<{ handleSave?: IHandleSave }> = ({
   const handleUndo = useCallback(() => dispatch(undo()), [dispatch])
 
   const handleRedo = useCallback(() => dispatch(redo()), [dispatch])
-
-  window.onmouseup = useCallback(() => {
-    if (selectionArea) dispatch(ExcelActions.CELL_MOUSE_UP(selectionArea))
-  }, [dispatch, selectionArea])
 
   // Distinguish text submit from mouse move?
   window.onkeydown = useCallback(
@@ -77,11 +72,7 @@ const WindowListener: FunctionComponent<{ handleSave?: IHandleSave }> = ({
     [dispatch, isEditMode, handleUndo, handleRedo, handleSave]
   )
 
-  window.ondblclick = useCallback(() => {
-    dispatch(ExcelActions.CELL_DOUBLE_CLICK())
-  }, [dispatch])
-
   return null
 }
 
-export default WindowListener
+export default WindowKeyboardListener

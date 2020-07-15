@@ -1,55 +1,169 @@
-import React, { useCallback, FunctionComponent } from 'react'
+import React, { useCallback, FunctionComponent, useRef, RefObject } from 'react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 
-import { ISheetName } from '../../@types/state'
+import { ISheetName, IIsSheetNavigationOpen } from '../../@types/state'
 import { useTypedSelector } from '../../redux/redux'
 import {
   selectSheetNames,
   selectActiveSheetName,
-  selectActiveSheetNameIndex,
+  selectIsSheetNavigationOpen,
 } from '../../redux/selectors'
 import { shallowEqual, useDispatch } from 'react-redux'
 import { ExcelActions } from '../../redux/store'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useRouteMatch } from 'react-router-dom'
 import { IHandleSheetPress } from '../../@types/functions'
 import AddIcon from '@material-ui/icons/Add'
-import { Button } from '@material-ui/core'
+import {
+  Button,
+  MenuList,
+  Popper,
+  Paper,
+  ClickAwayListener,
+  MenuItem,
+} from '@material-ui/core'
 import { ArrowDropDown } from '@material-ui/icons'
 
-const SheetOptionButton: FunctionComponent<{ isActive: boolean }> = ({
-  isActive,
-}) => (
-  <Button
-    className="sheetNavigationSheet__option"
-    size="small"
-    disabled={!isActive}
-  >
-    <ArrowDropDown style={{ color: isActive ? 'green' : 'gray' }} />
-  </Button>
+const SheetOptionButton: FunctionComponent<{
+  isActive: boolean
+  isSheetNavigationOpen: boolean
+}> = ({ isActive, isSheetNavigationOpen }) => {
+  const dispatch = useDispatch()
+
+  const handleMouseDown = useCallback(() => {
+    if (isActive) {
+      if (isSheetNavigationOpen) {
+        dispatch(ExcelActions.CLOSE_SHEET_NAVIGATION_OPTION())
+      } else {
+        dispatch(ExcelActions.OPEN_SHEET_NAVIGATION_OPTION())
+      }
+    }
+  }, [dispatch, isActive, isSheetNavigationOpen])
+
+  return (
+    <Button
+      className="sheetNavigationSheet__option"
+      size="small"
+      disabled={!isActive}
+      onMouseDown={handleMouseDown}
+    >
+      <ArrowDropDown style={{ color: isActive ? 'green' : 'gray' }} />
+    </Button>
+  )
+}
+
+const SheetItemContent: FunctionComponent<{
+  sheetName: ISheetName
+  isActiveSheet: boolean
+  isSheetNavigationOpen: IIsSheetNavigationOpen
+}> = ({ sheetName, isActiveSheet, isSheetNavigationOpen }) => (
+  <div className="sheetNavigationSheet">
+    <span className="sheetNavigationSheet__sheetName">{sheetName}</span>
+    <SheetOptionButton
+      isActive={isActiveSheet}
+      isSheetNavigationOpen={isSheetNavigationOpen}
+    />
+  </div>
 )
+
+const SheetOption: FunctionComponent<{
+  anchorRef: RefObject<HTMLLIElement>
+  isSheetNavigationOpen: IIsSheetNavigationOpen
+  handleClose: () => void
+}> = ({ anchorRef, isSheetNavigationOpen, handleClose }) => {
+  const dispatch = useDispatch()
+
+  const sheetNames = useTypedSelector(
+    (state) => selectSheetNames(state),
+    shallowEqual
+  )
+
+  const handleClickAway = useCallback(
+    (event) => {
+      if (anchorRef.current && anchorRef.current.contains(event.target)) return
+
+      dispatch(ExcelActions.CLOSE_SHEET_NAVIGATION_OPTION())
+    },
+    [dispatch, anchorRef]
+  )
+
+  const handleDeleteSheet = useCallback(() => {
+    dispatch(ExcelActions.REMOVE_SHEET())
+    handleClose()
+  }, [dispatch, handleClose])
+
+  return (
+    <Popper
+      open={isSheetNavigationOpen}
+      anchorEl={anchorRef.current}
+      role={undefined}
+    >
+      <Paper>
+        <ClickAwayListener onClickAway={handleClickAway}>
+          <MenuList autoFocusItem={isSheetNavigationOpen} id="menu-list-grow">
+            <MenuItem
+              onClick={handleDeleteSheet}
+              disabled={sheetNames.length === 1}
+            >
+              Delete
+            </MenuItem>
+          </MenuList>
+        </ClickAwayListener>
+      </Paper>
+    </Popper>
+  )
+}
 
 const SortableItem = SortableElement(
   ({
     sheetName,
     activeSheetName,
+    isSheetNavigationOpen,
+    handleSheetPress,
   }: {
     sheetName: ISheetName
     activeSheetName: ISheetName
+    isSheetNavigationOpen: IIsSheetNavigationOpen
+    handleSheetPress: IHandleSheetPress
   }) => {
+    const dispatch = useDispatch()
+
     const isActiveSheet = sheetName === activeSheetName
+
+    const anchorRef = useRef<HTMLLIElement>(null)
+
+    const handleClose = useCallback(() => {
+      dispatch(ExcelActions.CLOSE_SHEET_NAVIGATION_OPTION())
+    }, [dispatch])
+
+    const handleMouseDown = useCallback(() => {
+      if (!isActiveSheet) {
+        handleSheetPress(sheetName)
+        if (isSheetNavigationOpen) handleClose()
+      }
+    }, [isActiveSheet, isSheetNavigationOpen, handleSheetPress, handleClose])
 
     return (
       <li
+        ref={anchorRef}
         className={`sheetNavigationSheetContainer ${
           isActiveSheet
             ? 'sheetNavigationSheetContainer--active'
             : 'sheetNavigationSheetContainer--inactive'
         }`}
+        onMouseDown={handleMouseDown}
       >
-        <div className="sheetNavigationSheet">
-          <span className="sheetNavigationSheet__sheetName">{sheetName}</span>
-          <SheetOptionButton isActive={isActiveSheet} />
-        </div>
+        <SheetItemContent
+          isSheetNavigationOpen={isSheetNavigationOpen}
+          sheetName={sheetName}
+          isActiveSheet={isActiveSheet}
+        />
+        {isActiveSheet && (
+          <SheetOption
+            anchorRef={anchorRef}
+            isSheetNavigationOpen={isSheetNavigationOpen}
+            handleClose={handleClose}
+          />
+        )}
       </li>
     )
   }
@@ -59,9 +173,13 @@ const SortableList = SortableContainer(
   ({
     sheetNames,
     activeSheetName,
+    isSheetNavigationOpen,
+    handleSheetPress,
   }: {
     sheetNames: string[]
     activeSheetName: ISheetName
+    isSheetNavigationOpen: IIsSheetNavigationOpen
+    handleSheetPress: IHandleSheetPress
   }) => (
     <ul className="sheetNavigation__sheets">
       {sheetNames.map((sheetName, index) => (
@@ -70,7 +188,8 @@ const SortableList = SortableContainer(
           index={index}
           sheetName={sheetName}
           activeSheetName={activeSheetName}
-          // disabled={true}
+          isSheetNavigationOpen={isSheetNavigationOpen}
+          handleSheetPress={handleSheetPress}
         />
       ))}
     </ul>
@@ -106,23 +225,26 @@ const SheetSelector: FunctionComponent<{
 
 const SheetNavigationOptions: FunctionComponent<{
   handleSheetPress: IHandleSheetPress
-}> = ({ handleSheetPress }) => {
-  return (
-    <div className=" sheetNavigationOptions">
-      <SheetSelector handleSheetPress={handleSheetPress} />
-      <SheetAdder />
-    </div>
-  )
-}
+}> = ({ handleSheetPress }) => (
+  <div className=" sheetNavigationOptions">
+    <SheetSelector handleSheetPress={handleSheetPress} />
+    <SheetAdder />
+  </div>
+)
 
 const SheetNavigation: FunctionComponent<{
   handleSheetPress: IHandleSheetPress
 }> = ({ handleSheetPress }) => {
   const dispatch = useDispatch()
-  const { sheetNames, activeSheetName } = useTypedSelector(
+  const {
+    sheetNames,
+    activeSheetName,
+    isSheetNavigationOpen,
+  } = useTypedSelector(
     (state) => ({
       sheetNames: selectSheetNames(state),
       activeSheetName: selectActiveSheetName(state),
+      isSheetNavigationOpen: selectIsSheetNavigationOpen(state),
     }),
     shallowEqual
   )
@@ -135,16 +257,24 @@ const SheetNavigation: FunctionComponent<{
     [dispatch]
   )
 
+  const handleSortStart = useCallback(() => {
+    if (isSheetNavigationOpen)
+      dispatch(ExcelActions.CLOSE_SHEET_NAVIGATION_OPTION())
+  }, [dispatch, isSheetNavigationOpen])
+
   return (
     <div className="sheetNavigation">
       <SheetNavigationOptions handleSheetPress={handleSheetPress} />
       <SortableList
         axis="x"
         lockAxis="x"
+        onSortEnd={handleSortEnd}
         sheetNames={sheetNames}
         activeSheetName={activeSheetName}
-        updateBeforeSortStart={handleSheetPress}
-        onSortEnd={handleSortEnd}
+        isSheetNavigationOpen={isSheetNavigationOpen}
+        handleSheetPress={handleSheetPress}
+        onSortStart={handleSortStart}
+        distance={1}
       />
     </div>
   )
@@ -152,22 +282,16 @@ const SheetNavigation: FunctionComponent<{
 
 const RoutedSheetNavigation = () => {
   const history = useHistory()
-  const { sheetNames, activeSheetNameIndex } = useTypedSelector(
-    (state) => ({
-      sheetNames: selectSheetNames(state),
-      activeSheetNameIndex: selectActiveSheetNameIndex(state),
-    }),
-    shallowEqual
-  )
+  const match = useRouteMatch<{ activeSheetName: ISheetName }>()
 
   const handleSheetPress = useCallback(
-    ({ index }) => {
-      if (index !== activeSheetNameIndex) {
-        const sheetName = sheetNames[index]
+    (sheetName) => {
+      const { activeSheetName } = match.params
+      if (sheetName !== activeSheetName) {
         history.push(sheetName)
       }
     },
-    [activeSheetNameIndex, sheetNames, history]
+    [history, match]
   )
 
   return <SheetNavigation handleSheetPress={handleSheetPress} />
@@ -175,22 +299,12 @@ const RoutedSheetNavigation = () => {
 
 const NonRoutedSheetNavigation = () => {
   const dispatch = useDispatch()
-  const { sheetNames, activeSheetNameIndex } = useTypedSelector(
-    (state) => ({
-      sheetNames: selectSheetNames(state),
-      activeSheetNameIndex: selectActiveSheetNameIndex(state),
-    }),
-    shallowEqual
-  )
 
   const handleSheetPress = useCallback(
-    ({ index }) => {
-      if (index !== activeSheetNameIndex) {
-        const sheetName = sheetNames[index]
-        dispatch(ExcelActions.CHANGE_SHEET(sheetName))
-      }
+    (sheetName) => {
+      dispatch(ExcelActions.CHANGE_SHEET(sheetName))
     },
-    [dispatch, activeSheetNameIndex, sheetNames, history]
+    [dispatch]
   )
 
   return <SheetNavigation handleSheetPress={handleSheetPress} />

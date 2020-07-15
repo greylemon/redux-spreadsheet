@@ -43,3 +43,39 @@ export const ADD_SHEET = (state: IExcelState): IExcelState => {
 
   return state
 }
+
+export const REMOVE_SHEET = (state: IExcelState): IExcelState => {
+  const sheetNames = state.sheetNames
+
+  if (sheetNames.length === 1) return state
+
+  const sheetIndex = sheetNames.findIndex(
+    (sheetName) => sheetName === state.activeSheetName
+  )
+
+  state.sheetNames = [
+    ...sheetNames.slice(0, sheetIndex),
+    ...sheetNames.slice(sheetIndex + 1),
+  ]
+
+  state.activeSheetName =
+    state.sheetNames[sheetIndex - 1 >= 0 ? sheetIndex - 1 : sheetIndex]
+
+  return state
+}
+
+export const OPEN_SHEET_NAVIGATION_OPTION = (
+  state: IExcelState
+): IExcelState => {
+  state.isSheetNavigationOpen = true
+
+  return state
+}
+
+export const CLOSE_SHEET_NAVIGATION_OPTION = (
+  state: IExcelState
+): IExcelState => {
+  state.isSheetNavigationOpen = false
+
+  return state
+}

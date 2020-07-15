@@ -2,7 +2,7 @@ import React, { FunctionComponent, useEffect } from 'react'
 
 import './styles/styles.scss'
 
-import WindowListener from './components/WindowListener'
+import WindowMouseListener from './components/WindowMouseListener'
 import SheetContainer from './components/sheet/Sheet'
 import ToolBar from './components/toolBar/ToolBar'
 import SheetNavigation from './components/sheetNavigation/SheetNavigation'
@@ -11,6 +11,7 @@ import { Route, useRouteMatch, Switch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { ExcelActions } from './redux/store'
 import { ExcelComponentProps } from './@types/components'
+import WindowKeyboardListener from './components/WindowKeyboardListener'
 
 export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   style,
@@ -30,7 +31,8 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
       {/* <FormulaBar /> */}
       <SheetContainer />
       <SheetNavigation isRouted={isRouted} />
-      <WindowListener handleSave={handleSave} />
+      <WindowMouseListener />
+      <WindowKeyboardListener handleSave={handleSave} />
     </div>
   )
 }

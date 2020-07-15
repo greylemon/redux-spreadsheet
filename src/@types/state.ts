@@ -205,6 +205,8 @@ export type IResults = {
   [key: string]: IRowResults
 }
 
+export type IIsSheetNavigationOpen = boolean
+
 export type IExcelState = {
   name: IName
   activeSheetName: ISheetName
@@ -213,8 +215,9 @@ export type IExcelState = {
   error: IError
 
   // sheet specific - optimized state
-  editorState: IEditorState
   isEditMode: IIsEditMode
+  isSheetNavigationOpen: IIsSheetNavigationOpen
+  editorState: IEditorState
   selectionAreaIndex: ISelectionAreaIndex
   selectionArea?: ISelectionArea
   activeCellPosition: IActiveCellPosition

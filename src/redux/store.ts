@@ -18,7 +18,14 @@ import {
   CELL_KEY_DELETE,
 } from './reducers/keyboard/cell'
 import { UPDATE_STATE } from './reducers/events'
-import { CHANGE_SHEET, CHANGE_SHEET_ORDER, ADD_SHEET } from './reducers/sheet'
+import {
+  CHANGE_SHEET,
+  CHANGE_SHEET_ORDER,
+  ADD_SHEET,
+  REMOVE_SHEET,
+  OPEN_SHEET_NAVIGATION_OPTION,
+  CLOSE_SHEET_NAVIGATION_OPTION,
+} from './reducers/sheet'
 import { createInitialExcelState } from './tools/state'
 
 export const initialExcelState = createInitialExcelState()
@@ -44,6 +51,9 @@ export const ExcelStore = createSlice({
     CHANGE_SHEET,
     CHANGE_SHEET_ORDER,
     ADD_SHEET,
+    OPEN_SHEET_NAVIGATION_OPTION,
+    CLOSE_SHEET_NAVIGATION_OPTION,
+    REMOVE_SHEET,
   },
 })
 
