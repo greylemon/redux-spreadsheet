@@ -1,21 +1,45 @@
-import React, { Fragment, FunctionComponent } from 'react'
-import { IInactiveSelectionAreasProps } from '../../@types/components'
+import React, { Fragment, FunctionComponent, CSSProperties } from 'react'
+import { ICommonPaneProps } from '../../@types/components'
 import { useTypedSelector } from '../../redux/redux'
-import { selectFactoryInactiveSelectionAreasStyle } from '../../redux/selectors'
+import {
+  selectInactiveSelectionAreasBottomLeftStyle,
+  selectInactiveSelectionAreasBottomRightStyle,
+  selectInactiveSelectionAreasTopLeftStyle,
+  selectInactiveSelectionAreasTopRightStyle,
+} from '../../redux/selectors'
 import { shallowEqual } from 'react-redux'
 
-const InactiveSelectionAreas: FunctionComponent<IInactiveSelectionAreasProps> = ({
-  computeSelectionAreaStyle,
-  checkIsAreaInRelevantPane,
+const InactiveSelectionAreas: FunctionComponent<ICommonPaneProps> = ({
+  type,
 }) => {
-  const inactiveSelectionAreasStyle = useTypedSelector(
-    (state) =>
-      selectFactoryInactiveSelectionAreasStyle(
-        computeSelectionAreaStyle,
-        checkIsAreaInRelevantPane
-      )(state),
-    shallowEqual
-  )
+  const inactiveSelectionAreasStyle = useTypedSelector((state) => {
+    let inactiveSelectionAreasStyle: CSSProperties[]
+
+    switch (type) {
+      case 'BOTTOM_LEFT':
+        inactiveSelectionAreasStyle = selectInactiveSelectionAreasBottomLeftStyle(
+          state
+        )
+        break
+      case 'BOTTOM_RIGHT':
+        inactiveSelectionAreasStyle = selectInactiveSelectionAreasBottomRightStyle(
+          state
+        )
+        break
+      case 'TOP_LEFT':
+        inactiveSelectionAreasStyle = selectInactiveSelectionAreasTopLeftStyle(
+          state
+        )
+        break
+      case 'TOP_RIGHT':
+        inactiveSelectionAreasStyle = selectInactiveSelectionAreasTopRightStyle(
+          state
+        )
+        break
+    }
+
+    return inactiveSelectionAreasStyle
+  }, shallowEqual)
 
   return (
     <Fragment>

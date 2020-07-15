@@ -54,10 +54,7 @@ export interface INormalActiveCellProps {
 }
 
 export interface ICommonPaneProps {
-  checkIsActiveCellInCorrectPane: ICheckIsActiveCellInCorrectPane
-  checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
-  computeSelectionAreaStyle: IComputeSelectionAreaStyle
-  computeActiveCellStyle?: IComputeActiveCellStyle
+  type: 'TOP_RIGHT' | 'TOP_LEFT' | 'BOTTOM_RIGHT' | 'BOTTOM_LEFT'
 }
 
 export interface ISelectionAreaProps {
