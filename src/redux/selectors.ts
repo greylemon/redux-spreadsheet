@@ -21,22 +21,22 @@ import {
   computeSelectionAreaBottomLeftStyle,
   computeActiveCellBottomLeftStyle,
   checkIsActiveCellInBottomLeftPane,
-} from '../tools/styles/BottomLeftPane'
+} from '../tools/styles/bottom_left_pane'
 import {
   computeSelectionAreaBottomRightStyle,
   checkIsAreaInBottomRightPane,
   checkIsActiveCellInBottomRightPane,
-} from '../tools/styles/BottomRightPane'
+} from '../tools/styles/bottom_right_pane'
 import {
   checkIsAreaInTopLeftPane,
   computeSelectionAreaTopLeftStyle,
   checkIsActiveCellInTopLeftPane,
-} from '../tools/styles/TopLeftPane'
+} from '../tools/styles/top_left_pane'
 import {
   computeSelectionAreaTopRightStyle,
   checkIsAreaInTopRightPane,
   checkIsActiveCellInTopRightPane,
-} from '../tools/styles/TopRightPane'
+} from '../tools/styles/top_right_pane'
 
 export const selectExcel = (undoxExcel: IRootStore): IExcelState =>
   undoxExcel.present
