@@ -14,11 +14,9 @@ import {
   selectTableFreezeColumnCount,
   selectActiveResults,
 } from '../../redux/selectors'
-import BottomRightPane from './BottomRightPane'
+import CommonPane from './CommonPane'
 import { shallowEqual } from 'react-redux'
-import TopLeftPane from './TopLeftPane'
-import TopRightPane from './TopRightPane'
-import BottomLeftPane from './BottomLeftPane'
+
 import { ContextMenuTrigger } from 'react-contextmenu'
 import CustomContextMenu from './CustomContextMenu'
 
@@ -70,10 +68,16 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
         itemData={itemData}
         freezeColumnCount={tableFreezeColumnCount}
         freezeRowCount={tableFreezeRowCount}
-        extraTopLeftElement={<TopLeftPane key="top-left-pane" />}
-        extraTopRightElement={<TopRightPane key="top-right-pane" />}
-        extraBottomLeftElement={<BottomLeftPane key="bottom-left-pane" />}
-        extraBottomRightElement={<BottomRightPane key="bottom-right-pane" />}
+        extraTopLeftElement={<CommonPane key="top-left-pane" type="TOP_LEFT" />}
+        extraTopRightElement={
+          <CommonPane key="top-right-pane" type="TOP_RIGHT" />
+        }
+        extraBottomLeftElement={
+          <CommonPane key="bottom-left-pane" type="BOTTOM_LEFT" />
+        }
+        extraBottomRightElement={
+          <CommonPane key="bottom-right-pane" type="BOTTOM_RIGHT" />
+        }
       >
         {Cell}
       </VariableSizeGrid>

@@ -5,25 +5,11 @@ import { ICommonPaneProps } from '../../@types/components'
 import SelectionArea from './SelectionArea'
 import InactiveSelectionAreas from './InactiveSelectionAreas'
 
-const CommonActivityPane: FunctionComponent<ICommonPaneProps> = ({
-  computeActiveCellStyle,
-  checkIsActiveCellInCorrectPane,
-  computeSelectionAreaStyle,
-  checkIsAreaInRelevantPane,
-}) => (
+const CommonActivityPane: FunctionComponent<ICommonPaneProps> = ({ type }) => (
   <Fragment>
-    <ActiveCell
-      computeActiveCellStyle={computeActiveCellStyle}
-      checkIsActiveCellInCorrectPane={checkIsActiveCellInCorrectPane}
-    />
-    <SelectionArea
-      checkIsAreaInRelevantPane={checkIsAreaInRelevantPane}
-      computeSelectionAreaStyle={computeSelectionAreaStyle}
-    />
-    <InactiveSelectionAreas
-      checkIsAreaInRelevantPane={checkIsAreaInRelevantPane}
-      computeSelectionAreaStyle={computeSelectionAreaStyle}
-    />
+    <ActiveCell type={type} />
+    <SelectionArea type={type} />
+    <InactiveSelectionAreas type={type} />
   </Fragment>
 )
 

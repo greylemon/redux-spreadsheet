@@ -1,32 +1,27 @@
-import React, { Fragment, CSSProperties, FunctionComponent } from 'react'
-
 import {
-  ICheckIsActiveCellInCorrectPane,
   IComputeSelectionAreaStyle,
+  ICheckIsActiveCellInCorrectPane,
   ICheckIsAreaInRelevantPane,
 } from '../../@types/functions'
-import CommonActivityPane from './CommonPane'
 import {
   IColumnWidths,
   IColumnOffsets,
   IRowHeights,
   IRowOffsets,
-  ISelectionArea,
   IFreezeColumnCount,
   IFreezeRowCount,
+  ISelectionArea,
 } from '../../@types/state'
-import {
-  normalizeColumnWidthFromArray,
-  normalizeRowHeightFromArray,
-} from '../../tools/dimensions'
+import { CSSProperties } from 'react'
 import {
   STYLE_SELECTION_BORDER_WIDTH,
   STYLE_SELECTION_BORDER_COLOR,
   STYLE_SELECTION_BORDER_STYLE,
   STYLE_SELECTION_AREA_Z_INDEX,
 } from '../../constants/styles'
+import { normalizeColumnWidthFromArray, normalizeRowHeightFromArray } from '..'
 
-const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
+export const computeSelectionAreaBottomRightStyle: IComputeSelectionAreaStyle = (
   columnWidths: IColumnWidths,
   columnOffsets: IColumnOffsets,
   rowHeights: IRowHeights,
@@ -37,10 +32,10 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
 ) => {
   if (!selectionArea) return {}
 
-  let selectionAreaWidth
-  let selectionAreaHeight
-  let left
-  let top
+  let selectionAreaWidth: number
+  let selectionAreaHeight: number
+  let left: number
+  let top: number
 
   const { start, end } = selectionArea
 
@@ -133,28 +128,16 @@ const computeSelectionAreaStyle: IComputeSelectionAreaStyle = (
   return customSelectionStyle
 }
 
-const checkIsActiveCellInCorrectPane: ICheckIsActiveCellInCorrectPane = (
+export const checkIsActiveCellInBottomRightPane: ICheckIsActiveCellInCorrectPane = (
   position,
   freezeColumnCount,
   freezeRowCount
 ) => position.x > freezeColumnCount && position.y > freezeRowCount
 
-const checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane = (
+export const checkIsAreaInBottomRightPane: ICheckIsAreaInRelevantPane = (
   freezeColumnCount,
   freezeRowCount,
   area
 ) =>
   (area.start.x > freezeColumnCount || area.end.x > freezeColumnCount) &&
   (area.start.y > freezeRowCount || area.end.y > freezeRowCount)
-
-const BottomRightPane: FunctionComponent = () => (
-  <Fragment>
-    <CommonActivityPane
-      checkIsActiveCellInCorrectPane={checkIsActiveCellInCorrectPane}
-      checkIsAreaInRelevantPane={checkIsAreaInRelevantPane}
-      computeSelectionAreaStyle={computeSelectionAreaStyle}
-    />
-  </Fragment>
-)
-
-export default BottomRightPane
