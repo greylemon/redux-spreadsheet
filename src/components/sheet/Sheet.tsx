@@ -20,7 +20,7 @@ import TopLeftPane from './TopLeftPane'
 import TopRightPane from './TopRightPane'
 import BottomLeftPane from './BottomLeftPane'
 import { ContextMenuTrigger } from 'react-contextmenu'
-import CustomContextMenu from './CustomContextMenu'
+import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const gridRef = useRef<VariableSizeGrid>(null)

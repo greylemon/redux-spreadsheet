@@ -20,6 +20,7 @@ import {
 import { UPDATE_STATE } from './reducers/events'
 import { CHANGE_SHEET, CHANGE_SHEET_ORDER, ADD_SHEET } from './reducers/sheet'
 import { createInitialExcelState } from './tools/state'
+import { SELECT_ALL } from './reducers/keyboard/operations'
 
 export const initialExcelState = createInitialExcelState()
 
@@ -44,6 +45,7 @@ export const ExcelStore = createSlice({
     CHANGE_SHEET,
     CHANGE_SHEET_ORDER,
     ADD_SHEET,
+    SELECT_ALL,
   },
 })
 
