@@ -1,4 +1,10 @@
-import React, { useCallback, FunctionComponent, useRef, RefObject } from 'react'
+import React, {
+  useCallback,
+  FunctionComponent,
+  useRef,
+  RefObject,
+  Fragment,
+} from 'react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 
 import { ISheetName, IIsSheetNavigationOpen } from '../../@types/state'
@@ -116,18 +122,43 @@ const SheetOption: FunctionComponent<{
   )
 }
 
+const NormalSheetItem: FunctionComponent<{
+  sheetName: ISheetName
+  isSheetNavigationOpen: IIsSheetNavigationOpen
+  handleSheetPress: IHandleSheetPress
+  isActiveSheet: boolean
+  anchorRef: RefObject<HTMLLIElement>
+}> = ({ sheetName, anchorRef, isActiveSheet, isSheetNavigationOpen }) => (
+  <Fragment>
+    <SheetItemContent
+      isSheetNavigationOpen={isSheetNavigationOpen}
+      sheetName={sheetName}
+      isActiveSheet={isActiveSheet}
+    />
+    {isActiveSheet && (
+      <SheetOption
+        anchorRef={anchorRef}
+        isSheetNavigationOpen={isSheetNavigationOpen}
+      />
+    )}
+  </Fragment>
+)
+
 const SortableItem = SortableElement(
   ({
     sheetName,
-    activeSheetName,
     isSheetNavigationOpen,
     handleSheetPress,
   }: {
     sheetName: ISheetName
-    activeSheetName: ISheetName
     isSheetNavigationOpen: IIsSheetNavigationOpen
     handleSheetPress: IHandleSheetPress
   }) => {
+    const activeSheetName = useTypedSelector(
+      (state) => selectActiveSheetName(state),
+      shallowEqual
+    )
+
     const isActiveSheet = sheetName === activeSheetName
 
     const anchorRef = useRef<HTMLLIElement>(null)
@@ -148,17 +179,13 @@ const SortableItem = SortableElement(
         }`}
         onMouseDown={handleMouseDown}
       >
-        <SheetItemContent
+        <NormalSheetItem
+          anchorRef={anchorRef}
+          handleSheetPress={handleSheetPress}
+          isActiveSheet={isActiveSheet}
           isSheetNavigationOpen={isSheetNavigationOpen}
           sheetName={sheetName}
-          isActiveSheet={isActiveSheet}
         />
-        {isActiveSheet && (
-          <SheetOption
-            anchorRef={anchorRef}
-            isSheetNavigationOpen={isSheetNavigationOpen}
-          />
-        )}
       </li>
     )
   }
@@ -167,12 +194,10 @@ const SortableItem = SortableElement(
 const SortableList = SortableContainer(
   ({
     sheetNames,
-    activeSheetName,
     isSheetNavigationOpen,
     handleSheetPress,
   }: {
     sheetNames: string[]
-    activeSheetName: ISheetName
     isSheetNavigationOpen: IIsSheetNavigationOpen
     handleSheetPress: IHandleSheetPress
   }) => (
@@ -182,7 +207,6 @@ const SortableList = SortableContainer(
           key={`item-${sheetName}`}
           index={index}
           sheetName={sheetName}
-          activeSheetName={activeSheetName}
           isSheetNavigationOpen={isSheetNavigationOpen}
           handleSheetPress={handleSheetPress}
         />
@@ -227,18 +251,13 @@ const SheetNavigationOptions: FunctionComponent<{
   </div>
 )
 
-const SheetNavigation: FunctionComponent<{
+const HorizontalNavigation: FunctionComponent<{
   handleSheetPress: IHandleSheetPress
 }> = ({ handleSheetPress }) => {
   const dispatch = useDispatch()
-  const {
-    sheetNames,
-    activeSheetName,
-    isSheetNavigationOpen,
-  } = useTypedSelector(
+  const { sheetNames, isSheetNavigationOpen } = useTypedSelector(
     (state) => ({
       sheetNames: selectSheetNames(state),
-      activeSheetName: selectActiveSheetName(state),
       isSheetNavigationOpen: selectIsSheetNavigationOpen(state),
     }),
     shallowEqual
@@ -258,22 +277,27 @@ const SheetNavigation: FunctionComponent<{
   }, [dispatch, isSheetNavigationOpen])
 
   return (
-    <div className="sheetNavigation">
-      <SheetNavigationOptions handleSheetPress={handleSheetPress} />
-      <SortableList
-        axis="x"
-        lockAxis="x"
-        onSortEnd={handleSortEnd}
-        sheetNames={sheetNames}
-        activeSheetName={activeSheetName}
-        isSheetNavigationOpen={isSheetNavigationOpen}
-        handleSheetPress={handleSheetPress}
-        onSortStart={handleSortStart}
-        distance={1}
-      />
-    </div>
+    <SortableList
+      axis="x"
+      lockAxis="x"
+      onSortEnd={handleSortEnd}
+      sheetNames={sheetNames}
+      isSheetNavigationOpen={isSheetNavigationOpen}
+      handleSheetPress={handleSheetPress}
+      onSortStart={handleSortStart}
+      distance={1}
+    />
   )
 }
+
+const SheetNavigation: FunctionComponent<{
+  handleSheetPress: IHandleSheetPress
+}> = ({ handleSheetPress }) => (
+  <div className="sheetNavigation">
+    <SheetNavigationOptions handleSheetPress={handleSheetPress} />
+    <HorizontalNavigation handleSheetPress={handleSheetPress} />
+  </div>
+)
 
 const RoutedSheetNavigation = () => {
   const history = useHistory()
