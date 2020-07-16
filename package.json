@@ -1,6 +1,6 @@
 {
   "name": "redux-spreadsheet",
-  "version": "0.2.7",
+  "version": "0.2.8",
   "main": "dist/main.cjs.js",
   "module": "dist/main.esm.js",
   "license": "MIT",
@@ -26,7 +26,8 @@
     "build:def": "dts-gen -m redux-spreadsheet",
     "start:storybook": "start-storybook -p 4000",
     "build:storybook": "build-storybook -o docs",
-    "publish:storybook": "storybook-to-ghpages"
+    "publish:storybook": "storybook-to-ghpages",
+    "prepublish": "yarn build"
   },
   "files": [
     "dist",
