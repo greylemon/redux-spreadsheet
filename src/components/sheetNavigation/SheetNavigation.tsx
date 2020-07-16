@@ -4,6 +4,7 @@ import React, {
   useRef,
   RefObject,
   Fragment,
+  KeyboardEvent,
 } from 'react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 
@@ -13,6 +14,8 @@ import {
   selectSheetNames,
   selectActiveSheetName,
   selectIsSheetNavigationOpen,
+  selectIsSheetNameEdit,
+  selectSheetNameText,
 } from '../../redux/selectors'
 import { shallowEqual, useDispatch } from 'react-redux'
 import { ExcelActions } from '../../redux/store'
@@ -26,6 +29,7 @@ import {
   Paper,
   ClickAwayListener,
   MenuItem,
+  TextField,
 } from '@material-ui/core'
 import { ArrowDropDown } from '@material-ui/icons'
 
@@ -144,6 +148,52 @@ const NormalSheetItem: FunctionComponent<{
   </Fragment>
 )
 
+const SheetEditText: FunctionComponent = () => {
+  const dispatch = useDispatch()
+  const sheetNameEditText = useTypedSelector(
+    (state) => selectSheetNameText(state),
+    shallowEqual
+  )
+
+  const handleChange = useCallback(
+    ({ target: { value } }) => {
+      dispatch(ExcelActions.CHANGE_SHEET_NAME_TEXT(value))
+    },
+    [dispatch]
+  )
+
+  const handleChangeActiveSheetName = useCallback(() => {
+    dispatch(ExcelActions.CHANGE_ACTIVE_SHEET_NAME())
+  }, [dispatch])
+
+  const handleKeyDown = useCallback(
+    ({ key }: KeyboardEvent) => {
+      switch (key) {
+        case 'Enter':
+          handleChangeActiveSheetName()
+          break
+        case 'Escape':
+          dispatch(ExcelActions.RESET_SHEET_NAME_EDIT())
+          break
+      }
+    },
+    [dispatch, handleChangeActiveSheetName]
+  )
+
+  return (
+    <ClickAwayListener onClickAway={handleChangeActiveSheetName}>
+      <TextField
+        value={sheetNameEditText}
+        onChange={handleChange}
+        onKeyDown={handleKeyDown}
+        variant="outlined"
+        size="small"
+        autoFocus
+      />
+    </ClickAwayListener>
+  )
+}
+
 const SortableItem = SortableElement(
   ({
     sheetName,
@@ -154,8 +204,12 @@ const SortableItem = SortableElement(
     isSheetNavigationOpen: IIsSheetNavigationOpen
     handleSheetPress: IHandleSheetPress
   }) => {
-    const activeSheetName = useTypedSelector(
-      (state) => selectActiveSheetName(state),
+    const dispatch = useDispatch()
+    const { activeSheetName, isSheetEditText } = useTypedSelector(
+      (state) => ({
+        activeSheetName: selectActiveSheetName(state),
+        isSheetEditText: selectIsSheetNameEdit(state),
+      }),
       shallowEqual
     )
 
@@ -169,6 +223,12 @@ const SortableItem = SortableElement(
       }
     }, [isActiveSheet, isSheetNavigationOpen, handleSheetPress])
 
+    const handleDoubleClick = useCallback(() => {
+      if (isActiveSheet && !isSheetEditText) {
+        dispatch(ExcelActions.ENABLE_SHEET_NAME_EDIT())
+      }
+    }, [dispatch, isActiveSheet, isSheetEditText])
+
     return (
       <li
         ref={anchorRef}
@@ -178,14 +238,19 @@ const SortableItem = SortableElement(
             : 'sheetNavigationSheetContainer--inactive'
         }`}
         onMouseDown={handleMouseDown}
+        onDoubleClick={handleDoubleClick}
       >
-        <NormalSheetItem
-          anchorRef={anchorRef}
-          handleSheetPress={handleSheetPress}
-          isActiveSheet={isActiveSheet}
-          isSheetNavigationOpen={isSheetNavigationOpen}
-          sheetName={sheetName}
-        />
+        {isSheetEditText ? (
+          <SheetEditText />
+        ) : (
+          <NormalSheetItem
+            anchorRef={anchorRef}
+            handleSheetPress={handleSheetPress}
+            isActiveSheet={isActiveSheet}
+            isSheetNavigationOpen={isSheetNavigationOpen}
+            sheetName={sheetName}
+          />
+        )}
       </li>
     )
   }

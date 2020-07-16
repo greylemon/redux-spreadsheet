@@ -25,6 +25,11 @@ import {
   REMOVE_SHEET,
   OPEN_SHEET_NAVIGATION_OPTION,
   CLOSE_SHEET_NAVIGATION_OPTION,
+  CHANGE_SHEET_NAME_TEXT,
+  ENABLE_SHEET_NAME_EDIT,
+  DISABLE_SHEET_NAME_EDIT,
+  CHANGE_ACTIVE_SHEET_NAME,
+  RESET_SHEET_NAME_EDIT,
 } from './reducers/sheet'
 import { createInitialExcelState } from './tools/state'
 import { SELECT_ALL } from './reducers/keyboard/operations'
@@ -56,6 +61,11 @@ export const ExcelStore = createSlice({
     CLOSE_SHEET_NAVIGATION_OPTION,
     REMOVE_SHEET,
     SELECT_ALL,
+    CHANGE_SHEET_NAME_TEXT,
+    CHANGE_ACTIVE_SHEET_NAME,
+    ENABLE_SHEET_NAME_EDIT,
+    DISABLE_SHEET_NAME_EDIT,
+    RESET_SHEET_NAME_EDIT,
   },
 })
 

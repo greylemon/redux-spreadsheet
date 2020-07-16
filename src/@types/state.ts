@@ -206,6 +206,8 @@ export type IResults = {
 }
 
 export type IIsSheetNavigationOpen = boolean
+export type ISheetNameText = string
+export type IIsSheetEditText = boolean
 
 export type IExcelState = {
   name: IName
@@ -217,6 +219,7 @@ export type IExcelState = {
   // sheet specific - optimized state
   isEditMode: IIsEditMode
   isSheetNavigationOpen: IIsSheetNavigationOpen
+  isSheetNameEdit: IIsSheetEditText
   editorState: IEditorState
   selectionAreaIndex: ISelectionAreaIndex
   selectionArea?: ISelectionArea
@@ -225,4 +228,5 @@ export type IExcelState = {
   dependentReferences: IDependentReferences
   independentReferences: IIndependentReferences
   results: IResults
+  sheetNameText: ISheetNameText
 }
