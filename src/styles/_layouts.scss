@@ -4,6 +4,23 @@
 
 .excel {
   height: 100vh;
+
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+
+  &:focus {
+    outline-style: none;
+    box-shadow: none;
+    border-color: transparent;
+  }
 }
 
 .toolbar {
@@ -42,7 +59,6 @@
   
   padding: 0 12px;
   
-
   width: fit-content;
   white-space: nowrap;
 

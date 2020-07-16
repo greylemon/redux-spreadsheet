@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, FunctionComponent } from 'react'
+import React, {
+  useEffect,
+  useRef,
+  FunctionComponent,
+  useCallback,
+  KeyboardEvent,
+} from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../redux/redux'
@@ -15,12 +21,14 @@ import {
   selectActiveResults,
 } from '../../redux/selectors'
 import CommonPane from './CommonPane'
-import { shallowEqual } from 'react-redux'
+import { shallowEqual, useDispatch } from 'react-redux'
 
 import { ContextMenuTrigger } from 'react-contextmenu'
-import CustomContextMenu from './CustomContextMenu'
+import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
+import { ExcelActions } from '../../redux/store'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
+  const dispatch = useDispatch()
   const gridRef = useRef<VariableSizeGrid>(null)
   const {
     sheetResults,
@@ -47,16 +55,61 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     shallowEqual
   )
 
-  const itemData = { data, columnWidthsAdjusted, getRowHeight, sheetResults }
-
   useEffect(() => {
     const current = gridRef.current
 
     if (current) current.resetAfterIndices({ columnIndex: 0, rowIndex: 0 })
   }, [getColumnWidth, getRowHeight])
 
+  const handleDoubleClick = useCallback(() => {
+    dispatch(ExcelActions.CELL_DOUBLE_CLICK())
+  }, [dispatch])
+
+  const itemData = {
+    data,
+    columnWidthsAdjusted,
+    getRowHeight,
+    sheetResults,
+    handleDoubleClick,
+  }
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      const { shiftKey, key, ctrlKey, metaKey } = event
+
+      if (!ctrlKey || metaKey) {
+        if (key.length === 1) {
+          dispatch(ExcelActions.CELL_EDITOR_STATE_START())
+        } else if (key === 'Delete') {
+          dispatch(ExcelActions.CELL_KEY_DELETE())
+        } else {
+          if (shiftKey) {
+            // TODO
+            return
+          } else {
+            switch (key) {
+              case 'ArrowDown':
+                dispatch(ExcelActions.CELL_KEY_DOWN())
+                break
+              case 'ArrowRight':
+                dispatch(ExcelActions.CELL_KEY_RIGHT())
+                break
+              case 'ArrowLeft':
+                dispatch(ExcelActions.CELL_KEY_LEFT())
+                break
+              case 'ArrowUp':
+                dispatch(ExcelActions.CELL_KEY_UP())
+                break
+            }
+          }
+        }
+      }
+    },
+    [dispatch]
+  )
+
   return (
-    <div className="sheetGrid" tabIndex={-1}>
+    <div className="sheetGrid" tabIndex={-1} onKeyDown={handleKeyDown}>
       <VariableSizeGrid
         ref={gridRef}
         columnCount={tableColumnCount}

@@ -10689,7 +10689,7 @@ react-virtualized-auto-sizer@^1.0.2:
 
 "react-window@https://github.com/greylemon/react-window":
   version "1.8.5"
-  resolved "https://github.com/greylemon/react-window#70929d73dc42a7e3196d64253590506280efd383"
+  resolved "https://github.com/greylemon/react-window#cec7b0b3d607e7916f7bac819db6532e9765e4cc"
   dependencies:
     "@babel/runtime" "^7.0.0"
     memoize-one ">=3.1.1 <6"

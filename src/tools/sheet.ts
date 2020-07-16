@@ -7,7 +7,9 @@ export const generateNewSheetName = (sheetNames: ISheetNames): ISheetName => {
   sheetNames.forEach((name) => {
     const match = name.match(sheetNameRegex)
 
-    if (match && uniqueSheetNumber <= +match[1]) uniqueSheetNumber++
+    if (match && uniqueSheetNumber <= +match[1]) {
+      uniqueSheetNumber = Math.max(uniqueSheetNumber, +match[1] + 1)
+    }
   })
 
   return `Sheet${uniqueSheetNumber}`

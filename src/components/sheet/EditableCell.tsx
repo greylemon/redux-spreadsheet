@@ -61,7 +61,12 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 }) => {
   const dispatch = useDispatch()
 
-  const { data: sheetData, columnWidthsAdjusted, sheetResults } = data
+  const {
+    data: sheetData,
+    columnWidthsAdjusted,
+    sheetResults,
+    handleDoubleClick,
+  } = data
 
   const rowData = sheetData[rowIndex]
 
@@ -148,7 +153,11 @@ const EditableCell: FunctionComponent<ICellProps> = ({
   }, [value, sheetResults])
 
   return (
-    <div onMouseDown={handleMouseDown} onMouseEnter={handleMouseEnter}>
+    <div
+      onMouseDown={handleMouseDown}
+      onMouseEnter={handleMouseEnter}
+      onDoubleClick={handleDoubleClick}
+    >
       <span style={contentStyle} className={`unselectable cell cell__content`}>
         {cellComponent}
       </span>

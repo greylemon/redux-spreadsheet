@@ -65,6 +65,21 @@ export const selectActiveSheetName = createSelector(
   (excel) => excel.activeSheetName
 )
 
+export const selectSheetNameText = createSelector(
+  [selectExcel],
+  (excel) => excel.sheetNameText
+)
+
+export const selectIsSheetNameEdit = createSelector(
+  [selectExcel],
+  (excel) => excel.isSheetNameEdit
+)
+
+export const selectIsSheetNavigationOpen = createSelector(
+  [selectExcel],
+  (excel) => excel.isSheetNavigationOpen
+)
+
 export const selectSheetsMap = createSelector(
   [selectExcel],
   (excel) => excel.sheetsMap

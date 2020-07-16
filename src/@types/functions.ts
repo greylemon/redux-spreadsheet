@@ -10,6 +10,7 @@ import {
   IColumnOffsets,
   ISelectionArea,
   IExcelState,
+  ISheetName,
 } from './state'
 
 export interface IComputeActiveCellStyle {
@@ -57,5 +58,5 @@ export interface IHandleSave {
 }
 
 export interface IHandleSheetPress {
-  ({ index }: { index: number }): void
+  (sheetName: ISheetName): void
 }

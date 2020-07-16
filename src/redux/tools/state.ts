@@ -61,4 +61,7 @@ export const createInitialExcelState = (): IExcelState => ({
   dependentReferences: {},
   independentReferences: {},
   results: {},
+  isSheetNavigationOpen: false,
+  sheetNameText: '',
+  isSheetNameEdit: false,
 })

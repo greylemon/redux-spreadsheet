@@ -31,6 +31,7 @@ export type IItemData = {
   columnWidthsAdjusted: IColumnWidthsAdjusted
   getRowHeight: (index: number) => number
   sheetResults: IRowResults
+  handleDoubleClick: () => void
 }
 
 export interface ICellProps {

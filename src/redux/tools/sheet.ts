@@ -14,6 +14,7 @@ export const changeSheetInPlace = (
   state.activeSheetName = sheetName
 
   state.isEditMode = false
+  state.isSheetNavigationOpen = false
 
   const newActiveSheet = nSelectActiveSheet(state)
 

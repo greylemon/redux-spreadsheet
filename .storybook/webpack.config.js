@@ -1,4 +1,5 @@
 const customWebpackConfig = require('../webpack.config.js')
+const path = require('path')
 
 module.exports = ({ config }) => {
   config.module.rules = [
@@ -14,7 +15,7 @@ module.exports = ({ config }) => {
       exclude: [/node_modules/],
     },
     {
-      test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+      test: /\.(woff(2)?|ttf|eot|xlsx)(\?v=\d+\.\d+\.\d+)?$/,
       use: ['file-loader'],
     },
     {
@@ -37,11 +38,17 @@ module.exports = ({ config }) => {
   config.resolve.extensions = [
     ...config.resolve.extensions,
     ...customWebpackConfig.resolve.extensions,
+    '.xlsx',
   ]
 
   config.node = {
     fs: 'empty',
   }
+
+  config.resolve.modules = [
+    ...(config.resolve.modules || []),
+    path.resolve('./'),
+  ]
 
   return config
 }

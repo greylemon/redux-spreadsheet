@@ -8,7 +8,7 @@
 
 ## Demos
 
-[Storybook](https://greylemon.github.io/redux-spreadsheet/) - Currently has performance issues. The normal build doesn't have the issue.
+[Storybook](https://greylemon.github.io/redux-spreadsheet/)
 
 ## Setup
 
@@ -17,6 +17,8 @@
 `npm install redux-spreadsheet` or `yarn add redux-spreadsheet`
 
 ### Usage
+
+#### Without Initial State
 
 ```tsx
 import { Excel } from 'redux-spreadsheet'
@@ -42,38 +44,10 @@ const SomeComponent = () => {
 - `handleSave?`: gets called with store data when save event triggers
 - `isRouted?`: determines whether react-router is used for active sheet
 
-## Development
-
-### Installation dependencies
-
-Currently, the excel project is configured for [yarn](https://yarnpkg.com/) package manager
-
-Command: `yarn install`
-
-### Starting the Application
-
-Command: `yarn start`
-
-### Format and Linting
-
-- eslint: `yarn fix:eslint`
-
-- Prettier formatting: `yarn fix:prettier`
-
-Please check out the package.json of the excel for the scripts and other node configurations.
-
-### Testing
-
-Command: `yarn test`
-
-### Husky
-
-Husky is used here for performing tasks before a git commit. The tasks performed is finding code violations using eslint and formatting code using prettier.
-
 ## Focused Features
 
-- TypeScript support/type definitions
-- History
+- TypeScript support/type definitions (unsure how to generate)
+- History (Currently ignores most actions - map is not set up properly yet)
   - [x] Redo
   - [x] Undo
 - Commands
@@ -97,8 +71,9 @@ Husky is used here for performing tasks before a git commit. The tasks performed
   - [x] No page router
   - [ ] Return link
 - Formulas
-  - [x] Formula reference map
-  - [x] Formula computation - Derived from sheet data using selectors (this is really expensive, may switch to storing it in state in the future)
+  - [x] Formula dependents map
+  - [x] Formula independents map
+  - [x] Formula results
 - Formula bar
   - [ ] Input
 - File upload
@@ -106,7 +81,7 @@ Husky is used here for performing tasks before a git commit. The tasks performed
   - [x] Basic data
 - Block-styles
 - Sheet navigation
-  - [x] Change sheet name
+  - [x] Switch sheet name
   - [ ] Delete sheet name
   - [ ] Update sheet name
 - ...many more to do
@@ -124,11 +99,3 @@ Husky is used here for performing tasks before a git commit. The tasks performed
 | [fast-formula-parser](https://github.com/LesterLyu/fast-formula-parser)                              | used to compute formula cells in excel format                                                                                |
 | [react-window](https://github.com/bvaughn/react-window)                                              | React components for efficiently rendering large lists and tabular data                                                      |
 | [undox](https://github.com/greylemon/undox)                                                          | Fork of [JannieBeck](https://github.com/JannicBeck/undox) with ignore history                                                |
-
-## History - Redo and Undo
-
-### Potential Issues
-
-For implementation, there are things that need to be done carefully for history.
-
-History might trigger unintended state operations that would normally be safe.
