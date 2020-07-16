@@ -65,15 +65,29 @@ const SheetItemContent: FunctionComponent<{
   sheetName: ISheetName
   isActiveSheet: boolean
   isSheetNavigationOpen: IIsSheetNavigationOpen
-}> = ({ sheetName, isActiveSheet, isSheetNavigationOpen }) => (
-  <div className="sheetNavigationSheet">
-    <span className="sheetNavigationSheet__sheetName">{sheetName}</span>
-    <SheetOptionButton
-      isActive={isActiveSheet}
-      isSheetNavigationOpen={isSheetNavigationOpen}
-    />
-  </div>
-)
+}> = ({ sheetName, isActiveSheet, isSheetNavigationOpen }) => {
+  const dispatch = useDispatch()
+
+  const handleDoubleClick = useCallback(() => {
+    if (isActiveSheet) {
+      dispatch(ExcelActions.ENABLE_SHEET_NAME_EDIT())
+    }
+  }, [dispatch, isActiveSheet])
+  return (
+    <div className="sheetNavigationSheet">
+      <span
+        className="sheetNavigationSheet__sheetName"
+        onDoubleClick={handleDoubleClick}
+      >
+        {sheetName}
+      </span>
+      <SheetOptionButton
+        isActive={isActiveSheet}
+        isSheetNavigationOpen={isSheetNavigationOpen}
+      />
+    </div>
+  )
+}
 
 const SheetOption: FunctionComponent<{
   anchorRef: RefObject<HTMLLIElement>
@@ -204,7 +218,6 @@ const SortableItem = SortableElement(
     isSheetNavigationOpen: IIsSheetNavigationOpen
     handleSheetPress: IHandleSheetPress
   }) => {
-    const dispatch = useDispatch()
     const { activeSheetName, isSheetEditText } = useTypedSelector(
       (state) => ({
         activeSheetName: selectActiveSheetName(state),
@@ -223,12 +236,6 @@ const SortableItem = SortableElement(
       }
     }, [isActiveSheet, isSheetNavigationOpen, handleSheetPress])
 
-    const handleDoubleClick = useCallback(() => {
-      if (isActiveSheet && !isSheetEditText) {
-        dispatch(ExcelActions.ENABLE_SHEET_NAME_EDIT())
-      }
-    }, [dispatch, isActiveSheet, isSheetEditText])
-
     return (
       <li
         ref={anchorRef}
@@ -238,7 +245,6 @@ const SortableItem = SortableElement(
             : 'sheetNavigationSheetContainer--inactive'
         }`}
         onMouseDown={handleMouseDown}
-        onDoubleClick={handleDoubleClick}
       >
         {isSheetEditText ? (
           <SheetEditText />
