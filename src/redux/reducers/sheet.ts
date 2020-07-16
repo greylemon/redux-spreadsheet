@@ -58,8 +58,10 @@ export const REMOVE_SHEET = (state: IExcelState): IExcelState => {
     ...sheetNames.slice(sheetIndex + 1),
   ]
 
-  state.activeSheetName =
+  const newActiveSheet =
     state.sheetNames[sheetIndex - 1 >= 0 ? sheetIndex - 1 : sheetIndex]
+
+  changeSheetInPlace(newActiveSheet, state)
 
   return state
 }

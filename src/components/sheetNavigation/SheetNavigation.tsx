@@ -68,8 +68,7 @@ const SheetItemContent: FunctionComponent<{
 const SheetOption: FunctionComponent<{
   anchorRef: RefObject<HTMLLIElement>
   isSheetNavigationOpen: IIsSheetNavigationOpen
-  handleClose: () => void
-}> = ({ anchorRef, isSheetNavigationOpen, handleClose }) => {
+}> = ({ anchorRef, isSheetNavigationOpen }) => {
   const dispatch = useDispatch()
 
   const sheetNames = useTypedSelector(
@@ -85,6 +84,10 @@ const SheetOption: FunctionComponent<{
     },
     [dispatch, anchorRef]
   )
+
+  const handleClose = useCallback(() => {
+    dispatch(ExcelActions.CLOSE_SHEET_NAVIGATION_OPTION())
+  }, [dispatch])
 
   const handleDeleteSheet = useCallback(() => {
     dispatch(ExcelActions.REMOVE_SHEET())
@@ -125,22 +128,15 @@ const SortableItem = SortableElement(
     isSheetNavigationOpen: IIsSheetNavigationOpen
     handleSheetPress: IHandleSheetPress
   }) => {
-    const dispatch = useDispatch()
-
     const isActiveSheet = sheetName === activeSheetName
 
     const anchorRef = useRef<HTMLLIElement>(null)
 
-    const handleClose = useCallback(() => {
-      dispatch(ExcelActions.CLOSE_SHEET_NAVIGATION_OPTION())
-    }, [dispatch])
-
     const handleMouseDown = useCallback(() => {
       if (!isActiveSheet) {
         handleSheetPress(sheetName)
-        if (isSheetNavigationOpen) handleClose()
       }
-    }, [isActiveSheet, isSheetNavigationOpen, handleSheetPress, handleClose])
+    }, [isActiveSheet, isSheetNavigationOpen, handleSheetPress])
 
     return (
       <li
@@ -161,7 +157,6 @@ const SortableItem = SortableElement(
           <SheetOption
             anchorRef={anchorRef}
             isSheetNavigationOpen={isSheetNavigationOpen}
-            handleClose={handleClose}
           />
         )}
       </li>
