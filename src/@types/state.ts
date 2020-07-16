@@ -208,6 +208,7 @@ export type IResults = {
 export type IIsSheetNavigationOpen = boolean
 export type ISheetNameText = string
 export type IIsSheetEditText = boolean
+export type IIsSelectionMode = boolean
 
 export type IExcelState = {
   name: IName
@@ -220,6 +221,7 @@ export type IExcelState = {
   isEditMode: IIsEditMode
   isSheetNavigationOpen: IIsSheetNavigationOpen
   isSheetNameEdit: IIsSheetEditText
+  isSelectionMode: IIsSelectionMode
   editorState: IEditorState
   selectionAreaIndex: ISelectionAreaIndex
   selectionArea?: ISelectionArea

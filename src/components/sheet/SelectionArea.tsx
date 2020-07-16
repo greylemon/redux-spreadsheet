@@ -1,7 +1,6 @@
 import React, { Fragment, FunctionComponent, CSSProperties } from 'react'
 import { ICommonPaneProps } from '../../@types/components'
 import {
-  selectSelectionArea,
   selectSelectionAreaBottomLeftStyle,
   selectIsAreaInBottomLeftPane,
   selectSelectionAreaBottomRightStyle,
@@ -10,6 +9,7 @@ import {
   selectSelectionAreaTopRightStyle,
   selectIsAreaInTopRightPane,
   selectIsAreaInBottomRightPane,
+  selectIsSelectionMode,
 } from '../../redux/selectors'
 import { useTypedSelector } from '../../redux/redux'
 import { shallowEqual } from 'react-redux'
@@ -17,8 +17,8 @@ import { shallowEqual } from 'react-redux'
 const SelectionArea: FunctionComponent<ICommonPaneProps> = ({ type }) => {
   const {
     isInCorrectPane,
-    selectionArea,
     selectionAreaStyle,
+    isSelectionMode,
   } = useTypedSelector((state) => {
     let selectionAreaStyle: CSSProperties
     let isInCorrectPane: boolean
@@ -44,18 +44,18 @@ const SelectionArea: FunctionComponent<ICommonPaneProps> = ({ type }) => {
 
     return {
       isInCorrectPane,
-      selectionArea: selectSelectionArea(state),
+      isSelectionMode: selectIsSelectionMode(state),
       selectionAreaStyle,
     }
   }, shallowEqual)
 
-  if (!selectionArea || !isInCorrectPane) return <Fragment />
-
-  return (
+  return isSelectionMode && isInCorrectPane ? (
     <div
       className="selectionArea selectionArea__active"
       style={selectionAreaStyle}
     />
+  ) : (
+    <Fragment />
   )
 }
 

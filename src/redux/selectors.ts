@@ -115,6 +115,11 @@ export const selectResults = createSelector(
   (excel) => excel.results
 )
 
+export const selectIsSelectionMode = createSelector(
+  [selectExcel],
+  (excel) => excel.isSelectionMode
+)
+
 // ===========================================================================
 // ACTIVE SHEET
 // ===========================================================================

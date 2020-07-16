@@ -47,6 +47,10 @@ export const createInitialExcelState = (): IExcelState => ({
   name: '',
 
   isEditMode: false,
+  isSheetNavigationOpen: false,
+  isSheetNameEdit: false,
+  isSelectionMode: false,
+
   editorState: EditorState.createEmpty(),
   activeSheetName: SHEET_NAME,
 
@@ -61,7 +65,5 @@ export const createInitialExcelState = (): IExcelState => ({
   dependentReferences: {},
   independentReferences: {},
   results: {},
-  isSheetNavigationOpen: false,
   sheetNameText: '',
-  isSheetNameEdit: false,
 })
