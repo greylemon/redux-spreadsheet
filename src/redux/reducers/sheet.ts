@@ -27,6 +27,9 @@ export const CHANGE_SHEET = (
 ): IExcelState => {
   const sheetName = action.payload
 
+  state.isSheetNameEdit = false
+  state.sheetNameText = ''
+
   changeSheetInPlace(sheetName, state)
 
   return state
@@ -116,10 +119,10 @@ export const CHANGE_ACTIVE_SHEET_NAME = (state: IExcelState): IExcelState => {
   const newActiveSheetName = state.sheetNameText
   const sheetNames = state.sheetNames
 
-  if (sheetNames.includes(newActiveSheetName)) return state
-
   state.isSheetNameEdit = false
   state.sheetNameText = ''
+
+  if (sheetNames.includes(newActiveSheetName)) return state
 
   const sheetIndex = sheetNames.findIndex(
     (sheetName) => sheetName === state.activeSheetName
