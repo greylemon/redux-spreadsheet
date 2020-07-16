@@ -54,10 +54,13 @@ const SomeComponent = () => {
   - [x] Save
   - [x] Arrow keys
   - [x] Delete Area
+  - [x] Select all
   - [ ] Shift arrow keys
 - Selection
   - [x] Single selection
   - [x] Multi-selection
+  - [x] Selection slicing
+  - [ ] Select rows / columns
 - Inline-styles/rich-text
   - [x] Bold
   - [x] Italic
