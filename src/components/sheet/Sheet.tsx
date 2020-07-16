@@ -1,4 +1,10 @@
-import React, { useEffect, useRef, FunctionComponent, useCallback } from 'react'
+import React, {
+  useEffect,
+  useRef,
+  FunctionComponent,
+  useCallback,
+  KeyboardEvent,
+} from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../redux/redux'
@@ -67,8 +73,43 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     handleDoubleClick,
   }
 
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      const { shiftKey, key, ctrlKey, metaKey } = event
+
+      if (!ctrlKey || metaKey) {
+        if (key.length === 1) {
+          dispatch(ExcelActions.CELL_EDITOR_STATE_START())
+        } else if (key === 'Delete') {
+          dispatch(ExcelActions.CELL_KEY_DELETE())
+        } else {
+          if (shiftKey) {
+            // TODO
+            return
+          } else {
+            switch (key) {
+              case 'ArrowDown':
+                dispatch(ExcelActions.CELL_KEY_DOWN())
+                break
+              case 'ArrowRight':
+                dispatch(ExcelActions.CELL_KEY_RIGHT())
+                break
+              case 'ArrowLeft':
+                dispatch(ExcelActions.CELL_KEY_LEFT())
+                break
+              case 'ArrowUp':
+                dispatch(ExcelActions.CELL_KEY_UP())
+                break
+            }
+          }
+        }
+      }
+    },
+    [dispatch]
+  )
+
   return (
-    <div className="sheetGrid" tabIndex={-1}>
+    <div className="sheetGrid" tabIndex={-1} onKeyDown={handleKeyDown}>
       <VariableSizeGrid
         ref={gridRef}
         columnCount={tableColumnCount}

@@ -16,7 +16,8 @@ export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
 
 export const CELL_KEY_DOWN = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  if (state.activeCellPosition.y >= activeSheet.rowCount) return state
+  if (state.isEditMode || state.activeCellPosition.y >= activeSheet.rowCount)
+    return state
 
   const mergeData = nSelectMergeCell(activeSheet.data, state.activeCellPosition)
 
@@ -36,7 +37,7 @@ export const CELL_KEY_UP_SHIFT = (state: IExcelState): IExcelState => {
 
 export const CELL_KEY_UP = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  if (state.activeCellPosition.y < 2) return state
+  if (state.isEditMode || state.activeCellPosition.y < 2) return state
 
   const mergeData = nSelectMergeCell(activeSheet.data, state.activeCellPosition)
 
@@ -56,7 +57,8 @@ export const CELL_KEY_RIGHT_SHIFT = (state: IExcelState): IExcelState => {
 
 export const CELL_KEY_RIGHT = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  if (state.activeCellPosition.x >= activeSheet.columnCount) return state
+  if (state.isEditMode || state.activeCellPosition.x >= activeSheet.columnCount)
+    return state
 
   const mergeData = nSelectMergeCell(activeSheet.data, state.activeCellPosition)
 
@@ -76,7 +78,7 @@ export const CELL_KEY_LEFT_SHIFT = (state: IExcelState): IExcelState => {
 
 export const CELL_KEY_LEFT = (state: IExcelState): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  if (state.activeCellPosition.x < 2) return state
+  if (state.isEditMode || state.activeCellPosition.x < 2) return state
 
   const mergeData = nSelectMergeCell(activeSheet.data, state.activeCellPosition)
 
@@ -100,12 +102,16 @@ export const CELL_EDITOR_STATE_UPDATE = (
 }
 
 export const CELL_EDITOR_STATE_START = (state: IExcelState): IExcelState => {
+  if (state.isEditMode) return state
+
   state.isEditMode = true
   state.editorState = EditorState.moveFocusToEnd(EditorState.createEmpty())
   return state
 }
 
 export const CELL_KEY_DELETE = (state: IExcelState): IExcelState => {
+  if (state.isEditMode) return state
+
   const activeCell = state.activeCellPosition
   const cellMapSet = getCellMapSetFromAreas([
     ...state.inactiveSelectionAreas,
