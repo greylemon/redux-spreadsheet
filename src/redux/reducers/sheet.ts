@@ -89,6 +89,7 @@ export const CLOSE_SHEET_NAVIGATION_OPTION = (
 export const ENABLE_SHEET_NAME_EDIT = (state: IExcelState): IExcelState => {
   state.isSheetNameEdit = true
   state.sheetNameText = state.activeSheetName
+  state.isSheetNavigationOpen = false
 
   return state
 }

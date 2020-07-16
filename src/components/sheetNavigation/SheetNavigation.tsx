@@ -77,6 +77,7 @@ const SheetItemContent: FunctionComponent<{
       dispatch(ExcelActions.ENABLE_SHEET_NAME_EDIT())
     }
   }, [dispatch, isActiveSheet])
+
   return (
     <div className="sheetNavigationSheet">
       <span
@@ -118,8 +119,13 @@ const SheetOption: FunctionComponent<{
   }, [dispatch])
 
   const handleDeleteSheet = useCallback(() => {
-    dispatch(ExcelActions.REMOVE_SHEET())
     handleClose()
+    dispatch(ExcelActions.REMOVE_SHEET())
+  }, [dispatch, handleClose])
+
+  const handleStartEdit = useCallback(() => {
+    handleClose()
+    dispatch(ExcelActions.ENABLE_SHEET_NAME_EDIT())
   }, [dispatch, handleClose])
 
   return (
@@ -137,6 +143,7 @@ const SheetOption: FunctionComponent<{
             >
               Delete
             </MenuItem>
+            <MenuItem onClick={handleStartEdit}>Rename</MenuItem>
           </MenuList>
         </ClickAwayListener>
       </Paper>
@@ -157,7 +164,7 @@ const NormalSheetItem: FunctionComponent<{
       sheetName={sheetName}
       isActiveSheet={isActiveSheet}
     />
-    {isActiveSheet && (
+    {isActiveSheet && anchorRef.current && (
       <SheetOption
         anchorRef={anchorRef}
         isSheetNavigationOpen={isSheetNavigationOpen}
