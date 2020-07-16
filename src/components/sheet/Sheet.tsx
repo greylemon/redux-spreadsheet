@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, FunctionComponent } from 'react'
+import React, { useEffect, useRef, FunctionComponent, useCallback } from 'react'
 import { VariableSizeGrid } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../redux/redux'
@@ -15,12 +15,14 @@ import {
   selectActiveResults,
 } from '../../redux/selectors'
 import CommonPane from './CommonPane'
-import { shallowEqual } from 'react-redux'
+import { shallowEqual, useDispatch } from 'react-redux'
 
 import { ContextMenuTrigger } from 'react-contextmenu'
 import CustomContextMenu from './CustomContextMenu'
+import { ExcelActions } from '../../redux/store'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
+  const dispatch = useDispatch()
   const gridRef = useRef<VariableSizeGrid>(null)
   const {
     sheetResults,
@@ -47,13 +49,23 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     shallowEqual
   )
 
-  const itemData = { data, columnWidthsAdjusted, getRowHeight, sheetResults }
-
   useEffect(() => {
     const current = gridRef.current
 
     if (current) current.resetAfterIndices({ columnIndex: 0, rowIndex: 0 })
   }, [getColumnWidth, getRowHeight])
+
+  const handleDoubleClick = useCallback(() => {
+    dispatch(ExcelActions.CELL_DOUBLE_CLICK())
+  }, [dispatch])
+
+  const itemData = {
+    data,
+    columnWidthsAdjusted,
+    getRowHeight,
+    sheetResults,
+    handleDoubleClick,
+  }
 
   return (
     <div className="sheetGrid" tabIndex={-1}>
