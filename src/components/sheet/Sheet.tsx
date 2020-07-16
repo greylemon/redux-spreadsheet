@@ -18,7 +18,7 @@ import CommonPane from './CommonPane'
 import { shallowEqual, useDispatch } from 'react-redux'
 
 import { ContextMenuTrigger } from 'react-contextmenu'
-import CustomContextMenu from './CustomContextMenu'
+import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 import { ExcelActions } from '../../redux/store'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {

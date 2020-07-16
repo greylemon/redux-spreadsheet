@@ -27,6 +27,7 @@ import {
   CLOSE_SHEET_NAVIGATION_OPTION,
 } from './reducers/sheet'
 import { createInitialExcelState } from './tools/state'
+import { SELECT_ALL } from './reducers/keyboard/operations'
 
 export const initialExcelState = createInitialExcelState()
 
@@ -54,6 +55,7 @@ export const ExcelStore = createSlice({
     OPEN_SHEET_NAVIGATION_OPTION,
     CLOSE_SHEET_NAVIGATION_OPTION,
     REMOVE_SHEET,
+    SELECT_ALL,
   },
 })
 

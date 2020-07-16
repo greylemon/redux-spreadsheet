@@ -41,6 +41,9 @@ const WindowKeyboardListener: FunctionComponent<{
               if (handleSave) dispatch(saveWorkbook(handleSave))
               event.preventDefault()
               break
+            case 'a':
+              dispatch(ExcelActions.SELECT_ALL())
+              break
           }
         } else if (key.length === 1) {
           dispatch(ExcelActions.CELL_EDITOR_STATE_START())
