@@ -8,7 +8,11 @@ import React, {
 } from 'react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 
-import { ISheetName, IIsSheetNavigationOpen } from '../../@types/state'
+import {
+  ISheetName,
+  IIsSheetNavigationOpen,
+  IIsSheetEditText,
+} from '../../@types/state'
 import { useTypedSelector } from '../../redux/redux'
 import {
   selectSheetNames,
@@ -65,15 +69,29 @@ const SheetItemContent: FunctionComponent<{
   sheetName: ISheetName
   isActiveSheet: boolean
   isSheetNavigationOpen: IIsSheetNavigationOpen
-}> = ({ sheetName, isActiveSheet, isSheetNavigationOpen }) => (
-  <div className="sheetNavigationSheet">
-    <span className="sheetNavigationSheet__sheetName">{sheetName}</span>
-    <SheetOptionButton
-      isActive={isActiveSheet}
-      isSheetNavigationOpen={isSheetNavigationOpen}
-    />
-  </div>
-)
+}> = ({ sheetName, isActiveSheet, isSheetNavigationOpen }) => {
+  const dispatch = useDispatch()
+
+  const handleDoubleClick = useCallback(() => {
+    if (isActiveSheet) {
+      dispatch(ExcelActions.ENABLE_SHEET_NAME_EDIT())
+    }
+  }, [dispatch, isActiveSheet])
+  return (
+    <div className="sheetNavigationSheet">
+      <span
+        className="sheetNavigationSheet__sheetName"
+        onDoubleClick={handleDoubleClick}
+      >
+        {sheetName}
+      </span>
+      <SheetOptionButton
+        isActive={isActiveSheet}
+        isSheetNavigationOpen={isSheetNavigationOpen}
+      />
+    </div>
+  )
+}
 
 const SheetOption: FunctionComponent<{
   anchorRef: RefObject<HTMLLIElement>
@@ -181,7 +199,10 @@ const SheetEditText: FunctionComponent = () => {
   )
 
   return (
-    <ClickAwayListener onClickAway={handleChangeActiveSheetName}>
+    <ClickAwayListener
+      onClickAway={handleChangeActiveSheetName}
+      mouseEvent="onMouseDown"
+    >
       <TextField
         value={sheetNameEditText}
         onChange={handleChange}
@@ -196,23 +217,18 @@ const SheetEditText: FunctionComponent = () => {
 
 const SortableItem = SortableElement(
   ({
+    activeSheetName,
+    isSheetEditText,
     sheetName,
     isSheetNavigationOpen,
     handleSheetPress,
   }: {
+    activeSheetName: ISheetName
+    isSheetEditText: IIsSheetEditText
     sheetName: ISheetName
     isSheetNavigationOpen: IIsSheetNavigationOpen
     handleSheetPress: IHandleSheetPress
   }) => {
-    const dispatch = useDispatch()
-    const { activeSheetName, isSheetEditText } = useTypedSelector(
-      (state) => ({
-        activeSheetName: selectActiveSheetName(state),
-        isSheetEditText: selectIsSheetNameEdit(state),
-      }),
-      shallowEqual
-    )
-
     const isActiveSheet = sheetName === activeSheetName
 
     const anchorRef = useRef<HTMLLIElement>(null)
@@ -223,12 +239,6 @@ const SortableItem = SortableElement(
       }
     }, [isActiveSheet, isSheetNavigationOpen, handleSheetPress])
 
-    const handleDoubleClick = useCallback(() => {
-      if (isActiveSheet && !isSheetEditText) {
-        dispatch(ExcelActions.ENABLE_SHEET_NAME_EDIT())
-      }
-    }, [dispatch, isActiveSheet, isSheetEditText])
-
     return (
       <li
         ref={anchorRef}
@@ -238,9 +248,8 @@ const SortableItem = SortableElement(
             : 'sheetNavigationSheetContainer--inactive'
         }`}
         onMouseDown={handleMouseDown}
-        onDoubleClick={handleDoubleClick}
       >
-        {isSheetEditText ? (
+        {isSheetEditText && isActiveSheet ? (
           <SheetEditText />
         ) : (
           <NormalSheetItem
@@ -265,19 +274,32 @@ const SortableList = SortableContainer(
     sheetNames: string[]
     isSheetNavigationOpen: IIsSheetNavigationOpen
     handleSheetPress: IHandleSheetPress
-  }) => (
-    <ul className="sheetNavigation__sheets">
-      {sheetNames.map((sheetName, index) => (
-        <SortableItem
-          key={`item-${sheetName}`}
-          index={index}
-          sheetName={sheetName}
-          isSheetNavigationOpen={isSheetNavigationOpen}
-          handleSheetPress={handleSheetPress}
-        />
-      ))}
-    </ul>
-  )
+  }) => {
+    const { activeSheetName, isSheetEditText } = useTypedSelector(
+      (state) => ({
+        activeSheetName: selectActiveSheetName(state),
+        isSheetEditText: selectIsSheetNameEdit(state),
+      }),
+      shallowEqual
+    )
+
+    return (
+      <ul className="sheetNavigation__sheets">
+        {sheetNames.map((sheetName, index) => (
+          <SortableItem
+            key={`item-${sheetName}`}
+            index={index}
+            activeSheetName={activeSheetName}
+            isSheetEditText={isSheetEditText}
+            sheetName={sheetName}
+            isSheetNavigationOpen={isSheetNavigationOpen}
+            handleSheetPress={handleSheetPress}
+            disabled={isSheetEditText}
+          />
+        ))}
+      </ul>
+    )
+  }
 )
 
 const SheetAdder: FunctionComponent = () => {
