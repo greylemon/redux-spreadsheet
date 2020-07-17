@@ -17,7 +17,7 @@ import {
   CELL_EDITOR_STATE_START,
   CELL_KEY_DELETE,
 } from './reducers/keyboard/cell'
-import { UPDATE_STATE } from './reducers/events'
+import { UPDATE_STATE, UPDATE_SCROLL_OFFSET } from './reducers/events'
 import {
   CHANGE_SHEET,
   CHANGE_SHEET_ORDER,
@@ -66,6 +66,7 @@ export const ExcelStore = createSlice({
     ENABLE_SHEET_NAME_EDIT,
     DISABLE_SHEET_NAME_EDIT,
     RESET_SHEET_NAME_EDIT,
+    UPDATE_SCROLL_OFFSET,
   },
 })
 
@@ -85,6 +86,7 @@ const ignoredActionsMap = {
   [ExcelActions.CELL_DOUBLE_CLICK.type]: true,
   [ExcelActions.CELL_EDITOR_STATE_START.type]: true,
   [ExcelActions.UPDATE_STATE.type]: true,
+  [ExcelActions.UPDATE_SCROLL_OFFSET.type]: true,
 }
 
 const UndoxExcelStore = undox(

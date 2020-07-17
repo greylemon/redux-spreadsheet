@@ -129,7 +129,7 @@ export const CELL_MOUSE_ENTER = (
   action: PayloadAction<IPosition>
 ): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  if (state.selectionArea) {
+  if (state.isSelectionMode) {
     const position = action.payload
     const orderedArea = getOrderedAreaFromPositions(
       position,

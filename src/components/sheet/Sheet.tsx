@@ -5,7 +5,7 @@ import React, {
   useCallback,
   KeyboardEvent,
 } from 'react'
-import { VariableSizeGrid } from 'react-window'
+import { VariableSizeGrid, GridOnScrollProps } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { useTypedSelector } from '../../redux/redux'
 import Cell from './Cell'
@@ -26,6 +26,9 @@ import { shallowEqual, useDispatch } from 'react-redux'
 import { ContextMenuTrigger } from 'react-contextmenu'
 import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 import { ExcelActions } from '../../redux/store'
+import { getDocumentOffsetPosition } from '../../tools/dom'
+import { IPosition, IArea } from '../../@types/state'
+import { customMouseMove } from '../../redux/thunk'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
@@ -108,8 +111,54 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     [dispatch]
   )
 
+  window.onmousemove = useCallback(
+    (event: MouseEvent) => {
+      if (event.buttons === 1) {
+        const sheet = document.getElementById('sheet')
+        const sheetLocation = getDocumentOffsetPosition(sheet)
+
+        const position: IPosition = { x: event.clientX, y: event.clientY }
+        const sheetAreaStart: IPosition = {
+          x: sheetLocation.left,
+          y: sheetLocation.top,
+        }
+        const sheetAreaEnd: IPosition = {
+          x: sheetAreaStart.x + sheet.scrollWidth,
+          y: sheetAreaStart.y + sheet.scrollHeight,
+        }
+        const sheetArea: IArea = { start: sheetAreaStart, end: sheetAreaEnd }
+
+        dispatch(customMouseMove(position, sheetArea))
+      }
+    },
+    [dispatch]
+  )
+
+  useEffect(() => {
+    return () => {
+      window.onmousedown = null
+    }
+  }, [])
+
+  const handleUpdateScroll = useCallback(
+    (scrollProps: GridOnScrollProps) => {
+      dispatch(
+        ExcelActions.UPDATE_SCROLL_OFFSET({
+          x: scrollProps.scrollLeft,
+          y: scrollProps.scrollTop,
+        })
+      )
+    },
+    [dispatch]
+  )
+
   return (
-    <div className="sheetGrid" tabIndex={-1} onKeyDown={handleKeyDown}>
+    <div
+      id="sheet"
+      className="sheetGrid"
+      tabIndex={-1}
+      onKeyDown={handleKeyDown}
+    >
       <VariableSizeGrid
         ref={gridRef}
         columnCount={tableColumnCount}
@@ -131,6 +180,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
         extraBottomRightElement={
           <CommonPane key="bottom-right-pane" type="BOTTOM_RIGHT" />
         }
+        onScroll={handleUpdateScroll}
       >
         {Cell}
       </VariableSizeGrid>

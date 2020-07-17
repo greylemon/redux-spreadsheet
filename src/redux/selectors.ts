@@ -120,6 +120,11 @@ export const selectIsSelectionMode = createSelector(
   (excel) => excel.isSelectionMode
 )
 
+export const selectScrollOffset = createSelector(
+  [selectExcel],
+  (excel) => excel.scrollOffset
+)
+
 // ===========================================================================
 // ACTIVE SHEET
 // ===========================================================================

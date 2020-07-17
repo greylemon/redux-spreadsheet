@@ -209,6 +209,7 @@ export type IIsSheetNavigationOpen = boolean
 export type ISheetNameText = string
 export type IIsSheetEditText = boolean
 export type IIsSelectionMode = boolean
+export type IScrollOffset = IPosition
 
 export type IExcelState = {
   name: IName
@@ -231,4 +232,5 @@ export type IExcelState = {
   independentReferences: IIndependentReferences
   results: IResults
   sheetNameText: ISheetNameText
+  scrollOffset: IScrollOffset
 }

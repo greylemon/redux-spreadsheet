@@ -66,4 +66,5 @@ export const createInitialExcelState = (): IExcelState => ({
   independentReferences: {},
   results: {},
   sheetNameText: '',
+  scrollOffset: { x: 0, y: 0 },
 })

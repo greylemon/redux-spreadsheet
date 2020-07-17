@@ -4,7 +4,11 @@ import { ICellProps } from '../../@types/components'
 
 const RowCell: FunctionComponent<ICellProps> = ({ style, rowIndex }) => {
   return (
-    <div className="unselectable cell cellHeader cellHeader--row" style={style}>
+    <div
+      id={`row={"y":${rowIndex}}`}
+      className="unselectable cell cellHeader cellHeader--row"
+      style={style}
+    >
       {rowIndex}
     </div>
   )
