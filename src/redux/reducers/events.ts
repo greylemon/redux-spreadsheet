@@ -1,4 +1,4 @@
-import { IExcelState, IScrollOffset } from '../../@types/state'
+import { IExcelState, IScrollOffset, IPosition } from '../../@types/state'
 import { PayloadAction } from '@reduxjs/toolkit'
 
 export const UPDATE_STATE = (
@@ -14,5 +14,13 @@ export const UPDATE_SCROLL_OFFSET = (
   action: PayloadAction<IScrollOffset>
 ): IExcelState => {
   state.scrollOffset = action.payload
+  return state
+}
+
+export const UPDATE_SHEET_DIMENSIONS = (
+  state: IExcelState,
+  action: PayloadAction<IPosition>
+) => {
+  state.sheetDimensions = action.payload
   return state
 }

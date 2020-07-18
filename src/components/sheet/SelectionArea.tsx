@@ -9,8 +9,8 @@ import {
   selectSelectionAreaTopRightStyle,
   selectIsAreaInTopRightPane,
   selectIsAreaInBottomRightPane,
-  selectIsSelectionMode,
-} from '../../redux/selectors'
+} from '../../redux/selectors/pane'
+import { selectIsSelectionMode } from '../../redux/selectors/base'
 import { useTypedSelector } from '../../redux/redux'
 import { shallowEqual } from 'react-redux'
 

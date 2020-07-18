@@ -20,7 +20,7 @@ import {
   selectIsSheetNavigationOpen,
   selectIsSheetNameEdit,
   selectSheetNameText,
-} from '../../redux/selectors'
+} from '../../redux/selectors/base'
 import { shallowEqual, useDispatch } from 'react-redux'
 import { ExcelActions } from '../../redux/store'
 import { useHistory, useRouteMatch } from 'react-router-dom'

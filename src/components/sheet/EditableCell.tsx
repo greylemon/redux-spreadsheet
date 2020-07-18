@@ -145,17 +145,26 @@ const EditableCell: FunctionComponent<ICellProps> = ({
     return component
   }, [value, sheetResults])
 
+  const id = useMemo(() => `cell={"y":${rowIndex},"x":${columnIndex}}`, [
+    rowIndex,
+    columnIndex,
+  ])
+
   return (
     <div onMouseDown={handleMouseDown} onDoubleClick={handleDoubleClick}>
       <span
-        id={`cell={"y":${rowIndex},"x":${columnIndex}}`}
+        id={id}
         style={contentStyle}
         className={`unselectable cell cell__content`}
       >
         {cellComponent}
       </span>
-      <span className={value ? 'cell__editable' : ''} style={overlapStyle} />
-      <span className="cell__block" style={blockStyle} />
+      <span
+        id={id}
+        className={value ? 'cell__editable' : ''}
+        style={overlapStyle}
+      />
+      <span id={id} className="cell__block" style={blockStyle} />
     </div>
   )
 }

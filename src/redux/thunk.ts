@@ -2,12 +2,8 @@ import { convertRawExcelToState } from '../tools/parser'
 import { IAppThunk } from '../@types/store'
 import { ExcelActions } from './store'
 import { IHandleSave } from '../@types/functions'
-import {
-  selectExcel,
-  selectIsEditMode,
-  selectSelectionArea,
-  selectIsSelectionMode,
-} from './selectors'
+import { selectExcel, selectIsEditMode } from './selectors/base'
+import { selectSelectionArea, selectIsSelectionMode } from './selectors/base'
 import { undo, redo } from 'undox'
 import { IPosition, IArea } from '../@types/state'
 import {
@@ -57,6 +53,8 @@ export const customMouseUp = (): IAppThunk => (dispatch, getState) => {
   if (selectionArea) dispatch(ExcelActions.CELL_MOUSE_UP(selectionArea))
 }
 
+// export const customMouseDown = (): IAppThunk => () => {}
+
 export const customMouseMove = (
   mousePosition: IPosition,
   sheetArea: IArea
@@ -81,10 +79,20 @@ export const customMouseMove = (
 
   const selectionArea = selectSelectionArea(state)
 
-  switch (type as 'cell' | 'row' | 'column' | 'root') {
+  switch (
+    type as
+      | 'cell'
+      | 'row'
+      | 'column'
+      | 'root'
+      | 'row_dragger'
+      | 'column_dragger'
+  ) {
     case 'cell':
       scopedPosition = JSON.parse(address)
       break
+    case 'column_dragger':
+    case 'row_dragger':
     case 'column':
     case 'row': {
       const cellPosition = getEditableCellPositionFromBoundedPosition(
@@ -102,9 +110,13 @@ export const customMouseMove = (
     }
     case 'root':
       scopedPosition = { x: 1, y: 1 }
+      break
   }
 
-  if (!checkIsPositionEqualOtherPosition(selectionArea.end, scopedPosition)) {
+  if (
+    scopedPosition &&
+    !checkIsPositionEqualOtherPosition(selectionArea.end, scopedPosition)
+  ) {
     dispatch(dispatch(ExcelActions.CELL_MOUSE_ENTER(scopedPosition)))
   }
 }

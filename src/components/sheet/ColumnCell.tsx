@@ -1,6 +1,8 @@
 import React, { FunctionComponent } from 'react'
 import { ICellProps } from '../../@types/components'
 import { columnNumberToName } from '../../tools/conversion'
+import { columnDraggerStyle } from '../../constants/styles'
+import HeaderDraggerArea from './HeaderDraggerArea'
 
 const ColumnCell: FunctionComponent<ICellProps> = ({ style, columnIndex }) => {
   const columnName = columnNumberToName(columnIndex)
@@ -12,6 +14,12 @@ const ColumnCell: FunctionComponent<ICellProps> = ({ style, columnIndex }) => {
       style={style}
     >
       {columnName}
+      <HeaderDraggerArea
+        id={`column_dragger={"x":${columnIndex}}`}
+        type="column"
+        style={columnDraggerStyle}
+        index={columnIndex}
+      />
     </div>
   )
 }

@@ -2,12 +2,14 @@ import { initialExcelState, ExcelActions } from '../../../../../src/redux/store'
 import { IPosition, IArea } from '../../../../../src/@types/state'
 import { mockStore, createRootMockStore } from '../../../mockStore'
 import {
-  selectActiveCellPosition,
   selectColumnCount,
   selectRowCount,
+} from '../../../../../src/redux/selectors/activeSheet'
+import {
+  selectActiveCellPosition,
   selectSelectionArea,
   selectInactiveSelectionAreas,
-} from '../../../../../src/redux/selectors'
+} from '../../../../../src/redux/selectors/base'
 import { nSelectActiveSheet } from '../../../../../src/redux/tools/selectors'
 
 describe('Cell mouse operations', () => {

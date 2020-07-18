@@ -50,6 +50,8 @@ export const createInitialExcelState = (): IExcelState => ({
   isSheetNavigationOpen: false,
   isSheetNameEdit: false,
   isSelectionMode: false,
+  isColumnDrag: false,
+  isRowDrag: false,
 
   editorState: EditorState.createEmpty(),
   activeSheetName: SHEET_NAME,
@@ -67,4 +69,5 @@ export const createInitialExcelState = (): IExcelState => ({
   results: {},
   sheetNameText: '',
   scrollOffset: { x: 0, y: 0 },
+  sheetDimensions: { x: 0, y: 0 },
 })

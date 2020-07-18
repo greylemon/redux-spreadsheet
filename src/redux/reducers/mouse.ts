@@ -1,10 +1,17 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { IPosition, IExcelState, ISelectionArea } from '../../../@types/state'
-import { getEntireSuperArea } from '../../../tools/merge'
+import {
+  IPosition,
+  IExcelState,
+  ISelectionArea,
+  IOffset,
+  IRowIndex,
+  IColumnIndex,
+} from '../../@types/state'
+import { getEntireSuperArea } from '../../tools/merge'
 import {
   checkIsCellPositionValid,
   createEditorStateFromCell,
-} from '../../../tools/cell'
+} from '../../tools/cell'
 import {
   getOrderedAreaFromPositions,
   getAndAddArea,
@@ -12,10 +19,10 @@ import {
   checkIsSelectionAreaEqualPosition,
   checkIsPositionEqualOtherPosition,
   getAreaFromPosition,
-} from '../../../tools/area'
-import { nSelectCell, nSelectActiveSheet } from '../../tools/selectors'
-import { createValueFromEditorState } from '../../../tools/text'
-import { updateActiveCellRef } from '../../../tools/formula'
+} from '../../tools/area'
+import { nSelectCell, nSelectActiveSheet } from '../tools/selectors'
+import { createValueFromEditorState } from '../../tools/text'
+import { updateActiveCellRef } from '../../tools/formula'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -198,5 +205,57 @@ export const CELL_DOUBLE_CLICK = (state: IExcelState): IExcelState => {
 
   state.editorState = createEditorStateFromCell(cell)
 
+  return state
+}
+
+export const ROW_DRAG_OVER = (
+  state: IExcelState,
+  action: PayloadAction<IOffset>
+): IExcelState => {
+  state.isRowDrag = true
+  state.dragRowOffset = action.payload
+  return state
+}
+
+export const COLUMN_DRAG_OVER = (
+  state: IExcelState,
+  action: PayloadAction<IOffset>
+): IExcelState => {
+  state.isColumnDrag = true
+  state.dragColumnOffset = action.payload
+  return state
+}
+
+export const ROW_DRAG_LEAVE = (state: IExcelState): IExcelState => {
+  state.isRowDrag = false
+  delete state.dragRowOffset
+
+  return state
+}
+
+export const COLUMN_DRAG_LEAVE = (state: IExcelState): IExcelState => {
+  state.isColumnDrag = false
+  delete state.dragColumnOffset
+
+  return state
+}
+
+export const ROW_DRAG_START = (
+  state: IExcelState,
+  action: PayloadAction<IRowIndex>
+): IExcelState => {
+  const rowIndex = action.payload
+  state.dragRowIndex = rowIndex
+  state.isRowDrag = true
+  return state
+}
+
+export const COLUMN_DRAG_START = (
+  state: IExcelState,
+  action: PayloadAction<IColumnIndex>
+): IExcelState => {
+  const columnIndex = action.payload
+  state.dragColumnIndex = columnIndex
+  state.isColumnDrag = true
   return state
 }
