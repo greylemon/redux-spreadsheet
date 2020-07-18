@@ -54,10 +54,13 @@ const SomeComponent = () => {
   - [x] Save
   - [x] Arrow keys
   - [x] Delete Area
+  - [x] Select all
   - [ ] Shift arrow keys
 - Selection
   - [x] Single selection
   - [x] Multi-selection
+  - [x] Selection slicing
+  - [ ] Select rows / columns
 - Inline-styles/rich-text
   - [x] Bold
   - [x] Italic
@@ -74,16 +77,27 @@ const SomeComponent = () => {
   - [x] Formula dependents map
   - [x] Formula independents map
   - [x] Formula results
+  - [ ] Clean Up formula references
+  - [ ] Column/row references (=SUM(A:A) or =SUM(1:1))
+  - [ ] Variables
 - Formula bar
   - [ ] Input
 - File upload
   - [x] Initial state
   - [x] Basic data
+- File Download
+  - [ ] .xlsx
 - Block-styles
 - Sheet navigation
   - [x] Switch sheet name
-  - [ ] Delete sheet name
-  - [ ] Update sheet name
+  - [x] Delete sheet name
+  - [x] Update sheet name
+  - [ ] Update formula references
+- Row / Column
+  - [ ] Resize
+  - [ ] Resize Freeze
+  - [ ] Set row / column count
+  - [ ] Add freeze
 - ...many more to do
 
 ## Main Libraries Used
