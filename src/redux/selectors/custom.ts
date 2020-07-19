@@ -185,7 +185,6 @@ export const selectColumnDraggerStyle = createSelector(
         dragColumnOffset > freezeRowLength &&
         dragColumnOffset - scrollOffsetX <= freezeRowLength
       ) {
-        // console.log('here')
         style.top = dragColumnOffset - scrollOffsetX
       }
     }

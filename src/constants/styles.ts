@@ -30,7 +30,7 @@ export const columnDraggerStyle: CSSProperties = {
   zIndex: 100000,
   position: 'absolute',
   top: 0,
-  right: 0,
+  right: -5,
 
   width: 5,
   height: SHEET_ROW_HEIGHT_HEADER - 1,
