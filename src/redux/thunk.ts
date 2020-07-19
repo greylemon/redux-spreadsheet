@@ -100,7 +100,6 @@ export const customMouseUp = (): IAppThunk => (dispatch, getState) => {
     let value = dragColumnOffset - columnOffsets[dragColumnIndex]
 
     if (dragColumnIndex <= freezeColumnCount) value -= scrollOffsetX
-
     dispatch(ExcelActions.COLUMN_DRAG_END(denormalizeColumnWidth(value)))
   }
 }

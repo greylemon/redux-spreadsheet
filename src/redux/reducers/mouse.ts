@@ -285,7 +285,12 @@ export const ROW_DRAG_END = (
 ): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   const dragRowIndex = state.dragRowIndex
-  activeSheet.rowHeights[dragRowIndex] = action.payload
+
+  const height = action.payload
+
+  if (!height) activeSheet.hiddenRows[dragRowIndex] = true
+
+  activeSheet.rowHeights[dragRowIndex] = height
 
   ROW_DRAG_LEAVE(state)
   return state
@@ -297,7 +302,13 @@ export const COLUMN_DRAG_END = (
 ): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   const dragColumnIndex = state.dragColumnIndex
-  activeSheet.columnWidths[dragColumnIndex] = action.payload
+
+  const width = action.payload
+
+  if (!width) activeSheet.hiddenColumns[dragColumnIndex] = true
+
+  activeSheet.columnWidths[dragColumnIndex] = width
+
   COLUMN_DRAG_LEAVE(state)
   return state
 }

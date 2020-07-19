@@ -20,7 +20,7 @@ import {
 } from '../@types/state'
 
 export const denormalizeRowHeight = (rowHeight: IRowHeight): IRowHeight =>
-  rowHeight ? rowHeight / ROW_HEIGHT_SCALE : SHEET_ROW_HEIGHT
+  rowHeight ? rowHeight / ROW_HEIGHT_SCALE : 0
 
 export const normalizeRowHeight = (rowHeight: IRowHeight): IRowHeight =>
   rowHeight ? rowHeight * ROW_HEIGHT_SCALE : SHEET_ROW_HEIGHT
@@ -43,8 +43,7 @@ export const normalizeColumnWidth = (columnWidth: IColumnWidth): IColumnWidth =>
 
 export const denormalizeColumnWidth = (
   columnWidth: IColumnWidth
-): IColumnWidth =>
-  columnWidth ? columnWidth / COLUMN_WIDTH_SCALE : SHEET_COLUMN_WIDTH
+): IColumnWidth => (columnWidth ? columnWidth / COLUMN_WIDTH_SCALE : 0)
 
 /**
  * Converts Excel scaled column width unit to normal scaled unit
