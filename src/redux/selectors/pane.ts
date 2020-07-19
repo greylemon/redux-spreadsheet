@@ -9,8 +9,6 @@ import {
   computeSelectionAreaBottomRightStyle,
   checkIsAreaInBottomRightPane,
   checkIsActiveCellInBottomRightPane,
-  checkIsDragColumnOffsetInBottomRightPane,
-  checkIsDragRowOffsetInBottomRightPane,
 } from '../../tools/styles/bottom_right_pane'
 import {
   checkIsAreaInTopLeftPane,
@@ -108,18 +106,11 @@ export const selectIsActiveCellInTopRightPane = selectFactoryIsActiveCellInRelev
   checkIsActiveCellInTopRightPane
 )
 
-export const selectIsDragColumnOffsetInBottomRightPane = selectFactoryIsDragColumnOffsetInCorrectPane(
-  checkIsDragColumnOffsetInBottomRightPane
-)
 export const selectIsDragColumnOffsetInTopLeftPane = selectFactoryIsDragColumnOffsetInCorrectPane(
   checkIsDragColumnOffsetInTopLeftPane
 )
 export const selectIsDragColumnOffsetInInTopRightPane = selectFactoryIsDragColumnOffsetInCorrectPane(
   checkIsDragColumnOffsetInTopRightPane
-)
-
-export const selectIsDragRowOffsetInBottomRightPane = selectFactoryIsDragRowOffsetInCorrectPane(
-  checkIsDragRowOffsetInBottomRightPane
 )
 export const selectIsDragRowOffsetInTopLeftPane = selectFactoryIsDragRowOffsetInCorrectPane(
   checkIsDragRowOffsetInTopLeftPane

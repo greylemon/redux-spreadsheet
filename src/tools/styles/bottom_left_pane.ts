@@ -194,7 +194,7 @@ export const checkIsActiveCellInBottomLeftPane: ICheckIsActiveCellInCorrectPane 
 ) => position.x <= freezeColumnCount && position.y > freezeRowCount
 
 export const checkIsDragRowOffsetInBottomLeftPane: ICheckIsDragRowOffsetInCorrectPane = (
-  freezeColumnCount,
+  _freezeColumnCount,
   freezeRowCount,
   offset,
   rowOffsets,
@@ -204,7 +204,6 @@ export const checkIsDragRowOffsetInBottomLeftPane: ICheckIsDragRowOffsetInCorrec
   const freezeRowLength =
     rowOffsets[freezeRowCount] + getRowHeight(freezeRowCount)
   return (
-    freezeColumnCount &&
     freezeRowLength <= offset &&
     offset > freezeRowLength &&
     offset - scrollOffsetY > freezeRowLength

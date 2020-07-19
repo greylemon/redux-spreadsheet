@@ -12,7 +12,6 @@ import { selectRowDraggerStyle } from '../../redux/selectors/custom'
 import { ICommonPaneProps } from '../../@types/components'
 import { ExcelActions } from '../../redux/store'
 import {
-  selectIsDragRowOffsetInBottomRightPane,
   selectIsDragRowOffsetInInBottomLeftPane,
   selectIsDragRowOffsetInTopLeftPane,
   selectRowDraggerBottomLeftStyle,
@@ -25,10 +24,6 @@ const RowDragger: FunctionComponent<ICommonPaneProps> = ({ type }) => {
     let isInCorrectPane = false
 
     switch (type) {
-      case 'BOTTOM_RIGHT':
-        isInCorrectPane = selectIsDragRowOffsetInBottomRightPane(state)
-        style = selectRowDraggerStyle(state)
-        break
       case 'BOTTOM_LEFT':
         isInCorrectPane = selectIsDragRowOffsetInInBottomLeftPane(state)
         style = selectRowDraggerBottomLeftStyle(state)
@@ -36,9 +31,6 @@ const RowDragger: FunctionComponent<ICommonPaneProps> = ({ type }) => {
       case 'TOP_LEFT':
         isInCorrectPane = selectIsDragRowOffsetInTopLeftPane(state)
         style = selectRowDraggerStyle(state)
-        break
-      case 'TOP_RIGHT':
-        isInCorrectPane = false
         break
     }
 

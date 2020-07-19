@@ -2,8 +2,6 @@ import {
   IComputeSelectionAreaStyle,
   ICheckIsActiveCellInCorrectPane,
   ICheckIsAreaInRelevantPane,
-  ICheckIsDragColumnOffsetInCorrectPane,
-  ICheckIsDragRowOffsetInCorrectPane,
 } from '../../@types/functions'
 import {
   IColumnWidths,
@@ -143,13 +141,3 @@ export const checkIsAreaInBottomRightPane: ICheckIsAreaInRelevantPane = (
 ) =>
   (area.start.x > freezeColumnCount || area.end.x > freezeColumnCount) &&
   (area.start.y > freezeRowCount || area.end.y > freezeRowCount)
-
-export const checkIsDragColumnOffsetInBottomRightPane: ICheckIsDragColumnOffsetInCorrectPane = (
-  freezeColumnCount,
-  freezeRowCount
-) => !freezeRowCount && !freezeColumnCount
-
-export const checkIsDragRowOffsetInBottomRightPane: ICheckIsDragRowOffsetInCorrectPane = (
-  freezeColumnCount,
-  freezeRowCount
-) => !freezeRowCount && !freezeColumnCount

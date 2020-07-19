@@ -136,7 +136,7 @@ export const checkIsActiveCellInTopRightPane: ICheckIsActiveCellInCorrectPane = 
 
 export const checkIsDragColumnOffsetInTopRightPane: ICheckIsDragColumnOffsetInCorrectPane = (
   freezeColumnCount,
-  freezeRowCount,
+  _freezeRowCount,
   offset,
   columnOffsets,
   getColumnWidth,
@@ -145,7 +145,6 @@ export const checkIsDragColumnOffsetInTopRightPane: ICheckIsDragColumnOffsetInCo
   const freezeColumnLength =
     columnOffsets[freezeColumnCount] + getColumnWidth(freezeColumnCount)
   return (
-    freezeRowCount &&
     freezeColumnLength <= offset &&
     offset > freezeColumnLength &&
     offset - scrollOffsetX > freezeColumnLength

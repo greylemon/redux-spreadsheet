@@ -12,8 +12,12 @@ const CommonActivityPane: FunctionComponent<ICommonPaneProps> = ({ type }) => (
     <ActiveCell type={type} />
     <SelectionArea type={type} />
     <InactiveSelectionAreas type={type} />
-    <RowDragger type={type} />
-    <ColumnDragger type={type} />
+    {(type === 'TOP_LEFT' || type === 'BOTTOM_LEFT') && (
+      <RowDragger type={type} />
+    )}
+    {(type === 'TOP_LEFT' || type === 'TOP_RIGHT') && (
+      <ColumnDragger type={type} />
+    )}
   </Fragment>
 )
 

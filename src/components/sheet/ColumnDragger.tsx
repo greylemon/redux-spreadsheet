@@ -10,7 +10,6 @@ import { shallowEqual, useDispatch } from 'react-redux'
 import { ICommonPaneProps } from '../../@types/components'
 import { ExcelActions } from '../../redux/store'
 import {
-  selectIsDragColumnOffsetInBottomRightPane,
   selectIsDragColumnOffsetInTopLeftPane,
   selectIsDragColumnOffsetInInTopRightPane,
 } from '../../redux/selectors/pane'
@@ -24,12 +23,6 @@ const ColumnDragger: FunctionComponent<ICommonPaneProps> = ({ type }) => {
     let isInCorrectPane = false
 
     switch (type) {
-      case 'BOTTOM_RIGHT':
-        isInCorrectPane = selectIsDragColumnOffsetInBottomRightPane(state)
-        break
-      case 'BOTTOM_LEFT':
-        isInCorrectPane = false
-        break
       case 'TOP_LEFT':
         isInCorrectPane = selectIsDragColumnOffsetInTopLeftPane(state)
         break
