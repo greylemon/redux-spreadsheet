@@ -14,7 +14,7 @@ export const STYLE_ACTIVE_CELL_Z_INDEX = 10000
 export const rowDraggerStyle: CSSProperties = {
   zIndex: 100000,
   position: 'absolute',
-  bottom: 0,
+  bottom: -5,
 
   width: SHEET_COLUMN_WIDTH_HEADER - 1,
   height: 5,
@@ -34,6 +34,7 @@ export const columnDraggerStyle: CSSProperties = {
 
   width: 5,
   height: SHEET_ROW_HEIGHT_HEADER - 1,
+  borderRadius: 1,
 }
 
 export const columnDraggerIndicatorStyle: CSSProperties = {

@@ -26,6 +26,7 @@ import {
 import { nSelectCell, nSelectActiveSheet } from '../tools/selectors'
 import { createValueFromEditorState } from '../../tools/text'
 import { updateActiveCellRef } from '../../tools/formula'
+import { denormalizeRowHeight, denormalizeColumnWidth } from '../../tools'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -288,7 +289,8 @@ export const ROW_DRAG_END = (
 
   const height = action.payload
 
-  if (!height) activeSheet.hiddenRows[dragRowIndex] = true
+  if (height <= denormalizeRowHeight(1))
+    activeSheet.hiddenRows[dragRowIndex] = true
 
   activeSheet.rowHeights[dragRowIndex] = height
 
@@ -305,7 +307,8 @@ export const COLUMN_DRAG_END = (
 
   const width = action.payload
 
-  if (!width) activeSheet.hiddenColumns[dragColumnIndex] = true
+  if (width <= denormalizeColumnWidth(1))
+    activeSheet.hiddenColumns[dragColumnIndex] = true
 
   activeSheet.columnWidths[dragColumnIndex] = width
 

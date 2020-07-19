@@ -144,7 +144,6 @@ export const selectRowDraggerStyle = createSelector(
         dragRowOffset > freezeRowLength &&
         dragRowOffset - scrollOffsetY <= freezeRowLength
       ) {
-        // console.log('here')
         style.top = dragRowOffset - scrollOffsetY
       }
     }

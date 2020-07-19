@@ -190,10 +190,11 @@ export const customMouseMove = (mousePosition: IPosition): IAppThunk => (
     const rowOffsets = selectRowOffsets(state)
     const dragRowIndex = selectDragRowIndex(state)
     const scrollOffsetY = selectScrollOffsetY(state)
+
     dispatch(
       ExcelActions.ROW_DRAG_MOVE(
         Math.max(
-          rowOffsets[dragRowIndex],
+          rowOffsets[dragRowIndex] + 1,
           boundedPosition.y + scrollOffsetY - sheetAreaStart.y
         )
       )
@@ -205,7 +206,7 @@ export const customMouseMove = (mousePosition: IPosition): IAppThunk => (
     dispatch(
       ExcelActions.COLUMN_DRAG_MOVE(
         Math.max(
-          columnOffsets[dragColumnIndex],
+          columnOffsets[dragColumnIndex] + 1,
           boundedPosition.x + scrollOffsetX - sheetAreaStart.x
         )
       )
@@ -225,12 +226,12 @@ export const mouseEnterDragRow = (rowIndex: IRowIndex): IAppThunk => (
   dispatch(
     ExcelActions.ROW_DRAG_ENTER({
       dragRowIndex: rowIndex,
-      dragRowOffset: rowOffsets[rowIndex] + rowHeightGetter(rowIndex) - 5,
+      dragRowOffset: rowOffsets[rowIndex] + rowHeightGetter(rowIndex),
     })
   )
 }
 
-export const mouseOverDragColumn = (columnIndex: IColumnIndex): IAppThunk => (
+export const mouseEnterDragColumn = (columnIndex: IColumnIndex): IAppThunk => (
   dispatch,
   getState
 ) => {
@@ -242,7 +243,7 @@ export const mouseOverDragColumn = (columnIndex: IColumnIndex): IAppThunk => (
     ExcelActions.COLUMN_DRAG_ENTER({
       dragColumnIndex: columnIndex,
       dragColumnOffset:
-        columnOffsets[columnIndex] + columnWidthGetter(columnIndex) - 5,
+        columnOffsets[columnIndex] + columnWidthGetter(columnIndex),
     })
   )
 }
