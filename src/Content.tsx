@@ -20,6 +20,7 @@ import {
   customUndo,
   customRedo,
   customMouseUp,
+  customMouseMove,
 } from './redux/thunk'
 
 export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
@@ -60,16 +61,32 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
     [dispatch, customRedo, customUndo, handleSave]
   )
 
-  const handleMouseUp = useCallback(() => {
+  window.onmousemove = useCallback(
+    (event: MouseEvent) => {
+      switch (event.buttons) {
+        case 1:
+          dispatch(customMouseMove({ x: event.clientX, y: event.clientY }))
+      }
+    },
+    [dispatch]
+  )
+
+  window.onmouseup = useCallback(() => {
     dispatch(customMouseUp())
   }, [dispatch])
+
+  useEffect(() => {
+    return () => {
+      delete window.onmousedown
+      delete window.onmouseup
+    }
+  }, [])
 
   return (
     <div
       className="excel"
       style={style}
       onKeyDown={handleKeyDown}
-      onMouseUp={handleMouseUp}
       tabIndex={-1}
     >
       <ToolBar />

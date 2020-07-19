@@ -13,8 +13,6 @@ import {
   ICommonPaneProps,
 } from '../../@types/components'
 import {
-  selectIsEditMode,
-  selectCellEditorState,
   selectActiveCellAreaBottomLeftStyle,
   selectActiveCellAreaBottomRightStyle,
   selectActiveCellAreaTopLeftStyle,
@@ -23,7 +21,11 @@ import {
   selectIsActiveCellInBottomRightPane,
   selectIsActiveCellInTopLeftPane,
   selectIsActiveCellInTopRightPane,
-} from '../../redux/selectors'
+} from '../../redux/selectors/pane'
+import {
+  selectIsEditMode,
+  selectCellEditorState,
+} from '../../redux/selectors/base'
 import { ExcelActions } from '../../redux/store'
 
 const EditorCell: FunctionComponent<IEditorCellProps> = ({ style }) => {

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useMemo } from 'react'
 import { ICellProps } from '../../@types/components'
 import EditableCell from './EditableCell'
 import RowCell from './RowCell'
@@ -11,17 +11,20 @@ const Cell: FunctionComponent<ICellProps> = ({
   columnIndex,
   rowIndex,
 }) => {
-  let CellComponent: FunctionComponent<ICellProps>
+  const CellComponent = useMemo(() => {
+    let Component: FunctionComponent<ICellProps>
+    if (columnIndex && rowIndex) {
+      Component = EditableCell
+    } else if (rowIndex) {
+      Component = RowCell
+    } else if (columnIndex) {
+      Component = ColumnCell
+    } else {
+      Component = RootCell
+    }
 
-  if (columnIndex && rowIndex) {
-    CellComponent = EditableCell
-  } else if (rowIndex) {
-    CellComponent = RowCell
-  } else if (columnIndex) {
-    CellComponent = ColumnCell
-  } else {
-    CellComponent = RootCell
-  }
+    return Component
+  }, [columnIndex, rowIndex])
 
   return (
     <CellComponent

@@ -90,13 +90,6 @@ const EditableCell: FunctionComponent<ICellProps> = ({
     }
   }
 
-  const handleMouseEnter = (event: MouseEvent) => {
-    if (event.buttons === 1) {
-      event.stopPropagation()
-      dispatch(ExcelActions.CELL_MOUSE_ENTER(position))
-    }
-  }
-
   const contentStyle: CSSProperties | IStyles = {
     ...style,
     width: columnWidthsAdjusted[columnIndex],
@@ -152,17 +145,26 @@ const EditableCell: FunctionComponent<ICellProps> = ({
     return component
   }, [value, sheetResults])
 
+  const id = useMemo(() => `cell={"y":${rowIndex},"x":${columnIndex}}`, [
+    rowIndex,
+    columnIndex,
+  ])
+
   return (
-    <div
-      onMouseDown={handleMouseDown}
-      onMouseEnter={handleMouseEnter}
-      onDoubleClick={handleDoubleClick}
-    >
-      <span style={contentStyle} className={`unselectable cell cell__content`}>
+    <div onMouseDown={handleMouseDown} onDoubleClick={handleDoubleClick}>
+      <span
+        id={id}
+        style={contentStyle}
+        className={`unselectable cell cell__content`}
+      >
         {cellComponent}
       </span>
-      <span className={value ? 'cell__editable' : ''} style={overlapStyle} />
-      <span className="cell__block" style={blockStyle} />
+      <span
+        id={id}
+        className={value ? 'cell__editable' : ''}
+        style={overlapStyle}
+      />
+      <span id={id} className="cell__block" style={blockStyle} />
     </div>
   )
 }

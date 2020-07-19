@@ -1,14 +1,14 @@
-import { IExcelState, IEditorState } from '../../../@types/state'
+import { IExcelState, IEditorState } from '../../@types/state'
 import {
   nSelectMergeCell,
   nSelectActiveSheet,
   nSelectActiveSheetData,
-} from '../../tools/selectors'
+} from '../tools/selectors'
 import { PayloadAction } from '@reduxjs/toolkit'
 import { EditorState } from 'draft-js'
-import { getCellMapSetFromAreas } from '../../../tools/area'
-import { TYPE_TEXT, TYPE_MERGE } from '../../../constants/types'
-import { updateReferenceCell } from '../../../tools'
+import { getCellMapSetFromAreas } from '../../tools/area'
+import { TYPE_TEXT, TYPE_MERGE } from '../../constants/types'
+import { updateReferenceCell } from '../../tools'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state

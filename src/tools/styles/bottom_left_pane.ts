@@ -3,6 +3,7 @@ import {
   IComputeSelectionAreaStyle,
   ICheckIsAreaInRelevantPane,
   ICheckIsActiveCellInCorrectPane,
+  ICheckIsDragRowOffsetInCorrectPane,
 } from '../../@types/functions'
 import { nSelectMergeCell } from '../../redux/tools/selectors'
 import {
@@ -172,8 +173,8 @@ export const computeSelectionAreaBottomLeftStyle: IComputeSelectionAreaStyle = (
 
   customSelectionStyle.left = left
   customSelectionStyle.top = top
-  customSelectionStyle.width = selectionAreaWidth - 2
-  customSelectionStyle.height = selectionAreaHeight - 2
+  customSelectionStyle.width = selectionAreaWidth - 1
+  customSelectionStyle.height = selectionAreaHeight - 1
 
   return customSelectionStyle
 }
@@ -185,8 +186,27 @@ export const checkIsAreaInBottomLeftPane: ICheckIsAreaInRelevantPane = (
 ) =>
   (area.start.x <= freezeColumnCount || area.end.x <= freezeColumnCount) &&
   (area.start.y > freezeRowCount || area.end.y > freezeRowCount)
+
 export const checkIsActiveCellInBottomLeftPane: ICheckIsActiveCellInCorrectPane = (
   position,
   freezeColumnCount,
   freezeRowCount
 ) => position.x <= freezeColumnCount && position.y > freezeRowCount
+
+export const checkIsDragRowOffsetInBottomLeftPane: ICheckIsDragRowOffsetInCorrectPane = (
+  freezeColumnCount,
+  freezeRowCount,
+  offset,
+  rowOffsets,
+  getRowHeight,
+  scrollOffsetY
+) => {
+  const freezeRowLength =
+    rowOffsets[freezeRowCount] + getRowHeight(freezeRowCount)
+  return (
+    freezeColumnCount &&
+    freezeRowLength <= offset &&
+    offset > freezeRowLength &&
+    offset - scrollOffsetY > freezeRowLength
+  )
+}

@@ -25,8 +25,8 @@ export const createSheetState = (): ISheet => ({
   columnWidths: {},
   rowHeights: {},
 
-  freezeColumnCount: SHEET_FREEZE_COLUMN_COUNT,
-  freezeRowCount: SHEET_FREEZE_ROW_COUNT,
+  freezeColumnCount: SHEET_FREEZE_COLUMN_COUNT + 2,
+  freezeRowCount: SHEET_FREEZE_ROW_COUNT + 2,
   hiddenColumns: {},
   hiddenRows: {},
 
@@ -47,6 +47,12 @@ export const createInitialExcelState = (): IExcelState => ({
   name: '',
 
   isEditMode: false,
+  isSheetNavigationOpen: false,
+  isSheetNameEdit: false,
+  isSelectionMode: false,
+  isColumnDrag: false,
+  isRowDrag: false,
+
   editorState: EditorState.createEmpty(),
   activeSheetName: SHEET_NAME,
 
@@ -61,7 +67,7 @@ export const createInitialExcelState = (): IExcelState => ({
   dependentReferences: {},
   independentReferences: {},
   results: {},
-  isSheetNavigationOpen: false,
   sheetNameText: '',
-  isSheetNameEdit: false,
+  scrollOffset: { x: 0, y: 0 },
+  sheetDimensions: { x: 0, y: 0 },
 })

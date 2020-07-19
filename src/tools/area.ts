@@ -5,6 +5,11 @@ import {
   IArea,
   IAreaRange,
 } from '../@types/state'
+import { getScrollbarSize } from './misc'
+import {
+  SHEET_COLUMN_WIDTH_HEADER,
+  SHEET_ROW_HEIGHT_HEADER,
+} from '../constants/defaults'
 
 export const getMinPositionFromArea = ({ start, end }: IArea): IPosition => ({
   x: Math.min(start.x, end.x),
@@ -22,6 +27,15 @@ export const checkIsAreaRangeContainedInOtherAreaRange = (
 ): boolean =>
   checkIsRangeContainedInOtherRange(areaRange.xRange, otherAreaRange.xRange) &&
   checkIsRangeContainedInOtherRange(areaRange.yRange, otherAreaRange.yRange)
+
+export const checkIsPositionContainedInArea = (
+  position: IPosition,
+  area: IArea
+): boolean =>
+  area.start.x <= position.x &&
+  position.x <= area.end.x &&
+  area.start.y <= position.y &&
+  position.y <= area.end.y
 
 export const checkIsSelectionAreaEqualPosition = ({
   start,
@@ -217,4 +231,43 @@ export const getCellMapSetFromAreas = (
   })
 
   return cellMapSet
+}
+
+export const boundPositionInOrderedArea = (
+  position: IPosition,
+  orderedSheetArea: IArea,
+  rowAdjustment = -1,
+  columnAdjustment = -1
+): IPosition => {
+  const boundedPosition: IPosition = { ...position }
+  const scrollBarSize = getScrollbarSize()
+  if (position.x < orderedSheetArea.start.x)
+    boundedPosition.x = orderedSheetArea.start.x
+  if (position.x >= orderedSheetArea.end.x - scrollBarSize + columnAdjustment)
+    boundedPosition.x =
+      orderedSheetArea.end.x - scrollBarSize + columnAdjustment
+  if (position.y < orderedSheetArea.start.y)
+    boundedPosition.y = orderedSheetArea.start.y
+  if (position.y >= orderedSheetArea.end.y - scrollBarSize + rowAdjustment)
+    boundedPosition.y = orderedSheetArea.end.y - scrollBarSize + rowAdjustment
+
+  return boundedPosition
+}
+
+export const getEditableCellPositionFromBoundedPosition = (
+  position: IPosition,
+  orderedSheetArea: IArea
+): IPosition => {
+  const editableCellPosition: IPosition = { ...position }
+
+  editableCellPosition.x = Math.max(
+    position.x,
+    orderedSheetArea.start.x + SHEET_COLUMN_WIDTH_HEADER + 1
+  )
+  editableCellPosition.y = Math.max(
+    position.y,
+    orderedSheetArea.start.y + SHEET_ROW_HEIGHT_HEADER + 1
+  )
+
+  return editableCellPosition
 }

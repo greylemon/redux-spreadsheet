@@ -2,7 +2,7 @@ import React, { useCallback, FunctionComponent } from 'react'
 import { Editor, RichUtils, EditorState } from 'draft-js'
 import { shallowEqual, useDispatch } from 'react-redux'
 import { useTypedSelector } from '../../redux/redux'
-import { selectCellEditorState } from '../../redux/selectors'
+import { selectCellEditorState } from '../../redux/selectors/base'
 import { ExcelActions } from '../../redux/store'
 
 const FormulaBar: FunctionComponent = () => {

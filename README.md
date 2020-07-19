@@ -94,10 +94,9 @@ const SomeComponent = () => {
   - [x] Update sheet name
   - [ ] Update formula references
 - Row / Column
-  - [ ] Resize
+  - [x] Resize
   - [ ] Resize Freeze
   - [ ] Set row / column count
-  - [ ] Add freeze
 - ...many more to do
 
 ## Main Libraries Used

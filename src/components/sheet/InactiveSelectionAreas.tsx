@@ -6,7 +6,7 @@ import {
   selectInactiveSelectionAreasBottomRightStyle,
   selectInactiveSelectionAreasTopLeftStyle,
   selectInactiveSelectionAreasTopRightStyle,
-} from '../../redux/selectors'
+} from '../../redux/selectors/pane'
 import { shallowEqual } from 'react-redux'
 
 const InactiveSelectionAreas: FunctionComponent<ICommonPaneProps> = ({

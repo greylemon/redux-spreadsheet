@@ -208,6 +208,18 @@ export type IResults = {
 export type IIsSheetNavigationOpen = boolean
 export type ISheetNameText = string
 export type IIsSheetEditText = boolean
+export type IIsSelectionMode = boolean
+export type IScrollOffset = IPosition
+
+export type IIsRowDrag = boolean
+export type IDragRowOffset = IOffset
+export type IDragRowIndex = IRowIndex
+
+export type IIsColumnDrag = boolean
+export type IDragColumnOffset = IOffset
+export type IDragColumnIndex = IColumnIndex
+
+export type ISheetDimensions = IPosition
 
 export type IExcelState = {
   name: IName
@@ -220,6 +232,8 @@ export type IExcelState = {
   isEditMode: IIsEditMode
   isSheetNavigationOpen: IIsSheetNavigationOpen
   isSheetNameEdit: IIsSheetEditText
+  isSelectionMode: IIsSelectionMode
+
   editorState: IEditorState
   selectionAreaIndex: ISelectionAreaIndex
   selectionArea?: ISelectionArea
@@ -229,4 +243,15 @@ export type IExcelState = {
   independentReferences: IIndependentReferences
   results: IResults
   sheetNameText: ISheetNameText
+  scrollOffset: IScrollOffset
+
+  isRowDrag: IIsRowDrag
+  dragRowOffset?: IDragRowOffset
+  dragRowIndex?: IDragRowIndex
+
+  isColumnDrag: IIsColumnDrag
+  dragColumnOffset?: IDragColumnOffset
+  dragColumnIndex?: IDragColumnIndex
+
+  sheetDimensions: ISheetDimensions
 }
