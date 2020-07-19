@@ -72,10 +72,10 @@ $customBorderStyle: 'solid';
   background-color: #f6f6f6 !important;
   font-size: 12px;
 
-  box-sizing: content-box;
-
-  outline: thin solid rgb(199, 199, 199);
-  // outline-offset: -1px;
+  border-left: thin solid rgb(199, 199, 199);
+  border-top: thin solid rgb(199, 199, 199);
+  
+  box-sizing: border-box;
 }
 
 .richText {

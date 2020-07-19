@@ -2,6 +2,7 @@ import {
   IComputeSelectionAreaStyle,
   ICheckIsAreaInRelevantPane,
   ICheckIsActiveCellInCorrectPane,
+  ICheckIsDragColumnOffsetInCorrectPane,
 } from '../../@types/functions'
 import {
   IColumnWidths,
@@ -113,8 +114,8 @@ export const computeSelectionAreaTopRightStyle: IComputeSelectionAreaStyle = (
 
   customSelectionStyle.left = left
   customSelectionStyle.top = top
-  customSelectionStyle.width = selectionAreaWidth - 2
-  customSelectionStyle.height = selectionAreaHeight - 2
+  customSelectionStyle.width = selectionAreaWidth - 1
+  customSelectionStyle.height = selectionAreaHeight - 1
 
   return customSelectionStyle
 }
@@ -132,3 +133,21 @@ export const checkIsActiveCellInTopRightPane: ICheckIsActiveCellInCorrectPane = 
   freezeColumnCount,
   freezeRowCount
 ) => position.x > freezeColumnCount && position.y <= freezeRowCount
+
+export const checkIsDragColumnOffsetInTopRightPane: ICheckIsDragColumnOffsetInCorrectPane = (
+  freezeColumnCount,
+  freezeRowCount,
+  offset,
+  columnOffsets,
+  getColumnWidth,
+  scrollOffsetX
+) => {
+  const freezeColumnLength =
+    columnOffsets[freezeColumnCount] + getColumnWidth(freezeColumnCount)
+  return (
+    freezeRowCount &&
+    freezeColumnLength <= offset &&
+    offset > freezeColumnLength &&
+    offset - scrollOffsetX > freezeColumnLength
+  )
+}

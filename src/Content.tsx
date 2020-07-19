@@ -22,8 +22,6 @@ import {
   customMouseUp,
   customMouseMove,
 } from './redux/thunk'
-import { getDocumentOffsetPosition } from './tools/dom'
-import { IPosition, IArea } from './@types/state'
 
 export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   style,
@@ -65,22 +63,9 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
 
   window.onmousemove = useCallback(
     (event: MouseEvent) => {
-      if (event.buttons === 1) {
-        const sheet = document.getElementById('sheet')
-        const sheetLocation = getDocumentOffsetPosition(sheet)
-
-        const position: IPosition = { x: event.clientX, y: event.clientY }
-        const sheetAreaStart: IPosition = {
-          x: sheetLocation.left,
-          y: sheetLocation.top,
-        }
-        const sheetAreaEnd: IPosition = {
-          x: sheetAreaStart.x + sheet.scrollWidth,
-          y: sheetAreaStart.y + sheet.scrollHeight,
-        }
-        const sheetArea: IArea = { start: sheetAreaStart, end: sheetAreaEnd }
-
-        dispatch(customMouseMove(position, sheetArea))
+      switch (event.buttons) {
+        case 1:
+          dispatch(customMouseMove({ x: event.clientX, y: event.clientY }))
       }
     },
     [dispatch]

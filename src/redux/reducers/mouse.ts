@@ -3,9 +3,12 @@ import {
   IPosition,
   IExcelState,
   ISelectionArea,
-  IOffset,
-  IRowIndex,
-  IColumnIndex,
+  IDragRowOffset,
+  IDragColumnOffset,
+  IDragRowIndex,
+  IDragColumnIndex,
+  IRowHeight,
+  IColumnWidth,
 } from '../../@types/state'
 import { getEntireSuperArea } from '../../tools/merge'
 import {
@@ -208,27 +211,36 @@ export const CELL_DOUBLE_CLICK = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const ROW_DRAG_OVER = (
+export const ROW_DRAG_ENTER = (
   state: IExcelState,
-  action: PayloadAction<IOffset>
+  action: PayloadAction<{
+    dragRowOffset: IDragRowOffset
+    dragRowIndex: IDragRowIndex
+  }>
 ): IExcelState => {
-  state.isRowDrag = true
-  state.dragRowOffset = action.payload
+  const { dragRowOffset, dragRowIndex } = action.payload
+  state.dragRowOffset = dragRowOffset
+  state.dragRowIndex = dragRowIndex
   return state
 }
 
-export const COLUMN_DRAG_OVER = (
+export const COLUMN_DRAG_ENTER = (
   state: IExcelState,
-  action: PayloadAction<IOffset>
+  action: PayloadAction<{
+    dragColumnOffset: IDragColumnOffset
+    dragColumnIndex: IDragColumnIndex
+  }>
 ): IExcelState => {
-  state.isColumnDrag = true
-  state.dragColumnOffset = action.payload
+  const { dragColumnIndex, dragColumnOffset } = action.payload
+  state.dragColumnOffset = dragColumnOffset
+  state.dragColumnIndex = dragColumnIndex
   return state
 }
 
 export const ROW_DRAG_LEAVE = (state: IExcelState): IExcelState => {
   state.isRowDrag = false
   delete state.dragRowOffset
+  delete state.dragRowIndex
 
   return state
 }
@@ -236,26 +248,56 @@ export const ROW_DRAG_LEAVE = (state: IExcelState): IExcelState => {
 export const COLUMN_DRAG_LEAVE = (state: IExcelState): IExcelState => {
   state.isColumnDrag = false
   delete state.dragColumnOffset
+  delete state.dragColumnIndex
 
   return state
 }
 
-export const ROW_DRAG_START = (
-  state: IExcelState,
-  action: PayloadAction<IRowIndex>
-): IExcelState => {
-  const rowIndex = action.payload
-  state.dragRowIndex = rowIndex
+export const ROW_DRAG_START = (state: IExcelState): IExcelState => {
   state.isRowDrag = true
   return state
 }
 
-export const COLUMN_DRAG_START = (
+export const ROW_DRAG_MOVE = (
   state: IExcelState,
-  action: PayloadAction<IColumnIndex>
+  action: PayloadAction<IDragRowOffset>
 ): IExcelState => {
-  const columnIndex = action.payload
-  state.dragColumnIndex = columnIndex
+  state.dragRowOffset = action.payload
+  return state
+}
+
+export const COLUMN_DRAG_MOVE = (
+  state: IExcelState,
+  action: PayloadAction<IDragColumnOffset>
+): IExcelState => {
+  state.dragColumnOffset = action.payload
+  return state
+}
+
+export const COLUMN_DRAG_START = (state: IExcelState): IExcelState => {
   state.isColumnDrag = true
+  return state
+}
+
+export const ROW_DRAG_END = (
+  state: IExcelState,
+  action: PayloadAction<IRowHeight>
+): IExcelState => {
+  const activeSheet = nSelectActiveSheet(state)
+  const dragRowIndex = state.dragRowIndex
+  activeSheet.rowHeights[dragRowIndex] = action.payload
+
+  ROW_DRAG_LEAVE(state)
+  return state
+}
+
+export const COLUMN_DRAG_END = (
+  state: IExcelState,
+  action: PayloadAction<IColumnWidth>
+): IExcelState => {
+  const activeSheet = nSelectActiveSheet(state)
+  const dragColumnIndex = state.dragColumnIndex
+  activeSheet.columnWidths[dragColumnIndex] = action.payload
+  COLUMN_DRAG_LEAVE(state)
   return state
 }

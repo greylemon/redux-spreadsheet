@@ -19,6 +19,9 @@ import {
   IArea,
 } from '../@types/state'
 
+export const denormalizeRowHeight = (rowHeight: IRowHeight): IRowHeight =>
+  rowHeight ? rowHeight / ROW_HEIGHT_SCALE : SHEET_ROW_HEIGHT
+
 export const normalizeRowHeight = (rowHeight: IRowHeight): IRowHeight =>
   rowHeight ? rowHeight * ROW_HEIGHT_SCALE : SHEET_ROW_HEIGHT
 
@@ -37,6 +40,11 @@ export const normalizeRowHeightFromArray = (
 
 export const normalizeColumnWidth = (columnWidth: IColumnWidth): IColumnWidth =>
   columnWidth ? columnWidth * COLUMN_WIDTH_SCALE : SHEET_COLUMN_WIDTH
+
+export const denormalizeColumnWidth = (
+  columnWidth: IColumnWidth
+): IColumnWidth =>
+  columnWidth ? columnWidth / COLUMN_WIDTH_SCALE : SHEET_COLUMN_WIDTH
 
 /**
  * Converts Excel scaled column width unit to normal scaled unit

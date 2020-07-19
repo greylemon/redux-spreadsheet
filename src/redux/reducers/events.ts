@@ -20,7 +20,7 @@ export const UPDATE_SCROLL_OFFSET = (
 export const UPDATE_SHEET_DIMENSIONS = (
   state: IExcelState,
   action: PayloadAction<IPosition>
-) => {
+): IExcelState => {
   state.sheetDimensions = action.payload
   return state
 }

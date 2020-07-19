@@ -235,18 +235,21 @@ export const getCellMapSetFromAreas = (
 
 export const boundPositionInOrderedArea = (
   position: IPosition,
-  orderedSheetArea: IArea
+  orderedSheetArea: IArea,
+  rowAdjustment = -1,
+  columnAdjustment = -1
 ): IPosition => {
   const boundedPosition: IPosition = { ...position }
   const scrollBarSize = getScrollbarSize()
   if (position.x < orderedSheetArea.start.x)
     boundedPosition.x = orderedSheetArea.start.x
-  if (position.x >= orderedSheetArea.end.x - scrollBarSize - 2)
-    boundedPosition.x = orderedSheetArea.end.x - scrollBarSize - 2
+  if (position.x >= orderedSheetArea.end.x - scrollBarSize + columnAdjustment)
+    boundedPosition.x =
+      orderedSheetArea.end.x - scrollBarSize + columnAdjustment
   if (position.y < orderedSheetArea.start.y)
     boundedPosition.y = orderedSheetArea.start.y
-  if (position.y >= orderedSheetArea.end.y - scrollBarSize - 2)
-    boundedPosition.y = orderedSheetArea.end.y - scrollBarSize - 2
+  if (position.y >= orderedSheetArea.end.y - scrollBarSize + rowAdjustment)
+    boundedPosition.y = orderedSheetArea.end.y - scrollBarSize + rowAdjustment
 
   return boundedPosition
 }

@@ -25,8 +25,8 @@ export const createSheetState = (): ISheet => ({
   columnWidths: {},
   rowHeights: {},
 
-  freezeColumnCount: SHEET_FREEZE_COLUMN_COUNT,
-  freezeRowCount: SHEET_FREEZE_ROW_COUNT,
+  freezeColumnCount: SHEET_FREEZE_COLUMN_COUNT + 2,
+  freezeRowCount: SHEET_FREEZE_ROW_COUNT + 2,
   hiddenColumns: {},
   hiddenRows: {},
 

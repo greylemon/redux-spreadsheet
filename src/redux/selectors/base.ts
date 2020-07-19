@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect'
+import { createSelector } from '@reduxjs/toolkit'
 import IRootStore from '../../@types/store'
 import { IExcelState } from '../../@types/state'
 
@@ -85,6 +85,16 @@ export const selectScrollOffset = createSelector(
   (excel) => excel.scrollOffset
 )
 
+export const selectScrollOffsetX = createSelector(
+  [selectScrollOffset],
+  (scrollOffset) => scrollOffset.x
+)
+
+export const selectScrollOffsetY = createSelector(
+  [selectScrollOffset],
+  (scrollOffset) => scrollOffset.y
+)
+
 export const selectIsRowDrag = createSelector(
   [selectExcel],
   (excel) => excel.isRowDrag
@@ -95,7 +105,7 @@ export const selectIsColumnDrag = createSelector(
   (excel) => excel.isColumnDrag
 )
 
-export const selectDragRowPosition = createSelector(
+export const selectDragRowOffset = createSelector(
   [selectExcel],
   (excel) => excel.dragRowOffset
 )

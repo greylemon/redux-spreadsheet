@@ -4,6 +4,7 @@ import React, {
   FunctionComponent,
   useCallback,
   KeyboardEvent,
+  useMemo,
 } from 'react'
 import { VariableSizeGrid, GridOnScrollProps } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
@@ -126,6 +127,23 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     dispatch(ExcelActions.UPDATE_SHEET_DIMENSIONS({ x: width, y: height }))
   }, [dispatch, height, width])
 
+  const extraTopLeftElement = useMemo(
+    () => <CommonPane key="top-left-pane" type="TOP_LEFT" />,
+    []
+  )
+  const extraTopRightElement = useMemo(
+    () => <CommonPane key="top-right-pane" type="TOP_RIGHT" />,
+    []
+  )
+  const extraBottomLeftElement = useMemo(
+    () => <CommonPane key="bottom-left-pane" type="BOTTOM_LEFT" />,
+    []
+  )
+  const extraBottomRightElement = useMemo(
+    () => <CommonPane key="bottom-right-pane" type="BOTTOM_RIGHT" />,
+    []
+  )
+
   return (
     <div
       id="sheet"
@@ -144,16 +162,10 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
         itemData={itemData}
         freezeColumnCount={tableFreezeColumnCount}
         freezeRowCount={tableFreezeRowCount}
-        extraTopLeftElement={<CommonPane key="top-left-pane" type="TOP_LEFT" />}
-        extraTopRightElement={
-          <CommonPane key="top-right-pane" type="TOP_RIGHT" />
-        }
-        extraBottomLeftElement={
-          <CommonPane key="bottom-left-pane" type="BOTTOM_LEFT" />
-        }
-        extraBottomRightElement={
-          <CommonPane key="bottom-right-pane" type="BOTTOM_RIGHT" />
-        }
+        extraTopLeftElement={extraTopLeftElement}
+        extraTopRightElement={extraTopRightElement}
+        extraBottomLeftElement={extraBottomLeftElement}
+        extraBottomRightElement={extraBottomRightElement}
         onScroll={handleUpdateScroll}
       >
         {Cell}
@@ -163,7 +175,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
 }
 
 const SheetSizer: FunctionComponent<Size> = ({ height, width }) => (
-  <ContextMenuTrigger id="react-context-menu">
+  <ContextMenuTrigger id="react-context-menu" holdToDisplay={-1}>
     <Sheet height={height} width={width} />
   </ContextMenuTrigger>
 )

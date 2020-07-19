@@ -3,21 +3,27 @@ import {
   computeSelectionAreaBottomLeftStyle,
   computeActiveCellBottomLeftStyle,
   checkIsActiveCellInBottomLeftPane,
+  checkIsDragRowOffsetInBottomLeftPane,
 } from '../../tools/styles/bottom_left_pane'
 import {
   computeSelectionAreaBottomRightStyle,
   checkIsAreaInBottomRightPane,
   checkIsActiveCellInBottomRightPane,
+  checkIsDragColumnOffsetInBottomRightPane,
+  checkIsDragRowOffsetInBottomRightPane,
 } from '../../tools/styles/bottom_right_pane'
 import {
   checkIsAreaInTopLeftPane,
   computeSelectionAreaTopLeftStyle,
   checkIsActiveCellInTopLeftPane,
+  checkIsDragColumnOffsetInTopLeftPane,
+  checkIsDragRowOffsetInTopLeftPane,
 } from '../../tools/styles/top_left_pane'
 import {
   computeSelectionAreaTopRightStyle,
   checkIsAreaInTopRightPane,
   checkIsActiveCellInTopRightPane,
+  checkIsDragColumnOffsetInTopRightPane,
 } from '../../tools/styles/top_right_pane'
 import {
   selectFactoryIsAreaInRelevantPane,
@@ -25,7 +31,16 @@ import {
   selectFactorySelectionAreaStyle,
   selectFactoryInactiveSelectionAreasStyle,
   selectFactoryIsActiveCellInRelevantPane,
+  selectFactoryIsDragColumnOffsetInCorrectPane,
+  selectFactoryIsDragRowOffsetInCorrectPane,
 } from './factory'
+import { createSelector } from '@reduxjs/toolkit'
+import {
+  selectRowDraggerStyle,
+  selectGetRowHeight,
+  selectRowOffsets,
+} from './custom'
+import { selectFreezeRowCount } from './activeSheet'
 
 export const selectIsAreaInBottomLeftPane = selectFactoryIsAreaInRelevantPane(
   checkIsAreaInBottomLeftPane
@@ -91,4 +106,40 @@ export const selectIsActiveCellInTopLeftPane = selectFactoryIsActiveCellInReleva
 )
 export const selectIsActiveCellInTopRightPane = selectFactoryIsActiveCellInRelevantPane(
   checkIsActiveCellInTopRightPane
+)
+
+export const selectIsDragColumnOffsetInBottomRightPane = selectFactoryIsDragColumnOffsetInCorrectPane(
+  checkIsDragColumnOffsetInBottomRightPane
+)
+export const selectIsDragColumnOffsetInTopLeftPane = selectFactoryIsDragColumnOffsetInCorrectPane(
+  checkIsDragColumnOffsetInTopLeftPane
+)
+export const selectIsDragColumnOffsetInInTopRightPane = selectFactoryIsDragColumnOffsetInCorrectPane(
+  checkIsDragColumnOffsetInTopRightPane
+)
+
+export const selectIsDragRowOffsetInBottomRightPane = selectFactoryIsDragRowOffsetInCorrectPane(
+  checkIsDragRowOffsetInBottomRightPane
+)
+export const selectIsDragRowOffsetInTopLeftPane = selectFactoryIsDragRowOffsetInCorrectPane(
+  checkIsDragRowOffsetInTopLeftPane
+)
+export const selectIsDragRowOffsetInInBottomLeftPane = selectFactoryIsDragRowOffsetInCorrectPane(
+  checkIsDragRowOffsetInBottomLeftPane
+)
+
+export const selectRowDraggerBottomLeftStyle = createSelector(
+  [
+    selectRowDraggerStyle,
+    selectFreezeRowCount,
+    selectRowOffsets,
+    selectGetRowHeight,
+  ],
+  (rowDraggerStyle, freezeRowCount, rowOffsets, getRowHeight) => ({
+    ...rowDraggerStyle,
+    top:
+      +rowDraggerStyle.top -
+      rowOffsets[freezeRowCount] -
+      getRowHeight(freezeRowCount),
+  })
 )

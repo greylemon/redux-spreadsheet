@@ -11,6 +11,11 @@ import {
   ISelectionArea,
   IExcelState,
   ISheetName,
+  IOffset,
+  IColumnIndex,
+  IColumnWidth,
+  IRowHeight,
+  IRowIndex,
 } from './state'
 
 export interface IComputeActiveCellStyle {
@@ -50,6 +55,36 @@ export interface ICheckIsActiveCellInCorrectPane {
     position: IPosition,
     freezeColumnCount: IFreezeColumnCount,
     freezeRowCount: IFreezeRowCount
+  ): boolean
+}
+
+export type IGetColumnWidth = {
+  (index: IColumnIndex): IColumnWidth
+}
+
+export type IGetRowHeight = {
+  (index: IRowIndex): IRowHeight
+}
+
+export type ICheckIsDragColumnOffsetInCorrectPane = {
+  (
+    freezeColumnCount: IFreezeColumnCount,
+    freezeRowCount: IFreezeRowCount,
+    offset?: IOffset,
+    columnOffsets?: IColumnOffsets,
+    getColumnWidth?: IGetColumnWidth,
+    scrollOffsetX?: IOffset
+  ): boolean
+}
+
+export type ICheckIsDragRowOffsetInCorrectPane = {
+  (
+    freezeCount: IFreezeColumnCount,
+    freezeRowCount: IFreezeRowCount,
+    offset?: IOffset,
+    rowOffsets?: IRowOffsets,
+    getRowHeight?: IGetRowHeight,
+    scrollOffsetY?: IOffset
   ): boolean
 }
 

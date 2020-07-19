@@ -1,4 +1,4 @@
-import { createSelector } from 'reselect'
+import { createSelector } from '@reduxjs/toolkit'
 import {
   getColumnOffsets,
   getRowOffsets,
@@ -11,10 +11,10 @@ import {
   selectActiveCellPosition,
   selectSelectionArea,
   selectSheetNames,
-  selectDragRowPosition as selectDragRowOffset,
-  selectDragRowIndex,
-  selectSheetDimensions,
-  selectScrollOffset,
+  selectDragRowOffset,
+  selectDragColumnOffset,
+  selectScrollOffsetY,
+  selectScrollOffsetX,
 } from './base'
 import {
   selectColumnCount,
@@ -24,10 +24,13 @@ import {
   selectColumnWidths,
   selectRowHeights,
 } from './activeSheet'
-import { getScrollbarSize } from '../../tools/misc'
-// ===========================================================================
-// CUSTOM SELECTORS
-// ===========================================================================
+
+import {
+  rowDraggerStyle,
+  rowDraggerIndicatorStyle,
+  columnDraggerStyle,
+  columnDraggerIndicatorStyle,
+} from '../../constants/styles'
 
 export const selectTableColumnCount = createSelector(
   [selectColumnCount],
@@ -49,7 +52,7 @@ export const selectTableFreezeRowCount = createSelector(
   (freezeRowCount) => freezeRowCount + 1
 )
 
-export const selectColumnoffsets = createSelector(
+export const selectColumnOffsets = createSelector(
   [selectColumnWidths, selectColumnCount],
   (columnWidths, columnCount) => getColumnOffsets(columnWidths, columnCount)
 )
@@ -90,7 +93,7 @@ export const selectIsActiveCellPositionEqualSelectionArea = createSelector(
 export const selectColumnWidthsAdjusted = createSelector(
   [
     selectColumnWidths,
-    selectColumnoffsets,
+    selectColumnOffsets,
     selectColumnCount,
     selectFreezeColumnCount,
   ],
@@ -116,21 +119,75 @@ export const selectActiveSheetNameIndex = createSelector(
 export const selectRowDraggerStyle = createSelector(
   [
     selectDragRowOffset,
-    selectDragRowIndex,
+    selectFreezeRowCount,
+    selectScrollOffsetY,
     selectRowOffsets,
-    selectScrollOffset,
-    selectSheetDimensions,
+    selectGetRowHeight,
   ],
-  (dragRowOffset, dragRowIndex, rowOffsets, scrollOffsets, sheetDimensions) => {
-    const style: CSSProperties = {}
+  (dragRowOffset, freezeRowCount, scrollOffsetY, rowOffsets, getRowHeight) => {
+    let style: CSSProperties = {}
 
     if (dragRowOffset) {
-      const lowerBound = rowOffsets[dragRowIndex]
-      const upperBound =
-        scrollOffsets.y + sheetDimensions.y - getScrollbarSize()
+      style = {
+        ...rowDraggerStyle,
+        ...rowDraggerIndicatorStyle,
+        top: dragRowOffset,
+        left: 1,
+        zIndex: 100000,
+        cursor: 'ns-resize',
+      }
 
-      if (lowerBound <= dragRowOffset && dragRowOffset <= upperBound) {
+      const freezeRowLength =
+        rowOffsets[freezeRowCount] + getRowHeight(freezeRowCount)
+
+      if (
+        dragRowOffset > freezeRowLength &&
+        dragRowOffset - scrollOffsetY <= freezeRowLength
+      ) {
         // console.log('here')
+        style.top = dragRowOffset - scrollOffsetY
+      }
+    }
+
+    return style
+  }
+)
+
+export const selectColumnDraggerStyle = createSelector(
+  [
+    selectDragColumnOffset,
+    selectFreezeColumnCount,
+    selectScrollOffsetX,
+    selectColumnOffsets,
+    selectGetColumnWidth,
+  ],
+  (
+    dragColumnOffset,
+    freezeColumnCount,
+    scrollOffsetX,
+    columnOffsets,
+    getColumnWidth
+  ) => {
+    let style: CSSProperties = {}
+
+    if (dragColumnOffset) {
+      style = {
+        ...columnDraggerStyle,
+        ...columnDraggerIndicatorStyle,
+        left: dragColumnOffset,
+        top: 1,
+        cursor: 'ew-resize',
+      }
+
+      const freezeRowLength =
+        columnOffsets[freezeColumnCount] + getColumnWidth(freezeColumnCount)
+
+      if (
+        dragColumnOffset > freezeRowLength &&
+        dragColumnOffset - scrollOffsetX <= freezeRowLength
+      ) {
+        // console.log('here')
+        style.top = dragColumnOffset - scrollOffsetX
       }
     }
 

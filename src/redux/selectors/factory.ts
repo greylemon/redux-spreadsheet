@@ -1,5 +1,5 @@
 /* eslint-disable */
-import { createSelector } from 'reselect'
+import { createSelector } from '@reduxjs/toolkit'
 import {
   normalizeRowHeightFromArray,
   normalizeColumnWidthFromArray,
@@ -10,13 +10,26 @@ import {
   IComputeSelectionAreaStyle,
   ICheckIsAreaInRelevantPane,
   ICheckIsActiveCellInCorrectPane,
+  ICheckIsDragColumnOffsetInCorrectPane,
+  ICheckIsDragRowOffsetInCorrectPane,
 } from '../../@types/functions'
 import { CSSProperties } from 'react'
-import { STYLE_ACTIVE_CELL_Z_INDEX } from '../../constants/styles'
+import {
+  STYLE_ACTIVE_CELL_Z_INDEX,
+  rowDraggerStyle,
+  rowDraggerIndicatorStyle,
+  columnDraggerStyle,
+  columnDraggerIndicatorStyle,
+} from '../../constants/styles'
 import {
   selectActiveCellPosition,
   selectSelectionArea,
   selectInactiveSelectionAreas,
+  selectDragColumnOffset,
+  selectDragRowOffset,
+  selectScrollOffset,
+  selectScrollOffsetY,
+  selectScrollOffsetX,
 } from './base'
 import {
   selectColumnCount,
@@ -28,7 +41,12 @@ import {
   selectData,
   selectMerged,
 } from './activeSheet'
-import { selectColumnoffsets, selectRowOffsets } from './custom'
+import {
+  selectColumnOffsets,
+  selectRowOffsets,
+  selectGetColumnWidth,
+  selectGetRowHeight,
+} from './custom'
 
 export const selectFactoryIsAreaInRelevantPane = (
   checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
@@ -63,7 +81,7 @@ export const selectFactorySelectionAreaStyle = (
   createSelector(
     [
       selectColumnWidths,
-      selectColumnoffsets,
+      selectColumnOffsets,
       selectRowHeights,
       selectRowOffsets,
       selectFreezeColumnCount,
@@ -100,7 +118,7 @@ export const selectFactoryActiveCellStyle = (
       selectRowCount,
       selectColumnWidths,
       selectRowHeights,
-      selectColumnoffsets,
+      selectColumnOffsets,
       selectRowOffsets,
       selectData,
       selectActiveCellPosition,
@@ -132,6 +150,11 @@ export const selectFactoryActiveCellStyle = (
         )
         activeCellStyle.minHeight = activeCellStyle.height
         activeCellStyle.minWidth = activeCellStyle.width
+
+        activeCellStyle.height = +activeCellStyle.height + 1
+        activeCellStyle.width = +activeCellStyle.width + 1
+        // activeCellStyle.minHeight = +activeCellStyle.height + 1
+        // activeCellStyle.minWidth = +activeCellStyle.width + 1
       } else {
         let height: number, width: number, top: number, left: number
 
@@ -161,12 +184,12 @@ export const selectFactoryActiveCellStyle = (
         }
 
         activeCellStyle = {
-          top,
-          left,
-          height,
-          width,
-          minHeight: height,
-          minWidth: width,
+          top: top,
+          left: left,
+          height: height + 1,
+          width: width + 1,
+          minHeight: height + 1,
+          minWidth: width + 1,
         }
       }
 
@@ -191,7 +214,7 @@ export const selectFactoryInactiveSelectionAreasStyle = (
   createSelector(
     [
       selectColumnWidths,
-      selectColumnoffsets,
+      selectColumnOffsets,
       selectRowHeights,
       selectRowOffsets,
       selectFreezeColumnCount,
@@ -226,4 +249,64 @@ export const selectFactoryInactiveSelectionAreasStyle = (
             inactiveSelectionArea
           )
         )
+  )
+
+export const selectFactoryIsDragColumnOffsetInCorrectPane = (
+  checkIsDragColumnOffsetInCorrectPane: ICheckIsDragColumnOffsetInCorrectPane
+) =>
+  createSelector(
+    [
+      selectFreezeColumnCount,
+      selectFreezeRowCount,
+      selectDragColumnOffset,
+      selectColumnOffsets,
+      selectGetColumnWidth,
+      selectScrollOffsetX,
+    ],
+    (
+      freezeColumnCount,
+      freezeRowCount,
+      offset,
+      columnOffsets,
+      getColumnWidth,
+      scrollOffsetX
+    ) =>
+      checkIsDragColumnOffsetInCorrectPane(
+        freezeColumnCount,
+        freezeRowCount,
+        offset,
+        columnOffsets,
+        getColumnWidth,
+        scrollOffsetX
+      )
+  )
+
+export const selectFactoryIsDragRowOffsetInCorrectPane = (
+  checkIsDragRowOffsetInCorrectPane: ICheckIsDragRowOffsetInCorrectPane
+) =>
+  createSelector(
+    [
+      selectFreezeColumnCount,
+      selectFreezeRowCount,
+      selectDragRowOffset,
+      selectRowOffsets,
+      selectGetRowHeight,
+      selectScrollOffsetY,
+    ],
+    (
+      freezeCount,
+      freezeRowCount,
+      offset,
+      rowOffsets,
+      getRowHeight,
+      scrollOffsetY
+    ) =>
+      checkIsDragRowOffsetInCorrectPane(
+        freezeCount,
+        freezeRowCount,
+        offset,
+        rowOffsets,
+        getRowHeight,
+        scrollOffsetY
+      )
   )

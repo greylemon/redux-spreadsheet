@@ -5,7 +5,10 @@ import React, {
   MouseEvent,
 } from 'react'
 import { useDispatch } from 'react-redux'
-import { ExcelActions } from '../../redux/store'
+import {
+  mouseEnterDragRow,
+  mouseOverDragColumn as mouseEnterDragColumn,
+} from '../../redux/thunk'
 
 const HeaderDraggerArea: FunctionComponent<{
   id: string
@@ -15,31 +18,15 @@ const HeaderDraggerArea: FunctionComponent<{
 }> = ({ id, style, type, index }) => {
   const dispatch = useDispatch()
 
-  const handleMouseDown = useCallback(
-    (event: MouseEvent) => {
-      if (event.buttons === 1) {
-        switch (type) {
-          case 'row':
-            dispatch(ExcelActions.ROW_DRAG_START(index))
-            break
-          case 'column':
-            dispatch(ExcelActions.COLUMN_DRAG_START(index))
-            break
-        }
-      }
-    },
-    [dispatch, type, index]
-  )
-
-  const handleMouseLeave = useCallback(
+  const handleMouseEnter = useCallback(
     (event: MouseEvent) => {
       if (!event.buttons) {
         switch (type) {
           case 'row':
-            dispatch(ExcelActions.ROW_DRAG_LEAVE())
+            dispatch(mouseEnterDragRow(index))
             break
           case 'column':
-            dispatch(ExcelActions.COLUMN_DRAG_LEAVE())
+            dispatch(mouseEnterDragColumn(index))
             break
         }
       }
@@ -47,14 +34,7 @@ const HeaderDraggerArea: FunctionComponent<{
     [dispatch, type]
   )
 
-  return (
-    <div
-      id={id}
-      style={style}
-      onMouseLeave={handleMouseLeave}
-      onMouseDown={handleMouseDown}
-    />
-  )
+  return <div id={id} style={style} onMouseEnter={handleMouseEnter} />
 }
 
 export default HeaderDraggerArea
