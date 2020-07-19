@@ -27,7 +27,7 @@
     "start:storybook": "start-storybook -p 4000",
     "build:storybook": "build-storybook -o docs",
     "publish:storybook": "storybook-to-ghpages",
-    "prepublish": "yarn build"
+    "prepublishOnly": "yarn build"
   },
   "files": [
     "dist",
