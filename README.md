@@ -133,14 +133,16 @@ Block style doesn't apply font styles
 
 Split editable cell into:
 
+- Content white background
 - Block style
-- Content with text-spacing resolution and font style
+- Content with font style
 - Cell with default grid dimension
 
-The layering of the cells are in the order:
+The layering of the cells are in the order from bottom to top:
 
-- Block style is at the bottom so background doesn't block text
-- Content is at the center so that content and spacing is visible
+- White Background so block style is not blocked
+- Block style so background doesn't block text
+- Content
 - Cell is at the top so that mouse operations are still working
 
-To make the text expand, content width can be set so that it expands to the end of the sheet every time.
+To make the text expand, white space with content width can be set so that it expands to the end of the sheet every time.
