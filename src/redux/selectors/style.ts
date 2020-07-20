@@ -1,28 +1,32 @@
 import { createSelector } from '@reduxjs/toolkit'
 import { selectEditorState, selectIsEditMode } from './base'
-import { selectCell } from './activeSheet'
+import {
+  selectCell,
+  selectCellFontStyle,
+  selectCellBlockStyle,
+} from './activeSheet'
 import { DraftInlineStyleType } from 'draft-js'
-import { IStyles } from '../../@types/state'
+import { IInlineStyles } from '../../@types/state'
 
 /* eslint-disable */
 export const selectFactoryIsStyle = (
   editorStyle: DraftInlineStyleType,
-  inlineStyleEqFn: (style: IStyles) => boolean
+  inlineStyleEqFn: (style: IInlineStyles) => boolean
 ) =>
   createSelector(
     [selectIsEditMode, selectCell, selectEditorState],
     (isEditMode, activeCell, editorState) => {
-      let isBold = false
+      let isToggled = false
 
       if (isEditMode) {
-        isBold = editorState.getCurrentInlineStyle().has(editorStyle)
+        isToggled = editorState.getCurrentInlineStyle().has(editorStyle)
       } else {
         if (activeCell && activeCell.style) {
-          isBold = inlineStyleEqFn(activeCell.style)
+          isToggled = inlineStyleEqFn(activeCell.style.font)
         }
       }
 
-      return isBold
+      return isToggled
     }
   )
 /* eslint-enable */
@@ -46,4 +50,9 @@ export const selectIsStrikeThrough = selectFactoryIsStyle(
 export const selectIsItalic = selectFactoryIsStyle(
   'ITALIC',
   (style) => style.fontStyle === 'italic'
+)
+
+export const selectCombinedCellStyle = createSelector(
+  [selectCellFontStyle, selectCellBlockStyle],
+  (fontStyle, blockStyle) => ({ ...fontStyle, ...blockStyle })
 )

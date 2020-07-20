@@ -73,7 +73,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 
   const cellData = rowData && rowData[columnIndex] ? rowData[columnIndex] : {}
 
-  const { value, type, style: cellBlockStyle } = cellData
+  const { value, type, style: cellStyle } = cellData
 
   const position = { x: columnIndex, y: rowIndex }
   const layerIndex = cellLayering[rowIndex][columnIndex]
@@ -94,6 +94,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 
   const contentStyle: CSSProperties | IStyles = {
     ...style,
+    ...(cellStyle ? cellStyle.font : undefined),
     width: columnWidthsAdjusted[columnIndex],
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -109,7 +110,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 
   const blockStyle: CSSProperties = {
     ...style,
-    ...cellBlockStyle,
+    ...(cellStyle ? cellStyle.block : undefined),
     boxSizing: 'border-box',
     zIndex: STYLE_BLOCK_Z_INDEX + layerIndex,
   }

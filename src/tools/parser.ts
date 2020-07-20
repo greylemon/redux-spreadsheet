@@ -30,6 +30,7 @@ import {
   IHiddenRows,
   IExcelState,
   IStyles,
+  IBlockStyles,
 } from '../@types/state'
 import {
   SHEET_MAX_ROW_COUNT,
@@ -135,7 +136,7 @@ const getAllBorderStylesInPlace = (
 
 // TODO : Pattern
 // TODO : Gradient
-const getFillInPlace = (fill: Fill, styles: IStyles): void => {
+const getFillInPlace = (fill: Fill, styles: IBlockStyles): void => {
   switch (fill.type) {
     case 'gradient':
       break
@@ -153,7 +154,10 @@ const getFillInPlace = (fill: Fill, styles: IStyles): void => {
   }
 }
 
-export const getFontStyle = (font: Partial<Font>, style: IStyles): void => {
+export const getFontStyle = (
+  font: Partial<Font>,
+  style: IInlineStyles
+): void => {
   const { bold, italic, strike, underline } = font
 
   if (bold) style.fontWeight = 'bold'
@@ -169,7 +173,10 @@ export const getFontStyle = (font: Partial<Font>, style: IStyles): void => {
 }
 
 export const getStylesFromCell = (cell: Cell): IStyles | undefined => {
-  const styles: IStyles = {}
+  const styles: IStyles = {
+    block: {},
+    font: {},
+  }
   const style = cell.style
   const {
     // alignment,
@@ -180,11 +187,11 @@ export const getStylesFromCell = (cell: Cell): IStyles | undefined => {
     // protection
   } = style
 
-  if (fill) getFillInPlace(fill, styles)
+  if (fill) getFillInPlace(fill, styles.block)
 
   if (border) getAllBorderStylesInPlace(border, styles)
 
-  if (font) getFontStyle(font, styles)
+  if (font) getFontStyle(font, styles.font)
 
   return Object.keys(styles).length ? styles : undefined
 }

@@ -35,6 +35,8 @@ export type IBlockStyles = {
   borderBottomColor?: string
   borderBottomWidth?: string
   borderBottomStyle?: string
+
+  backgroundColor?: string
 }
 
 export type IInlineStyles = {
@@ -51,7 +53,10 @@ export type IInlineStyles = {
   color?: string
 }
 
-export type IStyles = IBlockStyles & IInlineStyles & CSSProperties
+export type IStyles = {
+  font: IInlineStyles
+  block: IBlockStyles & CSSProperties
+}
 
 export type IFragment = {
   key?: string

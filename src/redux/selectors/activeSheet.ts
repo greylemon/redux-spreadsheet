@@ -65,3 +65,17 @@ export const selectCell = createSelector(
 export const selectMerged = createSelector([selectCell], (cell) =>
   cell ? cell.merged : undefined
 )
+
+export const selectCellStyle = createSelector([selectCell], (cell) =>
+  cell ? cell.style : undefined
+)
+
+export const selectCellFontStyle = createSelector(
+  [selectCellStyle],
+  (cellStyle) => (cellStyle ? cellStyle.font : undefined)
+)
+
+export const selectCellBlockStyle = createSelector(
+  [selectCellStyle],
+  (cellStyle) => (cellStyle ? cellStyle.block : undefined)
+)
