@@ -129,18 +129,18 @@ Block style doesn't apply font styles
 - Text must expand until another text is present or text reaches the end of the sheet
 - Resolve cell block style and cell font style
 
-#### Potential Solution
+#### Potential Solution 1
 
 Split editable cell into:
 
 - Block style
-- Content with text-spacing resolution and font style
+- Content with font style and white background? (how to resolve background from white background?)
 - Cell with default grid dimension
 
-The layering of the cells are in the order:
+The layering of the cells are in the order from bottom to top:
 
-- Block style is at the bottom so background doesn't block text
-- Content is at the center so that content and spacing is visible
+- Block style so background doesn't block text
+- Content
 - Cell is at the top so that mouse operations are still working
 
-To make the text expand, content width can be set so that it expands to the end of the sheet every time.
+?Use selector to determine layering of content. When content is present, increment layering z-index.
