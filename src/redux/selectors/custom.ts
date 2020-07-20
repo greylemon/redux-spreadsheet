@@ -133,7 +133,6 @@ export const selectRowDraggerStyle = createSelector(
         ...rowDraggerIndicatorStyle,
         top: dragRowOffset,
         left: 1,
-        zIndex: 100000,
         cursor: 'ns-resize',
       }
 
@@ -178,14 +177,14 @@ export const selectColumnDraggerStyle = createSelector(
         cursor: 'ew-resize',
       }
 
-      const freezeRowLength =
+      const freezeColumnLength =
         columnOffsets[freezeColumnCount] + getColumnWidth(freezeColumnCount)
 
       if (
-        dragColumnOffset > freezeRowLength &&
-        dragColumnOffset - scrollOffsetX <= freezeRowLength
+        dragColumnOffset > freezeColumnLength &&
+        dragColumnOffset - scrollOffsetX <= freezeColumnLength
       ) {
-        style.top = dragColumnOffset - scrollOffsetX
+        style.left = dragColumnOffset - scrollOffsetX
       }
     }
 

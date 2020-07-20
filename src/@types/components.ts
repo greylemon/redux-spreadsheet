@@ -20,8 +20,10 @@ export type ExcelComponentProps = {
   initialState?: IExcelState
   /** Inline react styles */
   style?: CSSProperties
-  /** Determines whether Excel uses react-router */
+  /** Enables active sheet name routing using react-router */
   isRouted?: boolean
+  /** Disables the toolbar */
+  isToolBarDisabled?: boolean
   /** Function to process save events */
   handleSave?: IHandleSave
 }

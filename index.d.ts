@@ -1,6 +1,8 @@
 import { IExcelState } from './src/@types/state'
+import { ExcelComponentProps } from './src/@types/components'
+import { FunctionComponent } from 'react'
 
 declare module 'redux-spreadsheet' {
-  function Excel(): JSX.Element
+  const Excel: FunctionComponent<ExcelComponentProps>
   function updateWorkbookReference(state: IExcelState): IExcelState
 }

@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react'
 import { Excel } from '../src/Excel'
-import './App.scss'
 import { IHandleSave } from '../src/@types/functions'
 
 const App: FunctionComponent = () => {
@@ -11,7 +10,7 @@ const App: FunctionComponent = () => {
     }
 
   return (
-    <div className="App">
+    <div>
       <Excel handleSave={handleSave} />
     </div>
   )

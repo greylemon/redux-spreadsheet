@@ -9,18 +9,21 @@ export const Excel: FunctionComponent<ExcelComponentProps> = ({
   initialState,
   style,
   isRouted,
+  isToolBarDisabled,
   handleSave,
 }) => (
   <Provider store={store}>
     {isRouted ? (
       <ExcelRouter
         style={style}
+        isToolBarDisabled={isToolBarDisabled}
         initialState={initialState}
         handleSave={handleSave}
       />
     ) : (
       <ExcelContent
         style={style}
+        isToolBarDisabled={isToolBarDisabled}
         initialState={initialState}
         handleSave={handleSave}
       />

@@ -27,6 +27,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   style,
   isRouted,
   initialState,
+  isToolBarDisabled,
   handleSave,
 }) => {
   const dispatch = useDispatch()
@@ -89,7 +90,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
       onKeyDown={handleKeyDown}
       tabIndex={-1}
     >
-      <ToolBar />
+      {!isToolBarDisabled && <ToolBar />}
       {/* <FormulaBar /> */}
       <SheetContainer />
       <SheetNavigation isRouted={isRouted} />
@@ -100,6 +101,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
 const ExcelRoute: FunctionComponent<Partial<ExcelComponentProps>> = ({
   style,
   initialState,
+  isToolBarDisabled,
   handleSave,
 }) => {
   const dispatch = useDispatch()
@@ -115,6 +117,7 @@ const ExcelRoute: FunctionComponent<Partial<ExcelComponentProps>> = ({
     <ExcelContent
       style={style}
       initialState={initialState}
+      isToolBarDisabled={isToolBarDisabled}
       handleSave={handleSave}
       isRouted
     />
@@ -124,6 +127,7 @@ const ExcelRoute: FunctionComponent<Partial<ExcelComponentProps>> = ({
 export const ExcelRouter: FunctionComponent<Partial<ExcelComponentProps>> = ({
   initialState,
   style,
+  isToolBarDisabled,
   handleSave,
 }) => {
   const { url } = useRouteMatch()
@@ -136,6 +140,7 @@ export const ExcelRouter: FunctionComponent<Partial<ExcelComponentProps>> = ({
         render={() => (
           <ExcelContent
             style={style}
+            isToolBarDisabled={isToolBarDisabled}
             initialState={initialState}
             handleSave={handleSave}
             isRouted
@@ -148,6 +153,7 @@ export const ExcelRouter: FunctionComponent<Partial<ExcelComponentProps>> = ({
         render={() => (
           <ExcelRoute
             style={style}
+            isToolBarDisabled={isToolBarDisabled}
             initialState={initialState}
             handleSave={handleSave}
           />

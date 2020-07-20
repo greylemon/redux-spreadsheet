@@ -1,4 +1,9 @@
-import React, { ChangeEvent, Fragment, FunctionComponent } from 'react'
+import React, {
+  ChangeEvent,
+  Fragment,
+  FunctionComponent,
+  useCallback,
+} from 'react'
 import { useDispatch } from 'react-redux'
 import { loadWorkbook } from '../../redux/thunk'
 import { Publish } from '@material-ui/icons'
@@ -6,20 +11,23 @@ import { SmallLabelButton } from '../misc/buttons'
 
 const FileUpload: FunctionComponent = () => {
   const dispatch = useDispatch()
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files
+  const handleChange = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
+      const files = event.target.files
 
-    if (files) {
-      const file = files[0]
+      if (files) {
+        const file = files[0]
 
-      dispatch(loadWorkbook(file))
-    }
-  }
+        dispatch(loadWorkbook(file))
+      }
+    },
+    [dispatch]
+  )
 
   return (
     <SmallLabelButton>
       <Fragment>
-        <Publish />
+        <Publish fontSize="small" />
         <input
           type="file"
           style={{ display: 'none' }}
@@ -31,12 +39,10 @@ const FileUpload: FunctionComponent = () => {
   )
 }
 
-const ToolBar: FunctionComponent = () => {
-  return (
-    <div className="toolbar">
-      <FileUpload />
-    </div>
-  )
-}
+const ToolBar: FunctionComponent = () => (
+  <div className="toolbar">
+    <FileUpload />
+  </div>
+)
 
 export default ToolBar

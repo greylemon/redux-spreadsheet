@@ -194,7 +194,7 @@ export const customMouseMove = (mousePosition: IPosition): IAppThunk => (
     dispatch(
       ExcelActions.ROW_DRAG_MOVE(
         Math.max(
-          rowOffsets[dragRowIndex] + 1,
+          rowOffsets[dragRowIndex] + 3,
           boundedPosition.y + scrollOffsetY - sheetAreaStart.y
         )
       )
@@ -206,7 +206,7 @@ export const customMouseMove = (mousePosition: IPosition): IAppThunk => (
     dispatch(
       ExcelActions.COLUMN_DRAG_MOVE(
         Math.max(
-          columnOffsets[dragColumnIndex] + 1,
+          columnOffsets[dragColumnIndex] + 3,
           boundedPosition.x + scrollOffsetX - sheetAreaStart.x
         )
       )
@@ -222,11 +222,10 @@ export const mouseEnterDragRow = (rowIndex: IRowIndex): IAppThunk => (
   const rowOffsets = selectRowOffsets(state)
   const rowHeightGetter = selectGetRowHeight(state)
 
-  // Consider freeze row
   dispatch(
     ExcelActions.ROW_DRAG_ENTER({
       dragRowIndex: rowIndex,
-      dragRowOffset: rowOffsets[rowIndex] + rowHeightGetter(rowIndex),
+      dragRowOffset: rowOffsets[rowIndex] + rowHeightGetter(rowIndex) - 2,
     })
   )
 }
@@ -243,7 +242,7 @@ export const mouseEnterDragColumn = (columnIndex: IColumnIndex): IAppThunk => (
     ExcelActions.COLUMN_DRAG_ENTER({
       dragColumnIndex: columnIndex,
       dragColumnOffset:
-        columnOffsets[columnIndex] + columnWidthGetter(columnIndex),
+        columnOffsets[columnIndex] + columnWidthGetter(columnIndex) - 2,
     })
   )
 }
