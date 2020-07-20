@@ -49,9 +49,10 @@ const SomeComponent = () => {
 ## Focused Features
 
 - TypeScript support/type definitions (unsure how to generate)
-- History (Currently ignores most actions - map is not set up properly yet)
+- History (Currently ignores all actions - map is not set up properly yet)
   - [x] Redo
   - [x] Undo
+  - [ ] Set up relevant history actions and data (may need thunks)
 - Commands
   - [x] Save
   - [x] Arrow keys
@@ -133,11 +134,13 @@ Block style doesn't apply font styles
 Split editable cell into:
 
 - Block style
-- Content with white space resolution and font style
+- Content with text-spacing resolution and font style
 - Cell with default grid dimension
 
-The layering of the cells are in order. Block style is at the bottom so background doesn't block text.
+The layering of the cells are in the order:
 
-Content is at the center so that white space and content is visible.
+- Block style is at the bottom so background doesn't block text
+- Content is at the center so that content and spacing is visible
+- Cell is at the top so that mouse operations are still working
 
-Cell is on top so that mouse operations are still working.
+To make the text expand, content width can be set so that it expands to the end of the sheet every time.
