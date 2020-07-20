@@ -112,22 +112,22 @@
           },
           "8": {
             "1": {
-              "styles": { "backgroundColor": "#70AD47" },
+              "style": { "backgroundColor": "#70AD47" },
               "value": "Outcome",
               "type": "text"
             },
             "2": {
-              "styles": { "backgroundColor": "#70AD47" },
+              "style": { "backgroundColor": "#70AD47" },
               "value": "AVERAGE(B4:B7)",
               "type": "formula"
             },
             "3": {
-              "styles": { "backgroundColor": "#70AD47" },
+              "style": { "backgroundColor": "#70AD47" },
               "value": "AVERAGE(C4:C7)",
               "type": "formula"
             },
             "4": {
-              "styles": { "backgroundColor": "#70AD47" },
+              "style": { "backgroundColor": "#70AD47" },
               "value": "C8",
               "type": "formula"
             }
