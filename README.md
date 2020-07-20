@@ -49,9 +49,10 @@ const SomeComponent = () => {
 ## Focused Features
 
 - TypeScript support/type definitions (unsure how to generate)
-- History (Currently ignores most actions - map is not set up properly yet)
+- History (Currently ignores all actions - map is not set up properly yet)
   - [x] Redo
   - [x] Undo
+  - [ ] Set up relevant history actions and data (may need thunks)
 - Commands
   - [x] Save
   - [x] Arrow keys
