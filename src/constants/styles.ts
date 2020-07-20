@@ -14,7 +14,25 @@ export const STYLE_ACTIVE_CELL_Z_INDEX = 10000
 export const STYLE_TOOLBAR_BUTTON: CSSProperties = {
   minHeight: 25,
   minWidth: 25,
+  height: 25,
+  width: 25,
 }
+
+export const STYLE_SHEET_NAVIGATION_HEIGHT = 40
+export const STYLE_TOOL_BAR_HEIGHT = 40
+
+export const STYLE_UNSELECTABLE: CSSProperties = {
+  WebkitUserSelect: 'none',
+  MozUserSelect: 'none',
+  msUserSelect: 'none',
+  userSelect: 'none',
+}
+
+export const STYLE_BOX_SHADOW = (value: string): CSSProperties => ({
+  WebkitBoxShadow: value,
+  MozBoxShadow: value,
+  boxShadow: value,
+})
 
 export const rowDraggerStyle: CSSProperties = {
   zIndex: 100000,

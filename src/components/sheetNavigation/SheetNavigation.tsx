@@ -5,6 +5,7 @@ import React, {
   RefObject,
   Fragment,
   KeyboardEvent,
+  useMemo,
 } from 'react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 
@@ -36,6 +37,16 @@ import {
   TextField,
 } from '@material-ui/core'
 import { ArrowDropDown } from '@material-ui/icons'
+import sheetNavigation, {
+  sheetNavigationContainer,
+  sheetNavigationSheetContainer_Active,
+  sheetNavigationSheetContainer_Inactive,
+  sheetNavigation__sheets,
+  sheetNavigationOptions__addSheet,
+  sheetNavigationOptions,
+  sheetNavigationSheet__option,
+  sheetNavigationSheet__sheetName,
+} from './style'
 
 const SheetOptionButton: FunctionComponent<{
   isActive: boolean
@@ -55,8 +66,7 @@ const SheetOptionButton: FunctionComponent<{
 
   return (
     <Button
-      className="sheetNavigationSheet__option"
-      size="small"
+      style={sheetNavigationSheet__option}
       disabled={!isActive}
       onMouseDown={handleMouseDown}
     >
@@ -79,9 +89,9 @@ const SheetItemContent: FunctionComponent<{
   }, [dispatch, isActiveSheet])
 
   return (
-    <div className="sheetNavigationSheet">
+    <div>
       <span
-        className="sheetNavigationSheet__sheetName"
+        style={sheetNavigationSheet__sheetName}
         onDoubleClick={handleDoubleClick}
       >
         {sheetName}
@@ -246,16 +256,18 @@ const SortableItem = SortableElement(
       }
     }, [isActiveSheet, isSheetNavigationOpen, handleSheetPress])
 
+    const style = useMemo(
+      () => ({
+        ...sheetNavigationContainer,
+        ...(isActiveSheet
+          ? sheetNavigationSheetContainer_Active
+          : sheetNavigationSheetContainer_Inactive),
+      }),
+      [isActiveSheet]
+    )
+
     return (
-      <li
-        ref={anchorRef}
-        className={`sheetNavigationSheetContainer ${
-          isActiveSheet
-            ? 'sheetNavigationSheetContainer--active'
-            : 'sheetNavigationSheetContainer--inactive'
-        }`}
-        onMouseDown={handleMouseDown}
-      >
+      <li ref={anchorRef} style={style} onMouseDown={handleMouseDown}>
         {isSheetEditText && isActiveSheet ? (
           <SheetEditText />
         ) : (
@@ -291,7 +303,7 @@ const SortableList = SortableContainer(
     )
 
     return (
-      <ul className="sheetNavigation__sheets">
+      <ul style={sheetNavigation__sheets}>
         {sheetNames.map((sheetName, index) => (
           <SortableItem
             key={`item-${sheetName}`}
@@ -317,10 +329,7 @@ const SheetAdder: FunctionComponent = () => {
   }, [dispatch])
 
   return (
-    <Button
-      className="sheetNavigationOptions__addSheet"
-      onClick={handleAddSheet}
-    >
+    <Button style={sheetNavigationOptions__addSheet} onClick={handleAddSheet}>
       <AddIcon fontSize="small" />
     </Button>
   )
@@ -339,7 +348,7 @@ const SheetSelector: FunctionComponent<{
 const SheetNavigationOptions: FunctionComponent<{
   handleSheetPress: IHandleSheetPress
 }> = ({ handleSheetPress }) => (
-  <div className=" sheetNavigationOptions">
+  <div style={sheetNavigationOptions}>
     <SheetSelector handleSheetPress={handleSheetPress} />
     <SheetAdder />
   </div>
@@ -387,7 +396,7 @@ const HorizontalNavigation: FunctionComponent<{
 const SheetNavigation: FunctionComponent<{
   handleSheetPress: IHandleSheetPress
 }> = ({ handleSheetPress }) => (
-  <div className="sheetNavigation">
+  <div style={sheetNavigation}>
     <SheetNavigationOptions handleSheetPress={handleSheetPress} />
     <HorizontalNavigation handleSheetPress={handleSheetPress} />
   </div>

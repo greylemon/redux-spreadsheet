@@ -8,6 +8,7 @@ import { useDispatch } from 'react-redux'
 import { loadWorkbook } from '../../redux/thunk'
 import { Publish } from '@material-ui/icons'
 import { SmallLabelButton } from '../misc/buttons'
+import toolBar from './style'
 
 const FileUpload: FunctionComponent = () => {
   const dispatch = useDispatch()
@@ -40,8 +41,10 @@ const FileUpload: FunctionComponent = () => {
 }
 
 const ToolBar: FunctionComponent = () => (
-  <div className="toolbar">
-    <FileUpload />
+  <div style={toolBar}>
+    <div>
+      <FileUpload />
+    </div>
   </div>
 )
 

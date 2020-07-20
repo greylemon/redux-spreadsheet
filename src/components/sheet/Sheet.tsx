@@ -29,6 +29,7 @@ import { shallowEqual, useDispatch } from 'react-redux'
 import { ContextMenuTrigger } from 'react-contextmenu'
 import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 import { ExcelActions } from '../../redux/store'
+import sheet from './style'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
@@ -181,7 +182,7 @@ const SheetSizer: FunctionComponent<Size> = ({ height, width }) => (
 )
 
 const SheetContainer: FunctionComponent = () => (
-  <div className="sheet">
+  <div style={sheet}>
     <AutoSizer children={SheetSizer} />
     <CustomContextMenu />
   </div>
