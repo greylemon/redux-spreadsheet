@@ -6,6 +6,8 @@
 [![Build Status](https://travis-ci.org/greylemon/redux-spreadsheet.svg?branch=master)](https://travis-ci.org/greylemon/redux-spreadsheet)
 [![Coverage Status](https://coveralls.io/repos/github/greylemon/redux-spreadsheet/badge.svg?branch=master)](https://coveralls.io/github/greylemon/redux-spreadsheet?branch=master)
 
+Excel/Google-like spreadsheet
+
 ## Demos
 
 [Storybook](https://greylemon.github.io/redux-spreadsheet/)
