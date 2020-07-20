@@ -23,6 +23,7 @@ import {
   selectFreezeRowCount,
   selectColumnWidths,
   selectRowHeights,
+  selectData,
 } from './activeSheet'
 
 import {
@@ -189,5 +190,28 @@ export const selectColumnDraggerStyle = createSelector(
     }
 
     return style
+  }
+)
+
+export const selectCellLayering = createSelector(
+  [selectData, selectColumnCount, selectRowCount],
+  (data, columnCount, rowCount) => {
+    const layering: number[][] = []
+
+    for (let rowIndex = 0; rowIndex <= rowCount; rowIndex++) {
+      let layerIndex = 1
+      const rowLayer: number[] = []
+      const row = data[rowIndex]
+
+      for (let columnIndex = 0; columnIndex <= columnCount; columnIndex++) {
+        if (row && row[columnIndex] && row[columnIndex].value) layerIndex++
+
+        rowLayer.push(layerIndex)
+      }
+
+      layering.push(rowLayer)
+    }
+
+    return layering
   }
 )

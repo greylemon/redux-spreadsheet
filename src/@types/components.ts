@@ -33,6 +33,7 @@ export type IItemData = {
   columnWidthsAdjusted: IColumnWidthsAdjusted
   getRowHeight: (index: number) => number
   sheetResults: IRowResults
+  cellLayering: number[][]
   handleDoubleClick: () => void
 }
 

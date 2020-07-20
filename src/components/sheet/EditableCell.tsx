@@ -65,6 +65,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
     data: sheetData,
     columnWidthsAdjusted,
     sheetResults,
+    cellLayering,
     handleDoubleClick,
   } = data
 
@@ -75,6 +76,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
   const { value, type, style: cellBlockStyle } = cellData
 
   const position = { x: columnIndex, y: rowIndex }
+  const layerIndex = cellLayering[rowIndex][columnIndex]
 
   const handleMouseDown = (event: MouseEvent) => {
     const { ctrlKey, shiftKey, buttons } = event
@@ -96,20 +98,20 @@ const EditableCell: FunctionComponent<ICellProps> = ({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-    zIndex: STYLE_CONTENT_Z_INDEX + columnIndex,
+    zIndex: STYLE_CONTENT_Z_INDEX + layerIndex,
   }
 
   const overlapStyle: CSSProperties = {
     ...style,
     width: columnWidthsAdjusted[columnIndex],
-    zIndex: STYLE_OVERLAP_Z_INDEX + columnIndex + (value ? 1 : 0),
+    zIndex: STYLE_OVERLAP_Z_INDEX + layerIndex,
   }
 
   const blockStyle: CSSProperties = {
     ...style,
     ...cellBlockStyle,
     boxSizing: 'border-box',
-    zIndex: STYLE_BLOCK_Z_INDEX + columnIndex + (value ? 1 : 0),
+    zIndex: STYLE_BLOCK_Z_INDEX + layerIndex,
   }
 
   const cellComponent = useMemo(() => {

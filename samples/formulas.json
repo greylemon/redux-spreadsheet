@@ -3,14 +3,19 @@
     "sheetNames": ["Sheet1"],
     "name": "",
     "isEditMode": false,
+    "isSheetNavigationOpen": false,
+    "isSheetNameEdit": false,
+    "isSelectionMode": false,
+    "isColumnDrag": false,
+    "isRowDrag": false,
     "editorState": {
       "_immutable": {
         "allowUndo": true,
         "currentContent": {
           "entityMap": {},
           "blockMap": {
-            "5klql": {
-              "key": "5klql",
+            "b0nvd": {
+              "key": "b0nvd",
               "type": "unstyled",
               "text": "",
               "characterList": [],
@@ -19,24 +24,24 @@
             }
           },
           "selectionBefore": {
-            "anchorKey": "5klql",
+            "anchorKey": "b0nvd",
             "anchorOffset": 0,
-            "focusKey": "5klql",
+            "focusKey": "b0nvd",
             "focusOffset": 0,
             "isBackward": false,
             "hasFocus": false
           },
           "selectionAfter": {
-            "anchorKey": "5klql",
+            "anchorKey": "b0nvd",
             "anchorOffset": 0,
-            "focusKey": "5klql",
+            "focusKey": "b0nvd",
             "focusOffset": 0,
             "isBackward": false,
             "hasFocus": false
           }
         },
         "decorator": null,
-        "directionMap": { "5klql": "LTR" },
+        "directionMap": { "b0nvd": "LTR" },
         "forceSelection": false,
         "inCompositionMode": false,
         "inlineStyleOverride": null,
@@ -44,15 +49,15 @@
         "nativelyRenderedContent": null,
         "redoStack": [],
         "selection": {
-          "anchorKey": "5klql",
+          "anchorKey": "b0nvd",
           "anchorOffset": 0,
-          "focusKey": "5klql",
+          "focusKey": "b0nvd",
           "focusOffset": 0,
           "isBackward": false,
           "hasFocus": false
         },
         "treeMap": {
-          "5klql": [
+          "b0nvd": [
             {
               "start": 0,
               "end": 0,
@@ -73,8 +78,30 @@
       "Sheet1": {
         "data": {
           "1": {
-            "1": { "value": "Coin flips", "type": "text" },
-            "6": { "value": "Counts", "type": "text" }
+            "1": {
+              "style": { "fontWeight": "bold" },
+              "value": "Coin flips",
+              "type": "text"
+            },
+            "2": { "style": { "fontWeight": "bold" } },
+            "3": { "style": { "fontWeight": "bold" } },
+            "4": { "style": { "fontWeight": "bold" } },
+            "6": {
+              "style": { "fontWeight": "bold" },
+              "value": "Counts",
+              "type": "text"
+            },
+            "7": { "style": { "fontWeight": "bold" } },
+            "8": { "style": { "fontWeight": "bold" } }
+          },
+          "2": {
+            "1": { "style": { "fontWeight": "bold" } },
+            "2": { "style": { "fontWeight": "bold" } },
+            "3": { "style": { "fontWeight": "bold" } },
+            "4": { "style": { "fontWeight": "bold" } },
+            "6": { "style": { "fontWeight": "bold" } },
+            "7": { "style": { "fontWeight": "bold" } },
+            "8": { "style": { "fontWeight": "bold" } }
           },
           "3": {
             "2": { "value": "Set 1", "type": "text" },
@@ -141,9 +168,115 @@
         "columnWidths": {},
         "hiddenColumns": {},
         "rowHeights": {},
-        "hiddenRows": {}
+        "hiddenRows": {},
+        "inactiveSelectionAreas": []
       }
-    }
+    },
+    "dependentReferences": {
+      "Sheet1": {
+        "4": {
+          "7": {
+            "Sheet1": {
+              "areaRanges": [
+                {
+                  "xRange": { "start": 2, "end": 4 },
+                  "yRange": { "start": 4, "end": 7 }
+                }
+              ],
+              "positions": []
+            }
+          },
+          "8": {
+            "Sheet1": {
+              "areaRanges": [
+                {
+                  "xRange": { "start": 2, "end": 4 },
+                  "yRange": { "start": 4, "end": 7 }
+                }
+              ],
+              "positions": []
+            }
+          }
+        },
+        "8": {
+          "2": {
+            "Sheet1": {
+              "areaRanges": [
+                {
+                  "xRange": { "start": 2, "end": 2 },
+                  "yRange": { "start": 4, "end": 7 }
+                }
+              ],
+              "positions": []
+            }
+          },
+          "3": {
+            "Sheet1": {
+              "areaRanges": [
+                {
+                  "xRange": { "start": 3, "end": 3 },
+                  "yRange": { "start": 4, "end": 7 }
+                }
+              ],
+              "positions": []
+            }
+          },
+          "4": {
+            "Sheet1": { "areaRanges": [], "positions": [{ "x": 3, "y": 8 }] }
+          }
+        }
+      }
+    },
+    "independentReferences": {
+      "Sheet1": {
+        "4": {
+          "2": {
+            "Sheet1": { "4": { "7": true, "8": true }, "8": { "2": true } }
+          },
+          "3": {
+            "Sheet1": { "4": { "7": true, "8": true }, "8": { "3": true } }
+          },
+          "4": { "Sheet1": { "4": { "7": true, "8": true } } }
+        },
+        "5": {
+          "2": {
+            "Sheet1": { "4": { "7": true, "8": true }, "8": { "2": true } }
+          },
+          "3": {
+            "Sheet1": { "4": { "7": true, "8": true }, "8": { "3": true } }
+          },
+          "4": { "Sheet1": { "4": { "7": true, "8": true } } }
+        },
+        "6": {
+          "2": {
+            "Sheet1": { "4": { "7": true, "8": true }, "8": { "2": true } }
+          },
+          "3": {
+            "Sheet1": { "4": { "7": true, "8": true }, "8": { "3": true } }
+          },
+          "4": { "Sheet1": { "4": { "7": true, "8": true } } }
+        },
+        "7": {
+          "2": {
+            "Sheet1": { "4": { "7": true, "8": true }, "8": { "2": true } }
+          },
+          "3": {
+            "Sheet1": { "4": { "7": true, "8": true }, "8": { "3": true } }
+          },
+          "4": { "Sheet1": { "4": { "7": true, "8": true } } }
+        },
+        "8": { "3": { "Sheet1": { "8": { "4": true } } } }
+      }
+    },
+    "results": {
+      "Sheet1": {
+        "4": { "7": 7, "8": 5 },
+        "8": { "2": 0.75, "3": 0.5, "4": 0.5 }
+      }
+    },
+    "sheetNameText": "",
+    "scrollOffset": { "x": 0, "y": 0 },
+    "sheetDimensions": { "x": 0, "y": 0 }
   },
   "history": [],
   "index": 0

@@ -18,6 +18,7 @@ import {
   selectTableColumnCount,
   selectTableFreezeRowCount,
   selectTableFreezeColumnCount,
+  selectCellLayering,
 } from '../../redux/selectors/custom'
 import {
   selectData,
@@ -30,6 +31,7 @@ import { ContextMenuTrigger } from 'react-contextmenu'
 import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 import { ExcelActions } from '../../redux/store'
 import sheet from './style'
+import { IItemData } from '../../@types/components'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
@@ -44,6 +46,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     tableFreezeColumnCount,
     tableFreezeRowCount,
     columnWidthsAdjusted,
+    cellLayering,
   } = useTypedSelector(
     (state) => ({
       sheetResults: selectActiveResults(state),
@@ -55,6 +58,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
       tableFreezeRowCount: selectTableFreezeRowCount(state),
       tableFreezeColumnCount: selectTableFreezeColumnCount(state),
       columnWidthsAdjusted: selectColumnWidthsAdjusted(state),
+      cellLayering: selectCellLayering(state),
     }),
     shallowEqual
   )
@@ -69,11 +73,12 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     dispatch(ExcelActions.CELL_DOUBLE_CLICK())
   }, [dispatch])
 
-  const itemData = {
+  const itemData: IItemData = {
     data,
     columnWidthsAdjusted,
     getRowHeight,
     sheetResults,
+    cellLayering,
     handleDoubleClick,
   }
 
