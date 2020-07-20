@@ -11,4 +11,13 @@ const toolBar: CSSProperties = {
   boxSizing: 'border-box',
 }
 
+export const toolBar__content: CSSProperties = {
+  display: 'flex',
+}
+
+export const toggledOn: CSSProperties = {
+  color: 'green',
+  backgroundColor: 'lightgreen',
+}
+
 export default toolBar

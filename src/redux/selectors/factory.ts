@@ -14,20 +14,13 @@ import {
   ICheckIsDragRowOffsetInCorrectPane,
 } from '../../@types/functions'
 import { CSSProperties } from 'react'
-import {
-  STYLE_ACTIVE_CELL_Z_INDEX,
-  rowDraggerStyle,
-  rowDraggerIndicatorStyle,
-  columnDraggerStyle,
-  columnDraggerIndicatorStyle,
-} from '../../constants/styles'
+import { STYLE_ACTIVE_CELL_Z_INDEX } from '../../constants/styles'
 import {
   selectActiveCellPosition,
   selectSelectionArea,
   selectInactiveSelectionAreas,
   selectDragColumnOffset,
   selectDragRowOffset,
-  selectScrollOffset,
   selectScrollOffsetY,
   selectScrollOffsetX,
 } from './base'

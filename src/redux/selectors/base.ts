@@ -10,7 +10,7 @@ export const selectIsEditMode = createSelector(
   (excel) => excel.isEditMode
 )
 
-export const selectCellEditorState = createSelector(
+export const selectEditorState = createSelector(
   [selectExcel],
   (excel) => excel.editorState
 )

@@ -67,6 +67,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
       switch (event.buttons) {
         case 1:
           dispatch(customMouseMove({ x: event.clientX, y: event.clientY }))
+          break
       }
     },
     [dispatch]

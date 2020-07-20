@@ -78,7 +78,7 @@ export type ICell = {
   hyperlink?: IHyperlink
   merged?: IArea
   type?: string
-  styles?: IStyles
+  style?: IStyles
 }
 
 export type IOffset = number

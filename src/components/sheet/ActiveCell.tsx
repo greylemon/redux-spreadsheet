@@ -22,17 +22,14 @@ import {
   selectIsActiveCellInTopLeftPane,
   selectIsActiveCellInTopRightPane,
 } from '../../redux/selectors/pane'
-import {
-  selectIsEditMode,
-  selectCellEditorState,
-} from '../../redux/selectors/base'
+import { selectIsEditMode, selectEditorState } from '../../redux/selectors/base'
 import { ExcelActions } from '../../redux/store'
 
 const EditorCell: FunctionComponent<IEditorCellProps> = ({ style }) => {
   const dispatch = useDispatch()
 
   const editorState = useTypedSelector(
-    (state) => selectCellEditorState(state),
+    (state) => selectEditorState(state),
     shallowEqual
   )
 

@@ -114,3 +114,30 @@ const SomeComponent = () => {
 | [fast-formula-parser](https://github.com/LesterLyu/fast-formula-parser)                              | used to compute formula cells in excel format                                                                                |
 | [react-window](https://github.com/bvaughn/react-window)                                              | React components for efficiently rendering large lists and tabular data                                                      |
 | [undox](https://github.com/greylemon/undox)                                                          | Fork of [JannieBeck](https://github.com/JannicBeck/undox) with ignore history                                                |
+
+## Issues
+
+### Editable cell
+
+#### Issue
+
+Block style doesn't apply font styles
+
+#### Requirements
+
+- Text must expand until another text is present or text reaches the end of the sheet
+- Resolve cell block style and cell font style
+
+#### Potential Solution
+
+Split editable cell into:
+
+- Block style
+- Content with white space resolution and font style
+- Cell with default grid dimension
+
+The layering of the cells are in order. Block style is at the bottom so background doesn't block text.
+
+Content is at the center so that white space and content is visible.
+
+Cell is on top so that mouse operations are still working.

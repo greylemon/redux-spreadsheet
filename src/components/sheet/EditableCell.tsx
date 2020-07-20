@@ -72,7 +72,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 
   const cellData = rowData && rowData[columnIndex] ? rowData[columnIndex] : {}
 
-  const { value, type, styles } = cellData
+  const { value, type, style: cellBlockStyle } = cellData
 
   const position = { x: columnIndex, y: rowIndex }
 
@@ -107,7 +107,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 
   const blockStyle: CSSProperties = {
     ...style,
-    ...styles,
+    ...cellBlockStyle,
     boxSizing: 'border-box',
     zIndex: STYLE_BLOCK_Z_INDEX + columnIndex + (value ? 1 : 0),
   }

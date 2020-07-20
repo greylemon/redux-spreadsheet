@@ -8,6 +8,7 @@ import {
   Border,
   Color as ExcelColor,
   Fill,
+  Font,
 } from 'exceljs'
 import {
   IRows,
@@ -123,7 +124,7 @@ const getBorderStyleInPlace = (
 const getAllBorderStylesInPlace = (
   borders: Partial<Borders>,
   styles: IStyles
-) => {
+): void => {
   const { bottom, left, top, right } = borders
 
   if (bottom) getBorderStyleInPlace('Bottom', bottom, styles)
@@ -134,7 +135,7 @@ const getAllBorderStylesInPlace = (
 
 // TODO : Pattern
 // TODO : Gradient
-const getFillInPlace = (fill: Fill, styles: IStyles) => {
+const getFillInPlace = (fill: Fill, styles: IStyles): void => {
   switch (fill.type) {
     case 'gradient':
       break
@@ -152,6 +153,21 @@ const getFillInPlace = (fill: Fill, styles: IStyles) => {
   }
 }
 
+export const getFontStyle = (font: Partial<Font>, style: IStyles): void => {
+  const { bold, italic, strike, underline } = font
+
+  if (bold) style.fontWeight = 'bold'
+  if (italic) style.fontStyle = 'italic'
+
+  if (strike && underline) {
+    style.textDecoration = 'line-through underline'
+  } else if (strike) {
+    style.textDecoration = 'line-through'
+  } else if (underline) {
+    style.textDecoration = 'underline'
+  }
+}
+
 export const getStylesFromCell = (cell: Cell): IStyles | undefined => {
   const styles: IStyles = {}
   const style = cell.style
@@ -159,7 +175,7 @@ export const getStylesFromCell = (cell: Cell): IStyles | undefined => {
     // alignment,
     border,
     fill,
-    // font,
+    font,
     // numFmt,
     // protection
   } = style
@@ -167,6 +183,8 @@ export const getStylesFromCell = (cell: Cell): IStyles | undefined => {
   if (fill) getFillInPlace(fill, styles)
 
   if (border) getAllBorderStylesInPlace(border, styles)
+
+  if (font) getFontStyle(font, styles)
 
   return Object.keys(styles).length ? styles : undefined
 }
@@ -218,7 +236,7 @@ export const getCellContent = (data: IRows, cell: any): ICell | undefined => {
   const content: ICell = {}
 
   const styles = getStylesFromCell(cell)
-  if (styles) content.styles = styles
+  if (styles) content.style = styles
 
   switch (cell.type) {
     case ValueType.Number:

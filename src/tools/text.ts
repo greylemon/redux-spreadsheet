@@ -50,27 +50,27 @@ export const getTextFromRichText = (richText: IRichTextValue): string => {
 
 export const updateStyleInPlace = (
   inlineRange: RawDraftInlineStyleRange,
-  styles: IInlineStyles
+  style: IInlineStyles
 ): void => {
   switch (inlineRange.style) {
     case 'BOLD':
-      styles.fontWeight = 'bold'
+      style.fontWeight = 'bold'
       break
     case 'ITALIC':
-      styles.fontStyle = 'italic'
+      style.fontStyle = 'italic'
       break
     case 'STRIKETHROUGH':
-      if (styles.textDecoration) {
-        styles.textDecoration += ' line-through'
+      if (style.textDecoration) {
+        style.textDecoration += ' line-through'
       } else {
-        styles.textDecoration = 'line-through'
+        style.textDecoration = 'line-through'
       }
       break
     case 'UNDERLINE':
-      if (styles.textDecoration) {
-        styles.textDecoration += ' underline'
+      if (style.textDecoration) {
+        style.textDecoration += ' underline'
       } else {
-        styles.textDecoration = 'underline'
+        style.textDecoration = 'underline'
       }
       break
 
