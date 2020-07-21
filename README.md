@@ -29,7 +29,6 @@ import 'redux-spreadsheet/dist/main.cjs.css'
 const SomeComponent = () => {
   const handleSave = (excelState) => {
     // Do something with data
-    ...
   }
   return <Excel handleSave={handleSave} isRouted />
 }
