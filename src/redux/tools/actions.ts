@@ -10,6 +10,8 @@ export const createActionIgnoreMap = (): { [key: string]: boolean } => {
   }
 
   // TODO : Ignore certain actions here
+  ignoreActionMap[ExcelActions.UPDATE_STATE.type] = false
+  ignoreActionMap[ExcelActions.CHANGE_SHEET.type] = false
 
   return ignoreActionMap
 }

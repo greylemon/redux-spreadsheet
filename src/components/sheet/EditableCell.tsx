@@ -109,11 +109,9 @@ const EditableCell: FunctionComponent<ICellProps> = ({
       merged && type !== TYPE_MERGE
         ? {
             ...style,
-            height:
-              rowOffsets[merged.end.y + 1] - rowOffsets[merged.start.y] + 100,
+            height: rowOffsets[merged.end.y + 1] - rowOffsets[merged.start.y],
             width:
               columnOffsets[merged.end.x + 1] - columnOffsets[merged.start.x],
-            minHeight: 1000,
           }
         : style,
     [style, merged, type, rowOffsets, columnOffsets]
