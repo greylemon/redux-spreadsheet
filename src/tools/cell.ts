@@ -1,3 +1,4 @@
+import { EditorState } from 'draft-js'
 import {
   IPosition,
   IRowCount,
@@ -10,7 +11,6 @@ import {
   createEditorStateFromText,
   createEditorStateFromRichText,
 } from './text'
-import { EditorState } from 'draft-js'
 import {
   TYPE_FORMULA,
   TYPE_TEXT,
@@ -57,5 +57,5 @@ export const createEditorStateFromCell = (cell?: ICell): EditorState => {
     }
   }
 
-  return editorState ? editorState : createEmptyEditorState()
+  return editorState || createEmptyEditorState()
 }

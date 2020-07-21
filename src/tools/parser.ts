@@ -10,6 +10,10 @@ import {
   Fill,
   Font,
 } from 'exceljs'
+import uniqid from 'uniqid'
+import Color from 'color'
+import fs from 'fs'
+import cloneDeep from 'clone-deep'
 import {
   IRows,
   IPosition,
@@ -41,7 +45,6 @@ import {
 } from '../constants/defaults'
 import { numberRegex } from './regex'
 import { ValueType } from '../@types/exceljs'
-import uniqid from 'uniqid'
 import { getTableColumnCount, getTableRowCount } from './table'
 import {
   TYPE_RICH_TEXT,
@@ -54,11 +57,7 @@ import { initialExcelState } from '../redux/store'
 import { indexedColors, themes } from '../constants/colors'
 import { applyTintToColor } from './color'
 
-import Color from 'color'
-
-import fs from 'fs'
 import { updateWorkbookReference } from './formula'
-import cloneDeep from 'clone-deep'
 
 const getFormattedColor = (
   color: Partial<ExcelColor> & {
@@ -177,7 +176,7 @@ export const getStylesFromCell = (cell: Cell): IStyles | undefined => {
     block: {},
     font: {},
   }
-  const style = cell.style
+  const { style } = cell
   const {
     // alignment,
     border,
@@ -238,7 +237,7 @@ export const getRichTextFromCellValue = (
 }
 
 export const getCellContent = (data: IRows, cell: any): ICell | undefined => {
-  const value = cell.value
+  const { value } = cell
 
   const content: ICell = {}
 
@@ -256,7 +255,7 @@ export const getCellContent = (data: IRows, cell: any): ICell | undefined => {
       break
     case ValueType.Formula: {
       const { formula, sharedFormula } = cell.value
-      const formulaValue: string = formula ? formula : sharedFormula
+      const formulaValue: string = formula || sharedFormula
 
       content.value = formulaValue
       content.type = TYPE_FORMULA
@@ -382,7 +381,7 @@ const getPaneDataFromSheetViews = (
   }
 
   views.forEach((view) => {
-    const activeCell = view.activeCell
+    const { activeCell } = view
     if (activeCell)
       paneData.activeCellPosition = getBoundedPositionFromString(activeCell)
 
@@ -407,7 +406,7 @@ export const getColumnDataFromColumns = (
   const columnWidths: IColumnWidths = {}
   const hiddenColumns: IHiddenColumns = {}
 
-  const columnCount = sheet.columnCount
+  const { columnCount } = sheet
 
   for (let i = 1; i <= columnCount; i++) {
     const { width, hidden } = sheet.getColumn(i)
@@ -428,7 +427,7 @@ export const getRowDataFromSheet = (
 ): { rowHeights: IRowHeights; hiddenRows: IHiddenRows } => {
   const rowHeights: IRowHeights = {}
   const hiddenRows: IHiddenRows = {}
-  const rowCount = sheet.rowCount
+  const { rowCount } = sheet
 
   for (let i = 1; i <= rowCount; i++) {
     const { height, hidden } = sheet.getRow(i)

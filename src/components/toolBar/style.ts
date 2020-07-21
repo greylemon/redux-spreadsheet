@@ -1,5 +1,5 @@
-import { STYLE_TOOL_BAR_HEIGHT } from '../../constants/styles'
 import { CSSProperties } from 'react'
+import { STYLE_TOOL_BAR_HEIGHT } from '../../constants/styles'
 
 const toolBar: CSSProperties = {
   display: 'flex',
@@ -18,6 +18,10 @@ export const toolBar__content: CSSProperties = {
 export const toggledOn: CSSProperties = {
   color: 'green',
   backgroundColor: 'lightgreen',
+}
+
+export const disabledStyle: CSSProperties = {
+  color: '#B0B0B0',
 }
 
 export default toolBar

@@ -103,16 +103,8 @@ export const getRowOffsets = (
 export const getAreaDimensions = (
   area: IArea,
   rowOffsets: IRowOffsets,
-  columnOffsets: IColumnOffsets,
-  columnWidths: IColumnWidths,
-  rowHeights: IRowHeights
+  columnOffsets: IColumnOffsets
 ): { height: IRowHeight; width: IColumnWidth } => ({
-  height:
-    rowOffsets[area.end.y] +
-    normalizeRowHeightFromArray(area.end.y, rowHeights) -
-    rowHeights[area.start.y],
-  width:
-    columnOffsets[area.end.x] +
-    normalizeColumnWidthFromArray(area.end.x, columnWidths) -
-    columnWidths[area.start.x],
+  height: rowOffsets[area.end.y + 1] - rowOffsets[area.start.y],
+  width: columnOffsets[area.end.x + 1] - columnOffsets[area.start.x],
 })

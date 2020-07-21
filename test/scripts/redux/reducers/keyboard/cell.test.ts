@@ -1,3 +1,4 @@
+import cloneDeep from 'clone-deep'
 import { createRootMockStore, mockStore } from '../../../mockStore'
 import { ExcelActions, initialExcelState } from '../../../../../src/redux/store'
 import {
@@ -9,7 +10,6 @@ import {
   selectActiveCellPositionRow,
   selectActiveCellPositionColumn,
 } from '../../../../../src/redux/selectors/base'
-import cloneDeep from 'clone-deep'
 import { mockState } from '../../../mockState'
 import { createEditorStateFromText } from '../../../../../src/tools/text'
 import { TYPE_TEXT } from '../../../../../src/constants/types'

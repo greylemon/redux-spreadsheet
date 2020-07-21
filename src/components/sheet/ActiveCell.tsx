@@ -1,12 +1,7 @@
-import React, {
-  useCallback,
-  Fragment,
-  FunctionComponent,
-  CSSProperties,
-} from 'react'
+import React, { useCallback, FunctionComponent, CSSProperties } from 'react'
 import { Editor, RichUtils, EditorState } from 'draft-js'
-import { useTypedSelector } from '../../redux/redux'
 import { shallowEqual, useDispatch } from 'react-redux'
+import { useTypedSelector } from '../../redux/redux'
 import {
   INormalActiveCellProps,
   IEditorCellProps,
@@ -103,7 +98,7 @@ const ActiveCell: FunctionComponent<ICommonPaneProps> = ({ type }) => {
     }
   }, shallowEqual)
 
-  if (!isInCorrectPane) return <Fragment />
+  if (!isInCorrectPane) return <></>
 
   return isEditMode ? (
     <EditorCell style={style} />

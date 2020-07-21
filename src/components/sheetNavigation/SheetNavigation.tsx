@@ -3,12 +3,24 @@ import React, {
   FunctionComponent,
   useRef,
   RefObject,
-  Fragment,
   KeyboardEvent,
   useMemo,
 } from 'react'
 import { SortableContainer, SortableElement } from 'react-sortable-hoc'
 
+import { shallowEqual, useDispatch } from 'react-redux'
+import { useHistory, useRouteMatch } from 'react-router-dom'
+import AddIcon from '@material-ui/icons/Add'
+import {
+  Button,
+  MenuList,
+  Popper,
+  Paper,
+  ClickAwayListener,
+  MenuItem,
+  TextField,
+} from '@material-ui/core'
+import { ArrowDropDown } from '@material-ui/icons'
 import {
   ISheetName,
   IIsSheetNavigationOpen,
@@ -22,21 +34,8 @@ import {
   selectIsSheetNameEdit,
   selectSheetNameText,
 } from '../../redux/selectors/base'
-import { shallowEqual, useDispatch } from 'react-redux'
 import { ExcelActions } from '../../redux/store'
-import { useHistory, useRouteMatch } from 'react-router-dom'
 import { IHandleSheetPress } from '../../@types/functions'
-import AddIcon from '@material-ui/icons/Add'
-import {
-  Button,
-  MenuList,
-  Popper,
-  Paper,
-  ClickAwayListener,
-  MenuItem,
-  TextField,
-} from '@material-ui/core'
-import { ArrowDropDown } from '@material-ui/icons'
 import sheetNavigation, {
   sheetNavigationContainer,
   sheetNavigationSheetContainer_Active,
@@ -168,7 +167,7 @@ const NormalSheetItem: FunctionComponent<{
   isActiveSheet: boolean
   anchorRef: RefObject<HTMLLIElement>
 }> = ({ sheetName, anchorRef, isActiveSheet, isSheetNavigationOpen }) => (
-  <Fragment>
+  <>
     <SheetItemContent
       isSheetNavigationOpen={isSheetNavigationOpen}
       sheetName={sheetName}
@@ -180,7 +179,7 @@ const NormalSheetItem: FunctionComponent<{
         isSheetNavigationOpen={isSheetNavigationOpen}
       />
     )}
-  </Fragment>
+  </>
 )
 
 const SheetEditText: FunctionComponent = () => {

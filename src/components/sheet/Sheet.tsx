@@ -8,6 +8,8 @@ import React, {
 } from 'react'
 import { VariableSizeGrid, GridOnScrollProps } from 'react-window'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
+import { shallowEqual, useDispatch } from 'react-redux'
+import { ContextMenuTrigger } from 'react-contextmenu'
 import { useTypedSelector } from '../../redux/redux'
 import Cell from './Cell'
 import {
@@ -19,15 +21,15 @@ import {
   selectTableFreezeRowCount,
   selectTableFreezeColumnCount,
   selectCellLayering,
+  selectRowOffsets,
+  selectColumnOffsets,
 } from '../../redux/selectors/custom'
 import {
   selectData,
   selectActiveResults,
 } from '../../redux/selectors/activeSheet'
 import CommonPane from './CommonPane'
-import { shallowEqual, useDispatch } from 'react-redux'
 
-import { ContextMenuTrigger } from 'react-contextmenu'
 import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 import { ExcelActions } from '../../redux/store'
 import sheet from './style'
@@ -47,6 +49,8 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     tableFreezeRowCount,
     columnWidthsAdjusted,
     cellLayering,
+    rowOffsets,
+    columnOffsets,
   } = useTypedSelector(
     (state) => ({
       sheetResults: selectActiveResults(state),
@@ -59,12 +63,14 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
       tableFreezeColumnCount: selectTableFreezeColumnCount(state),
       columnWidthsAdjusted: selectColumnWidthsAdjusted(state),
       cellLayering: selectCellLayering(state),
+      rowOffsets: selectRowOffsets(state),
+      columnOffsets: selectColumnOffsets(state),
     }),
     shallowEqual
   )
 
   useEffect(() => {
-    const current = gridRef.current
+    const { current } = gridRef
 
     if (current) current.resetAfterIndices({ columnIndex: 0, rowIndex: 0 })
   }, [getColumnWidth, getRowHeight])
@@ -76,10 +82,11 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const itemData: IItemData = {
     data,
     columnWidthsAdjusted,
-    getRowHeight,
     sheetResults,
     cellLayering,
     handleDoubleClick,
+    rowOffsets,
+    columnOffsets,
   }
 
   const handleKeyDown = useCallback(
@@ -91,25 +98,22 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
           dispatch(ExcelActions.CELL_EDITOR_STATE_START())
         } else if (key === 'Delete') {
           dispatch(ExcelActions.CELL_KEY_DELETE())
+        } else if (shiftKey) {
+          // TODO
         } else {
-          if (shiftKey) {
-            // TODO
-            return
-          } else {
-            switch (key) {
-              case 'ArrowDown':
-                dispatch(ExcelActions.CELL_KEY_DOWN())
-                break
-              case 'ArrowRight':
-                dispatch(ExcelActions.CELL_KEY_RIGHT())
-                break
-              case 'ArrowLeft':
-                dispatch(ExcelActions.CELL_KEY_LEFT())
-                break
-              case 'ArrowUp':
-                dispatch(ExcelActions.CELL_KEY_UP())
-                break
-            }
+          switch (key) {
+            case 'ArrowDown':
+              dispatch(ExcelActions.CELL_KEY_DOWN())
+              break
+            case 'ArrowRight':
+              dispatch(ExcelActions.CELL_KEY_RIGHT())
+              break
+            case 'ArrowLeft':
+              dispatch(ExcelActions.CELL_KEY_LEFT())
+              break
+            case 'ArrowUp':
+              dispatch(ExcelActions.CELL_KEY_UP())
+              break
           }
         }
       }

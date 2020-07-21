@@ -1,4 +1,4 @@
-import React, { Fragment, FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 
 import ActiveCell from './ActiveCell'
 import { ICommonPaneProps } from '../../@types/components'
@@ -8,7 +8,7 @@ import RowDragger from './RowDragger'
 import ColumnDragger from './ColumnDragger'
 
 const CommonActivityPane: FunctionComponent<ICommonPaneProps> = ({ type }) => (
-  <Fragment>
+  <>
     <ActiveCell type={type} />
     <SelectionArea type={type} />
     <InactiveSelectionAreas type={type} />
@@ -18,7 +18,7 @@ const CommonActivityPane: FunctionComponent<ICommonPaneProps> = ({ type }) => (
     {(type === 'TOP_LEFT' || type === 'TOP_RIGHT') && (
       <ColumnDragger type={type} />
     )}
-  </Fragment>
+  </>
 )
 
 export default CommonActivityPane

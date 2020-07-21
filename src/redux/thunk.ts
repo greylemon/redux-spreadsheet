@@ -1,3 +1,4 @@
+import { undo, redo } from 'undox'
 import { convertRawExcelToState } from '../tools/parser'
 import { IAppThunk } from '../@types/store'
 import { ExcelActions } from './store'
@@ -13,9 +14,10 @@ import {
   selectDragColumnIndex,
   selectDragRowOffset,
   selectDragColumnOffset,
+  selectSelectionArea,
+  selectIsSelectionMode,
 } from './selectors/base'
-import { selectSelectionArea, selectIsSelectionMode } from './selectors/base'
-import { undo, redo } from 'undox'
+
 import { IPosition, IArea, IRowIndex, IColumnIndex } from '../@types/state'
 import {
   boundPositionInOrderedArea,
@@ -139,7 +141,7 @@ export const customMouseMove = (mousePosition: IPosition): IAppThunk => (
       boundedPosition.x,
       boundedPosition.y
     )
-    const id = element.id
+    const { id } = element
     const [type, address] = id.split('=')
 
     let scopedPosition: IPosition
@@ -170,9 +172,12 @@ export const customMouseMove = (mousePosition: IPosition): IAppThunk => (
           cellPosition.x,
           cellPosition.y
         )
-        const id = cellElement.id
-        const [, cellAddress] = id.split('=')
-        scopedPosition = JSON.parse(cellAddress)
+
+        if (cellElement) {
+          const { id } = cellElement
+          const [, cellAddress] = id.split('=')
+          scopedPosition = JSON.parse(cellAddress)
+        }
         break
       }
       case 'root':

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { ContextMenu, MenuItem } from 'react-contextmenu'
-import { contextMenuId } from '../../../constants/misc'
 import { Paper } from '@material-ui/core'
+import { contextMenuId } from '../../../constants/misc'
 import { Insert } from './Insert'
 
 const CustomContextMenu: FunctionComponent = () => {

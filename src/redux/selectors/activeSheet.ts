@@ -62,6 +62,10 @@ export const selectCell = createSelector(
   (row, columnIndex) => (row ? row[columnIndex] : undefined)
 )
 
+export const selectCellType = createSelector([selectCell], (cell) =>
+  cell ? cell.type : undefined
+)
+
 export const selectMerged = createSelector([selectCell], (cell) =>
   cell ? cell.merged : undefined
 )

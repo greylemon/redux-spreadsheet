@@ -1,3 +1,4 @@
+import { CSSProperties } from '@material-ui/core/styles/withStyles'
 import {
   IComputeSelectionAreaStyle,
   ICheckIsAreaInRelevantPane,
@@ -21,7 +22,6 @@ import {
   STYLE_SELECTION_AREA_Z_INDEX,
 } from '../../constants/styles'
 import { normalizeColumnWidthFromArray, normalizeRowHeightFromArray } from '..'
-import { CSSProperties } from '@material-ui/core/styles/withStyles'
 
 export const computeSelectionAreaTopLeftStyle: IComputeSelectionAreaStyle = (
   columnWidths: IColumnWidths,

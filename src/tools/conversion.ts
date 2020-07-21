@@ -21,8 +21,8 @@ export const columnNameToNumber = (
   name = name.toUpperCase()
   let sum = 0
   for (let i = 0; i < name.length; i++) {
-    sum = sum * 26
-    sum = sum + (name[i].charCodeAt(0) - 'A'.charCodeAt(0) + 1)
+    sum *= 26
+    sum += name[i].charCodeAt(0) - 'A'.charCodeAt(0) + 1
   }
 
   return sum

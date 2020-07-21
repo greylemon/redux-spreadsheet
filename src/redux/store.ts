@@ -46,7 +46,7 @@ import {
   RESET_SHEET_NAME_EDIT,
 } from './reducers/sheet'
 import { createInitialExcelState } from './tools/state'
-import { SELECT_ALL } from './reducers/operations'
+import { SELECT_ALL, MERGE_AREA } from './reducers/operations'
 import { createActionIgnoreMap } from './tools/actions'
 
 export const initialExcelState = createInitialExcelState()
@@ -93,6 +93,7 @@ export const ExcelStore = createSlice({
     COLUMN_DRAG_END,
     ROW_DRAG_MOVE,
     COLUMN_DRAG_MOVE,
+    MERGE_AREA,
   },
 })
 

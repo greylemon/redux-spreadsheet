@@ -24,11 +24,6 @@ $customBorderStyle: 'solid';
 }
 
 .cell {
-  border-left: thin solid rgba(223, 223, 223, 0.938);
-  border-top: thin solid rgba(223, 223, 223, 0.938);
-  
-  box-sizing: border-box;
-
   &__editable {
     background-color: white;
     width: fit-content;
@@ -39,6 +34,9 @@ $customBorderStyle: 'solid';
   }
 
   &__block {
+    border-left: thin solid rgba(223, 223, 223, 0.938);
+    border-top: thin solid rgba(223, 223, 223, 0.938);
+    
     padding: 2px 5px;
     z-index: 0;
   }

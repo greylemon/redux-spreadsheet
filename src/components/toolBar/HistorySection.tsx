@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { Undo, Redo } from '@material-ui/icons'
-import { SmallLabelButton } from '../misc/buttons'
 import { undo, redo } from 'undox'
+import { SmallLabelButton } from '../misc/buttons'
 
 const RedoAction: FunctionComponent = () => {
   const dispatch = useDispatch()
@@ -12,7 +12,7 @@ const RedoAction: FunctionComponent = () => {
   }, [dispatch])
 
   return (
-    <SmallLabelButton title="Redo" onClick={handleClick}>
+    <SmallLabelButton title="Redo (Ctrl+Y)" onClick={handleClick}>
       <Redo />
     </SmallLabelButton>
   )
@@ -25,7 +25,7 @@ const UndoAction: FunctionComponent = () => {
   }, [dispatch])
 
   return (
-    <SmallLabelButton title="Undo" onClick={handleClick}>
+    <SmallLabelButton title="Undo (Ctrl+Z)" onClick={handleClick}>
       <Undo />
     </SmallLabelButton>
   )

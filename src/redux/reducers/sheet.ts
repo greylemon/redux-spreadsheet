@@ -1,5 +1,5 @@
-import { IExcelState, ISheetName } from '../../@types/state'
 import { PayloadAction } from '@reduxjs/toolkit'
+import { IExcelState, ISheetName } from '../../@types/state'
 import { generateNewSheetName } from '../../tools/sheet'
 import { createSheetState } from '../tools/state'
 import { changeSheetInPlace } from '../tools/sheet'
@@ -49,7 +49,7 @@ export const ADD_SHEET = (state: IExcelState): IExcelState => {
 
 // TODO : Update reference sheetname
 export const REMOVE_SHEET = (state: IExcelState): IExcelState => {
-  const sheetNames = state.sheetNames
+  const { sheetNames } = state
 
   if (sheetNames.length === 1) return state
 
@@ -116,9 +116,9 @@ export const RESET_SHEET_NAME_EDIT = (state: IExcelState): IExcelState => {
 
 // TODO : Update reference sheetname
 export const CHANGE_ACTIVE_SHEET_NAME = (state: IExcelState): IExcelState => {
-  const activeSheetName = state.activeSheetName
+  const { activeSheetName } = state
   const newActiveSheetName = state.sheetNameText
-  const sheetNames = state.sheetNames
+  const { sheetNames } = state
 
   state.isSheetNameEdit = false
   state.sheetNameText = ''

@@ -7,12 +7,12 @@ import React, {
 
 import './styles/styles.scss'
 
+import { Route, useRouteMatch, Switch } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import SheetContainer from './components/sheet/Sheet'
 import ToolBar from './components/toolBar/ToolBar'
 import SheetNavigation from './components/sheetNavigation/SheetNavigation'
 // import FormulaBar from './components/formulaBar/FormulaBar'
-import { Route, useRouteMatch, Switch } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { ExcelActions } from './redux/store'
 import { ExcelComponentProps } from './@types/components'
 import {

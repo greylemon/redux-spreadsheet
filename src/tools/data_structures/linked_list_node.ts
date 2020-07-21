@@ -1,6 +1,8 @@
 export class LinkedListNode<T> {
   private _previous: LinkedListNode<T> | null
+
   private _next: LinkedListNode<T> | null
+
   private _item: T
 
   constructor(item: T = null) {
@@ -17,7 +19,7 @@ export class LinkedListNode<T> {
     this._item = item
   }
 
-  get previous(): LinkedListNode<T> {
+  get previous(): LinkedListNode<T> | null {
     return this._previous
   }
 
@@ -25,7 +27,7 @@ export class LinkedListNode<T> {
     this._previous = previous
   }
 
-  get next(): LinkedListNode<T> {
+  get next(): LinkedListNode<T> | null {
     return this._next
   }
 

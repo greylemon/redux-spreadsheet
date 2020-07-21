@@ -1,3 +1,5 @@
+import FormulaParser from 'fast-formula-parser'
+import cloneDeep from 'clone-deep'
 import { ICellRefMap, IVisited } from '../@types/objects'
 import {
   IPosition,
@@ -14,16 +16,14 @@ import { sheetNameAdressRegex } from './regex'
 import { convertAddressRangeToRange } from './conversion'
 import { TYPE_FORMULA, TYPE_NUMBER, TYPE_TEXT } from '../constants/types'
 import { nSelectActiveCell } from '../redux/tools/selectors'
-import FormulaParser from 'fast-formula-parser'
 import { Queue } from './data_structures/queue'
-import cloneDeep from 'clone-deep'
 
 export const createFormulaParser = (sheetsMap: ISheetsMap): FormulaParser =>
   new FormulaParser({
     onCell: ({ sheet, row: rowIndex, col: columnIndex }) => {
       const sheetContent = sheetsMap[sheet].data
 
-      const results = window.results
+      const { results } = window
 
       if (sheetContent) {
         if (sheetContent[rowIndex] && sheetContent[rowIndex][columnIndex]) {
@@ -49,7 +49,7 @@ export const createFormulaParser = (sheetsMap: ISheetsMap): FormulaParser =>
       const rangeData = []
       const sheetContent = sheetsMap[sheet].data
 
-      const results = window.results
+      const { results } = window
 
       if (sheetContent) {
         for (let rowIndex = from.row; rowIndex <= to.row; rowIndex++) {
@@ -188,7 +188,7 @@ const assignResult = (
   position: IPosition
 ) => {
   try {
-    const results = window.results
+    const { results } = window
 
     if (!results[sheetName]) results[sheetName] = {}
     if (!results[sheetName][position.y]) results[sheetName][position.y] = {}
@@ -313,8 +313,8 @@ export const updateReferenceCell = (
 ): void => {
   const dependents = state.dependentReferences
   const independents = state.independentReferences
-  const results = state.results
-  const sheetsMap = state.sheetsMap
+  const { results } = state
+  const { sheetsMap } = state
   const parser: FormulaParser = createFormulaParser(sheetsMap)
 
   window.results = results
@@ -477,7 +477,7 @@ export const visitFormulaCell = (
   curPosition: IPosition,
   formula: string
 ): void => {
-  const sheetsMap = state.sheetsMap
+  const { sheetsMap } = state
   const independents = state.independentReferences
   const dependents = state.dependentReferences
 
@@ -601,7 +601,7 @@ export const visitFormulaCell = (
 export const updateWorkbookReference = (state: IExcelState): IExcelState => {
   const visited: IVisited = {}
 
-  const sheetsMap = state.sheetsMap
+  const { sheetsMap } = state
 
   const parser: FormulaParser = createFormulaParser(sheetsMap)
 

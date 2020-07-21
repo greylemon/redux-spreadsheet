@@ -1,13 +1,13 @@
 import React, { FunctionComponent } from 'react'
-import { SmallLabelButton } from '../misc/buttons'
 import {
   FormatBold,
   FormatItalic,
   FormatStrikethrough,
   FormatUnderlined,
 } from '@material-ui/icons'
-import { useTypedSelector } from '../../redux/redux'
 import { shallowEqual } from 'react-redux'
+import { SmallLabelButton } from '../misc/buttons'
+import { useTypedSelector } from '../../redux/redux'
 import {
   selectIsBold,
   selectIsItalic,
@@ -22,7 +22,7 @@ const UnderlineAction: FunctionComponent = () => {
   )
 
   return (
-    <SmallLabelButton title="Underline" isToggled={isUnderline}>
+    <SmallLabelButton title="Underline (Ctrl+U)" isToggled={isUnderline}>
       <FormatUnderlined />
     </SmallLabelButton>
   )
@@ -48,7 +48,7 @@ const ItalicAction: FunctionComponent = () => {
   )
 
   return (
-    <SmallLabelButton title="Italic" isToggled={isItalic}>
+    <SmallLabelButton title="Italic (Ctrl+I)" isToggled={isItalic}>
       <FormatItalic />
     </SmallLabelButton>
   )
@@ -58,7 +58,7 @@ const BoldAction: FunctionComponent = () => {
   const isBold = useTypedSelector((state) => selectIsBold(state), shallowEqual)
 
   return (
-    <SmallLabelButton title="Bold" isToggled={isBold}>
+    <SmallLabelButton title="Bold (Ctrl+B)" isToggled={isBold}>
       <FormatBold />
     </SmallLabelButton>
   )

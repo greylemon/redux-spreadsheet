@@ -71,7 +71,8 @@ const SomeComponent = () => {
   - [x] Underline
 - Merged Cells
   - [x] Selection area
-  - [ ] Active cell
+  - [x] Active cell
+  - [ ] Selection area slicing
 - Router
   - [x] Page router
   - [x] No page router

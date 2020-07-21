@@ -8,6 +8,7 @@ import {
   convertFromRaw,
   ContentState,
 } from 'draft-js'
+import uniqid from 'uniqid'
 import {
   IRange,
   IRichTextValue,
@@ -16,7 +17,6 @@ import {
   IInlineStyles,
   ICell,
 } from '../@types/state'
-import uniqid from 'uniqid'
 import { getElementaryRanges, mergeRanges } from './range'
 import { IInlineStylesRange } from '../@types/general'
 import {
@@ -93,7 +93,7 @@ export const createValueFromEditorState = (
       rawBlock.text.length
     )
 
-    const inlineStyleRanges = rawBlock.inlineStyleRanges
+    const { inlineStyleRanges } = rawBlock
 
     for (const mergedRange of mergedRanges) {
       const { start, end } = mergedRange
@@ -153,7 +153,7 @@ export const createValueFromEditorState = (
 export const getRichTextBlockText = (block: IRichTextBlock): string => {
   let text = ''
 
-  const fragments = block.fragments
+  const { fragments } = block
   for (const fragment of fragments) {
     text += fragment.text
   }
@@ -169,7 +169,7 @@ export const getRawInlineStyleRangesFromRichTextBlock = (
   const inlineStyleRanges: RawDraftInlineStyleRange[] = []
   let text = ''
 
-  const fragments = block.fragments
+  const { fragments } = block
 
   const data: IInlineStylesRange = {
     BOLD: [],

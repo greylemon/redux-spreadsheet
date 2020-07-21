@@ -14,5 +14,12 @@
     "module": "commonjs",
     "jsx": "react"
   },
-  "include": ["src", "test", "stories"]
+  "include": [
+    "src",
+    "test",
+    "stories",
+    "index.d.ts",
+    "development",
+    "webpack.config.js"
+  ]
 }

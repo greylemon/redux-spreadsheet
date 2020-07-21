@@ -1,5 +1,5 @@
-import IRootStore from '../@types/store'
 import thunk from 'redux-thunk'
+import IRootStore from '../@types/store'
 import { ExcelActions } from './store'
 import { IExcelState } from '../@types/state'
 

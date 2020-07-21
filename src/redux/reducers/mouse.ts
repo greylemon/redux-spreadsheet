@@ -19,11 +19,15 @@ import {
   getOrderedAreaFromPositions,
   getAndAddArea,
   getMinPositionFromArea,
-  checkIsSelectionAreaEqualPosition,
+  checkIsAreaEqualPosition,
   checkIsPositionEqualOtherPosition,
   getAreaFromPosition,
 } from '../../tools/area'
-import { nSelectCell, nSelectActiveSheet } from '../tools/selectors'
+import {
+  nSelectActiveSheet,
+  nSelectActiveCell,
+  nSelectMergeCell,
+} from '../tools/selectors'
 import { createValueFromEditorState } from '../../tools/text'
 import { updateActiveCellRef } from '../../tools/formula'
 import { denormalizeRowHeight, denormalizeColumnWidth } from '../../tools'
@@ -126,11 +130,20 @@ export const CELL_MOUSE_DOWN = (
     updateActiveCellRef(state)
   }
 
-  state.activeCellPosition = position
   state.inactiveSelectionAreas = []
-  state.selectionArea = { start: position, end: position }
   state.isEditMode = false
   state.isSelectionMode = true
+
+  state.activeCellPosition = position
+
+  const merged = nSelectMergeCell(state)
+
+  if (merged) {
+    state.activeCellPosition = merged.start
+    state.selectionArea = merged
+  } else {
+    state.selectionArea = { start: position, end: position }
+  }
 
   return state
 }
@@ -164,15 +177,17 @@ export const CELL_MOUSE_UP = (
   const selectionArea = action.payload
 
   if (selectionArea) {
+    // TODO : Consider merged cells
     const { newAreas, superAreaIndex } = getAndAddArea(
       selectionArea,
       state.inactiveSelectionAreas
     )
+
     if (
       state.inactiveSelectionAreas.length > 0 ||
       (state.inactiveSelectionAreas.length === 1 &&
-        !checkIsSelectionAreaEqualPosition(state.inactiveSelectionAreas[0])) ||
-      !checkIsSelectionAreaEqualPosition(selectionArea)
+        !checkIsAreaEqualPosition(state.inactiveSelectionAreas[0])) ||
+      !checkIsAreaEqualPosition(selectionArea)
     ) {
       state.inactiveSelectionAreas = newAreas
       if (superAreaIndex > -1 && superAreaIndex < newAreas.length) {
@@ -195,17 +210,16 @@ export const CELL_MOUSE_UP = (
     }
   }
 
-  state.selectionAreaIndex = state.selectionAreaIndex + 1
+  state.selectionAreaIndex += 1
   state.selectionArea = undefined
 
   return state
 }
 
 export const CELL_DOUBLE_CLICK = (state: IExcelState): IExcelState => {
-  const activeSheet = nSelectActiveSheet(state)
   state.isEditMode = true
 
-  const cell = nSelectCell(activeSheet.data, state.activeCellPosition)
+  const cell = nSelectActiveCell(state)
 
   state.editorState = createEditorStateFromCell(cell)
 
@@ -285,7 +299,7 @@ export const ROW_DRAG_END = (
   action: PayloadAction<IRowHeight>
 ): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  const dragRowIndex = state.dragRowIndex
+  const { dragRowIndex } = state
 
   const height = action.payload
 
@@ -303,7 +317,7 @@ export const COLUMN_DRAG_END = (
   action: PayloadAction<IColumnWidth>
 ): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  const dragColumnIndex = state.dragColumnIndex
+  const { dragColumnIndex } = state
 
   const width = action.payload
 

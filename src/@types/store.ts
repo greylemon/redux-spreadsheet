@@ -1,6 +1,6 @@
 import { UndoxState, Action } from 'undox'
-import { IExcelState } from './state'
 import { ThunkAction } from 'redux-thunk'
+import { IExcelState } from './state'
 
 type IRootStore = UndoxState<IExcelState, Action>
 

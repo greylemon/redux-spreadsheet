@@ -22,6 +22,7 @@ describe('Parser', () => {
       const file = require.resolve('../../../samples/formulas.xlsx')
       const fileJSON = require.resolve('../../../samples/formulas.json')
       const excelState = await convertRawExcelToState(file)
+
       const state = createRootStoreFromExcelState(excelState)
 
       const fileExcelData = selectData(state)

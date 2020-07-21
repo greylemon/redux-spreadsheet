@@ -6,6 +6,8 @@ import {
   IColumnWidthsAdjusted,
   IExcelState,
   IRowResults,
+  IRowOffsets,
+  IColumnOffsets,
 } from './state'
 import {
   ICheckIsActiveCellInCorrectPane,
@@ -31,9 +33,10 @@ export type ExcelComponentProps = {
 export type IItemData = {
   data: IRows
   columnWidthsAdjusted: IColumnWidthsAdjusted
-  getRowHeight: (index: number) => number
   sheetResults: IRowResults
   cellLayering: number[][]
+  rowOffsets: IRowOffsets
+  columnOffsets: IColumnOffsets
   handleDoubleClick: () => void
 }
 

@@ -1,3 +1,4 @@
+import { createSelector } from '@reduxjs/toolkit'
 import {
   checkIsAreaInBottomLeftPane,
   computeSelectionAreaBottomLeftStyle,
@@ -32,7 +33,6 @@ import {
   selectFactoryIsDragColumnOffsetInCorrectPane,
   selectFactoryIsDragRowOffsetInCorrectPane,
 } from './factory'
-import { createSelector } from '@reduxjs/toolkit'
 import {
   selectRowDraggerStyle,
   selectGetRowHeight,

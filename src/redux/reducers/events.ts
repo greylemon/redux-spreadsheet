@@ -1,5 +1,5 @@
-import { IExcelState, IScrollOffset, IPosition } from '../../@types/state'
 import { PayloadAction } from '@reduxjs/toolkit'
+import { IExcelState, IScrollOffset, IPosition } from '../../@types/state'
 
 export const UPDATE_STATE = (
   state: IExcelState,

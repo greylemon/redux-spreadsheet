@@ -31,17 +31,8 @@ export const nSelectActiveCell = (state: IExcelState): ICell | undefined => {
   if (data[y] && data[y][x]) return data[y][x]
 }
 
-export const nSelectCell = (
-  data: IRows,
-  position: IPosition
-): ICell | undefined =>
-  data[position.y] ? data[position.y][position.x] : undefined
-
-export const nSelectMergeCell = (
-  data: IRows,
-  position: IPosition
-): IArea | undefined => {
-  const cell = nSelectCell(data, position)
+export const nSelectMergeCell = (state: IExcelState): IArea | undefined => {
+  const cell = nSelectActiveCell(state)
 
   return cell ? cell.merged : undefined
 }

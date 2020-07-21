@@ -1,5 +1,5 @@
-import { IRows, IArea, IRange, IColumnIndex, IRowIndex } from '../@types/state'
 import cloneDeep from 'clone-deep'
+import { IRows, IArea, IRange, IColumnIndex, IRowIndex } from '../@types/state'
 
 /**
  * Sets the new area to be the smallest area which covers both newArea and mergeArea in place

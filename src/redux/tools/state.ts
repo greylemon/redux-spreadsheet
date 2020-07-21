@@ -1,3 +1,4 @@
+import { EditorState } from 'draft-js'
 import { IExcelState, ISheet, ISheetsMap } from '../../@types/state'
 import IRootStore from '../../@types/store'
 import {
@@ -8,7 +9,6 @@ import {
   SHEET_NAME,
   SHEET_NAMES,
 } from '../../constants/defaults'
-import { EditorState } from 'draft-js'
 
 export const createRootStoreFromExcelState = (
   state: IExcelState

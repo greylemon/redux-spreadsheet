@@ -1,5 +1,5 @@
-import { ExcelActions } from '../store'
 import { Action } from '@reduxjs/toolkit'
+import { ExcelActions } from '../store'
 
 export const createActionIgnoreMap = (): { [key: string]: boolean } => {
   const ignoreActionMap = {}

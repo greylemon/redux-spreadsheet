@@ -1,12 +1,7 @@
-import React, {
-  FunctionComponent,
-  useCallback,
-  MouseEvent,
-  Fragment,
-} from 'react'
+import React, { FunctionComponent, useCallback, MouseEvent } from 'react'
+import { shallowEqual, useDispatch } from 'react-redux'
 import { useTypedSelector } from '../../redux/redux'
 
-import { shallowEqual, useDispatch } from 'react-redux'
 import { ICommonPaneProps } from '../../@types/components'
 import { ExcelActions } from '../../redux/store'
 import {
@@ -57,7 +52,7 @@ const ColumnDragger: FunctionComponent<ICommonPaneProps> = ({ type }) => {
       onMouseDown={handleMouseDown}
     />
   ) : (
-    <Fragment />
+    <></>
   )
 }
 

@@ -1,4 +1,5 @@
-import React, { Fragment, FunctionComponent, CSSProperties } from 'react'
+import React, { FunctionComponent, CSSProperties } from 'react'
+import { shallowEqual } from 'react-redux'
 import { ICommonPaneProps } from '../../@types/components'
 import {
   selectSelectionAreaBottomLeftStyle,
@@ -12,7 +13,6 @@ import {
 } from '../../redux/selectors/pane'
 import { selectIsSelectionMode } from '../../redux/selectors/base'
 import { useTypedSelector } from '../../redux/redux'
-import { shallowEqual } from 'react-redux'
 
 const SelectionArea: FunctionComponent<ICommonPaneProps> = ({ type }) => {
   const {
@@ -55,7 +55,7 @@ const SelectionArea: FunctionComponent<ICommonPaneProps> = ({ type }) => {
       style={selectionAreaStyle}
     />
   ) : (
-    <Fragment />
+    <></>
   )
 }
 

@@ -37,7 +37,7 @@ export const checkIsPositionContainedInArea = (
   area.start.y <= position.y &&
   position.y <= area.end.y
 
-export const checkIsSelectionAreaEqualPosition = ({
+export const checkIsAreaEqualPosition = ({
   start,
   end,
 }: ISelectionArea): boolean => start.x === end.x && start.y === end.y
@@ -88,6 +88,22 @@ export const getAreaFromPosition = (position: IPosition): IArea => ({
   start: { ...position },
   end: { ...position },
 })
+
+export const checkIsAreaEqualOtherArea = (
+  area: IArea,
+  otherArea: IArea
+): boolean => {
+  const orderedArea = getOrderedAreaFromArea(area)
+  const otherOrderedArea = getOrderedAreaFromArea(otherArea)
+
+  return (
+    checkIsPositionEqualOtherPosition(
+      orderedArea.start,
+      otherOrderedArea.start
+    ) &&
+    checkIsPositionEqualOtherPosition(orderedArea.end, otherOrderedArea.end)
+  )
+}
 
 export const getAreaDifference = (
   areaToSubtract: IArea,

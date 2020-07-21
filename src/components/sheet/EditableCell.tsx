@@ -1,6 +1,12 @@
-import React, { MouseEvent, FunctionComponent, Fragment, useMemo } from 'react'
-import { ICellProps } from '../../@types/components'
+import React, {
+  MouseEvent,
+  FunctionComponent,
+  useMemo,
+  useCallback,
+  CSSProperties,
+} from 'react'
 import { useDispatch } from 'react-redux'
+import { ICellProps } from '../../@types/components'
 import { ExcelActions } from '../../redux/store'
 import {
   IRichTextValue,
@@ -8,7 +14,7 @@ import {
   IRichTextBlock,
   IStyles,
 } from '../../@types/state'
-import { CSSProperties } from 'react'
+
 import {
   TYPE_RICH_TEXT,
   TYPE_FORMULA,
@@ -42,15 +48,15 @@ const RichTextBlock: FunctionComponent<IRichTextBlock> = ({ fragments }) => (
 const RichTextCellValue: FunctionComponent<{ value: IRichTextValue }> = ({
   value,
 }) => (
-  <Fragment>
+  <>
     {value.map((data) => (
       <RichTextBlock {...data} />
     ))}
-  </Fragment>
+  </>
 )
 
 const NormalCellValue: FunctionComponent<{ value?: string }> = ({ value }) => (
-  <Fragment>{value}</Fragment>
+  <>{value}</>
 )
 
 const EditableCell: FunctionComponent<ICellProps> = ({
@@ -66,6 +72,8 @@ const EditableCell: FunctionComponent<ICellProps> = ({
     columnWidthsAdjusted,
     sheetResults,
     cellLayering,
+    columnOffsets,
+    rowOffsets,
     handleDoubleClick,
   } = data
 
@@ -73,50 +81,79 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 
   const cellData = rowData && rowData[columnIndex] ? rowData[columnIndex] : {}
 
-  const { value, type, style: cellStyle } = cellData
+  const { value, type, style: cellStyle, merged } = cellData
 
   const position = { x: columnIndex, y: rowIndex }
   const layerIndex = cellLayering[rowIndex][columnIndex]
 
-  const handleMouseDown = (event: MouseEvent) => {
-    const { ctrlKey, shiftKey, buttons } = event
+  const handleMouseDown = useCallback(
+    (event: MouseEvent) => {
+      const { ctrlKey, shiftKey, buttons } = event
 
-    if (buttons === 1) {
-      if (ctrlKey) {
-        dispatch(ExcelActions.CELL_MOUSE_DOWN_CTRL(position))
-      } else if (shiftKey) {
-        dispatch(ExcelActions.CELL_MOUSE_DOWN_SHIFT(position))
-      } else {
-        dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
+      if (buttons === 1) {
+        if (ctrlKey) {
+          dispatch(ExcelActions.CELL_MOUSE_DOWN_CTRL(position))
+        } else if (shiftKey) {
+          dispatch(ExcelActions.CELL_MOUSE_DOWN_SHIFT(position))
+        } else {
+          dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
+        }
       }
-    }
-  }
+    },
+    [dispatch]
+  )
+  // console.log(style)
 
-  const contentStyle: CSSProperties | IStyles = {
-    ...style,
-    ...(cellStyle ? cellStyle.font : undefined),
-    width: columnWidthsAdjusted[columnIndex],
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    zIndex: STYLE_CONTENT_Z_INDEX + layerIndex,
-  }
+  style = useMemo(
+    (): CSSProperties =>
+      merged && type !== TYPE_MERGE
+        ? {
+            ...style,
+            height:
+              rowOffsets[merged.end.y + 1] - rowOffsets[merged.start.y] + 100,
+            width:
+              columnOffsets[merged.end.x + 1] - columnOffsets[merged.start.x],
+            minHeight: 1000,
+          }
+        : style,
+    [style, merged, type, rowOffsets, columnOffsets]
+  )
 
-  const overlapStyle: CSSProperties = {
-    ...style,
-    width: columnWidthsAdjusted[columnIndex],
-    zIndex: STYLE_OVERLAP_Z_INDEX + layerIndex,
-  }
+  const contentStyle: CSSProperties | IStyles = useMemo(
+    () => ({
+      ...style,
+      ...(cellStyle ? cellStyle.font : undefined),
+      width: merged ? style.width : columnWidthsAdjusted[columnIndex],
+      whiteSpace: 'nowrap',
+      overflow: 'hidden',
+      textOverflow: 'ellipsis',
+      zIndex: STYLE_CONTENT_Z_INDEX + layerIndex,
+    }),
+    [style, cellStyle, columnWidthsAdjusted, columnIndex, layerIndex, merged]
+  )
 
-  const blockStyle: CSSProperties = {
-    ...style,
-    ...(cellStyle ? cellStyle.block : undefined),
-    boxSizing: 'border-box',
-    zIndex: STYLE_BLOCK_Z_INDEX + layerIndex,
-  }
+  // Only applies to non-merged cells
+  const overlapStyle: CSSProperties = useMemo(
+    () => ({
+      ...style,
+      width: columnWidthsAdjusted[columnIndex],
+      zIndex: STYLE_OVERLAP_Z_INDEX + layerIndex,
+    }),
+    [style, columnIndex, columnWidthsAdjusted, layerIndex]
+  )
+
+  const blockStyle: CSSProperties = useMemo(
+    () => ({
+      ...style,
+      ...(cellStyle ? cellStyle.block : undefined),
+      boxSizing: 'border-box',
+      zIndex: STYLE_BLOCK_Z_INDEX + layerIndex,
+    }),
+    [style, cellStyle, layerIndex]
+  )
 
   const cellComponent = useMemo(() => {
-    let component: JSX.Element
+    let component: JSX.Element = null
 
     switch (type) {
       case TYPE_RICH_TEXT:
@@ -155,19 +192,19 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 
   return (
     <div onMouseDown={handleMouseDown} onDoubleClick={handleDoubleClick}>
-      <span
-        id={id}
-        style={contentStyle}
-        className={`unselectable cell cell__content`}
-      >
+      <span id={id} style={contentStyle} className="unselectable cell__content">
         {cellComponent}
       </span>
-      <span
-        id={id}
-        className={value ? 'cell__editable' : ''}
-        style={overlapStyle}
-      />
-      <span id={id} className="cell__block" style={blockStyle} />
+      {!merged && (
+        <span
+          id={id}
+          className={value ? 'cell__editable' : ''}
+          style={overlapStyle}
+        />
+      )}
+      {type !== TYPE_MERGE && (
+        <span id={id} className="cell__block" style={blockStyle} />
+      )}
     </div>
   )
 }

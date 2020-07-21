@@ -1,3 +1,4 @@
+import { CSSProperties } from 'react'
 import {
   IComputeSelectionAreaStyle,
   ICheckIsActiveCellInCorrectPane,
@@ -12,7 +13,6 @@ import {
   IFreezeRowCount,
   ISelectionArea,
 } from '../../@types/state'
-import { CSSProperties } from 'react'
 import {
   STYLE_SELECTION_BORDER_WIDTH,
   STYLE_SELECTION_BORDER_COLOR,

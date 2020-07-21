@@ -1,3 +1,4 @@
+import cloneDeep from 'clone-deep'
 import {
   createEditorStateFromText,
   createValueFromEditorState,
@@ -10,7 +11,6 @@ import {
   TYPE_NUMBER,
   TYPE_RICH_TEXT,
 } from '../../../src/constants/types'
-import cloneDeep from 'clone-deep'
 
 describe('Text tools', () => {
   describe('Draftjs', () => {

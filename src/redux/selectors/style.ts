@@ -1,12 +1,21 @@
 import { createSelector } from '@reduxjs/toolkit'
-import { selectEditorState, selectIsEditMode } from './base'
+import { DraftInlineStyleType } from 'draft-js'
+import {
+  selectEditorState,
+  selectIsEditMode,
+  selectIsSelectionMode,
+  selectInactiveSelectionAreas,
+} from './base'
 import {
   selectCell,
   selectCellFontStyle,
   selectCellBlockStyle,
+  selectMerged,
+  selectCellType,
 } from './activeSheet'
-import { DraftInlineStyleType } from 'draft-js'
 import { IInlineStyles } from '../../@types/state'
+import { checkIsAreaEqualPosition } from '../../tools'
+import { TYPE_MERGE } from '../../constants/types'
 
 /* eslint-disable */
 export const selectFactoryIsStyle = (
@@ -38,13 +47,16 @@ export const selectIsBold = selectFactoryIsStyle(
 
 export const selectIsUnderline = selectFactoryIsStyle(
   'UNDERLINE',
-  (style) => style.textDecoration && style.textDecoration.includes('underline')
+  (style) =>
+    style.textDecoration !== undefined &&
+    style.textDecoration.includes('underline')
 )
 
 export const selectIsStrikeThrough = selectFactoryIsStyle(
   'STRIKETHROUGH',
   (style) =>
-    style.textDecoration && style.textDecoration.includes('line-through')
+    style.textDecoration !== undefined &&
+    style.textDecoration.includes('line-through')
 )
 
 export const selectIsItalic = selectFactoryIsStyle(
@@ -55,4 +67,20 @@ export const selectIsItalic = selectFactoryIsStyle(
 export const selectCombinedCellStyle = createSelector(
   [selectCellFontStyle, selectCellBlockStyle],
   (fontStyle, blockStyle) => ({ ...fontStyle, ...blockStyle })
+)
+
+export const selectIsMergable = createSelector(
+  [
+    selectInactiveSelectionAreas,
+    selectIsSelectionMode,
+    selectCellType,
+    selectMerged,
+  ],
+  (inactiveSelectionAreas, isSelectionMode, cellType, merged) =>
+    !isSelectionMode &&
+    ((inactiveSelectionAreas.length === 1 &&
+      !checkIsAreaEqualPosition(inactiveSelectionAreas[0])) ||
+      (inactiveSelectionAreas.length === 0 &&
+        cellType !== TYPE_MERGE &&
+        merged))
 )

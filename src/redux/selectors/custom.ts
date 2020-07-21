@@ -1,11 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit'
+import { CSSProperties } from 'react'
 import {
   getColumnOffsets,
   getRowOffsets,
   normalizeRowHeightFromArray,
   normalizeColumnWidthFromArray,
 } from '../../tools/dimensions'
-import { CSSProperties } from 'react'
 import {
   selectActiveSheetName,
   selectActiveCellPosition,

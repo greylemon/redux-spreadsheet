@@ -1,4 +1,5 @@
-import React, { Fragment, FunctionComponent, CSSProperties } from 'react'
+import React, { FunctionComponent, CSSProperties } from 'react'
+import { shallowEqual } from 'react-redux'
 import { ICommonPaneProps } from '../../@types/components'
 import { useTypedSelector } from '../../redux/redux'
 import {
@@ -7,7 +8,6 @@ import {
   selectInactiveSelectionAreasTopLeftStyle,
   selectInactiveSelectionAreasTopRightStyle,
 } from '../../redux/selectors/pane'
-import { shallowEqual } from 'react-redux'
 
 const InactiveSelectionAreas: FunctionComponent<ICommonPaneProps> = ({
   type,
@@ -42,7 +42,7 @@ const InactiveSelectionAreas: FunctionComponent<ICommonPaneProps> = ({
   }, shallowEqual)
 
   return (
-    <Fragment>
+    <>
       {inactiveSelectionAreasStyle.map((inactiveSelectionAreaStyle, index) => (
         <div
           key={`inactive-selection-area-${index}`}
@@ -50,7 +50,7 @@ const InactiveSelectionAreas: FunctionComponent<ICommonPaneProps> = ({
           style={inactiveSelectionAreaStyle}
         />
       ))}
-    </Fragment>
+    </>
   )
 }
 

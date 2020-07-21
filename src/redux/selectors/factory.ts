@@ -146,8 +146,6 @@ export const selectFactoryActiveCellStyle = (
 
         activeCellStyle.height = +activeCellStyle.height + 1
         activeCellStyle.width = +activeCellStyle.width + 1
-        // activeCellStyle.minHeight = +activeCellStyle.height + 1
-        // activeCellStyle.minWidth = +activeCellStyle.width + 1
       } else {
         let height: number, width: number, top: number, left: number
 
@@ -155,9 +153,7 @@ export const selectFactoryActiveCellStyle = (
           const mergeDimensions = getAreaDimensions(
             cellMergeArea,
             rowOffsets,
-            columnOffsets,
-            columnWidths,
-            rowHeights
+            columnOffsets
           )
 
           height = mergeDimensions.height
