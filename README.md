@@ -73,6 +73,7 @@ const SomeComponent = () => {
   - [x] Selection area
   - [x] Active cell
   - [ ] Selection area slicing
+  - [ ] Update formula references
 - Router
   - [x] Page router
   - [x] No page router
