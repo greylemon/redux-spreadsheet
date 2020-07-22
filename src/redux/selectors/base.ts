@@ -5,6 +5,8 @@ import { IExcelState } from '../../@types/state'
 export const selectExcel = (undoxExcel: IRootStore): IExcelState =>
   undoxExcel.present
 
+export const selectName = createSelector([selectExcel], (excel) => excel.name)
+
 export const selectIsEditMode = createSelector(
   [selectExcel],
   (excel) => excel.isEditMode

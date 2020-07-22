@@ -22,6 +22,8 @@ import {
   customMouseUp,
   customMouseMove,
 } from './redux/thunk'
+import AppBar from './components/appBar/AppBar'
+import { Divider } from '@material-ui/core'
 
 export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   style,
@@ -53,8 +55,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
             if (handleSave) dispatch(saveWorkbook(handleSave))
             event.preventDefault()
             break
-          case 'a':
-            dispatch(ExcelActions.SELECT_ALL())
+          default:
             break
         }
       }
@@ -67,6 +68,8 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
       switch (event.buttons) {
         case 1:
           dispatch(customMouseMove({ x: event.clientX, y: event.clientY }))
+          break
+        default:
           break
       }
     },
@@ -91,9 +94,12 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
       onKeyDown={handleKeyDown}
       tabIndex={-1}
     >
+      <AppBar />
+      <Divider />
       {!isToolBarDisabled && <ToolBar />}
       {/* <FormulaBar /> */}
       <SheetContainer />
+      <Divider />
       <SheetNavigation isRouted={isRouted} />
     </div>
   )

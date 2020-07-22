@@ -102,7 +102,6 @@ const EditableCell: FunctionComponent<ICellProps> = ({
     },
     [dispatch]
   )
-  // console.log(style)
 
   style = useMemo(
     (): CSSProperties =>

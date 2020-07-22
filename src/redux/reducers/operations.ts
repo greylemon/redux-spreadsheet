@@ -7,7 +7,6 @@ import {
 } from '../tools/selectors'
 import {
   checkIsAreaEqualPosition,
-  checkIsAreaEqualOtherArea,
   getAreaRanges,
   getOrderedAreaFromArea,
 } from '../../tools'

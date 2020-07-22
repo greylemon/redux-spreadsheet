@@ -22,6 +22,7 @@ import {
   checkIsAreaEqualPosition,
   checkIsPositionEqualOtherPosition,
   getAreaFromPosition,
+  checkIsAreaEqualOtherArea,
 } from '../../tools/area'
 import {
   nSelectActiveSheet,
@@ -183,17 +184,19 @@ export const CELL_MOUSE_UP = (
       state.inactiveSelectionAreas
     )
 
+    const inactiveSelectionAreas = state.inactiveSelectionAreas
+
     if (
-      state.inactiveSelectionAreas.length > 0 ||
-      (state.inactiveSelectionAreas.length === 1 &&
-        !checkIsAreaEqualPosition(state.inactiveSelectionAreas[0])) ||
+      inactiveSelectionAreas.length > 0 ||
+      (inactiveSelectionAreas.length === 1 &&
+        !checkIsAreaEqualPosition(inactiveSelectionAreas[0])) ||
       !checkIsAreaEqualPosition(selectionArea)
     ) {
       state.inactiveSelectionAreas = newAreas
       if (superAreaIndex > -1 && superAreaIndex < newAreas.length) {
         // Area difference does not completely eliminate an area
         state.activeCellPosition = getMinPositionFromArea(
-          state.inactiveSelectionAreas[superAreaIndex]
+          inactiveSelectionAreas[superAreaIndex]
         )
 
         state.selectionAreaIndex = superAreaIndex
@@ -201,11 +204,20 @@ export const CELL_MOUSE_UP = (
         // Area eliminated a block, but there are still other areas for active cell position to occupy
         state.selectionAreaIndex = superAreaIndex - 1
         state.activeCellPosition = getMinPositionFromArea(
-          state.inactiveSelectionAreas[state.selectionAreaIndex]
+          inactiveSelectionAreas[state.selectionAreaIndex]
         )
       } else {
         // Last area to eliminate - no more possible occupation
         state.selectionAreaIndex = -1
+
+        const merged = nSelectMergeCell(state)
+
+        if (
+          merged &&
+          state.inactiveSelectionAreas.length === 1 &&
+          checkIsAreaEqualOtherArea(merged, state.inactiveSelectionAreas[0])
+        )
+          state.inactiveSelectionAreas = []
       }
     }
   }

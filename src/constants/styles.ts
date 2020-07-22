@@ -23,6 +23,8 @@ export const STYLE_TOOLBAR_BUTTON: CSSProperties = {
 
 export const STYLE_SHEET_NAVIGATION_HEIGHT = 40
 export const STYLE_TOOL_BAR_HEIGHT = 40
+export const STYLE_APP_BAR_HEIGHT = 70
+export const DIVIDER_COUNT = 2
 
 export const STYLE_UNSELECTABLE: CSSProperties = {
   WebkitUserSelect: 'none',

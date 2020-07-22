@@ -32,7 +32,7 @@ import CommonPane from './CommonPane'
 
 import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 import { ExcelActions } from '../../redux/store'
-import sheet from './style'
+import sheetStyle from './style'
 import { IItemData } from '../../@types/components'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
@@ -93,7 +93,13 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
     (event: KeyboardEvent) => {
       const { shiftKey, key, ctrlKey, metaKey } = event
 
-      if (!ctrlKey || metaKey) {
+      if (ctrlKey || metaKey) {
+        switch (key) {
+          case 'a':
+            dispatch(ExcelActions.SELECT_ALL())
+            break
+        }
+      } else {
         if (key.length === 1) {
           dispatch(ExcelActions.CELL_EDITOR_STATE_START())
         } else if (key === 'Delete') {
@@ -191,7 +197,7 @@ const SheetSizer: FunctionComponent<Size> = ({ height, width }) => (
 )
 
 const SheetContainer: FunctionComponent = () => (
-  <div style={sheet}>
+  <div style={sheetStyle}>
     <AutoSizer children={SheetSizer} />
     <CustomContextMenu />
   </div>
