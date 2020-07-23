@@ -3,11 +3,9 @@ import { Excel } from '../src/Excel'
 import { IHandleSave } from '../src/@types/functions'
 
 const App: FunctionComponent = () => {
-  const handleSave: IHandleSave = () =>
-    // _excelState: IExcelState
-    {
-      return
-    }
+  const handleSave: IHandleSave = () => {
+    return
+  }
 
   return (
     <div>

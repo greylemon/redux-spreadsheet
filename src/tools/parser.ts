@@ -85,7 +85,7 @@ const getFormattedColor = (
 const getBorderStyleInPlace = (
   section: 'Top' | 'Bottom' | 'Left' | 'Right',
   border: Partial<Border>,
-  styles: IStyles
+  styles: IBlockStyles
 ) => {
   const { style, color } = border
 
@@ -123,7 +123,7 @@ const getBorderStyleInPlace = (
 
 const getAllBorderStylesInPlace = (
   borders: Partial<Borders>,
-  styles: IStyles
+  styles: IBlockStyles
 ): void => {
   const { bottom, left, top, right } = borders
 
@@ -188,7 +188,7 @@ export const getStylesFromCell = (cell: Cell): IStyles | undefined => {
 
   if (fill) getFillInPlace(fill, styles.block)
 
-  if (border) getAllBorderStylesInPlace(border, styles)
+  if (border) getAllBorderStylesInPlace(border, styles.block)
 
   if (font) getFontStyle(font, styles.font)
 
