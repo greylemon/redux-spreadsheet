@@ -124,6 +124,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
       whiteSpace: 'nowrap',
       overflow: 'hidden',
       textOverflow: 'ellipsis',
+      boxSizing: 'border-box',
       zIndex: STYLE_CONTENT_Z_INDEX + layerIndex,
     }),
     [style, cellStyle, columnWidthsAdjusted, columnIndex, layerIndex, merged]
@@ -134,6 +135,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
     () => ({
       ...style,
       width: columnWidthsAdjusted[columnIndex],
+      boxSizing: 'border-box',
       zIndex: STYLE_OVERLAP_Z_INDEX + layerIndex,
     }),
     [style, columnIndex, columnWidthsAdjusted, layerIndex]

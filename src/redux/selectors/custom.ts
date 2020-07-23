@@ -102,7 +102,6 @@ export const selectColumnWidthsAdjusted = createSelector(
     columnOffsets.map((offset, index) => {
       const boundedColumnIndex =
         index <= freezeColumnCount ? freezeColumnCount : columnCount
-
       return (
         columnOffsets[boundedColumnIndex] +
         normalizeColumnWidthFromArray(boundedColumnIndex, columnWidths) -
