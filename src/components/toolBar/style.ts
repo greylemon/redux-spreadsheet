@@ -1,7 +1,7 @@
 import { CSSProperties } from 'react'
 import { STYLE_TOOL_BAR_HEIGHT } from '../../constants/styles'
 
-const toolBar: CSSProperties = {
+const STYLE_TOOL_BAR: CSSProperties = {
   display: 'flex',
   flexFlow: 'column nowrap',
   justifyContent: 'space-around',
@@ -11,17 +11,8 @@ const toolBar: CSSProperties = {
   boxSizing: 'border-box',
 }
 
-export const toolBar__content: CSSProperties = {
+export const STYLE_TOOL_BAR__CONTENT: CSSProperties = {
   display: 'flex',
 }
 
-export const toggledOn: CSSProperties = {
-  color: 'green',
-  backgroundColor: 'lightgreen',
-}
-
-export const disabledStyle: CSSProperties = {
-  color: '#B0B0B0',
-}
-
-export default toolBar
+export default STYLE_TOOL_BAR

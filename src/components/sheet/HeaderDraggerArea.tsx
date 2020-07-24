@@ -6,8 +6,8 @@ import React, {
 } from 'react'
 import { useDispatch } from 'react-redux'
 import {
-  mouseEnterDragRow,
-  mouseEnterDragColumn,
+  THUNK_MOUSE_ENTER_DRAG_ROW,
+  THUNK_MOUSE_ENTER_DRAG_COLUMN,
 } from '../../redux/thunks/mouse'
 
 const HeaderDraggerArea: FunctionComponent<{
@@ -23,10 +23,10 @@ const HeaderDraggerArea: FunctionComponent<{
       if (!event.buttons) {
         switch (type) {
           case 'row':
-            dispatch(mouseEnterDragRow(index))
+            dispatch(THUNK_MOUSE_ENTER_DRAG_ROW(index))
             break
           case 'column':
-            dispatch(mouseEnterDragColumn(index))
+            dispatch(THUNK_MOUSE_ENTER_DRAG_COLUMN(index))
             break
         }
       }

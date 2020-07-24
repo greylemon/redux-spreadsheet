@@ -1,7 +1,7 @@
 import React, { FunctionComponent, MouseEvent, CSSProperties } from 'react'
 import { Button, Tooltip } from '@material-ui/core'
 import { STYLE_TOOLBAR_BUTTON } from '../../constants/styles'
-import { toggledOn, disabledStyle } from '../toolBar/style'
+import { STYLE_TOGGLED, STYLE_DISABLED } from './style'
 
 export const SmallLabelButton: FunctionComponent<{
   children: JSX.Element
@@ -15,8 +15,8 @@ export const SmallLabelButton: FunctionComponent<{
     <Button
       style={{
         ...STYLE_TOOLBAR_BUTTON,
-        ...(isToggled ? toggledOn : undefined),
-        ...(disabled ? disabledStyle : undefined),
+        ...(isToggled ? STYLE_TOGGLED : undefined),
+        ...(disabled ? STYLE_DISABLED : undefined),
         ...style,
       }}
       component="label"

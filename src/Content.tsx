@@ -15,9 +15,9 @@ import SheetNavigation from './components/sheetNavigation/SheetNavigation'
 // import FormulaBar from './components/formulaBar/FormulaBar'
 import { ExcelActions } from './redux/store'
 import { ExcelComponentProps } from './@types/components'
-import { saveWorkbook } from './redux/thunks/IO'
-import { customMouseUp, customMouseMove } from './redux/thunks/mouse'
-import { customUndo, customRedo } from './redux/thunks/history'
+import { THUNK_COMMAND_SAVE } from './redux/thunks/IO'
+import { THUNK_MOUSE_UP, THUNK_MOUSE_MOVE } from './redux/thunks/mouse'
+import { THUNK_HISTORY_UNDO, THUNK_HISTORY_REDO } from './redux/thunks/history'
 import AppBar from './components/appBar/AppBar'
 import { Divider } from '@material-ui/core'
 
@@ -42,13 +42,13 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
       if (ctrlKey || metaKey) {
         switch (key) {
           case 'y':
-            dispatch(customRedo())
+            dispatch(THUNK_HISTORY_REDO())
             break
           case 'z':
-            dispatch(customUndo())
+            dispatch(THUNK_HISTORY_UNDO())
             break
           case 's':
-            if (handleSave) dispatch(saveWorkbook(handleSave))
+            if (handleSave) dispatch(THUNK_COMMAND_SAVE(handleSave))
             event.preventDefault()
             break
           default:
@@ -56,14 +56,14 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
         }
       }
     },
-    [dispatch, customRedo, customUndo, handleSave]
+    [dispatch, THUNK_HISTORY_REDO, THUNK_HISTORY_UNDO, handleSave]
   )
 
   window.onmousemove = useCallback(
     (event: MouseEvent) => {
       switch (event.buttons) {
         case 1:
-          dispatch(customMouseMove({ x: event.clientX, y: event.clientY }))
+          dispatch(THUNK_MOUSE_MOVE({ x: event.clientX, y: event.clientY }))
           break
         default:
           break
@@ -73,7 +73,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   )
 
   window.onmouseup = useCallback(() => {
-    dispatch(customMouseUp())
+    dispatch(THUNK_MOUSE_UP())
   }, [dispatch])
 
   useEffect(() => {

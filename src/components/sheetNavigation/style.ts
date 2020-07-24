@@ -5,14 +5,14 @@ import {
   STYLE_BOX_SHADOW,
 } from '../../constants/styles'
 
-const sheetNavigation: CSSProperties = {
+const STYLE_SHEET_NAVIGATION: CSSProperties = {
   display: 'flex',
   height: STYLE_SHEET_NAVIGATION_HEIGHT,
   padding: '0 20px 0 40px',
   backgroundColor: 'rgba(238, 238, 238, 0.5)',
 }
 
-export const sheetNavigation__sheets = {
+export const STYLE_SHEET_NAVIGATION__SHEETS = {
   height: '100%',
   display: 'flex',
   padding: '0 10px',
@@ -21,7 +21,7 @@ export const sheetNavigation__sheets = {
   ...STYLE_UNSELECTABLE,
 }
 
-export const sheetNavigationContainer: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION__CONTAINER: CSSProperties = {
   display: 'flex',
   flexFlow: 'column',
   justifyContent: 'center',
@@ -33,33 +33,33 @@ export const sheetNavigationContainer: CSSProperties = {
   whiteSpace: 'nowrap',
 }
 
-export const sheetNavigationSheetContainer_Active: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION__CONTAINER_ACTIVE: CSSProperties = {
   color: 'green',
   ...STYLE_BOX_SHADOW('0px 0px 5px 2px rgba(107, 107, 107, 0.5)'),
   backgroundColor: 'white',
 }
 
-export const sheetNavigationSheetContainer_Inactive: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION__CONTAINER_INACTIVE: CSSProperties = {
   color: 'gray',
   outline: '1px solid rgb(233, 233, 233)',
   outlineOffset: -1,
 }
 
-export const sheetNavigationSheet__sheetName: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION__SHEET_SHEETNAME: CSSProperties = {
   marginRight: 10,
 }
 
-export const sheetNavigationSheet__option: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION__OPTION: CSSProperties = {
   padding: 0,
   minWidth: 0,
 }
 
-export const sheetNavigationOptions: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION__OPTIONS: CSSProperties = {
   display: 'flex',
 }
 
-export const sheetNavigationOptions__addSheet: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION__ADD_SHEET: CSSProperties = {
   minWidth: `${STYLE_SHEET_NAVIGATION_HEIGHT} !important`,
 }
 
-export default sheetNavigation
+export default STYLE_SHEET_NAVIGATION

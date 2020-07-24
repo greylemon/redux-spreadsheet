@@ -6,7 +6,7 @@ import {
   DIVIDER_COUNT,
 } from '../../constants/styles'
 
-const sheetStyle: CSSProperties = {
+const STYLE_SHEET: CSSProperties = {
   width: '100%',
   height: `calc(100% - ${
     STYLE_TOOL_BAR_HEIGHT +
@@ -16,4 +16,4 @@ const sheetStyle: CSSProperties = {
   }px)`,
 }
 
-export default sheetStyle
+export default STYLE_SHEET

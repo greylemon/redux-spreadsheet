@@ -2,7 +2,7 @@ import { IAppThunk } from '../../@types/store'
 import { selectIsEditMode, selectSelectionAreaIndex } from '../selectors/base'
 import { ExcelActions } from '../store'
 
-export const customEnter = (): IAppThunk => (dispatch, getState) => {
+export const THUNK_KEY_ENTER = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
 
   const isEditMode = selectIsEditMode(state)

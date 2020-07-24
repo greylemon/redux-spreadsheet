@@ -32,9 +32,9 @@ import CommonPane from './CommonPane'
 
 import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 import { ExcelActions } from '../../redux/store'
-import sheetStyle from './style'
+import STYLE_SHEET from './style'
 import { IItemData } from '../../@types/components'
-import { customEnter } from '../../redux/thunks/keyboard'
+import { THUNK_KEY_ENTER } from '../../redux/thunks/keyboard'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
@@ -106,7 +106,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
         } else {
           switch (key) {
             case 'Enter':
-              dispatch(customEnter())
+              dispatch(THUNK_KEY_ENTER())
               break
             case 'Delete':
               dispatch(ExcelActions.CELL_KEY_DELETE())
@@ -200,7 +200,7 @@ const SheetSizer: FunctionComponent<Size> = ({ height, width }) => (
 )
 
 const SheetContainer: FunctionComponent = () => (
-  <div style={sheetStyle}>
+  <div style={STYLE_SHEET}>
     <AutoSizer children={SheetSizer} />
     <CustomContextMenu />
   </div>

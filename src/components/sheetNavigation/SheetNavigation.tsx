@@ -36,15 +36,15 @@ import {
 } from '../../redux/selectors/base'
 import { ExcelActions } from '../../redux/store'
 import { IHandleSheetPress } from '../../@types/functions'
-import sheetNavigation, {
-  sheetNavigationContainer,
-  sheetNavigationSheetContainer_Active,
-  sheetNavigationSheetContainer_Inactive,
-  sheetNavigation__sheets,
-  sheetNavigationOptions__addSheet,
-  sheetNavigationOptions,
-  sheetNavigationSheet__option,
-  sheetNavigationSheet__sheetName,
+import STYLE_SHEET_NAVIGATION, {
+  STYLE_SHEET_NAVIGATION__CONTAINER,
+  STYLE_SHEET_NAVIGATION__CONTAINER_ACTIVE,
+  STYLE_SHEET_NAVIGATION__CONTAINER_INACTIVE,
+  STYLE_SHEET_NAVIGATION__SHEETS,
+  STYLE_SHEET_NAVIGATION__ADD_SHEET,
+  STYLE_SHEET_NAVIGATION__OPTIONS,
+  STYLE_SHEET_NAVIGATION__OPTION,
+  STYLE_SHEET_NAVIGATION__SHEET_SHEETNAME,
 } from './style'
 
 const SheetOptionButton: FunctionComponent<{
@@ -65,7 +65,7 @@ const SheetOptionButton: FunctionComponent<{
 
   return (
     <Button
-      style={sheetNavigationSheet__option}
+      style={STYLE_SHEET_NAVIGATION__OPTION}
       disabled={!isActive}
       onMouseDown={handleMouseDown}
     >
@@ -90,7 +90,7 @@ const SheetItemContent: FunctionComponent<{
   return (
     <div>
       <span
-        style={sheetNavigationSheet__sheetName}
+        style={STYLE_SHEET_NAVIGATION__SHEET_SHEETNAME}
         onDoubleClick={handleDoubleClick}
       >
         {sheetName}
@@ -257,10 +257,10 @@ const SortableItem = SortableElement(
 
     const style = useMemo(
       () => ({
-        ...sheetNavigationContainer,
+        ...STYLE_SHEET_NAVIGATION__CONTAINER,
         ...(isActiveSheet
-          ? sheetNavigationSheetContainer_Active
-          : sheetNavigationSheetContainer_Inactive),
+          ? STYLE_SHEET_NAVIGATION__CONTAINER_ACTIVE
+          : STYLE_SHEET_NAVIGATION__CONTAINER_INACTIVE),
       }),
       [isActiveSheet]
     )
@@ -302,7 +302,7 @@ const SortableList = SortableContainer(
     )
 
     return (
-      <ul style={sheetNavigation__sheets}>
+      <ul style={STYLE_SHEET_NAVIGATION__SHEETS}>
         {sheetNames.map((sheetName, index) => (
           <SortableItem
             key={`item-${sheetName}`}
@@ -328,7 +328,7 @@ const SheetAdder: FunctionComponent = () => {
   }, [dispatch])
 
   return (
-    <Button style={sheetNavigationOptions__addSheet} onClick={handleAddSheet}>
+    <Button style={STYLE_SHEET_NAVIGATION__ADD_SHEET} onClick={handleAddSheet}>
       <AddIcon fontSize="small" />
     </Button>
   )
@@ -347,7 +347,7 @@ const SheetSelector: FunctionComponent<{
 const SheetNavigationOptions: FunctionComponent<{
   handleSheetPress: IHandleSheetPress
 }> = ({ handleSheetPress }) => (
-  <div style={sheetNavigationOptions}>
+  <div style={STYLE_SHEET_NAVIGATION__OPTIONS}>
     <SheetSelector handleSheetPress={handleSheetPress} />
     <SheetAdder />
   </div>
@@ -395,7 +395,7 @@ const HorizontalNavigation: FunctionComponent<{
 const SheetNavigation: FunctionComponent<{
   handleSheetPress: IHandleSheetPress
 }> = ({ handleSheetPress }) => (
-  <div style={sheetNavigation}>
+  <div style={STYLE_SHEET_NAVIGATION}>
     <SheetNavigationOptions handleSheetPress={handleSheetPress} />
     <HorizontalNavigation handleSheetPress={handleSheetPress} />
   </div>

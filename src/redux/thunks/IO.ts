@@ -4,13 +4,13 @@ import { ExcelActions } from '../store'
 import { IHandleSave } from '../../@types/functions'
 import { selectExcel } from '../selectors/base'
 
-export const loadWorkbook = (file: File): IAppThunk => (dispatch) => {
+export const THUNK_COMMAND_LOAD = (file: File): IAppThunk => (dispatch) => {
   convertRawExcelToState(file).then((content) => {
     dispatch(ExcelActions.UPDATE_STATE(content))
   })
 }
 
-export const saveWorkbook = (handleSave: IHandleSave): IAppThunk => (
+export const THUNK_COMMAND_SAVE = (handleSave: IHandleSave): IAppThunk => (
   _,
   getState
 ) => {

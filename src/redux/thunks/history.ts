@@ -2,7 +2,7 @@ import { undo, redo } from 'undox'
 import { IAppThunk } from '../../@types/store'
 import { selectIsEditMode } from '../selectors/base'
 
-export const customRedo = (): IAppThunk => (dispatch, getState) => {
+export const THUNK_HISTORY_REDO = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
 
   const isEditMode = selectIsEditMode(state)
@@ -12,7 +12,7 @@ export const customRedo = (): IAppThunk => (dispatch, getState) => {
   dispatch(redo())
 }
 
-export const customUndo = (): IAppThunk => (dispatch, getState) => {
+export const THUNK_HISTORY_UNDO = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
 
   const isEditMode = selectIsEditMode(state)

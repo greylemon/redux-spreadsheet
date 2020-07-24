@@ -32,7 +32,7 @@ import {
   selectFreezeColumnCount,
 } from '../selectors/activeSheet'
 
-export const customMouseUp = (): IAppThunk => (dispatch, getState) => {
+export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
 
   const selectionArea = selectSelectionArea(state)
@@ -67,7 +67,7 @@ export const customMouseUp = (): IAppThunk => (dispatch, getState) => {
   }
 }
 
-export const customMouseMove = (mousePosition: IPosition): IAppThunk => (
+export const THUNK_MOUSE_MOVE = (mousePosition: IPosition): IAppThunk => (
   dispatch,
   getState
 ) => {
@@ -180,7 +180,7 @@ export const customMouseMove = (mousePosition: IPosition): IAppThunk => (
   }
 }
 
-export const mouseEnterDragRow = (rowIndex: IRowIndex): IAppThunk => (
+export const THUNK_MOUSE_ENTER_DRAG_ROW = (rowIndex: IRowIndex): IAppThunk => (
   dispatch,
   getState
 ) => {
@@ -196,10 +196,9 @@ export const mouseEnterDragRow = (rowIndex: IRowIndex): IAppThunk => (
   )
 }
 
-export const mouseEnterDragColumn = (columnIndex: IColumnIndex): IAppThunk => (
-  dispatch,
-  getState
-) => {
+export const THUNK_MOUSE_ENTER_DRAG_COLUMN = (
+  columnIndex: IColumnIndex
+): IAppThunk => (dispatch, getState) => {
   const state = getState()
   const columnOffsets = selectColumnOffsets(state)
   const columnWidthGetter = selectGetColumnWidth(state)
