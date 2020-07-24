@@ -29,9 +29,8 @@ import {
   nSelectActiveCell,
   nSelectMergeCell,
 } from '../tools/selectors'
-import { createValueFromEditorState } from '../../tools/text'
-import { updateActiveCellRef } from '../../tools/formula'
 import { denormalizeRowHeight, denormalizeColumnWidth } from '../../tools'
+import { updateActiveCellValueInPlace } from '../tools/cell'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -57,8 +56,9 @@ export const CELL_MOUSE_DOWN_CTRL = (
     }
   }
 
+  state.selectionAreaIndex = state.inactiveSelectionAreas.length
+
   state.selectionArea = { start: position, end: position }
-  state.selectionAreaIndex = state.inactiveSelectionAreas.length + 1
 
   state.activeCellPosition = position
   state.isEditMode = false
@@ -117,18 +117,7 @@ export const CELL_MOUSE_DOWN = (
     state.isEditMode &&
     !checkIsPositionEqualOtherPosition(state.activeCellPosition, position)
   ) {
-    const cellValue = createValueFromEditorState(state.editorState)
-
-    if (cellValue) {
-      const { x, y } = state.activeCellPosition
-
-      if (!activeSheet.data[y]) activeSheet.data[y] = {}
-      if (!activeSheet.data[y][x]) activeSheet.data[y][x] = {}
-
-      activeSheet.data[y][x] = { ...activeSheet.data[y][x], ...cellValue }
-    }
-
-    updateActiveCellRef(state)
+    updateActiveCellValueInPlace(state)
   }
 
   state.inactiveSelectionAreas = []
@@ -184,45 +173,42 @@ export const CELL_MOUSE_UP = (
       state.inactiveSelectionAreas
     )
 
-    const inactiveSelectionAreas = state.inactiveSelectionAreas
-
     if (
-      inactiveSelectionAreas.length > 0 ||
-      (inactiveSelectionAreas.length === 1 &&
-        !checkIsAreaEqualPosition(inactiveSelectionAreas[0])) ||
+      state.inactiveSelectionAreas.length > 0 ||
+      (state.inactiveSelectionAreas.length === 1 &&
+        !checkIsAreaEqualPosition(state.inactiveSelectionAreas[0])) ||
       !checkIsAreaEqualPosition(selectionArea)
     ) {
       state.inactiveSelectionAreas = newAreas
       if (superAreaIndex > -1 && superAreaIndex < newAreas.length) {
         // Area difference does not completely eliminate an area
         state.activeCellPosition = getMinPositionFromArea(
-          inactiveSelectionAreas[superAreaIndex]
+          state.inactiveSelectionAreas[superAreaIndex]
         )
-
         state.selectionAreaIndex = superAreaIndex
       } else if (superAreaIndex > 0) {
         // Area eliminated a block, but there are still other areas for active cell position to occupy
         state.selectionAreaIndex = superAreaIndex - 1
         state.activeCellPosition = getMinPositionFromArea(
-          inactiveSelectionAreas[state.selectionAreaIndex]
+          state.inactiveSelectionAreas[state.selectionAreaIndex]
         )
       } else {
         // Last area to eliminate - no more possible occupation
-        state.selectionAreaIndex = -1
-
         const merged = nSelectMergeCell(state)
-
         if (
           merged &&
           state.inactiveSelectionAreas.length === 1 &&
           checkIsAreaEqualOtherArea(merged, state.inactiveSelectionAreas[0])
         )
           state.inactiveSelectionAreas = []
+
+        state.selectionAreaIndex = state.inactiveSelectionAreas.length - 1
       }
+    } else {
+      state.selectionAreaIndex = -1
     }
   }
 
-  state.selectionAreaIndex += 1
   state.selectionArea = undefined
 
   return state
