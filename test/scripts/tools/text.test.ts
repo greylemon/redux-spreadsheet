@@ -85,6 +85,13 @@ describe('Text tools', () => {
                 fontStyle: 'italic',
               },
             },
+            {
+              text: '~',
+              styles: {
+                textDecoration: 'line-through underline',
+                fontWeight: 'bold',
+              },
+            },
           ],
         },
       ]
@@ -99,6 +106,7 @@ describe('Text tools', () => {
 
       delete value[0].key
       delete value[0].fragments[0].key
+      delete value[0].fragments[1].key
 
       expect(value).toEqual(richtext)
     })

@@ -121,33 +121,66 @@ export const createValueFromEditorState = (
     richText.push({ key: uniqid(), fragments: blockFragments })
   }
 
-  let isRichText = richText.length > 1
+  let fragmentCount = 0
 
   for (const block of richText) {
-    for (const fragment of block.fragments) {
-      if (fragment.styles) isRichText = true
-    }
+    fragmentCount += block.fragments.length
   }
 
   const cell: ICell = {}
 
   const text = getTextFromRichText(richText)
+  const isRichText = fragmentCount > 1
 
   if (isRichText) {
     cell.value = richText
     cell.type = TYPE_RICH_TEXT
-  } else if (text.includes('=')) {
-    cell.value = text.substring(1)
-    cell.type = TYPE_FORMULA
-  } else if (text.match(exactNumberRegex)) {
-    cell.value = +text
-    cell.type = TYPE_NUMBER
+
+    if (cell.style) cell.style.font = {}
   } else {
-    cell.value = text
-    cell.type = TYPE_TEXT
+    if (text.includes('=')) {
+      cell.value = text.substring(1)
+      cell.type = TYPE_FORMULA
+    } else if (text.match(exactNumberRegex)) {
+      cell.value = +text
+      cell.type = TYPE_NUMBER
+    } else {
+      cell.value = text
+      cell.type = TYPE_TEXT
+    }
+
+    if (fragmentCount) {
+      cell.style = {
+        ...cell.style,
+        font: {
+          ...richText[0].fragments.reduce(
+            (style: IInlineStyles, fragment) => ({
+              ...style,
+              ...fragment.styles,
+            }),
+            {}
+          ),
+        },
+      }
+    }
   }
 
   return cell.value === undefined ? undefined : cell
+}
+
+export const createValueFromCellAndEditorState = (
+  cell: ICell,
+  editorState: EditorState
+): ICell => {
+  const newCell = createValueFromEditorState(editorState)
+
+  if (newCell.style === undefined) newCell.style = { block: {}, font: {} }
+
+  if (cell && cell.style) {
+    newCell.style.block = cell.style.block
+  }
+
+  return newCell
 }
 
 export const getRichTextBlockText = (block: IRichTextBlock): string => {
