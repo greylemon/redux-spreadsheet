@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FunctionComponent, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { Publish } from '@material-ui/icons'
-import { loadWorkbook } from '../../redux/thunk'
+import { loadWorkbook } from '../../redux/thunks/IO'
 import { SmallLabelButton } from '../misc/buttons'
 
 const FileUploadAction: FunctionComponent = () => {

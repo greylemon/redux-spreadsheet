@@ -5,7 +5,10 @@ import React, {
   MouseEvent,
 } from 'react'
 import { useDispatch } from 'react-redux'
-import { mouseEnterDragRow, mouseEnterDragColumn } from '../../redux/thunk'
+import {
+  mouseEnterDragRow,
+  mouseEnterDragColumn,
+} from '../../redux/thunks/mouse'
 
 const HeaderDraggerArea: FunctionComponent<{
   id: string

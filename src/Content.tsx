@@ -15,13 +15,9 @@ import SheetNavigation from './components/sheetNavigation/SheetNavigation'
 // import FormulaBar from './components/formulaBar/FormulaBar'
 import { ExcelActions } from './redux/store'
 import { ExcelComponentProps } from './@types/components'
-import {
-  saveWorkbook,
-  customUndo,
-  customRedo,
-  customMouseUp,
-  customMouseMove,
-} from './redux/thunk'
+import { saveWorkbook } from './redux/thunks/IO'
+import { customMouseUp, customMouseMove } from './redux/thunks/mouse'
+import { customUndo, customRedo } from './redux/thunks/history'
 import AppBar from './components/appBar/AppBar'
 import { Divider } from '@material-ui/core'
 

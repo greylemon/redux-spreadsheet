@@ -52,6 +52,11 @@ export const selectSelectionArea = createSelector(
   (excel) => excel.selectionArea
 )
 
+export const selectSelectionAreaIndex = createSelector(
+  [selectExcel],
+  (excel) => excel.selectionAreaIndex
+)
+
 export const selectActiveCellPosition = createSelector(
   [selectExcel],
   (excel) => excel.activeCellPosition

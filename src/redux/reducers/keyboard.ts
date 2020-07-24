@@ -5,10 +5,11 @@ import {
   nSelectMergeCell,
   nSelectActiveSheet,
   nSelectActiveSheetData,
+  nSelectActiveCell,
 } from '../tools/selectors'
 import { getCellMapSetFromAreas } from '../../tools/area'
 import { TYPE_TEXT, TYPE_MERGE } from '../../constants/types'
-import { updateReferenceCell } from '../../tools'
+import { updateReferenceCell, createEditorStateFromCell } from '../../tools'
 import { updateActiveCellValueInPlace } from '../tools/cell'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
@@ -151,10 +152,16 @@ export const CELL_KEY_DELETE = (state: IExcelState): IExcelState => {
 export const CELL_KEY_ENTER = (state: IExcelState): IExcelState => {
   if (state.isEditMode) {
     updateActiveCellValueInPlace(state)
-  } else if (!state.isEditMode && state.selectionAreaIndex === -1) {
     state.isEditMode = false
-    return state
   }
 
+  return state
+}
+
+export const CELL_KEY_ENTER_EXIT = (state: IExcelState): IExcelState => {
+  state.isEditMode = true
+  const cell = nSelectActiveCell(state)
+
+  state.editorState = createEditorStateFromCell(cell)
   return state
 }

@@ -26,6 +26,8 @@ import {
   CELL_EDITOR_STATE_UPDATE,
   CELL_EDITOR_STATE_START,
   CELL_KEY_DELETE,
+  CELL_KEY_ENTER,
+  CELL_KEY_ENTER_EXIT,
 } from './reducers/keyboard'
 import {
   UPDATE_STATE,
@@ -94,6 +96,8 @@ export const ExcelStore = createSlice({
     ROW_DRAG_MOVE,
     COLUMN_DRAG_MOVE,
     MERGE_AREA,
+    CELL_KEY_ENTER,
+    CELL_KEY_ENTER_EXIT,
   },
 })
 

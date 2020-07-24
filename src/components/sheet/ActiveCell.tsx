@@ -1,5 +1,10 @@
-import React, { useCallback, FunctionComponent, CSSProperties } from 'react'
-import { Editor, RichUtils, EditorState } from 'draft-js'
+import React, {
+  useCallback,
+  FunctionComponent,
+  CSSProperties,
+  KeyboardEvent,
+} from 'react'
+import { Editor, RichUtils, EditorState, DraftHandleValue } from 'draft-js'
 import { shallowEqual, useDispatch } from 'react-redux'
 import { useTypedSelector } from '../../redux/redux'
 import {
@@ -38,16 +43,40 @@ const EditorCell: FunctionComponent<IEditorCellProps> = ({ style }) => {
     [dispatch]
   )
 
-  const handleKeyCommand = (command: string, editorState: EditorState) => {
-    const newState = RichUtils.handleKeyCommand(editorState, command)
+  const handleKeyCommand = useCallback(
+    (command: string, editorState: EditorState): DraftHandleValue => {
+      const newState = RichUtils.handleKeyCommand(editorState, command)
 
-    if (newState) {
-      handleChange(newState)
+      if (newState) {
+        handleChange(newState)
+        return 'handled'
+      }
+
+      return 'not-handled'
+    },
+    [handleChange]
+  )
+
+  const handleReturn = useCallback(
+    (event: KeyboardEvent): DraftHandleValue => {
+      const { key, altKey } = event
+
+      if (key === 'Enter' && !altKey) {
+        return 'handled'
+      }
+
+      return 'not-handled'
+    },
+    [dispatch]
+  )
+
+  const handleBeforeInput = useCallback((chars: string): DraftHandleValue => {
+    if (chars === '\n') {
       return 'handled'
     }
 
     return 'not-handled'
-  }
+  }, [])
 
   return (
     <div
@@ -58,6 +87,8 @@ const EditorCell: FunctionComponent<IEditorCellProps> = ({ style }) => {
         editorState={editorState}
         onChange={handleChange}
         handleKeyCommand={handleKeyCommand}
+        handleReturn={handleReturn}
+        handleBeforeInput={handleBeforeInput}
       />
     </div>
   )

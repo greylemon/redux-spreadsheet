@@ -1,11 +1,6 @@
-import { undo, redo } from 'undox'
-import { convertRawExcelToState } from '../tools/parser'
-import { IAppThunk } from '../@types/store'
-import { ExcelActions } from './store'
-import { IHandleSave } from '../@types/functions'
+import { IAppThunk } from '../../@types/store'
+import { ExcelActions } from '../store'
 import {
-  selectExcel,
-  selectIsEditMode,
   selectScrollOffsetY,
   selectScrollOffsetX,
   selectIsRowDrag,
@@ -16,60 +11,26 @@ import {
   selectDragColumnOffset,
   selectSelectionArea,
   selectIsSelectionMode,
-} from './selectors/base'
-
-import { IPosition, IArea, IRowIndex, IColumnIndex } from '../@types/state'
+} from '../selectors/base'
+import { IPosition, IArea, IRowIndex, IColumnIndex } from '../../@types/state'
 import {
   boundPositionInOrderedArea,
   checkIsPositionEqualOtherPosition,
   getEditableCellPositionFromBoundedPosition,
   denormalizeRowHeight,
   denormalizeColumnWidth,
-} from '../tools'
+} from '../../tools'
 import {
   selectRowOffsets,
   selectGetRowHeight,
   selectColumnOffsets,
   selectGetColumnWidth,
-} from './selectors/custom'
-import { getDocumentOffsetPosition } from '../tools/dom'
+} from '../selectors/custom'
+import { getDocumentOffsetPosition } from '../../tools/dom'
 import {
   selectFreezeRowCount,
   selectFreezeColumnCount,
-} from './selectors/activeSheet'
-
-export const loadWorkbook = (file: File): IAppThunk => (dispatch) => {
-  convertRawExcelToState(file).then((content) => {
-    dispatch(ExcelActions.UPDATE_STATE(content))
-  })
-}
-
-export const saveWorkbook = (handleSave: IHandleSave): IAppThunk => (
-  _,
-  getState
-) => {
-  handleSave(selectExcel(getState()))
-}
-
-export const customRedo = (): IAppThunk => (dispatch, getState) => {
-  const state = getState()
-
-  const isEditMode = selectIsEditMode(state)
-
-  if (isEditMode) return
-
-  dispatch(redo())
-}
-
-export const customUndo = (): IAppThunk => (dispatch, getState) => {
-  const state = getState()
-
-  const isEditMode = selectIsEditMode(state)
-
-  if (isEditMode) return
-
-  dispatch(undo())
-}
+} from '../selectors/activeSheet'
 
 export const customMouseUp = (): IAppThunk => (dispatch, getState) => {
   const state = getState()

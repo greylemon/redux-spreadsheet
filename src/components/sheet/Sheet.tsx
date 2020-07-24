@@ -34,6 +34,7 @@ import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 import { ExcelActions } from '../../redux/store'
 import sheetStyle from './style'
 import { IItemData } from '../../@types/components'
+import { customEnter } from '../../redux/thunks/keyboard'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
@@ -91,7 +92,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
 
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
-      const { shiftKey, key, ctrlKey, metaKey } = event
+      const { key, ctrlKey, metaKey } = event
 
       if (ctrlKey || metaKey) {
         switch (key) {
@@ -102,12 +103,14 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
       } else {
         if (key.length === 1) {
           dispatch(ExcelActions.CELL_EDITOR_STATE_START())
-        } else if (key === 'Delete') {
-          dispatch(ExcelActions.CELL_KEY_DELETE())
-        } else if (shiftKey) {
-          // TODO
         } else {
           switch (key) {
+            case 'Enter':
+              dispatch(customEnter())
+              break
+            case 'Delete':
+              dispatch(ExcelActions.CELL_KEY_DELETE())
+              break
             case 'ArrowDown':
               dispatch(ExcelActions.CELL_KEY_DOWN())
               break
