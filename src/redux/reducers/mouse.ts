@@ -31,6 +31,8 @@ import {
 } from '../tools/selectors'
 import { denormalizeRowHeight, denormalizeColumnWidth } from '../../tools'
 import { updateActiveCellValueInPlace } from '../tools/cell'
+import { EditorState } from 'draft-js'
+import { TYPE_TEXT } from '../../constants/types'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -219,7 +221,17 @@ export const CELL_DOUBLE_CLICK = (state: IExcelState): IExcelState => {
 
   const cell = nSelectActiveCell(state)
 
-  state.editorState = createEditorStateFromCell(cell)
+  let editorState = createEditorStateFromCell(cell)
+
+  if (
+    (cell && (cell.type !== TYPE_TEXT || (cell.value as string).length)) ||
+    cell === undefined
+  )
+    editorState = EditorState.moveFocusToEnd(editorState)
+
+  // type text and text.length === 0
+
+  state.editorState = editorState
 
   return state
 }

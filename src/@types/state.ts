@@ -54,8 +54,8 @@ export type IInlineStyles = {
 }
 
 export type IStyles = {
-  font: IInlineStyles
-  block: IBlockStyles & CSSProperties
+  font?: IInlineStyles
+  block?: IBlockStyles & CSSProperties
 }
 
 export type IFragment = {

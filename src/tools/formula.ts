@@ -378,82 +378,72 @@ export const updateReferenceCell = (
   }
 
   // Dependents and independents need to be created due to formula
-  switch (focusedCell.type) {
-    case TYPE_FORMULA: {
-      // TODO
-      // ! Check for cyclic dependencies
-      const formulaReferences = createCellRefMap(
-        focusedCell.value as string,
-        focusedSheetName
-      )
-      const { x, y } = focusedCellPosition
-      if (!dependents[focusedSheetName]) dependents[focusedSheetName] = {}
-      if (!dependents[focusedSheetName][y]) dependents[focusedSheetName][y] = {}
-      if (!dependents[focusedSheetName][y][x])
-        dependents[focusedSheetName][y][x] = {}
+  if (focusedCell && focusedCell.type === TYPE_FORMULA) {
+    // TODO
+    // ! Check for cyclic dependencies
+    const formulaReferences = createCellRefMap(
+      focusedCell.value as string,
+      focusedSheetName
+    )
+    const { x, y } = focusedCellPosition
+    if (!dependents[focusedSheetName]) dependents[focusedSheetName] = {}
+    if (!dependents[focusedSheetName][y]) dependents[focusedSheetName][y] = {}
+    if (!dependents[focusedSheetName][y][x])
+      dependents[focusedSheetName][y][x] = {}
 
-      const formulaIndependents = dependents[focusedSheetName][y][x]
+    const formulaIndependents = dependents[focusedSheetName][y][x]
 
-      // create new dependents
-      for (const sheetName in formulaReferences) {
-        const sheetFormulaDependents = formulaReferences[sheetName]
-        const { areaRanges, positions } = sheetFormulaDependents
+    // create new dependents
+    for (const sheetName in formulaReferences) {
+      const sheetFormulaDependents = formulaReferences[sheetName]
+      const { areaRanges, positions } = sheetFormulaDependents
 
-        if (!formulaIndependents[sheetName]) formulaIndependents[sheetName] = {}
+      if (!formulaIndependents[sheetName]) formulaIndependents[sheetName] = {}
 
-        if (areaRanges) formulaIndependents[sheetName].areaRanges = areaRanges
-        if (positions) formulaIndependents[sheetName].positions = positions
+      if (areaRanges) formulaIndependents[sheetName].areaRanges = areaRanges
+      if (positions) formulaIndependents[sheetName].positions = positions
 
-        if (!independents[sheetName]) independents[sheetName] = {}
+      if (!independents[sheetName]) independents[sheetName] = {}
 
-        for (const position of positions) {
-          assignSheetIndependents(
-            independents,
-            sheetName,
-            focusedSheetName,
-            position,
-            focusedCellPosition
-          )
-        }
+      for (const position of positions) {
+        assignSheetIndependents(
+          independents,
+          sheetName,
+          focusedSheetName,
+          position,
+          focusedCellPosition
+        )
+      }
 
-        for (const areaRange of areaRanges) {
-          const { xRange, yRange } = areaRange
+      for (const areaRange of areaRanges) {
+        const { xRange, yRange } = areaRange
 
+        for (let rowIndex = yRange.start; rowIndex <= yRange.end; rowIndex++) {
           for (
-            let rowIndex = yRange.start;
-            rowIndex <= yRange.end;
-            rowIndex++
+            let columnIndex = xRange.start;
+            columnIndex <= xRange.end;
+            columnIndex++
           ) {
-            for (
-              let columnIndex = xRange.start;
-              columnIndex <= xRange.end;
-              columnIndex++
-            ) {
-              assignSheetIndependents(
-                independents,
-                sheetName,
-                focusedSheetName,
-                { x: columnIndex, y: rowIndex },
-                focusedCellPosition
-              )
-            }
+            assignSheetIndependents(
+              independents,
+              sheetName,
+              focusedSheetName,
+              { x: columnIndex, y: rowIndex },
+              focusedCellPosition
+            )
           }
         }
       }
-
-      // ! Recompute value
-      assignResult(parser, sheetsMap, focusedSheetName, focusedCellPosition)
-
-      visited[focusedSheetName] = {
-        [focusedCellPosition.y]: new Set(),
-      }
-
-      visited[focusedSheetName][focusedCellPosition.y].add(
-        focusedCellPosition.x
-      )
-
-      break
     }
+
+    // ! Recompute value
+    assignResult(parser, sheetsMap, focusedSheetName, focusedCellPosition)
+
+    visited[focusedSheetName] = {
+      [focusedCellPosition.y]: new Set(),
+    }
+
+    visited[focusedSheetName][focusedCellPosition.y].add(focusedCellPosition.x)
   }
 
   // Look at dependents of this cell and recompute...

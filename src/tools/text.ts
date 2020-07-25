@@ -26,6 +26,7 @@ import {
   TYPE_NUMBER,
 } from '../constants/types'
 import { exactNumberRegex } from './regex'
+import { getFontStyleFromEditorState } from './style'
 
 export const getRangesFromInlineRanges = (
   inlineStyleRanges: RawDraftInlineStyleRange[]
@@ -138,6 +139,14 @@ export const createValueFromEditorState = (
 
     if (cell.style) cell.style.font = {}
   } else {
+    if (fragmentCount) {
+      const font =
+        richText[0].fragments[0].styles ||
+        getFontStyleFromEditorState(editorState)
+
+      if (font) cell.style = { font }
+    }
+
     if (text.includes('=')) {
       cell.value = text.substring(1)
       cell.type = TYPE_FORMULA
@@ -145,22 +154,9 @@ export const createValueFromEditorState = (
       cell.value = +text
       cell.type = TYPE_NUMBER
     } else {
-      cell.value = text
-      cell.type = TYPE_TEXT
-    }
-
-    if (fragmentCount) {
-      cell.style = {
-        ...cell.style,
-        font: {
-          ...richText[0].fragments.reduce(
-            (style: IInlineStyles, fragment) => ({
-              ...style,
-              ...fragment.styles,
-            }),
-            {}
-          ),
-        },
+      if (cell.style || text.length) {
+        cell.value = text
+        cell.type = TYPE_TEXT
       }
     }
   }
@@ -172,12 +168,15 @@ export const createValueFromCellAndEditorState = (
   cell: ICell,
   editorState: EditorState
 ): ICell => {
-  const newCell = createValueFromEditorState(editorState)
+  let newCell = createValueFromEditorState(editorState)
 
-  if (newCell.style === undefined) newCell.style = { block: {}, font: {} }
+  if (cell && ((cell.style && cell.style.block) || cell.merged)) {
+    if (newCell === undefined) newCell = {}
+    if (newCell.style === undefined) newCell.style = {}
 
-  if (cell && cell.style) {
-    newCell.style.block = cell.style.block
+    if (cell.merged) newCell.merged = cell.merged
+
+    if (cell.style && cell.style.block) newCell.style.block = cell.style.block
   }
 
   return newCell
@@ -301,16 +300,12 @@ export const getRawContentStateFromRichText = (
 export const createEditorStateFromRichText = (
   value: IRichTextValue
 ): EditorState =>
-  EditorState.moveFocusToEnd(
-    EditorState.createWithContent(
-      convertFromRaw(getRawContentStateFromRichText(value))
-    )
+  EditorState.createWithContent(
+    convertFromRaw(getRawContentStateFromRichText(value))
   )
 
 export const createEditorStateFromText = (value: string): EditorState =>
-  EditorState.moveFocusToEnd(
-    EditorState.createWithContent(ContentState.createFromText(value))
-  )
+  EditorState.createWithContent(ContentState.createFromText(value))
 
 export const createEmptyEditorState = (): EditorState =>
-  EditorState.moveFocusToEnd(EditorState.createEmpty())
+  EditorState.createEmpty()

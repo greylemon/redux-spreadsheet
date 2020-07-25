@@ -9,15 +9,13 @@ export const updateActiveCellValueInPlace = (state: IExcelState): void => {
     state.editorState
   )
 
-  if (cellValue) {
-    const activeSheet = nSelectActiveSheet(state)
-    const { x, y } = state.activeCellPosition
+  const activeSheet = nSelectActiveSheet(state)
+  const { x, y } = state.activeCellPosition
 
-    if (!activeSheet.data[y]) activeSheet.data[y] = {}
-    if (!activeSheet.data[y][x]) activeSheet.data[y][x] = {}
+  if (!activeSheet.data[y]) activeSheet.data[y] = {}
+  if (!activeSheet.data[y][x]) activeSheet.data[y][x] = {}
 
-    activeSheet.data[y][x] = { ...activeSheet.data[y][x], ...cellValue }
-  }
+  activeSheet.data[y][x] = cellValue
 
   updateActiveCellRef(state)
 }

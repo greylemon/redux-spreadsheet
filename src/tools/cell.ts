@@ -5,6 +5,7 @@ import {
   IColumnCount,
   ICell,
   IRichTextValue,
+  IInlineStyles,
 } from '../@types/state'
 import {
   createEmptyEditorState,
@@ -41,7 +42,32 @@ export const checkIsCellPositionValid = (
   rowCount > 0 &&
   rowCount >= position.y
 
-export const createEditorStateFromCell = (cell?: ICell): EditorState => {
+export const getFontBlockEditorState = (
+  blockEditorState: EditorState,
+  style: IInlineStyles
+): EditorState => {
+  if (checkIsBlockBold(style))
+    blockEditorState = RichUtils.toggleInlineStyle(blockEditorState, 'BOLD')
+  if (checkIsBlockUndeline(style))
+    blockEditorState = RichUtils.toggleInlineStyle(
+      blockEditorState,
+      'UNDERLINE'
+    )
+  if (checkIsBlockStrikethrough(style))
+    blockEditorState = RichUtils.toggleInlineStyle(
+      blockEditorState,
+      'STRIKETHROUGH'
+    )
+  if (checkIsBlockItalic(style))
+    blockEditorState = RichUtils.toggleInlineStyle(blockEditorState, 'ITALIC')
+
+  return blockEditorState
+}
+
+export const createEditorStateFromCell = (
+  cell: ICell | null,
+  focusEnd = false
+): EditorState => {
   let editorState: EditorState | null = null
 
   if (cell) {
@@ -68,36 +94,23 @@ export const createEditorStateFromCell = (cell?: ICell): EditorState => {
     }
 
     if (cell.style && cell.style.font) {
-      let blockEditorState = editorState || createEmptyEditorState()
-
-      const selectionState = getSelectionState(blockEditorState)
-
-      blockEditorState = EditorState.acceptSelection(
-        blockEditorState,
-        selectionState
+      const blockEditorState = EditorState.moveFocusToEnd(
+        editorState || createEmptyEditorState()
       )
 
-      if (checkIsBlockBold(cell.style))
-        blockEditorState = RichUtils.toggleInlineStyle(blockEditorState, 'BOLD')
-      if (checkIsBlockUndeline(cell.style))
-        blockEditorState = RichUtils.toggleInlineStyle(
+      editorState = getFontBlockEditorState(
+        EditorState.acceptSelection(
           blockEditorState,
-          'UNDERLINE'
-        )
-      if (checkIsBlockStrikethrough(cell.style))
-        blockEditorState = RichUtils.toggleInlineStyle(
-          blockEditorState,
-          'STRIKETHROUGH'
-        )
-      if (checkIsBlockItalic(cell.style))
-        blockEditorState = RichUtils.toggleInlineStyle(
-          blockEditorState,
-          'ITALIC'
-        )
-
-      editorState = EditorState.moveFocusToEnd(blockEditorState)
+          getSelectionState(blockEditorState)
+        ),
+        cell.style.font
+      )
     }
   }
 
-  return editorState || createEmptyEditorState()
+  editorState = editorState || createEmptyEditorState()
+
+  if (focusEnd) editorState = EditorState.moveFocusToEnd(editorState)
+
+  return editorState
 }

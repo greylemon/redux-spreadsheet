@@ -58,6 +58,12 @@ import { indexedColors, themes } from '../constants/colors'
 import { applyTintToColor } from './color'
 
 import { updateWorkbookReference } from './formula'
+import {
+  setUnderlineStyle,
+  setStrikethroughStyle,
+  setItalicStyle,
+  setBoldStyle,
+} from './style'
 
 const getFormattedColor = (
   color: Partial<ExcelColor> & {
@@ -153,22 +159,16 @@ const getFillInPlace = (fill: Fill, styles: IBlockStyles): void => {
   }
 }
 
-export const getFontStyle = (
+export const setFontStyleInPlaceFromFont = (
   font: Partial<Font>,
   style: IInlineStyles
 ): void => {
   const { bold, italic, strike, underline } = font
 
-  if (bold) style.fontWeight = 'bold'
-  if (italic) style.fontStyle = 'italic'
-
-  if (strike && underline) {
-    style.textDecoration = 'line-through underline'
-  } else if (strike) {
-    style.textDecoration = 'line-through'
-  } else if (underline) {
-    style.textDecoration = 'underline'
-  }
+  if (bold) setBoldStyle(style)
+  if (italic) setItalicStyle(style)
+  if (strike) setStrikethroughStyle(style)
+  if (underline) setUnderlineStyle(style)
 }
 
 export const getStylesFromCell = (cell: Cell): IStyles | undefined => {
@@ -190,7 +190,7 @@ export const getStylesFromCell = (cell: Cell): IStyles | undefined => {
 
   if (border) getAllBorderStylesInPlace(border, styles.block)
 
-  if (font) getFontStyle(font, styles.font)
+  if (font) setFontStyleInPlaceFromFont(font, styles.font)
 
   return Object.keys(styles).length ? styles : undefined
 }
@@ -209,26 +209,13 @@ export const getRichTextFromCellValue = (
 
   value.richText.forEach(({ font, text }) => {
     const style: IInlineStyles = {}
-    if (font) {
-      const { bold, italic, strike, underline } = font
+    if (font) setFontStyleInPlaceFromFont(font, style)
 
-      if (italic) style.fontStyle = 'italic'
-      if (bold) style.fontWeight = 'bold'
-
-      if (strike && underline) {
-        style.textDecoration = 'line-through underline'
-      } else if (strike) {
-        style.textDecoration = 'line-through'
-      } else if (underline) {
-        style.textDecoration = 'underline'
-      }
-
-      richTextBlock.fragments.push({
-        styles: style,
-        text,
-        key: uniqid(),
-      })
-    }
+    richTextBlock.fragments.push({
+      styles: style,
+      text,
+      key: uniqid(),
+    })
   })
 
   richText.push(richTextBlock)

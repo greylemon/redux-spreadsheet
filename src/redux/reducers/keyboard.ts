@@ -9,7 +9,11 @@ import {
 } from '../tools/selectors'
 import { getCellMapSetFromAreas } from '../../tools/area'
 import { TYPE_TEXT, TYPE_MERGE } from '../../constants/types'
-import { updateReferenceCell, createEditorStateFromCell } from '../../tools'
+import {
+  updateReferenceCell,
+  createEditorStateFromCell,
+  getFontBlockEditorState,
+} from '../../tools'
 import { updateActiveCellValueInPlace } from '../tools/cell'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
@@ -105,7 +109,15 @@ export const CELL_EDITOR_STATE_START = (state: IExcelState): IExcelState => {
   if (state.isEditMode) return state
 
   state.isEditMode = true
-  state.editorState = EditorState.moveFocusToEnd(EditorState.createEmpty())
+  let editorState = EditorState.moveFocusToEnd(EditorState.createEmpty())
+
+  const activeCell = nSelectActiveCell(state)
+
+  if (activeCell && activeCell.style && activeCell.style.font)
+    editorState = getFontBlockEditorState(editorState, activeCell.style.font)
+
+  state.editorState = editorState
+
   return state
 }
 
@@ -162,6 +174,6 @@ export const CELL_KEY_ENTER_EXIT = (state: IExcelState): IExcelState => {
   state.isEditMode = true
   const cell = nSelectActiveCell(state)
 
-  state.editorState = createEditorStateFromCell(cell)
+  state.editorState = createEditorStateFromCell(cell, true)
   return state
 }
