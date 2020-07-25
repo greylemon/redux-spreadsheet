@@ -39,16 +39,19 @@ export type IBlockStyles = {
   backgroundColor?: string
 }
 
+export type ITextDecorationStyle =
+  | 'underline'
+  | 'line-through'
+  | 'underline line-through'
+  | 'line-through underline'
+  | ''
+
 export type IInlineStyles = {
   fontWeight?: 'normal' | 'bold'
   fontStyle?: 'normal' | 'italic'
   fontFamily?: string
   fontSize?: ICSSLength | ICSSPercentage
-  textDecoration?:
-    | 'underline'
-    | 'line-through'
-    | 'underline line-through'
-    | 'line-through underline'
+  textDecoration?: ITextDecorationStyle
   verticalAlign?: 'sub' | 'super'
   color?: string
 }

@@ -25,8 +25,12 @@ const UnderlineAction: FunctionComponent = () => {
   const dispatch = useDispatch()
 
   const handleClick = useCallback(() => {
-    dispatch(ExcelActions.SET_UNDERLINE())
-  }, [dispatch])
+    dispatch(
+      isUnderline
+        ? ExcelActions.UNSET_UNDERLINE()
+        : ExcelActions.SET_UNDERLINE()
+    )
+  }, [dispatch, isUnderline])
 
   return (
     <SmallLabelButton
@@ -48,8 +52,12 @@ const StrikethroughAction: FunctionComponent = () => {
   const dispatch = useDispatch()
 
   const handleClick = useCallback(() => {
-    dispatch(ExcelActions.SET_STRIKETHROUGH())
-  }, [dispatch])
+    dispatch(
+      isStrikethrough
+        ? ExcelActions.UNSET_STRIKETHROUGH()
+        : ExcelActions.SET_STRIKETHROUGH()
+    )
+  }, [dispatch, isStrikethrough])
 
   return (
     <SmallLabelButton
@@ -71,8 +79,8 @@ const ItalicAction: FunctionComponent = () => {
   const dispatch = useDispatch()
 
   const handleClick = useCallback(() => {
-    dispatch(ExcelActions.SET_ITALIC())
-  }, [dispatch])
+    dispatch(isItalic ? ExcelActions.UNSET_ITALIC() : ExcelActions.SET_ITALIC())
+  }, [dispatch, isItalic])
 
   return (
     <SmallLabelButton
@@ -90,8 +98,8 @@ const BoldAction: FunctionComponent = () => {
   const dispatch = useDispatch()
 
   const handleClick = useCallback(() => {
-    dispatch(ExcelActions.SET_BOLD())
-  }, [dispatch])
+    dispatch(isBold ? ExcelActions.UNSET_BOLD() : ExcelActions.SET_BOLD())
+  }, [dispatch, isBold])
 
   return (
     <SmallLabelButton

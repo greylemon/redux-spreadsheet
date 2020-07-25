@@ -4,9 +4,9 @@ import { getCellMapSetFromState } from './area'
 import { ISetInlineStyleFn } from '../../@types/functions'
 import { TYPE_RICH_TEXT } from '../../constants/types'
 
-export const setBlockFactoryStyle = (setInlineStyleFn: ISetInlineStyleFn) => (
-  cell: ICell
-): ICell => {
+export const setFontBlockFactoryStyle = (
+  setInlineStyleFn: ISetInlineStyleFn
+) => (cell: ICell): ICell => {
   if (cell.style === undefined) cell.style = {}
   if (cell.style.font === undefined) cell.style.font = {}
 
@@ -38,7 +38,47 @@ export const factorySetFontStyle = (setInlineStyleFn: ISetInlineStyleFn) => (
       cell = setRichTextFactoryStyle(setInlineStyleFn)(cell)
       break
     default:
-      cell = setBlockFactoryStyle(setInlineStyleFn)(cell)
+      cell = setFontBlockFactoryStyle(setInlineStyleFn)(cell)
+      break
+  }
+
+  return cell
+}
+
+export const unsetRichTextFactoryStyle = (
+  unsetInlineStyleFn: ISetInlineStyleFn
+) => (cell: ICell): ICell => {
+  const cellValue = cell.value as IRichTextValue
+
+  cellValue.forEach((block) => {
+    block.fragments.forEach((fragment) => {
+      if (fragment.styles) unsetInlineStyleFn(fragment.styles)
+    })
+  })
+
+  return cell
+}
+
+export const unsetFontBlockStyleFactory = (
+  unsetInlineStyleFn: ISetInlineStyleFn
+) => (cell: ICell): ICell => {
+  if (cell.style === undefined) cell.style = {}
+  if (cell.style.font === undefined) cell.style.font = {}
+
+  if (cell.style && cell.style.font) unsetInlineStyleFn(cell.style.font)
+
+  return cell
+}
+
+export const unsetFontStyleFactory = (
+  unsetInlineStyleFn: ISetInlineStyleFn
+) => (cell: ICell): ICell => {
+  switch (cell.type) {
+    case TYPE_RICH_TEXT:
+      cell = unsetRichTextFactoryStyle(unsetInlineStyleFn)(cell)
+      break
+    default:
+      cell = unsetFontBlockStyleFactory(unsetInlineStyleFn)(cell)
       break
   }
 
@@ -62,6 +102,28 @@ export const createFactoryReducerSetCellData = (
 
       row[columnIndex] = setterFunction(row[columnIndex])
     })
+  }
+
+  return state
+}
+
+export const createFactoryReducerUnsetCellData = (
+  unsetterFunction: (cell: ICell) => ICell
+) => (state: IExcelState): IExcelState => {
+  const activeSheetData = nSelectActiveSheetData(state)
+  const cellMapSet = getCellMapSetFromState(state)
+
+  for (const rowIndex in cellMapSet) {
+    const row = activeSheetData[+rowIndex]
+    const rowSet = cellMapSet[rowIndex]
+
+    if (row) {
+      rowSet.forEach((columnIndex) => {
+        if (row[columnIndex]) {
+          row[columnIndex] = unsetterFunction(row[columnIndex])
+        }
+      })
+    }
   }
 
   return state

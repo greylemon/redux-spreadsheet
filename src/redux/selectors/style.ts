@@ -31,7 +31,7 @@ export const selectFactoryIsStyle = (
       if (isEditMode) {
         isToggled = editorState.getCurrentInlineStyle().has(editorStyle)
       } else {
-        if (activeCell && activeCell.style) {
+        if (activeCell) {
           if (activeCell.type === TYPE_RICH_TEXT) {
             const richText = activeCell.value as IRichTextValue
 
@@ -43,7 +43,7 @@ export const selectFactoryIsStyle = (
                   fragments[0].styles && inlineStyleEqFn(fragments[0].styles)
               }
             }
-          } else if (activeCell.style.font) {
+          } else if (activeCell.style && activeCell.style.font) {
             isToggled = inlineStyleEqFn(activeCell.style.font)
           }
         }

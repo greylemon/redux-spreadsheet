@@ -1,4 +1,8 @@
-import { IInlineStyles, IEditorState } from '../@types/state'
+import {
+  IInlineStyles,
+  IEditorState,
+  ITextDecorationStyle,
+} from '../@types/state'
 import { EditorState, SelectionState } from 'draft-js'
 import { ISetInlineStyleFn } from '../@types/functions'
 
@@ -24,6 +28,7 @@ export const getSelectionState = (editorState: EditorState): SelectionState => {
     focusKey: currentContent.getLastBlock().getKey(),
   })
 }
+
 export const setItalicStyle: ISetInlineStyleFn = (style) =>
   (style.fontStyle = 'italic')
 
@@ -42,6 +47,29 @@ export const setUnderlineStyle: ISetInlineStyleFn = (style) => {
 
   if (style.textDecoration && !style.textDecoration.includes('underline'))
     style.textDecoration += ' underline'
+}
+
+export const unsetItalicStyle: ISetInlineStyleFn = (style) =>
+  delete style.fontStyle
+export const unsetBoldStyle: ISetInlineStyleFn = (style) =>
+  delete style.fontWeight
+export const unsetUnderlineStyle: ISetInlineStyleFn = (style) => {
+  if (style.textDecoration && style.textDecoration.includes('underline')) {
+    style.textDecoration = style.textDecoration
+      .replace('underline', '')
+      .trim() as ITextDecorationStyle
+  }
+
+  if (style.textDecoration === '') delete style.textDecoration
+}
+export const unsetStrikethroughStyle: ISetInlineStyleFn = (style) => {
+  if (style.textDecoration && style.textDecoration.includes('line-through')) {
+    style.textDecoration = style.textDecoration
+      .replace('line-through', '')
+      .trim() as ITextDecorationStyle
+  }
+
+  if (style.textDecoration === '') delete style.textDecoration
 }
 
 export const getFirstSelectionState = (
