@@ -7,7 +7,6 @@ import {
   nSelectActiveSheetData,
   nSelectActiveCell,
 } from '../tools/selectors'
-import { getCellMapSetFromAreas } from '../../tools/area'
 import { TYPE_TEXT, TYPE_MERGE } from '../../constants/types'
 import {
   updateReferenceCell,
@@ -15,6 +14,7 @@ import {
   getFontBlockEditorState,
 } from '../../tools'
 import { updateActiveCellValueInPlace } from '../tools/cell'
+import { getCellMapSetFromState } from '../tools/area'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state
@@ -124,17 +124,14 @@ export const CELL_EDITOR_STATE_START = (state: IExcelState): IExcelState => {
 export const CELL_KEY_DELETE = (state: IExcelState): IExcelState => {
   if (state.isEditMode) return state
 
-  const activeCell = state.activeCellPosition
-  const cellMapSet = getCellMapSetFromAreas([
-    ...state.inactiveSelectionAreas,
-    { start: activeCell, end: activeCell },
-  ])
+  const cellMapSet = getCellMapSetFromState(state)
+
   const data = nSelectActiveSheetData(state)
 
   for (const rowIndex in cellMapSet) {
     const columnIndices = cellMapSet[rowIndex]
 
-    const row = data[+rowIndex]
+    const row = data[rowIndex]
 
     if (row) {
       columnIndices.forEach((columnIndex) => {
@@ -150,7 +147,7 @@ export const CELL_KEY_DELETE = (state: IExcelState): IExcelState => {
             state,
             {},
             cell,
-            { x: +columnIndex, y: +rowIndex },
+            { x: columnIndex, y: +rowIndex },
             state.activeSheetName
           )
         }

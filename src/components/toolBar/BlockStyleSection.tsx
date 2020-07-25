@@ -1,11 +1,11 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useCallback } from 'react'
 import {
   FormatBold,
   FormatItalic,
   FormatStrikethrough,
   FormatUnderlined,
 } from '@material-ui/icons'
-import { shallowEqual } from 'react-redux'
+import { shallowEqual, useDispatch } from 'react-redux'
 import { SmallLabelButton } from '../misc/buttons'
 import { useTypedSelector } from '../../redux/redux'
 import {
@@ -14,6 +14,7 @@ import {
   selectIsStrikeThrough,
   selectIsUnderline,
 } from '../../redux/selectors/style'
+import { ExcelActions } from '../../redux/store'
 
 const UnderlineAction: FunctionComponent = () => {
   const isUnderline = useTypedSelector(
@@ -21,8 +22,18 @@ const UnderlineAction: FunctionComponent = () => {
     shallowEqual
   )
 
+  const dispatch = useDispatch()
+
+  const handleClick = useCallback(() => {
+    dispatch(ExcelActions.SET_UNDERLINE())
+  }, [dispatch])
+
   return (
-    <SmallLabelButton title="Underline (Ctrl+U)" isToggled={isUnderline}>
+    <SmallLabelButton
+      title="Underline (Ctrl+U)"
+      isToggled={isUnderline}
+      onClick={handleClick}
+    >
       <FormatUnderlined />
     </SmallLabelButton>
   )
@@ -34,8 +45,18 @@ const StrikethroughAction: FunctionComponent = () => {
     shallowEqual
   )
 
+  const dispatch = useDispatch()
+
+  const handleClick = useCallback(() => {
+    dispatch(ExcelActions.SET_STRIKETHROUGH())
+  }, [dispatch])
+
   return (
-    <SmallLabelButton title="Strikethrough" isToggled={isStrikethrough}>
+    <SmallLabelButton
+      title="Strikethrough"
+      isToggled={isStrikethrough}
+      onClick={handleClick}
+    >
       <FormatStrikethrough />
     </SmallLabelButton>
   )
@@ -47,8 +68,18 @@ const ItalicAction: FunctionComponent = () => {
     shallowEqual
   )
 
+  const dispatch = useDispatch()
+
+  const handleClick = useCallback(() => {
+    dispatch(ExcelActions.SET_ITALIC())
+  }, [dispatch])
+
   return (
-    <SmallLabelButton title="Italic (Ctrl+I)" isToggled={isItalic}>
+    <SmallLabelButton
+      title="Italic (Ctrl+I)"
+      isToggled={isItalic}
+      onClick={handleClick}
+    >
       <FormatItalic />
     </SmallLabelButton>
   )
@@ -56,9 +87,18 @@ const ItalicAction: FunctionComponent = () => {
 
 const BoldAction: FunctionComponent = () => {
   const isBold = useTypedSelector((state) => selectIsBold(state), shallowEqual)
+  const dispatch = useDispatch()
+
+  const handleClick = useCallback(() => {
+    dispatch(ExcelActions.SET_BOLD())
+  }, [dispatch])
 
   return (
-    <SmallLabelButton title="Bold (Ctrl+B)" isToggled={isBold}>
+    <SmallLabelButton
+      title="Bold (Ctrl+B)"
+      isToggled={isBold}
+      onClick={handleClick}
+    >
       <FormatBold />
     </SmallLabelButton>
   )

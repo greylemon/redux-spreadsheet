@@ -10,6 +10,7 @@ import {
   SHEET_COLUMN_WIDTH_HEADER,
   SHEET_ROW_HEIGHT_HEADER,
 } from '../constants/defaults'
+import { ICellMapSet } from '../@types/objects'
 
 export const getMinPositionFromArea = ({ start, end }: IArea): IPosition => ({
   x: Math.min(start.x, end.x),
@@ -226,9 +227,7 @@ export const getFirstSuperAreaIndex = (
   })
 }
 
-export const getCellMapSetFromAreas = (
-  areas: IArea[]
-): { [key: string]: Set<number> } => {
+export const getCellMapSetFromAreas = (areas: IArea[]): ICellMapSet => {
   const cellMapSet: { [key: number]: Set<number> } = {}
 
   areas.forEach((area) => {

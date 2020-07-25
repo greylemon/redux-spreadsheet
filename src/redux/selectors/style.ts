@@ -13,14 +13,15 @@ import {
   selectMerged,
   selectCellType,
 } from './activeSheet'
-import { IInlineStyles, IRichTextValue } from '../../@types/state'
+import { IRichTextValue } from '../../@types/state'
 import { checkIsAreaEqualPosition } from '../../tools'
 import { TYPE_MERGE, TYPE_RICH_TEXT } from '../../constants/types'
+import { IInlineStyleEqFn } from '../../@types/functions'
 
 /* eslint-disable */
 export const selectFactoryIsStyle = (
   editorStyle: DraftInlineStyleType,
-  inlineStyleEqFn: (style: IInlineStyles) => boolean
+  inlineStyleEqFn: IInlineStyleEqFn
 ) =>
   createSelector(
     [selectIsEditMode, selectCell, selectEditorState],

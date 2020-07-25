@@ -16,6 +16,7 @@ import {
   IColumnWidth,
   IRowHeight,
   IRowIndex,
+  IInlineStyles,
 } from './state'
 
 export interface IComputeActiveCellStyle {
@@ -95,3 +96,7 @@ export interface IHandleSave {
 export interface IHandleSheetPress {
   (sheetName: ISheetName): void
 }
+
+export type IInlineStyleEqFn = (style: IInlineStyles) => boolean
+
+export type ISetInlineStyleFn = (style: IInlineStyles) => void

@@ -1,5 +1,6 @@
 import { IInlineStyles, IEditorState } from '../@types/state'
 import { EditorState, SelectionState } from 'draft-js'
+import { ISetInlineStyleFn } from '../@types/functions'
 
 export const checkIsBlockBold = (style: IInlineStyles): boolean =>
   style.fontWeight === 'bold'
@@ -23,23 +24,24 @@ export const getSelectionState = (editorState: EditorState): SelectionState => {
     focusKey: currentContent.getLastBlock().getKey(),
   })
 }
+export const setItalicStyle: ISetInlineStyleFn = (style) =>
+  (style.fontStyle = 'italic')
 
-export const setBoldStyle = (style: IInlineStyles): void => {
-  style.fontWeight = 'bold'
+export const setBoldStyle: ISetInlineStyleFn = (style) =>
+  (style.fontWeight = 'bold')
+
+export const setStrikethroughStyle: ISetInlineStyleFn = (style) => {
+  if (style.textDecoration === undefined) style.textDecoration = 'line-through'
+
+  if (style.textDecoration && !style.textDecoration.includes('line-through'))
+    style.textDecoration += ' line-through'
 }
 
-export const setItalicStyle = (style: IInlineStyles): void => {
-  style.fontStyle = 'italic'
-}
+export const setUnderlineStyle: ISetInlineStyleFn = (style) => {
+  if (style.textDecoration === undefined) style.textDecoration = 'underline'
 
-export const setStrikethroughStyle = (style: IInlineStyles): void => {
-  style.textDecoration
-    ? (style.textDecoration += ' line-through')
-    : 'line-through'
-}
-
-export const setUnderlineStyle = (style: IInlineStyles): void => {
-  style.textDecoration ? (style.textDecoration += ' underline') : 'underline'
+  if (style.textDecoration && !style.textDecoration.includes('underline'))
+    style.textDecoration += ' underline'
 }
 
 export const getFirstSelectionState = (

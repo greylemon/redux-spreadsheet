@@ -23,3 +23,5 @@ export type IAddressReference = {
   sheetName: ISheetName
   position: IPosition
 }
+
+export type ICellMapSet = { [key: string]: Set<number> }
