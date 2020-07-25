@@ -13,9 +13,9 @@ import {
   selectMerged,
   selectCellType,
 } from './activeSheet'
-import { IInlineStyles } from '../../@types/state'
+import { IInlineStyles, IRichTextValue } from '../../@types/state'
 import { checkIsAreaEqualPosition } from '../../tools'
-import { TYPE_MERGE } from '../../constants/types'
+import { TYPE_MERGE, TYPE_RICH_TEXT } from '../../constants/types'
 
 /* eslint-disable */
 export const selectFactoryIsStyle = (
@@ -31,7 +31,20 @@ export const selectFactoryIsStyle = (
         isToggled = editorState.getCurrentInlineStyle().has(editorStyle)
       } else {
         if (activeCell && activeCell.style) {
-          isToggled = inlineStyleEqFn(activeCell.style.font)
+          if (activeCell.type === TYPE_RICH_TEXT) {
+            const richText = activeCell.value as IRichTextValue
+
+            if (richText.length) {
+              const fragments = richText[0].fragments
+
+              if (fragments.length) {
+                isToggled =
+                  fragments[0].styles && inlineStyleEqFn(fragments[0].styles)
+              }
+            }
+          } else {
+            isToggled = inlineStyleEqFn(activeCell.style.font)
+          }
         }
       }
 
