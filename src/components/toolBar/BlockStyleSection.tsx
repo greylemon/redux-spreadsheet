@@ -14,7 +14,12 @@ import {
   selectIsStrikeThrough,
   selectIsUnderline,
 } from '../../redux/selectors/style'
-import { ExcelActions } from '../../redux/store'
+import {
+  THUNK_TOGGLE_UNDERLINE,
+  THUNK_TOGGLE_STRIKETHROUGH,
+  THUNK_TOGGLE_ITALIC,
+  THUNK_TOGGLE_BOLD,
+} from '../../redux/thunks/keyboard'
 
 const UnderlineAction: FunctionComponent = () => {
   const isUnderline = useTypedSelector(
@@ -25,12 +30,8 @@ const UnderlineAction: FunctionComponent = () => {
   const dispatch = useDispatch()
 
   const handleClick = useCallback(() => {
-    dispatch(
-      isUnderline
-        ? ExcelActions.UNSET_UNDERLINE()
-        : ExcelActions.SET_UNDERLINE()
-    )
-  }, [dispatch, isUnderline])
+    dispatch(THUNK_TOGGLE_UNDERLINE())
+  }, [dispatch])
 
   return (
     <SmallLabelButton
@@ -52,12 +53,8 @@ const StrikethroughAction: FunctionComponent = () => {
   const dispatch = useDispatch()
 
   const handleClick = useCallback(() => {
-    dispatch(
-      isStrikethrough
-        ? ExcelActions.UNSET_STRIKETHROUGH()
-        : ExcelActions.SET_STRIKETHROUGH()
-    )
-  }, [dispatch, isStrikethrough])
+    dispatch(THUNK_TOGGLE_STRIKETHROUGH())
+  }, [dispatch])
 
   return (
     <SmallLabelButton
@@ -79,8 +76,8 @@ const ItalicAction: FunctionComponent = () => {
   const dispatch = useDispatch()
 
   const handleClick = useCallback(() => {
-    dispatch(isItalic ? ExcelActions.UNSET_ITALIC() : ExcelActions.SET_ITALIC())
-  }, [dispatch, isItalic])
+    dispatch(THUNK_TOGGLE_ITALIC())
+  }, [dispatch])
 
   return (
     <SmallLabelButton
@@ -98,8 +95,8 @@ const BoldAction: FunctionComponent = () => {
   const dispatch = useDispatch()
 
   const handleClick = useCallback(() => {
-    dispatch(isBold ? ExcelActions.UNSET_BOLD() : ExcelActions.SET_BOLD())
-  }, [dispatch, isBold])
+    dispatch(THUNK_TOGGLE_BOLD())
+  }, [dispatch])
 
   return (
     <SmallLabelButton

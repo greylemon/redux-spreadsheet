@@ -3,6 +3,7 @@ import React, {
   FunctionComponent,
   CSSProperties,
   KeyboardEvent,
+  KeyboardEventHandler,
 } from 'react'
 import { Editor, RichUtils, EditorState, DraftHandleValue } from 'draft-js'
 import { shallowEqual, useDispatch } from 'react-redux'
@@ -61,9 +62,7 @@ const EditorCell: FunctionComponent<IEditorCellProps> = ({ style }) => {
     (event: KeyboardEvent): DraftHandleValue => {
       const { key, altKey } = event
 
-      if (key === 'Enter' && !altKey) {
-        return 'handled'
-      }
+      if (key === 'Enter' && !altKey) return 'handled'
 
       return 'not-handled'
     },
@@ -71,17 +70,23 @@ const EditorCell: FunctionComponent<IEditorCellProps> = ({ style }) => {
   )
 
   const handleBeforeInput = useCallback((chars: string): DraftHandleValue => {
-    if (chars === '\n') {
-      return 'handled'
-    }
+    if (chars === '\n') return 'handled'
 
     return 'not-handled'
+  }, [])
+
+  const handleKeyDown: KeyboardEventHandler = useCallback((event) => {
+    const { key, altKey } = event
+
+    if (!(key === 'Escape' || (key === 'Enter' && !altKey)))
+      event.stopPropagation()
   }, [])
 
   return (
     <div
       className="cell__active cell__active--edit"
       style={{ ...style, ...blockStyle }}
+      onKeyDown={handleKeyDown}
     >
       <Editor
         editorState={editorState}
