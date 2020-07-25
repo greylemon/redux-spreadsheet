@@ -34,7 +34,13 @@ import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 import { ExcelActions } from '../../redux/store'
 import STYLE_SHEET from './style'
 import { IItemData } from '../../@types/components'
-import { THUNK_KEY_ENTER } from '../../redux/thunks/keyboard'
+import {
+  THUNK_KEY_ENTER,
+  THUNK_TOGGLE_BOLD,
+  THUNK_TOGGLE_UNDERLINE,
+  THUNK_TOGGLE_ITALIC,
+  THUNK_TOGGLE_STRIKETHROUGH,
+} from '../../redux/thunks/keyboard'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
@@ -96,8 +102,27 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
 
       if (ctrlKey || metaKey) {
         switch (key) {
+          case 'A':
           case 'a':
             dispatch(ExcelActions.SELECT_ALL())
+            event.preventDefault()
+            break
+          case 'B':
+          case 'b':
+            dispatch(THUNK_TOGGLE_BOLD())
+            break
+          case 'U':
+          case 'u':
+            dispatch(THUNK_TOGGLE_UNDERLINE())
+            event.preventDefault()
+            break
+          case 'I':
+          case 'i':
+            dispatch(THUNK_TOGGLE_ITALIC())
+            break
+          case 'X':
+          case 'x':
+            dispatch(THUNK_TOGGLE_STRIKETHROUGH())
             break
         }
       } else {
