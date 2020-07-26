@@ -1,8 +1,10 @@
+import { PayloadAction } from '@reduxjs/toolkit'
 import { IExcelState, ICell, IRichTextValue } from '../../@types/state'
 import { nSelectActiveSheetData } from './selectors'
 import { getCellMapSetFromState } from './area'
 import { ISetInlineStyleFn } from '../../@types/functions'
 import { TYPE_RICH_TEXT } from '../../constants/types'
+import { IStyleActionPayload } from '../../@types/history'
 
 export const setFontBlockFactoryStyle = (
   setInlineStyleFn: ISetInlineStyleFn
@@ -87,7 +89,14 @@ export const unsetFontStyleFactory = (
 
 export const createFactoryReducerSetCellData = (
   setterFunction: (cell: ICell) => ICell
-) => (state: IExcelState): IExcelState => {
+) => (
+  state: IExcelState,
+  action: PayloadAction<IStyleActionPayload>
+): IExcelState => {
+  const { activeCellPosition, inactiveSelectionAreas } = action.payload
+  state.inactiveSelectionAreas = inactiveSelectionAreas
+  state.activeCellPosition = activeCellPosition
+
   const activeSheetData = nSelectActiveSheetData(state)
   const cellMapSet = getCellMapSetFromState(state)
 
@@ -109,7 +118,14 @@ export const createFactoryReducerSetCellData = (
 
 export const createFactoryReducerUnsetCellData = (
   unsetterFunction: (cell: ICell) => ICell
-) => (state: IExcelState): IExcelState => {
+) => (
+  state: IExcelState,
+  action: PayloadAction<IStyleActionPayload>
+): IExcelState => {
+  const { activeCellPosition, inactiveSelectionAreas } = action.payload
+  state.inactiveSelectionAreas = inactiveSelectionAreas
+  state.activeCellPosition = activeCellPosition
+
   const activeSheetData = nSelectActiveSheetData(state)
   const cellMapSet = getCellMapSetFromState(state)
 

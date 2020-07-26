@@ -16,6 +16,7 @@ import {
 } from '../selectors/style'
 import { selectCell } from '../selectors/activeSheet'
 import { createValueFromCellAndEditorState } from '../../tools/text'
+import { getStyleActionPayload } from '../tools/history'
 
 export const THUNK_KEY_ENTER = (
   gridRef: MutableRefObject<HTMLDivElement>
@@ -48,7 +49,11 @@ export const THUNK_TOGGLE_BOLD = (): IAppThunk => (dispatch, getState) => {
 
   const isBold = selectIsBold(state)
 
-  dispatch(isBold ? ExcelActions.UNSET_BOLD() : ExcelActions.SET_BOLD())
+  const payload = getStyleActionPayload(getState())
+
+  dispatch(
+    isBold ? ExcelActions.UNSET_BOLD(payload) : ExcelActions.SET_BOLD(payload)
+  )
 }
 
 export const THUNK_TOGGLE_ITALIC = (): IAppThunk => (dispatch, getState) => {
