@@ -84,6 +84,7 @@ const SomeComponent = () => {
   - [ ] Clean Up formula references
   - [ ] Column/row references (=SUM(A:A) or =SUM(1:1))
   - [ ] Variables
+  - [ ] Optimize range edit/delete
 - Formula bar
   - [ ] Input
 - File upload
@@ -116,3 +117,5 @@ const SomeComponent = () => {
 | [fast-formula-parser](https://github.com/LesterLyu/fast-formula-parser)                              | used to compute formula cells in excel format                                                                                |
 | [react-window](https://github.com/bvaughn/react-window)                                              | React components for efficiently rendering large lists and tabular data                                                      |
 | [undox](https://github.com/greylemon/undox)                                                          | Fork of [JannieBeck](https://github.com/JannicBeck/undox) with ignore history                                                |
+| [react-sortable-hoc](https://github.com/clauderic/react-sortable-hoc)                                | Draggable list for sheet navigation                                                                                          |
+| [material-ui](https://github.com/mui-org/material-ui)                                                | Customized styled base components                                                                                            |
