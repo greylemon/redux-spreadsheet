@@ -227,12 +227,12 @@ export const CELL_DOUBLE_CLICK = (state: IExcelState): IExcelState => {
   let editorState = createEditorStateFromCell(cell)
 
   if (
-    (cell && (cell.type !== TYPE_TEXT || (cell.value as string).length)) ||
+    (cell &&
+      (cell.type !== TYPE_TEXT ||
+        (cell.value !== undefined && (cell.value as string).length))) ||
     cell === undefined
   )
     editorState = EditorState.moveFocusToEnd(editorState)
-
-  // type text and text.length === 0
 
   state.editorState = editorState
 
