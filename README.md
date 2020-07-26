@@ -48,6 +48,8 @@ const SomeComponent = () => {
 ## Focused Features
 
 - TypeScript support/type definitions (unsure how to generate)
+- Mobile
+  - [ ] Detect double tap
 - History (Some actions have not been included yet)
   - [x] Redo
   - [x] Undo
