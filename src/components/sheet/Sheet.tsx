@@ -44,6 +44,7 @@ import {
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
+  const sheetRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<VariableSizeGrid>(null)
   const {
     sheetResults,
@@ -132,7 +133,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
       } else {
         switch (key) {
           case 'Enter':
-            dispatch(THUNK_KEY_ENTER())
+            dispatch(THUNK_KEY_ENTER(sheetRef))
             break
           case 'Delete':
             dispatch(ExcelActions.CELL_KEY_DELETE())
@@ -154,7 +155,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
         }
       }
     },
-    [dispatch]
+    [dispatch, sheetRef]
   )
 
   const handleUpdateScroll = useCallback(
@@ -192,6 +193,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
 
   return (
     <div
+      ref={sheetRef}
       id="sheet"
       className="sheetGrid"
       tabIndex={-1}

@@ -1,3 +1,4 @@
+import { MutableRefObject } from 'react'
 import { IAppThunk } from '../../@types/store'
 import { selectIsEditMode, selectSelectionAreaIndex } from '../selectors/base'
 import { ExcelActions } from '../store'
@@ -8,17 +9,21 @@ import {
   selectIsItalic,
 } from '../selectors/style'
 
-export const THUNK_KEY_ENTER = (): IAppThunk => (dispatch, getState) => {
+export const THUNK_KEY_ENTER = (
+  gridRef: MutableRefObject<HTMLDivElement>
+): IAppThunk => (dispatch, getState) => {
   const state = getState()
 
   const isEditMode = selectIsEditMode(state)
   const selectionAreaIndex = selectSelectionAreaIndex(state)
 
   if (!isEditMode && selectionAreaIndex === -1) {
-    dispatch(ExcelActions.CELL_KEY_ENTER_EXIT())
+    dispatch(ExcelActions.CELL_KEY_ENTER_EDIT_START())
   } else {
-    dispatch(ExcelActions.CELL_KEY_ENTER())
+    dispatch(ExcelActions.CELL_KEY_ENTER_EDIT_END())
   }
+
+  gridRef.current.focus()
 }
 
 export const THUNK_TOGGLE_BOLD = (): IAppThunk => (dispatch, getState) => {

@@ -158,7 +158,7 @@ export const CELL_KEY_DELETE = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_ENTER = (state: IExcelState): IExcelState => {
+export const CELL_KEY_ENTER_EDIT_END = (state: IExcelState): IExcelState => {
   if (state.isEditMode) {
     updateActiveCellValueInPlace(state)
     state.isEditMode = false
@@ -167,7 +167,7 @@ export const CELL_KEY_ENTER = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_ENTER_EXIT = (state: IExcelState): IExcelState => {
+export const CELL_KEY_ENTER_EDIT_START = (state: IExcelState): IExcelState => {
   state.isEditMode = true
   const cell = nSelectActiveCell(state)
 
