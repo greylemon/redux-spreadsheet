@@ -29,7 +29,10 @@ import {
   nSelectActiveCell,
   nSelectMergeCell,
 } from '../tools/selectors'
-import { denormalizeRowHeight, denormalizeColumnWidth } from '../../tools'
+import {
+  denormalizeRowHeight,
+  denormalizeColumnWidth,
+} from '../../tools/dimensions'
 import { updateActiveCellValueInPlace } from '../tools/cell'
 import { EditorState } from 'draft-js'
 import { TYPE_TEXT } from '../../constants/types'

@@ -1,7 +1,6 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, Action } from '@reduxjs/toolkit'
 import { undox } from 'undox'
 import { createInitialExcelState } from './tools/state'
-import { createActionIgnoreMap } from './tools/actions'
 
 import * as MOUSE_REDUCERS from './reducers/mouse'
 import * as KEYBOARD_REDUCERS from './reducers/keyboard'
@@ -11,6 +10,21 @@ import * as OPERATION_REDUCERS from './reducers/operations'
 import * as STYLE_REDUCERS from './reducers/style'
 
 export const initialExcelState = createInitialExcelState()
+
+export const createActionIgnoreMap = (): { [key: string]: boolean } => {
+  const ignoreActionMap = {}
+
+  for (const actionKey in ExcelActions) {
+    const action: Action = ExcelActions[actionKey]
+    ignoreActionMap[action.type] = true
+  }
+
+  // TODO : Ignore certain actions here
+  ignoreActionMap[ExcelActions.UPDATE_STATE.type] = false
+  ignoreActionMap[ExcelActions.CHANGE_SHEET.type] = false
+
+  return ignoreActionMap
+}
 
 export const ExcelStore = createSlice({
   name: 'EXCEL',
