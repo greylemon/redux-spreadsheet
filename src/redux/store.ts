@@ -36,8 +36,14 @@ export const createActionIgnoreMap = (): { [key: string]: boolean } => {
 
   // TODO : Ignore certain actions here
   ignoreActionMap[ExcelActions.UPDATE_STATE.type] = false
+
+  // SHEET
   ignoreActionMap[ExcelActions.CHANGE_SHEET.type] = false
   ignoreActionMap[ExcelActions.ADD_SHEET.type] = false
+  ignoreActionMap[ExcelActions.DELETE_SHEET.type] = false
+  ignoreActionMap[ExcelActions.CHANGE_ACTIVE_SHEET_NAME.type] = false
+
+  // STYLE
   ignoreActionMap[ExcelActions.SAVE_ACTIVE_CELL.type] = false
   ignoreActionMap[ExcelActions.SET_BOLD.type] = false
   ignoreActionMap[ExcelActions.SET_ITALIC.type] = false
@@ -47,9 +53,10 @@ export const createActionIgnoreMap = (): { [key: string]: boolean } => {
   ignoreActionMap[ExcelActions.UNSET_ITALIC.type] = false
   ignoreActionMap[ExcelActions.UNSET_STRIKETHROUGH.type] = false
   ignoreActionMap[ExcelActions.UNSET_UNDERLINE.type] = false
+
+  // HEADER
   ignoreActionMap[ExcelActions.ROW_DRAG_END.type] = false
   ignoreActionMap[ExcelActions.COLUMN_DRAG_END.type] = false
-  ignoreActionMap[ExcelActions.CHANGE_ACTIVE_SHEET_NAME.type] = false
 
   return ignoreActionMap
 }

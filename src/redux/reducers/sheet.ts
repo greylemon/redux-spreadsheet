@@ -50,7 +50,7 @@ export const ADD_SHEET = (
 }
 
 // TODO : Update reference sheetname
-export const REMOVE_SHEET = (state: IExcelState): IExcelState => {
+export const DELETE_SHEET = (state: IExcelState): IExcelState => {
   const { sheetNames } = state
 
   if (sheetNames.length === 1) return state

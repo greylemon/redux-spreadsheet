@@ -130,7 +130,7 @@ const SheetOption: FunctionComponent<{
 
   const handleDeleteSheet = useCallback(() => {
     handleClose()
-    dispatch(ExcelActions.REMOVE_SHEET())
+    dispatch(ExcelActions.DELETE_SHEET())
   }, [dispatch, handleClose])
 
   const handleStartEdit = useCallback(() => {
