@@ -19,7 +19,7 @@ import {
   THUNK_TOGGLE_STRIKETHROUGH,
   THUNK_TOGGLE_ITALIC,
   THUNK_TOGGLE_BOLD,
-} from '../../redux/thunks/keyboard'
+} from '../../redux/thunks/style'
 
 const UnderlineAction: FunctionComponent = () => {
   const isUnderline = useTypedSelector(

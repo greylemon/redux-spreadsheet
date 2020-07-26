@@ -36,11 +36,14 @@ import STYLE_SHEET from './style'
 import { IItemData } from '../../@types/components'
 import {
   THUNK_KEY_ENTER,
+  THUNK_CELL_KEY_DELETE,
+} from '../../redux/thunks/keyboard'
+import {
   THUNK_TOGGLE_BOLD,
   THUNK_TOGGLE_UNDERLINE,
   THUNK_TOGGLE_ITALIC,
   THUNK_TOGGLE_STRIKETHROUGH,
-} from '../../redux/thunks/keyboard'
+} from '../../redux/thunks/style'
 
 export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
@@ -136,7 +139,7 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
             dispatch(THUNK_KEY_ENTER(sheetRef))
             break
           case 'Delete':
-            dispatch(ExcelActions.CELL_KEY_DELETE())
+            dispatch(THUNK_CELL_KEY_DELETE())
             break
           case 'ArrowDown':
             dispatch(ExcelActions.CELL_KEY_DOWN())

@@ -21,6 +21,7 @@ import {
 import { getCellMapSetFromState } from '../tools/area'
 import { updateReferenceCell } from '../../tools/formula'
 import { updateActiveCellRef } from '../../tools/state'
+import { IGeneralActionPayload } from '../../@types/history'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state
@@ -127,11 +128,15 @@ export const CELL_EDITOR_STATE_START = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_DELETE = (state: IExcelState): IExcelState => {
-  if (state.isEditMode) return state
+export const CELL_KEY_DELETE = (
+  state: IExcelState,
+  action: PayloadAction<IGeneralActionPayload>
+): IExcelState => {
+  const { activeCellPosition, inactiveSelectionAreas } = action.payload
+  state.activeCellPosition = activeCellPosition
+  state.inactiveSelectionAreas = inactiveSelectionAreas
 
   const cellMapSet = getCellMapSetFromState(state)
-
   const data = nSelectActiveSheetData(state)
 
   Object.keys(cellMapSet).forEach((rowIndex) => {

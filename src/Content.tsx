@@ -41,12 +41,15 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
 
       if (ctrlKey || metaKey) {
         switch (key) {
+          case 'Y':
           case 'y':
             dispatch(THUNK_HISTORY_REDO())
             break
+          case 'Z':
           case 'z':
             dispatch(THUNK_HISTORY_UNDO())
             break
+          case 'S':
           case 's':
             if (handleSave) dispatch(THUNK_COMMAND_SAVE(handleSave))
             event.preventDefault()

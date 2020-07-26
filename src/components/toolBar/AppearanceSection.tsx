@@ -4,7 +4,7 @@ import { shallowEqual, useDispatch } from 'react-redux'
 import { SmallLabelButton } from '../misc/buttons'
 import { useTypedSelector } from '../../redux/redux'
 import { selectIsMergable } from '../../redux/selectors/style'
-import { THUNK_MERGE_AREA } from '../../redux/thunks/operations'
+import { THUNK_MERGE_AREA } from '../../redux/thunks/style'
 
 const MergeAction: FunctionComponent = () => {
   const dispatch = useDispatch()
