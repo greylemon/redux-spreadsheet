@@ -14,7 +14,6 @@ export const THUNK_KEY_ENTER = (
   gridRef: MutableRefObject<HTMLDivElement>
 ): IAppThunk => (dispatch, getState) => {
   const state = getState()
-
   const isEditMode = selectIsEditMode(state)
   const selectionAreaIndex = selectSelectionAreaIndex(state)
 
@@ -29,9 +28,7 @@ export const THUNK_KEY_ENTER = (
 
 export const THUNK_TOGGLE_BOLD = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
-
   const isBold = selectIsBold(state)
-
   const payload = getStyleActionPayload(getState())
 
   dispatch(
@@ -41,10 +38,14 @@ export const THUNK_TOGGLE_BOLD = (): IAppThunk => (dispatch, getState) => {
 
 export const THUNK_TOGGLE_ITALIC = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
-
   const isItalic = selectIsItalic(state)
+  const payload = getStyleActionPayload(getState())
 
-  dispatch(isItalic ? ExcelActions.UNSET_ITALIC() : ExcelActions.SET_ITALIC())
+  dispatch(
+    isItalic
+      ? ExcelActions.UNSET_ITALIC(payload)
+      : ExcelActions.SET_ITALIC(payload)
+  )
 }
 
 export const THUNK_TOGGLE_STRIKETHROUGH = (): IAppThunk => (
@@ -52,22 +53,24 @@ export const THUNK_TOGGLE_STRIKETHROUGH = (): IAppThunk => (
   getState
 ) => {
   const state = getState()
-
   const isStrikethrough = selectIsStrikeThrough(state)
+  const payload = getStyleActionPayload(getState())
 
   dispatch(
     isStrikethrough
-      ? ExcelActions.UNSET_STRIKETHROUGH()
-      : ExcelActions.SET_STRIKETHROUGH()
+      ? ExcelActions.UNSET_STRIKETHROUGH(payload)
+      : ExcelActions.SET_STRIKETHROUGH(payload)
   )
 }
 
 export const THUNK_TOGGLE_UNDERLINE = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
-
   const isUnderline = selectIsUnderline(state)
+  const payload = getStyleActionPayload(getState())
 
   dispatch(
-    isUnderline ? ExcelActions.UNSET_UNDERLINE() : ExcelActions.SET_UNDERLINE()
+    isUnderline
+      ? ExcelActions.UNSET_UNDERLINE(payload)
+      : ExcelActions.SET_UNDERLINE(payload)
   )
 }
