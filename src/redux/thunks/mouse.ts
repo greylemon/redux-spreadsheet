@@ -32,7 +32,7 @@ import {
   selectFreezeRowCount,
   selectFreezeColumnCount,
 } from '../selectors/activeSheet'
-import { dispatchSaveActiveCell } from '../tools/history'
+import { dispatchSaveActiveCell, getStyleActionPayload } from '../tools/history'
 
 export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
@@ -54,7 +54,13 @@ export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
 
     if (dragRowIndex <= freezeRowCount) value -= scrollOffsetY
 
-    dispatch(ExcelActions.ROW_DRAG_END(denormalizeRowHeight(value)))
+    dispatch(
+      ExcelActions.ROW_DRAG_END({
+        ...getStyleActionPayload(state),
+        dragRowIndex,
+        height: denormalizeRowHeight(value),
+      })
+    )
   } else if (isColumnDrag) {
     const columnOffsets = selectColumnOffsets(state)
     const dragColumnIndex = selectDragColumnIndex(state)
@@ -65,7 +71,13 @@ export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
     let value = dragColumnOffset - columnOffsets[dragColumnIndex]
 
     if (dragColumnIndex <= freezeColumnCount) value -= scrollOffsetX
-    dispatch(ExcelActions.COLUMN_DRAG_END(denormalizeColumnWidth(value)))
+    dispatch(
+      ExcelActions.COLUMN_DRAG_END({
+        ...getStyleActionPayload(state),
+        dragColumnIndex,
+        width: denormalizeColumnWidth(value),
+      })
+    )
   }
 }
 

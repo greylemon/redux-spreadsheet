@@ -46,6 +46,8 @@ export const createActionIgnoreMap = (): { [key: string]: boolean } => {
   ignoreActionMap[ExcelActions.UNSET_ITALIC.type] = false
   ignoreActionMap[ExcelActions.UNSET_STRIKETHROUGH.type] = false
   ignoreActionMap[ExcelActions.UNSET_UNDERLINE.type] = false
+  ignoreActionMap[ExcelActions.ROW_DRAG_END.type] = false
+  ignoreActionMap[ExcelActions.COLUMN_DRAG_END.type] = false
 
   return ignoreActionMap
 }

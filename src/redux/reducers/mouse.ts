@@ -36,6 +36,7 @@ import {
 } from '../../tools/dimensions'
 import { updateActiveCellValueInPlace } from '../tools/cell'
 import { TYPE_TEXT } from '../../constants/types'
+import { IStyleActionPayload } from '../../@types/history'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -309,12 +310,21 @@ export const COLUMN_DRAG_START = (state: IExcelState): IExcelState => {
 
 export const ROW_DRAG_END = (
   state: IExcelState,
-  action: PayloadAction<IRowHeight>
+  action: PayloadAction<
+    { height: IRowHeight; dragRowIndex: IDragRowIndex } & IStyleActionPayload
+  >
 ): IExcelState => {
-  const activeSheet = nSelectActiveSheet(state)
-  const { dragRowIndex } = state
+  const {
+    dragRowIndex,
+    height,
+    activeCellPosition,
+    inactiveSelectionAreas,
+  } = action.payload
 
-  const height = action.payload
+  state.activeCellPosition = activeCellPosition
+  state.inactiveSelectionAreas = inactiveSelectionAreas
+
+  const activeSheet = nSelectActiveSheet(state)
 
   if (height <= denormalizeRowHeight(1))
     activeSheet.hiddenRows[dragRowIndex] = true
@@ -327,12 +337,24 @@ export const ROW_DRAG_END = (
 
 export const COLUMN_DRAG_END = (
   state: IExcelState,
-  action: PayloadAction<IColumnWidth>
+  action: PayloadAction<
+    {
+      dragColumnIndex: IDragColumnIndex
+      width: IColumnWidth
+    } & IStyleActionPayload
+  >
 ): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  const { dragColumnIndex } = state
 
-  const width = action.payload
+  const {
+    dragColumnIndex,
+    width,
+    activeCellPosition,
+    inactiveSelectionAreas,
+  } = action.payload
+
+  state.activeCellPosition = activeCellPosition
+  state.inactiveSelectionAreas = inactiveSelectionAreas
 
   if (width <= denormalizeColumnWidth(1))
     activeSheet.hiddenColumns[dragColumnIndex] = true
