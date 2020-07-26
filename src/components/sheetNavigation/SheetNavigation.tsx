@@ -138,11 +138,7 @@ const SheetOption: FunctionComponent<{
   }, [dispatch, handleClose])
 
   return (
-    <Popper
-      open={isSheetNavigationOpen}
-      anchorEl={anchorRef.current}
-      role={undefined}
-    >
+    <Popper open={isSheetNavigationOpen} anchorEl={anchorRef.current}>
       <Paper>
         <ClickAwayListener onClickAway={handleClickAway}>
           <MenuList autoFocusItem={isSheetNavigationOpen} id="menu-list-grow">
@@ -268,7 +264,12 @@ const SortableItem = SortableElement(
     )
 
     return (
-      <li ref={anchorRef} style={style} onMouseDown={handleMouseDown}>
+      <li
+        role="navigation"
+        ref={anchorRef}
+        style={style}
+        onMouseDown={handleMouseDown}
+      >
         {isSheetEditText && isActiveSheet ? (
           <SheetEditText />
         ) : (

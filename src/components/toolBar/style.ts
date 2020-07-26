@@ -11,7 +11,7 @@ const STYLE_TOOL_BAR: CSSProperties = {
   boxSizing: 'border-box',
 }
 
-export const STYLE_TOOL_BAR__CONTENT: CSSProperties = {
+export const STYLE_TOOL_BAR_CONTENT: CSSProperties = {
   display: 'flex',
 }
 

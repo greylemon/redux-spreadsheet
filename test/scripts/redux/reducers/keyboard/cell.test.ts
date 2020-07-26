@@ -115,7 +115,6 @@ describe('Cell keyboard operations', () => {
       const cell = selectData(state2)[1][1]
 
       expect(cell.type).toEqual(TYPE_TEXT)
-      expect(cell.type).toEqual
 
       store.dispatch(ExcelActions.CELL_MOUSE_DOWN({ x: 1, y: 1 }))
       store.dispatch(ExcelActions.CELL_KEY_DELETE())

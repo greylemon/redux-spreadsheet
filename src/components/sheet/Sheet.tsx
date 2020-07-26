@@ -228,7 +228,7 @@ const SheetSizer: FunctionComponent<Size> = ({ height, width }) => (
 
 const SheetContainer: FunctionComponent = () => (
   <div style={STYLE_SHEET}>
-    <AutoSizer children={SheetSizer} />
+    <AutoSizer>{SheetSizer}</AutoSizer>
     <CustomContextMenu />
   </div>
 )

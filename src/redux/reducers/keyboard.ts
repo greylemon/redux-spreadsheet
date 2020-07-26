@@ -128,7 +128,7 @@ export const CELL_KEY_DELETE = (state: IExcelState): IExcelState => {
 
   const data = nSelectActiveSheetData(state)
 
-  for (const rowIndex in cellMapSet) {
+  Object.keys(cellMapSet).forEach((rowIndex) => {
     const columnIndices = cellMapSet[rowIndex]
 
     const row = data[rowIndex]
@@ -153,7 +153,7 @@ export const CELL_KEY_DELETE = (state: IExcelState): IExcelState => {
         }
       })
     }
-  }
+  })
 
   return state
 }

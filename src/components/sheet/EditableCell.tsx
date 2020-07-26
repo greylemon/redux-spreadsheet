@@ -39,8 +39,8 @@ const RichTextFragment: FunctionComponent<IFragment> = ({
 
 const RichTextBlock: FunctionComponent<IRichTextBlock> = ({ fragments }) => (
   <div className="richText__block">
-    {fragments.map((data) => (
-      <RichTextFragment {...data} />
+    {fragments.map(({ key, styles, text }) => (
+      <RichTextFragment key={key} styles={styles} text={text} />
     ))}
   </div>
 )
@@ -49,8 +49,8 @@ const RichTextCellValue: FunctionComponent<{ value: IRichTextValue }> = ({
   value,
 }) => (
   <>
-    {value.map((data) => (
-      <RichTextBlock {...data} />
+    {value.map(({ key, fragments }) => (
+      <RichTextBlock key={key} fragments={fragments} />
     ))}
   </>
 )

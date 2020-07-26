@@ -19,7 +19,8 @@ export class Queue {
     const node = new LinkedListNode(ref)
 
     if (this._head === null) {
-      this._head = this._tail = node
+      this._head = node
+      this._tail = node
     } else {
       this._tail.next = node
       node.previous = this._tail
@@ -38,7 +39,7 @@ export class Queue {
 
     if (this._head) this._head.previous = null
 
-    this._length--
+    this._length -= 1
 
     if (this.isEmpty()) this._tail = null
 

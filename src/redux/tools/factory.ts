@@ -91,7 +91,7 @@ export const createFactoryReducerSetCellData = (
   const activeSheetData = nSelectActiveSheetData(state)
   const cellMapSet = getCellMapSetFromState(state)
 
-  for (const rowIndex in cellMapSet) {
+  Object.keys(cellMapSet).forEach((rowIndex) => {
     if (activeSheetData[rowIndex] === undefined) activeSheetData[rowIndex] = {}
 
     const row = activeSheetData[+rowIndex]
@@ -102,7 +102,7 @@ export const createFactoryReducerSetCellData = (
 
       row[columnIndex] = setterFunction(row[columnIndex])
     })
-  }
+  })
 
   return state
 }
@@ -113,7 +113,7 @@ export const createFactoryReducerUnsetCellData = (
   const activeSheetData = nSelectActiveSheetData(state)
   const cellMapSet = getCellMapSetFromState(state)
 
-  for (const rowIndex in cellMapSet) {
+  Object.keys(cellMapSet).forEach((rowIndex) => {
     const row = activeSheetData[+rowIndex]
     const rowSet = cellMapSet[rowIndex]
 
@@ -124,7 +124,7 @@ export const createFactoryReducerUnsetCellData = (
         }
       })
     }
-  }
+  })
 
   return state
 }

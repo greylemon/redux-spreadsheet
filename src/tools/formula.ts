@@ -22,6 +22,7 @@ import { Queue } from './data_structures/queue'
 export const createFormulaParser = (sheetsMap: ISheetsMap): FormulaParser =>
   new FormulaParser({
     onCell: ({ sheet, row: rowIndex, col: columnIndex }) => {
+      let value: string | number | null = null
       const sheetContent = sheetsMap[sheet].data
 
       const { results } = window
@@ -29,7 +30,6 @@ export const createFormulaParser = (sheetsMap: ISheetsMap): FormulaParser =>
       if (sheetContent) {
         if (sheetContent[rowIndex] && sheetContent[rowIndex][columnIndex]) {
           const cell = sheetContent[rowIndex][columnIndex]
-          let value: string | number | null = 0
 
           switch (cell.type) {
             case TYPE_FORMULA:
@@ -43,10 +43,10 @@ export const createFormulaParser = (sheetsMap: ISheetsMap): FormulaParser =>
             default:
               break
           }
-
-          return value
         }
       }
+
+      return value
     },
     onRange: ({ from, to, sheet }) => {
       const rangeData = []
@@ -110,13 +110,12 @@ export const createCellRefMap = (
       let adrSheetName = sheetName
       let adrRef = address
       if (address.includes('!')) {
-        const sheetAddress = address.split('!')
-        adrRef = sheetAddress[1]
-        adrSheetName = sheetAddress[0]
+        const [refSheetName, ref] = address.split('!')
+        adrRef = ref
         adrSheetName =
-          adrSheetName.startsWith("'") && adrSheetName.endsWith("'")
-            ? adrSheetName.substring(1, adrSheetName.length - 1)
-            : adrSheetName
+          refSheetName.startsWith("'") && refSheetName.endsWith("'")
+            ? refSheetName.substring(1, refSheetName.length - 1)
+            : refSheetName
       }
 
       if (!cellRefMap[adrSheetName])
@@ -232,24 +231,24 @@ const computeDependents = (
   ) {
     const sheetDependents = independents[sheetName][position.y][position.x]
 
-    for (const sheetName in sheetDependents) {
+    Object.keys(sheetDependents).forEach((sheetName) => {
       const sheetDependent = sheetDependents[sheetName]
 
       if (!visited[sheetName]) visited[sheetName] = {}
 
-      for (const rowIndex in sheetDependent) {
+      Object.keys(sheetDependent).forEach((rowIndex) => {
         const rowDependents = sheetDependent[rowIndex]
         if (!visited[sheetName][rowIndex])
           visited[sheetName][rowIndex] = new Set()
 
-        for (const columnIndex in rowDependents) {
+        Object.keys(rowDependents).forEach((columnIndex) => {
           queue.enqueue({
             position: { x: +columnIndex, y: +rowIndex },
             sheetName,
           })
-        }
-      }
-    }
+        })
+      })
+    })
   }
 
   while (!queue.isEmpty()) {
@@ -271,26 +270,26 @@ const computeDependents = (
     ) {
       const sheetDependents = independents[sheetName][position.y][position.x]
 
-      for (const sheetName in sheetDependents) {
+      Object.keys(sheetDependents).forEach((sheetName) => {
         const sheetDependent = sheetDependents[sheetName]
 
         if (!visited[sheetName]) visited[sheetName] = {}
 
-        for (const rowIndex in sheetDependent) {
+        Object.keys(sheetDependent).forEach((rowIndex) => {
           const rowDependents = sheetDependent[rowIndex]
           if (!visited[sheetName][rowIndex])
             visited[sheetName][rowIndex] = new Set()
 
-          for (const columnIndex in rowDependents) {
+          Object.keys(rowDependents).forEach((columnIndex) => {
             if (!visited[sheetName][rowIndex].has(+columnIndex)) {
               queue.enqueue({
                 position: { x: +columnIndex, y: +rowIndex },
                 sheetName,
               })
             }
-          }
-        }
-      }
+          })
+        })
+      })
     }
   }
 }
@@ -385,7 +384,7 @@ export const updateReferenceCell = (
     const formulaIndependents = dependents[focusedSheetName][y][x]
 
     // create new dependents
-    for (const sheetName in formulaReferences) {
+    Object.keys(formulaReferences).forEach((sheetName) => {
       const sheetFormulaDependents = formulaReferences[sheetName]
       const { areaRanges, positions } = sheetFormulaDependents
 
@@ -396,7 +395,7 @@ export const updateReferenceCell = (
 
       if (!independents[sheetName]) independents[sheetName] = {}
 
-      for (const position of positions) {
+      positions.forEach((position) => {
         assignSheetIndependents(
           independents,
           sheetName,
@@ -404,9 +403,9 @@ export const updateReferenceCell = (
           position,
           focusedCellPosition
         )
-      }
+      })
 
-      for (const areaRange of areaRanges) {
+      areaRanges.forEach((areaRange) => {
         const { xRange, yRange } = areaRange
 
         for (
@@ -428,8 +427,8 @@ export const updateReferenceCell = (
             )
           }
         }
-      }
-    }
+      })
+    })
 
     // ! Recompute value
     assignResult(parser, sheetsMap, focusedSheetName, focusedCellPosition)
@@ -485,7 +484,7 @@ export const visitFormulaCell = (
   const formulaIndependents =
     dependents[sheetName][curPosition.y][curPosition.x]
 
-  for (const refSheetName in cellRefMap) {
+  Object.keys(cellRefMap).forEach((refSheetName) => {
     if (sheetsMap[refSheetName]) {
       if (!visited[refSheetName]) visited[refSheetName] = {}
 
@@ -500,7 +499,7 @@ export const visitFormulaCell = (
 
       const refSheet = sheetsMap[refSheetName].data
 
-      for (const position of positions) {
+      positions.forEach((position) => {
         const { x, y } = position
 
         if (!visitedSheet[y]) visitedSheet[y] = new Set()
@@ -530,9 +529,9 @@ export const visitFormulaCell = (
           position,
           curPosition
         )
-      }
+      })
 
-      for (const areaRange of areaRanges) {
+      areaRanges.forEach((areaRange) => {
         const { xRange, yRange } = areaRange
 
         for (
@@ -577,9 +576,9 @@ export const visitFormulaCell = (
             )
           }
         }
-      }
+      })
     }
-  }
+  })
 
   assignResult(parser, sheetsMap, sheetName, curPosition)
 }
@@ -596,18 +595,18 @@ export const updateWorkbookReference = (state: IExcelState): IExcelState => {
 
   window.results = state.results
 
-  for (const sheetName in sheetsMap) {
+  Object.keys(sheetsMap).forEach((sheetName) => {
     const sheet = sheetsMap[sheetName].data
 
     if (!visited[sheetName]) visited[sheetName] = {}
 
-    for (const rowIndex in sheet) {
+    Object.keys(sheet).forEach((rowIndex) => {
       const row = sheet[rowIndex]
 
       if (!visited[sheetName][rowIndex])
         visited[sheetName][rowIndex] = new Set()
 
-      for (const columnIndex in row) {
+      Object.keys(row).forEach((columnIndex) => {
         const cell = row[columnIndex]
 
         if (!visited[sheetName][rowIndex].has(+columnIndex)) {
@@ -624,9 +623,9 @@ export const updateWorkbookReference = (state: IExcelState): IExcelState => {
             )
           }
         }
-      }
-    }
-  }
+      })
+    })
+  })
 
   // Update references
   state.independentReferences = cloneDeep(state.independentReferences)

@@ -12,10 +12,10 @@ export const getElementaryRanges = (
     }
   }
 
-  for (const range of ranges) {
+  ranges.forEach((range) => {
     points.push({ start: range.start, end: 1 })
     points.push({ start: range.end + 1, end: -1 })
-  }
+  })
 
   let count = 0
   let prev: null | number = null
@@ -62,7 +62,7 @@ export const getElementaryRanges = (
 export const mergeRanges = (ranges: IRange[]): IRange[] => {
   const mergedRanges: IRange[] = []
 
-  for (const range of ranges) {
+  ranges.forEach((range) => {
     // if the list of merged intervals is empty or if the current
     // interval does not overlap with the previous, simply append it.
     if (
@@ -78,7 +78,7 @@ export const mergeRanges = (ranges: IRange[]): IRange[] => {
         range.end
       )
     }
-  }
+  })
 
   return mergedRanges
 }

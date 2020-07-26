@@ -27,7 +27,7 @@ export const nSelectActiveCell = (state: IExcelState): ICell | undefined => {
 
   const { x, y } = state.activeCellPosition
 
-  if (data[y] && data[y][x]) return data[y][x]
+  return data[y] && data[y][x] ? data[y][x] : undefined
 }
 
 export const nSelectMergeCell = (state: IExcelState): IArea | undefined => {

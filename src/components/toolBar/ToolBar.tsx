@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import { Divider } from '@material-ui/core'
-import STYLE_TOOL_BAR, { STYLE_TOOL_BAR__CONTENT } from './style'
+import STYLE_TOOL_BAR, { STYLE_TOOL_BAR_CONTENT } from './style'
 import HistorySection from './HistorySection'
 import IOSection from './IOSection'
 import BlockStyleSection from './BlockStyleSection'
@@ -12,7 +12,7 @@ const VerticalDivider: FunctionComponent = () => (
 
 const ToolBar: FunctionComponent = () => (
   <div style={STYLE_TOOL_BAR}>
-    <div style={STYLE_TOOL_BAR__CONTENT}>
+    <div style={STYLE_TOOL_BAR_CONTENT}>
       <HistorySection />
       <VerticalDivider />
       <IOSection />

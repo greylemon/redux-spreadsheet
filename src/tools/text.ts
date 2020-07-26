@@ -39,12 +39,12 @@ export const getRangesFromInlineRanges = (
 export const getTextFromRichText = (richText: IRichTextValue): string => {
   let text = ''
 
-  for (const block of richText) {
+  richText.forEach((block) => {
     const blockFragments = block.fragments
     for (let i = 0; i < blockFragments.length; i += 1) {
       text += blockFragments[i].text
     }
-  }
+  })
 
   return text
 }
@@ -87,7 +87,7 @@ export const createValueFromEditorState = (
 
   const rawBlocks = convertToRaw(editorState.getCurrentContent()).blocks
 
-  for (const rawBlock of rawBlocks) {
+  rawBlocks.forEach((rawBlock) => {
     const blockFragments: IFragment[] = []
     const mergedRanges = getElementaryRanges(
       getRangesFromInlineRanges(rawBlock.inlineStyleRanges),
@@ -96,7 +96,7 @@ export const createValueFromEditorState = (
 
     const { inlineStyleRanges } = rawBlock
 
-    for (const mergedRange of mergedRanges) {
+    mergedRanges.forEach((mergedRange) => {
       const { start, end } = mergedRange
 
       const fragment: IFragment = {
@@ -117,16 +117,16 @@ export const createValueFromEditorState = (
       }
 
       blockFragments.push(fragment)
-    }
+    })
 
     richText.push({ key: uniqid(), fragments: blockFragments })
-  }
+  })
 
   let fragmentCount = 0
 
-  for (const block of richText) {
+  richText.forEach((block) => {
     fragmentCount += block.fragments.length
-  }
+  })
 
   const cell: ICell = {}
 
@@ -184,9 +184,9 @@ export const getRichTextBlockText = (block: IRichTextBlock): string => {
   let text = ''
 
   const { fragments } = block
-  for (const fragment of fragments) {
+  fragments.forEach((fragment) => {
     text += fragment.text
-  }
+  })
 
   return text
 }
@@ -210,7 +210,7 @@ export const getRawInlineStyleRangesFromRichTextBlock = (
 
   let previousOffset = -1
 
-  for (const fragment of fragments) {
+  fragments.forEach((fragment) => {
     const start = previousOffset + 1
     let end = start
 
@@ -252,20 +252,20 @@ export const getRawInlineStyleRangesFromRichTextBlock = (
         }
       }
     }
-  }
+  })
 
-  for (const style in data) {
+  Object.keys(data).forEach((style) => {
     const ranges = mergeRanges(data[style])
 
-    for (const range of ranges) {
+    ranges.forEach((range) => {
       const length = range.end - range.start + 1
       inlineStyleRanges.push({
         offset: range.start,
         length,
         style: style as DraftInlineStyleType,
       })
-    }
-  }
+    })
+  })
 
   return { text, inlineStyleRanges }
 }

@@ -29,10 +29,10 @@ export const ExcelActions = ExcelStore.actions
 export const createActionIgnoreMap = (): { [key: string]: boolean } => {
   const ignoreActionMap = {}
 
-  for (const actionKey in ExcelActions) {
+  Object.keys(ExcelActions).forEach((actionKey) => {
     const action: Action = ExcelActions[actionKey]
     ignoreActionMap[action.type] = true
-  }
+  })
 
   // TODO : Ignore certain actions here
   ignoreActionMap[ExcelActions.UPDATE_STATE.type] = false

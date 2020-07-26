@@ -22,12 +22,22 @@ export const getMaxPositionFromArea = ({ start, end }: IArea): IPosition => ({
   y: Math.max(start.y, end.y),
 })
 
-export const checkIsAreaRangeContainedInOtherAreaRange = (
-  areaRange: IAreaRange,
-  otherAreaRange: IAreaRange
-): boolean =>
-  checkIsRangeContainedInOtherRange(areaRange.xRange, otherAreaRange.xRange) &&
-  checkIsRangeContainedInOtherRange(areaRange.yRange, otherAreaRange.yRange)
+export const getAreaRangesFromOrderedArea = (
+  orderedArea: IArea
+): IAreaRange => ({
+  xRange: { start: orderedArea.start.x, end: orderedArea.end.x } as IRange,
+  yRange: { start: orderedArea.start.y, end: orderedArea.end.y } as IRange,
+})
+
+export const checkIsPositionEqualOtherPosition = (
+  position: IPosition,
+  otherPosition: IPosition
+): boolean => position.x === otherPosition.x && position.y === otherPosition.y
+
+export const getAreaFromPosition = (position: IPosition): IArea => ({
+  start: { ...position },
+  end: { ...position },
+})
 
 export const checkIsPositionContainedInArea = (
   position: IPosition,
@@ -62,32 +72,27 @@ export const getOrderedAreaFromPositions = (
   },
 })
 
+export const getEditableCellPositionFromBoundedPosition = (
+  position: IPosition,
+  orderedSheetArea: IArea
+): IPosition => {
+  const editableCellPosition: IPosition = { ...position }
+
+  editableCellPosition.x = Math.max(
+    position.x,
+    orderedSheetArea.start.x + SHEET_COLUMN_WIDTH_HEADER + 1
+  )
+  editableCellPosition.y = Math.max(
+    position.y,
+    orderedSheetArea.start.y + SHEET_ROW_HEIGHT_HEADER + 1
+  )
+
+  return editableCellPosition
+}
+
 export const getOrderedAreaFromArea = (area: IArea): IArea => ({
   start: getMinPositionFromArea(area),
   end: getMaxPositionFromArea(area),
-})
-
-export const getAreaRanges = (area: IArea): IAreaRange => {
-  const orderedArea = getOrderedAreaFromArea(area)
-
-  return getAreaRangesFromOrderedArea(orderedArea)
-}
-
-export const getAreaRangesFromOrderedArea = (
-  orderedArea: IArea
-): IAreaRange => ({
-  xRange: { start: orderedArea.start.x, end: orderedArea.end.x } as IRange,
-  yRange: { start: orderedArea.start.y, end: orderedArea.end.y } as IRange,
-})
-
-export const checkIsPositionEqualOtherPosition = (
-  position: IPosition,
-  otherPosition: IPosition
-): boolean => position.x === otherPosition.x && position.y === otherPosition.y
-
-export const getAreaFromPosition = (position: IPosition): IArea => ({
-  start: { ...position },
-  end: { ...position },
 })
 
 export const checkIsAreaEqualOtherArea = (
@@ -104,6 +109,19 @@ export const checkIsAreaEqualOtherArea = (
     ) &&
     checkIsPositionEqualOtherPosition(orderedArea.end, otherOrderedArea.end)
   )
+}
+
+export const checkIsAreaRangeContainedInOtherAreaRange = (
+  areaRange: IAreaRange,
+  otherAreaRange: IAreaRange
+): boolean =>
+  checkIsRangeContainedInOtherRange(areaRange.xRange, otherAreaRange.xRange) &&
+  checkIsRangeContainedInOtherRange(areaRange.yRange, otherAreaRange.yRange)
+
+export const getAreaRanges = (area: IArea): IAreaRange => {
+  const orderedArea = getOrderedAreaFromArea(area)
+
+  return getAreaRangesFromOrderedArea(orderedArea)
 }
 
 export const getAreaDifference = (
@@ -183,26 +201,6 @@ export const getAndAddAreaFromSuperAreaIndex = (
   ...areas.slice(superAreaIndex + 1),
 ]
 
-export const getAndAddArea = (
-  area: IArea,
-  areas: Array<IArea>
-): {
-  superAreaIndex: number
-  newAreas: IArea[]
-} => {
-  let newAreas: Array<IArea>
-
-  const superAreaIndex = getFirstSuperAreaIndex(area, areas)
-
-  if (superAreaIndex > -1) {
-    newAreas = getAndAddAreaFromSuperAreaIndex(superAreaIndex, area, areas)
-  } else {
-    newAreas = [...areas, area]
-  }
-
-  return { superAreaIndex, newAreas }
-}
-
 /**
  * Finds the index of the first superset of area
  */
@@ -225,6 +223,26 @@ export const getFirstSuperAreaIndex = (
       potentialSuperAreaRanges
     )
   })
+}
+
+export const getAndAddArea = (
+  area: IArea,
+  areas: Array<IArea>
+): {
+  superAreaIndex: number
+  newAreas: IArea[]
+} => {
+  let newAreas: Array<IArea>
+
+  const superAreaIndex = getFirstSuperAreaIndex(area, areas)
+
+  if (superAreaIndex > -1) {
+    newAreas = getAndAddAreaFromSuperAreaIndex(superAreaIndex, area, areas)
+  } else {
+    newAreas = [...areas, area]
+  }
+
+  return { superAreaIndex, newAreas }
 }
 
 export const getCellMapSetFromAreas = (areas: IArea[]): ICellMapSet => {
@@ -267,22 +285,4 @@ export const boundPositionInOrderedArea = (
     boundedPosition.y = orderedSheetArea.end.y - scrollBarSize + rowAdjustment
 
   return boundedPosition
-}
-
-export const getEditableCellPositionFromBoundedPosition = (
-  position: IPosition,
-  orderedSheetArea: IArea
-): IPosition => {
-  const editableCellPosition: IPosition = { ...position }
-
-  editableCellPosition.x = Math.max(
-    position.x,
-    orderedSheetArea.start.x + SHEET_COLUMN_WIDTH_HEADER + 1
-  )
-  editableCellPosition.y = Math.max(
-    position.y,
-    orderedSheetArea.start.y + SHEET_ROW_HEIGHT_HEADER + 1
-  )
-
-  return editableCellPosition
 }
