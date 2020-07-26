@@ -140,9 +140,14 @@ export const createValueFromEditorState = (
     if (cell.style) cell.style.font = {}
   } else {
     if (fragmentCount) {
-      const font =
-        richText[0].fragments[0].styles ||
-        getFontStyleFromEditorState(editorState)
+      const fragment = richText[0].fragments[0]
+      let font: IInlineStyles | null = null
+
+      if (fragment.styles) {
+        font = fragment.styles
+      } else if (!fragment.text) {
+        font = getFontStyleFromEditorState(editorState)
+      }
 
       if (font) cell.style = { font }
     }
