@@ -11,21 +11,6 @@ import * as STYLE_REDUCERS from './reducers/style'
 
 export const initialExcelState = createInitialExcelState()
 
-export const createActionIgnoreMap = (): { [key: string]: boolean } => {
-  const ignoreActionMap = {}
-
-  for (const actionKey in ExcelActions) {
-    const action: Action = ExcelActions[actionKey]
-    ignoreActionMap[action.type] = true
-  }
-
-  // TODO : Ignore certain actions here
-  ignoreActionMap[ExcelActions.UPDATE_STATE.type] = false
-  ignoreActionMap[ExcelActions.CHANGE_SHEET.type] = false
-
-  return ignoreActionMap
-}
-
 export const ExcelStore = createSlice({
   name: 'EXCEL',
   initialState: initialExcelState,
@@ -40,6 +25,21 @@ export const ExcelStore = createSlice({
 })
 
 export const ExcelActions = ExcelStore.actions
+
+export const createActionIgnoreMap = (): { [key: string]: boolean } => {
+  const ignoreActionMap = {}
+
+  for (const actionKey in ExcelActions) {
+    const action: Action = ExcelActions[actionKey]
+    ignoreActionMap[action.type] = true
+  }
+
+  // TODO : Ignore certain actions here
+  ignoreActionMap[ExcelActions.UPDATE_STATE.type] = false
+  ignoreActionMap[ExcelActions.CHANGE_SHEET.type] = false
+
+  return ignoreActionMap
+}
 
 const ignoredActionsMap = createActionIgnoreMap()
 

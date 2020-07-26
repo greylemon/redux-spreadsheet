@@ -1,9 +1,9 @@
+import { EditorState, SelectionState } from 'draft-js'
 import {
   IInlineStyles,
   IEditorState,
   ITextDecorationStyle,
 } from '../@types/state'
-import { EditorState, SelectionState } from 'draft-js'
 import { ISetInlineStyleFn } from '../@types/functions'
 
 export const checkIsBlockBold = (style: IInlineStyles): boolean =>
@@ -29,11 +29,13 @@ export const getSelectionState = (editorState: EditorState): SelectionState => {
   })
 }
 
-export const setItalicStyle: ISetInlineStyleFn = (style) =>
-  (style.fontStyle = 'italic')
+export const setItalicStyle: ISetInlineStyleFn = (style) => {
+  style.fontStyle = 'italic'
+}
 
-export const setBoldStyle: ISetInlineStyleFn = (style) =>
-  (style.fontWeight = 'bold')
+export const setBoldStyle: ISetInlineStyleFn = (style) => {
+  style.fontWeight = 'bold'
+}
 
 export const setStrikethroughStyle: ISetInlineStyleFn = (style) => {
   if (style.textDecoration === undefined) style.textDecoration = 'line-through'

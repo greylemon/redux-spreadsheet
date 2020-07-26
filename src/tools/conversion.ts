@@ -19,7 +19,7 @@ export const columnNameToNumber = (
 
   name = name.toUpperCase()
   let sum = 0
-  for (let i = 0; i < name.length; i++) {
+  for (let i = 0; i < name.length; i += 1) {
     sum *= 26
     sum += name[i].charCodeAt(0) - 'A'.charCodeAt(0) + 1
   }
@@ -47,13 +47,15 @@ export const columnNumberToName = (number: number): string | null => {
   return name
 }
 
-export const convertAddressRangeToRange = (range: string): IAreaRange => {
-  const [topLeftAdr, bottomRightAdr] = range.split(':')
+export const getColumnNumberFromColumnName = (name: string): IColumnIndex => {
+  let sum = 0
 
-  return getAreaRanges({
-    start: convertStringPositionToPosition(topLeftAdr),
-    end: convertStringPositionToPosition(bottomRightAdr),
-  })
+  for (let i = 0; i < name.length; i += 1) {
+    sum *= 26
+    sum += name.charCodeAt(i) - ('A'.charCodeAt(0) - 1)
+  }
+
+  return sum
 }
 
 export const convertStringPositionToPosition = (
@@ -68,13 +70,11 @@ export const convertStringPositionToPosition = (
   }
 }
 
-export const getColumnNumberFromColumnName = (name: string): IColumnIndex => {
-  let sum = 0
+export const convertAddressRangeToRange = (range: string): IAreaRange => {
+  const [topLeftAdr, bottomRightAdr] = range.split(':')
 
-  for (let i = 0; i < name.length; i++) {
-    sum *= 26
-    sum += name.charCodeAt(i) - ('A'.charCodeAt(0) - 1)
-  }
-
-  return sum
+  return getAreaRanges({
+    start: convertStringPositionToPosition(topLeftAdr),
+    end: convertStringPositionToPosition(bottomRightAdr),
+  })
 }

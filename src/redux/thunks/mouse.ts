@@ -144,6 +144,8 @@ export const THUNK_MOUSE_MOVE = (mousePosition: IPosition): IAppThunk => (
       case 'root':
         scopedPosition = { x: 1, y: 1 }
         break
+      default:
+        break
     }
 
     if (

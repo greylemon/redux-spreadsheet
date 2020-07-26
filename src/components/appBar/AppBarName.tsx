@@ -8,10 +8,10 @@ import {
   TextField,
   // ClickAwayListener
 } from '@material-ui/core'
-import { STYLE_APP_BAR__TEXT_FIELD_INPUT } from './style'
+import { shallowEqual, useDispatch } from 'react-redux'
+import { STYLE_APP_BAR_TEXT_FIELD_INPUT } from './style'
 import { useTypedSelector } from '../../redux/redux'
 import { selectName } from '../../redux/selectors/base'
-import { shallowEqual, useDispatch } from 'react-redux'
 
 const AppBarName: FunctionComponent = () => {
   const dispatch = useDispatch()
@@ -43,7 +43,7 @@ const AppBarName: FunctionComponent = () => {
       inputRef={ref}
       onKeyDown={handleKeyDown}
       value={name}
-      InputProps={{ style: STYLE_APP_BAR__TEXT_FIELD_INPUT }}
+      InputProps={{ style: STYLE_APP_BAR_TEXT_FIELD_INPUT }}
       variant="outlined"
     />
   )

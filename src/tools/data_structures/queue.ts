@@ -26,7 +26,7 @@ export class Queue {
       this._tail = node
     }
 
-    this._length++
+    this._length += 1
   }
 
   dequeue(): IAddressReference {

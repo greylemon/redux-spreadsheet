@@ -12,7 +12,7 @@ const STYLE_SHEET_NAVIGATION: CSSProperties = {
   backgroundColor: 'rgba(238, 238, 238, 0.5)',
 }
 
-export const STYLE_SHEET_NAVIGATION__SHEETS = {
+export const STYLE_SHEET_NAVIGATION_SHEETS = {
   height: '100%',
   display: 'flex',
   padding: '0 10px',
@@ -21,7 +21,7 @@ export const STYLE_SHEET_NAVIGATION__SHEETS = {
   ...STYLE_UNSELECTABLE,
 }
 
-export const STYLE_SHEET_NAVIGATION__CONTAINER: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION_CONTAINER: CSSProperties = {
   display: 'flex',
   flexFlow: 'column',
   justifyContent: 'center',
@@ -33,32 +33,32 @@ export const STYLE_SHEET_NAVIGATION__CONTAINER: CSSProperties = {
   whiteSpace: 'nowrap',
 }
 
-export const STYLE_SHEET_NAVIGATION__CONTAINER_ACTIVE: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION_CONTAINER_ACTIVE: CSSProperties = {
   color: 'green',
   ...STYLE_BOX_SHADOW('0px 0px 5px 2px rgba(107, 107, 107, 0.5)'),
   backgroundColor: 'white',
 }
 
-export const STYLE_SHEET_NAVIGATION__CONTAINER_INACTIVE: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION_CONTAINER_INACTIVE: CSSProperties = {
   color: 'gray',
   outline: '1px solid rgb(233, 233, 233)',
   outlineOffset: -1,
 }
 
-export const STYLE_SHEET_NAVIGATION__SHEET_SHEETNAME: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION_SHEET_SHEETNAME: CSSProperties = {
   marginRight: 10,
 }
 
-export const STYLE_SHEET_NAVIGATION__OPTION: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION_OPTION: CSSProperties = {
   padding: 0,
   minWidth: 0,
 }
 
-export const STYLE_SHEET_NAVIGATION__OPTIONS: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION_OPTIONS: CSSProperties = {
   display: 'flex',
 }
 
-export const STYLE_SHEET_NAVIGATION__ADD_SHEET: CSSProperties = {
+export const STYLE_SHEET_NAVIGATION_ADD_SHEET: CSSProperties = {
   minWidth: `${STYLE_SHEET_NAVIGATION_HEIGHT} !important`,
 }
 

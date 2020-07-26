@@ -42,7 +42,6 @@ import {
   SHEET_FREEZE_COLUMN_COUNT,
   SHEET_FREEZE_ROW_COUNT,
 } from '../constants/defaults'
-import { numberRegex } from './regex'
 import { ValueType } from '../@types/exceljs'
 import { getTableColumnCount, getTableRowCount } from './table'
 import {
@@ -356,6 +355,8 @@ const getPaneDataFromSheetViews = (
         break
       case 'split':
         break
+      default:
+        break
     }
   })
 
@@ -370,7 +371,7 @@ export const getColumnDataFromColumns = (
 
   const { columnCount } = sheet
 
-  for (let i = 1; i <= columnCount; i++) {
+  for (let i = 1; i <= columnCount; i += 1) {
     const { width, hidden } = sheet.getColumn(i)
 
     if (width) columnWidths[i] = width
@@ -391,7 +392,7 @@ export const getRowDataFromSheet = (
   const hiddenRows: IHiddenRows = {}
   const { rowCount } = sheet
 
-  for (let i = 1; i <= rowCount; i++) {
+  for (let i = 1; i <= rowCount; i += 1) {
     const { height, hidden } = sheet.getRow(i)
 
     if (height) rowHeights[i] = height

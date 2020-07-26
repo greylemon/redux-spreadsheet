@@ -28,6 +28,8 @@ const HeaderDraggerArea: FunctionComponent<{
           case 'column':
             dispatch(THUNK_MOUSE_ENTER_DRAG_COLUMN(index))
             break
+          default:
+            break
         }
       }
     },

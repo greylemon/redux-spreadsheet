@@ -51,11 +51,11 @@ export const MERGE_AREA = (state: IExcelState): IExcelState => {
     // Colapse merge area
     const { xRange, yRange } = getAreaRanges(mergedArea)
 
-    for (let rowIndex = yRange.start; rowIndex <= yRange.end; rowIndex++) {
+    for (let rowIndex = yRange.start; rowIndex <= yRange.end; rowIndex += 1) {
       for (
         let columnIndex = xRange.start;
         columnIndex <= xRange.end;
-        columnIndex++
+        columnIndex += 1
       ) {
         if (rowIndex !== yRange.start || columnIndex !== xRange.start)
           delete data[rowIndex][columnIndex]
@@ -72,13 +72,13 @@ export const MERGE_AREA = (state: IExcelState): IExcelState => {
     for (
       let rowIndex = mergedArea.start.y;
       rowIndex <= mergedArea.end.y;
-      rowIndex++
+      rowIndex += 1
     ) {
       if (!data[rowIndex]) data[rowIndex] = {}
       for (
         let columnIndex = mergedArea.start.x;
         columnIndex <= mergedArea.end.x;
-        columnIndex++
+        columnIndex += 1
       ) {
         if (
           rowIndex !== mergedArea.start.y ||

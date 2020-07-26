@@ -41,7 +41,7 @@ export const getTextFromRichText = (richText: IRichTextValue): string => {
 
   for (const block of richText) {
     const blockFragments = block.fragments
-    for (let i = 0; i < blockFragments.length; i++) {
+    for (let i = 0; i < blockFragments.length; i += 1) {
       text += blockFragments[i].text
     }
   }
@@ -104,7 +104,7 @@ export const createValueFromEditorState = (
         text: rawBlock.text.substring(start, end + 1),
       }
 
-      for (let i = 0; i < inlineStyleRanges.length; i++) {
+      for (let i = 0; i < inlineStyleRanges.length; i += 1) {
         const inlineRange = inlineStyleRanges[i]
         const inlineStart = inlineRange.offset
         const inlineEnd = inlineStart + inlineRange.length - 1
@@ -153,11 +153,9 @@ export const createValueFromEditorState = (
     } else if (text.match(exactNumberRegex)) {
       cell.value = +text
       cell.type = TYPE_NUMBER
-    } else {
-      if (cell.style || text.length) {
-        cell.value = text
-        cell.type = TYPE_TEXT
-      }
+    } else if (cell.style || text.length) {
+      cell.value = text
+      cell.type = TYPE_TEXT
     }
   }
 

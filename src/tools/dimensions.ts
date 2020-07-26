@@ -70,7 +70,7 @@ export const getColumnOffsets = (
   for (
     let column = 2, incrementor = SHEET_COLUMN_WIDTH_HEADER;
     column <= columnCount + 1;
-    column++
+    column += 1
   ) {
     incrementor += normalizeColumnWidthFromArray(column - 1, columnWidths)
     leftOffsets.push(incrementor)
@@ -91,7 +91,7 @@ export const getRowOffsets = (
   for (
     let row = 2, incrementor = SHEET_ROW_HEIGHT_HEADER;
     row <= rowCount + 1;
-    row++
+    row += 1
   ) {
     incrementor += normalizeRowHeightFromArray(row - 1, rowHeights)
     topOffsets.push(incrementor)

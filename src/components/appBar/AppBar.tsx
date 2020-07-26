@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react'
-import { SmallLabelButton } from '../misc/buttons'
 import { Description } from '@material-ui/icons'
+import { SmallLabelButton } from '../misc/buttons'
 import STYLE_APP_BAR, {
-  STYLE_APP_BAR__ICON,
-  STYLE_APP_BAR__BUTTON_ICON,
+  STYLE_APP_BAR_ICON,
+  STYLE_APP_BAR_BUTTON_ICON,
   // appBarContentStyle,
 } from './style'
 // import AppBarMenu from './AppBarMenu'
@@ -11,8 +11,8 @@ import STYLE_APP_BAR, {
 
 const SpreadSheetButton: FunctionComponent = () => {
   return (
-    <SmallLabelButton title="Home" style={STYLE_APP_BAR__BUTTON_ICON}>
-      <Description style={STYLE_APP_BAR__ICON} />
+    <SmallLabelButton title="Home" style={STYLE_APP_BAR_BUTTON_ICON}>
+      <Description style={STYLE_APP_BAR_ICON} />
     </SmallLabelButton>
   )
 }

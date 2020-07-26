@@ -3,9 +3,9 @@ import { getCellMapSetFromAreas } from '../../tools/area'
 import { ICellMapSet } from '../../@types/objects'
 
 export const getCellMapSetFromState = (state: IExcelState): ICellMapSet => {
-  const inactiveSelectionAreas = state.inactiveSelectionAreas
-  const selectionArea = state.selectionArea
-  const activeCellPosition = state.activeCellPosition
+  const { inactiveSelectionAreas } = state
+  const { selectionArea } = state
+  const { activeCellPosition } = state
 
   const combinedArea: IArea[] = [
     ...inactiveSelectionAreas,

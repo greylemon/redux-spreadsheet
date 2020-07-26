@@ -36,6 +36,8 @@ const InactiveSelectionAreas: FunctionComponent<ICommonPaneProps> = ({
           state
         )
         break
+      default:
+        break
     }
 
     return inactiveSelectionAreasStyle

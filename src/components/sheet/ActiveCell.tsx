@@ -125,6 +125,8 @@ const ActiveCell: FunctionComponent<ICommonPaneProps> = ({ type }) => {
         style = selectActiveCellAreaTopRightStyle(state)
         isInCorrectPane = selectIsActiveCellInTopRightPane(state)
         break
+      default:
+        break
     }
 
     return {

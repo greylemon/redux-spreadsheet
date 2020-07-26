@@ -1,4 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit'
+import { EditorState } from 'draft-js'
 import {
   IPosition,
   IExcelState,
@@ -34,7 +35,6 @@ import {
   denormalizeColumnWidth,
 } from '../../tools/dimensions'
 import { updateActiveCellValueInPlace } from '../tools/cell'
-import { EditorState } from 'draft-js'
 import { TYPE_TEXT } from '../../constants/types'
 
 export const CELL_MOUSE_DOWN_CTRL = (

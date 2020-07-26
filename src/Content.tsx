@@ -9,6 +9,7 @@ import './styles/styles.scss'
 
 import { Route, useRouteMatch, Switch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import { Divider } from '@material-ui/core'
 import SheetContainer from './components/sheet/Sheet'
 import ToolBar from './components/toolBar/ToolBar'
 import SheetNavigation from './components/sheetNavigation/SheetNavigation'
@@ -19,7 +20,6 @@ import { THUNK_COMMAND_SAVE } from './redux/thunks/IO'
 import { THUNK_MOUSE_UP, THUNK_MOUSE_MOVE } from './redux/thunks/mouse'
 import { THUNK_HISTORY_UNDO, THUNK_HISTORY_REDO } from './redux/thunks/history'
 import AppBar from './components/appBar/AppBar'
-import { Divider } from '@material-ui/core'
 
 export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   style,

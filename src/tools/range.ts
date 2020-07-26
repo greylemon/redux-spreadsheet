@@ -45,7 +45,7 @@ export const getElementaryRanges = (
   const searchCap = result.length
   let previousEnd = -1
 
-  for (let i = 0; i < searchCap; i++) {
+  for (let i = 0; i < searchCap; i += 1) {
     const range = result[i]
     if (range.start !== previousEnd + 1) {
       result.push({ start: previousEnd + 1, end: range.start - 1 })

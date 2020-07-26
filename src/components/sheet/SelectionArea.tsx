@@ -40,6 +40,8 @@ const SelectionArea: FunctionComponent<ICommonPaneProps> = ({ type }) => {
         selectionAreaStyle = selectSelectionAreaTopRightStyle(state)
         isInCorrectPane = selectIsAreaInTopRightPane(state)
         break
+      default:
+        break
     }
 
     return {

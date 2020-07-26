@@ -233,13 +233,13 @@ export const getCellMapSetFromAreas = (areas: IArea[]): ICellMapSet => {
   areas.forEach((area) => {
     const { xRange, yRange } = getAreaRanges(area)
 
-    for (let rowIndex = yRange.start; rowIndex <= yRange.end; rowIndex++) {
+    for (let rowIndex = yRange.start; rowIndex <= yRange.end; rowIndex += 1) {
       if (!cellMapSet[rowIndex]) cellMapSet[rowIndex] = new Set()
 
       for (
         let columnIndex = xRange.start;
         columnIndex <= xRange.end;
-        columnIndex++
+        columnIndex += 1
       )
         cellMapSet[rowIndex].add(columnIndex)
     }

@@ -124,31 +124,33 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
           case 'x':
             dispatch(THUNK_TOGGLE_STRIKETHROUGH())
             break
+          default:
+            break
         }
+      } else if (key.length === 1) {
+        dispatch(ExcelActions.CELL_EDITOR_STATE_START())
       } else {
-        if (key.length === 1) {
-          dispatch(ExcelActions.CELL_EDITOR_STATE_START())
-        } else {
-          switch (key) {
-            case 'Enter':
-              dispatch(THUNK_KEY_ENTER())
-              break
-            case 'Delete':
-              dispatch(ExcelActions.CELL_KEY_DELETE())
-              break
-            case 'ArrowDown':
-              dispatch(ExcelActions.CELL_KEY_DOWN())
-              break
-            case 'ArrowRight':
-              dispatch(ExcelActions.CELL_KEY_RIGHT())
-              break
-            case 'ArrowLeft':
-              dispatch(ExcelActions.CELL_KEY_LEFT())
-              break
-            case 'ArrowUp':
-              dispatch(ExcelActions.CELL_KEY_UP())
-              break
-          }
+        switch (key) {
+          case 'Enter':
+            dispatch(THUNK_KEY_ENTER())
+            break
+          case 'Delete':
+            dispatch(ExcelActions.CELL_KEY_DELETE())
+            break
+          case 'ArrowDown':
+            dispatch(ExcelActions.CELL_KEY_DOWN())
+            break
+          case 'ArrowRight':
+            dispatch(ExcelActions.CELL_KEY_RIGHT())
+            break
+          case 'ArrowLeft':
+            dispatch(ExcelActions.CELL_KEY_LEFT())
+            break
+          case 'ArrowUp':
+            dispatch(ExcelActions.CELL_KEY_UP())
+            break
+          default:
+            break
         }
       }
     },

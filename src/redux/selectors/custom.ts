@@ -197,13 +197,13 @@ export const selectCellLayering = createSelector(
   (data, columnCount, rowCount) => {
     const layering: number[][] = []
 
-    for (let rowIndex = 0; rowIndex <= rowCount; rowIndex++) {
+    for (let rowIndex = 0; rowIndex <= rowCount; rowIndex += 1) {
       let layerIndex = 1
       const rowLayer: number[] = []
       const row = data[rowIndex]
 
-      for (let columnIndex = 0; columnIndex <= columnCount; columnIndex++) {
-        if (row && row[columnIndex] && row[columnIndex].value) layerIndex++
+      for (let columnIndex = 0; columnIndex <= columnCount; columnIndex += 1) {
+        if (row && row[columnIndex] && row[columnIndex].value) layerIndex += 1
 
         rowLayer.push(layerIndex)
       }

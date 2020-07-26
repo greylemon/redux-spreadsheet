@@ -24,6 +24,8 @@ const ColumnDragger: FunctionComponent<ICommonPaneProps> = ({ type }) => {
       case 'TOP_RIGHT':
         isInCorrectPane = selectIsDragColumnOffsetInInTopRightPane(state)
         break
+      default:
+        break
     }
 
     return { style, isInCorrectPane }

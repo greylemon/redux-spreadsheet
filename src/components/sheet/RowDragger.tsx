@@ -31,6 +31,8 @@ const RowDragger: FunctionComponent<ICommonPaneProps> = ({ type }) => {
         isInCorrectPane = selectIsDragRowOffsetInTopLeftPane(state)
         style = selectRowDraggerStyle(state)
         break
+      default:
+        break
     }
 
     return { style, isInCorrectPane }

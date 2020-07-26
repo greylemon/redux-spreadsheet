@@ -37,14 +37,14 @@ import {
 import { ExcelActions } from '../../redux/store'
 import { IHandleSheetPress } from '../../@types/functions'
 import STYLE_SHEET_NAVIGATION, {
-  STYLE_SHEET_NAVIGATION__CONTAINER,
-  STYLE_SHEET_NAVIGATION__CONTAINER_ACTIVE,
-  STYLE_SHEET_NAVIGATION__CONTAINER_INACTIVE,
-  STYLE_SHEET_NAVIGATION__SHEETS,
-  STYLE_SHEET_NAVIGATION__ADD_SHEET,
-  STYLE_SHEET_NAVIGATION__OPTIONS,
-  STYLE_SHEET_NAVIGATION__OPTION,
-  STYLE_SHEET_NAVIGATION__SHEET_SHEETNAME,
+  STYLE_SHEET_NAVIGATION_CONTAINER,
+  STYLE_SHEET_NAVIGATION_CONTAINER_ACTIVE,
+  STYLE_SHEET_NAVIGATION_CONTAINER_INACTIVE,
+  STYLE_SHEET_NAVIGATION_SHEETS,
+  STYLE_SHEET_NAVIGATION_ADD_SHEET,
+  STYLE_SHEET_NAVIGATION_OPTIONS,
+  STYLE_SHEET_NAVIGATION_OPTION,
+  STYLE_SHEET_NAVIGATION_SHEET_SHEETNAME,
 } from './style'
 
 const SheetOptionButton: FunctionComponent<{
@@ -65,7 +65,7 @@ const SheetOptionButton: FunctionComponent<{
 
   return (
     <Button
-      style={STYLE_SHEET_NAVIGATION__OPTION}
+      style={STYLE_SHEET_NAVIGATION_OPTION}
       disabled={!isActive}
       onMouseDown={handleMouseDown}
     >
@@ -90,7 +90,7 @@ const SheetItemContent: FunctionComponent<{
   return (
     <div>
       <span
-        style={STYLE_SHEET_NAVIGATION__SHEET_SHEETNAME}
+        style={STYLE_SHEET_NAVIGATION_SHEET_SHEETNAME}
         onDoubleClick={handleDoubleClick}
       >
         {sheetName}
@@ -209,6 +209,8 @@ const SheetEditText: FunctionComponent = () => {
         case 'Escape':
           dispatch(ExcelActions.RESET_SHEET_NAME_EDIT())
           break
+        default:
+          break
       }
     },
     [dispatch, handleChangeActiveSheetName]
@@ -257,10 +259,10 @@ const SortableItem = SortableElement(
 
     const style = useMemo(
       () => ({
-        ...STYLE_SHEET_NAVIGATION__CONTAINER,
+        ...STYLE_SHEET_NAVIGATION_CONTAINER,
         ...(isActiveSheet
-          ? STYLE_SHEET_NAVIGATION__CONTAINER_ACTIVE
-          : STYLE_SHEET_NAVIGATION__CONTAINER_INACTIVE),
+          ? STYLE_SHEET_NAVIGATION_CONTAINER_ACTIVE
+          : STYLE_SHEET_NAVIGATION_CONTAINER_INACTIVE),
       }),
       [isActiveSheet]
     )
@@ -302,7 +304,7 @@ const SortableList = SortableContainer(
     )
 
     return (
-      <ul style={STYLE_SHEET_NAVIGATION__SHEETS}>
+      <ul style={STYLE_SHEET_NAVIGATION_SHEETS}>
         {sheetNames.map((sheetName, index) => (
           <SortableItem
             key={`item-${sheetName}`}
@@ -328,7 +330,7 @@ const SheetAdder: FunctionComponent = () => {
   }, [dispatch])
 
   return (
-    <Button style={STYLE_SHEET_NAVIGATION__ADD_SHEET} onClick={handleAddSheet}>
+    <Button style={STYLE_SHEET_NAVIGATION_ADD_SHEET} onClick={handleAddSheet}>
       <AddIcon fontSize="small" />
     </Button>
   )
@@ -347,7 +349,7 @@ const SheetSelector: FunctionComponent<{
 const SheetNavigationOptions: FunctionComponent<{
   handleSheetPress: IHandleSheetPress
 }> = ({ handleSheetPress }) => (
-  <div style={STYLE_SHEET_NAVIGATION__OPTIONS}>
+  <div style={STYLE_SHEET_NAVIGATION_OPTIONS}>
     <SheetSelector handleSheetPress={handleSheetPress} />
     <SheetAdder />
   </div>

@@ -34,7 +34,7 @@ const getPartialSuperAreaFromColumnRange = (
 
   const rowData = data[row]
 
-  for (let column = xRange.start; column <= xRange.end; column++) {
+  for (let column = xRange.start; column <= xRange.end; column += 1) {
     const cellData = rowData[column]
 
     if (cellData && cellData.merged)
@@ -55,7 +55,7 @@ const getPartialSuperAreaFromRowRange = (
 ): IArea => {
   const newArea = cloneDeep(area)
 
-  for (let row = yRange.start; row <= yRange.end; row++) {
+  for (let row = yRange.start; row <= yRange.end; row += 1) {
     const rowData = data[row]
 
     if (rowData && rowData[column]) {

@@ -40,6 +40,8 @@ export const createFormulaParser = (sheetsMap: ISheetsMap): FormulaParser =>
             case TYPE_TEXT:
               value = cell.value as string | number
               break
+            default:
+              break
           }
 
           return value
@@ -53,14 +55,14 @@ export const createFormulaParser = (sheetsMap: ISheetsMap): FormulaParser =>
       const { results } = window
 
       if (sheetContent) {
-        for (let rowIndex = from.row; rowIndex <= to.row; rowIndex++) {
+        for (let rowIndex = from.row; rowIndex <= to.row; rowIndex += 1) {
           const row = sheetContent[rowIndex]
           const rowArray = []
           if (row) {
             for (
               let columnIndex = from.col;
               columnIndex <= to.col;
-              columnIndex++
+              columnIndex += 1
             ) {
               const cell = row[columnIndex]
               let value: string | number | null = null
@@ -77,6 +79,8 @@ export const createFormulaParser = (sheetsMap: ISheetsMap): FormulaParser =>
                   case TYPE_NUMBER:
                   case TYPE_TEXT:
                     value = cell.value as string | number
+                    break
+                  default:
                     break
                 }
               }
@@ -349,12 +353,12 @@ export const updateReferenceCell = (
     //       for (
     //         let rowIndex = yRange.start;
     //         rowIndex <= yRange.end;
-    //         rowIndex++
+    //         rowIndex += 1
     //       ) {
     //         for (
     //           let columnIndex = xRange.start;
     //           columnIndex <= xRange.end;
-    //           columnIndex++
+    //           columnIndex += 1
     //         ) {
     //           delete independents[sheetName][rowIndex][columnIndex]
     //         }
@@ -405,11 +409,15 @@ export const updateReferenceCell = (
       for (const areaRange of areaRanges) {
         const { xRange, yRange } = areaRange
 
-        for (let rowIndex = yRange.start; rowIndex <= yRange.end; rowIndex++) {
+        for (
+          let rowIndex = yRange.start;
+          rowIndex <= yRange.end;
+          rowIndex += 1
+        ) {
           for (
             let columnIndex = xRange.start;
             columnIndex <= xRange.end;
-            columnIndex++
+            columnIndex += 1
           ) {
             assignSheetIndependents(
               independents,
@@ -527,14 +535,18 @@ export const visitFormulaCell = (
       for (const areaRange of areaRanges) {
         const { xRange, yRange } = areaRange
 
-        for (let rowIndex = yRange.start; rowIndex <= yRange.end; rowIndex++) {
+        for (
+          let rowIndex = yRange.start;
+          rowIndex <= yRange.end;
+          rowIndex += 1
+        ) {
           const row = refSheet[rowIndex]
           if (!visitedSheet[rowIndex]) visitedSheet[rowIndex] = new Set()
 
           for (
             let columnIndex = xRange.start;
             columnIndex <= xRange.end;
-            columnIndex++
+            columnIndex += 1
           ) {
             const position = { x: +columnIndex, y: +rowIndex }
 
