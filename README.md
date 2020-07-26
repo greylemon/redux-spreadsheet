@@ -116,32 +116,3 @@ const SomeComponent = () => {
 | [fast-formula-parser](https://github.com/LesterLyu/fast-formula-parser)                              | used to compute formula cells in excel format                                                                                |
 | [react-window](https://github.com/bvaughn/react-window)                                              | React components for efficiently rendering large lists and tabular data                                                      |
 | [undox](https://github.com/greylemon/undox)                                                          | Fork of [JannieBeck](https://github.com/JannicBeck/undox) with ignore history                                                |
-
-## Issues
-
-### Editable cell
-
-#### Issue
-
-Block style doesn't apply font styles
-
-#### Requirements
-
-- Text must expand until another text is present or text reaches the end of the sheet
-- Resolve cell block style and cell font style
-
-#### Potential Solution 1
-
-Split editable cell into:
-
-- Block style
-- Content with font style and white background? (how to resolve background from white background?)
-- Cell with default grid dimension
-
-The layering of the cells are in the order from bottom to top:
-
-- Block style so background doesn't block text
-- Content
-- Cell is at the top so that mouse operations are still working
-
-?Use selector to determine layering of content. When content is present, increment layering z-index.
