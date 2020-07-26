@@ -5,6 +5,7 @@ import {
   ISheet,
   ICell,
   IArea,
+  IStyles,
 } from '../../@types/state'
 
 // //////////////////////////////////////////////////////////////
@@ -28,6 +29,14 @@ export const nSelectActiveCell = (state: IExcelState): ICell | undefined => {
   const { x, y } = state.activeCellPosition
 
   return data[y] && data[y][x] ? data[y][x] : undefined
+}
+
+export const nSelectActiveCellStyle = (
+  state: IExcelState
+): IStyles | undefined => {
+  const activeCell = nSelectActiveCell(state)
+
+  return activeCell ? activeCell.style : undefined
 }
 
 export const nSelectMergeCell = (state: IExcelState): IArea | undefined => {

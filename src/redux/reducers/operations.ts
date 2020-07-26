@@ -4,6 +4,7 @@ import {
   nSelectMergeCell,
   nSelectActiveSheetData,
   nSelectActiveCell,
+  nSelectActiveCellStyle,
 } from '../tools/selectors'
 import {
   checkIsAreaEqualPosition,
@@ -56,8 +57,10 @@ export const MERGE_AREA = (state: IExcelState): IExcelState => {
         columnIndex <= xRange.end;
         columnIndex += 1
       ) {
-        if (rowIndex !== yRange.start || columnIndex !== xRange.start)
-          delete data[rowIndex][columnIndex]
+        if (rowIndex !== yRange.start || columnIndex !== xRange.start) {
+          delete data[rowIndex][columnIndex].type
+          delete data[rowIndex][columnIndex].merged
+        }
       }
     }
 
@@ -66,6 +69,7 @@ export const MERGE_AREA = (state: IExcelState): IExcelState => {
     // Expand merge area
     const inactiveSelectionArea = state.inactiveSelectionAreas[0]
     const mergedArea: IArea = getOrderedAreaFromArea(inactiveSelectionArea)
+    const blockStyle = nSelectActiveCellStyle(state)
 
     for (
       let rowIndex = mergedArea.start.y;
@@ -86,6 +90,8 @@ export const MERGE_AREA = (state: IExcelState): IExcelState => {
             type: TYPE_MERGE,
             merged: mergedArea,
           }
+
+        if (blockStyle) data[rowIndex][columnIndex].style = blockStyle
       }
     }
 
