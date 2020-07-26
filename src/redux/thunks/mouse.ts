@@ -102,8 +102,8 @@ export const THUNK_MOUSE_MOVE = (mousePosition: IPosition): IAppThunk => (
       boundedPosition.x,
       boundedPosition.y
     )
-    const { id } = element
-    const [type, address] = id.split('=')
+    const { id: elementId } = element
+    const [type, address] = elementId.split('=')
 
     let scopedPosition: IPosition
 
@@ -135,8 +135,8 @@ export const THUNK_MOUSE_MOVE = (mousePosition: IPosition): IAppThunk => (
         )
 
         if (cellElement) {
-          const { id } = cellElement
-          const [, cellAddress] = id.split('=')
+          const { id: cellId } = cellElement
+          const [, cellAddress] = cellId.split('=')
           scopedPosition = JSON.parse(cellAddress)
         }
         break

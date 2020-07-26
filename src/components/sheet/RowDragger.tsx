@@ -19,23 +19,23 @@ import {
 const RowDragger: FunctionComponent<ICommonPaneProps> = ({ type }) => {
   const dispatch = useDispatch()
   const { style, isInCorrectPane } = useTypedSelector((state) => {
-    let style: CSSProperties = {}
-    let isInCorrectPane = false
+    let newStyle: CSSProperties = {}
+    let newIsInCorrectPane = false
 
     switch (type) {
       case 'BOTTOM_LEFT':
-        isInCorrectPane = selectIsDragRowOffsetInInBottomLeftPane(state)
-        style = selectRowDraggerBottomLeftStyle(state)
+        newIsInCorrectPane = selectIsDragRowOffsetInInBottomLeftPane(state)
+        newStyle = selectRowDraggerBottomLeftStyle(state)
         break
       case 'TOP_LEFT':
-        isInCorrectPane = selectIsDragRowOffsetInTopLeftPane(state)
-        style = selectRowDraggerStyle(state)
+        newIsInCorrectPane = selectIsDragRowOffsetInTopLeftPane(state)
+        newStyle = selectRowDraggerStyle(state)
         break
       default:
         break
     }
 
-    return { style, isInCorrectPane }
+    return { style: newStyle, isInCorrectPane: newIsInCorrectPane }
   }, shallowEqual)
 
   const handleMouseDown = useCallback(

@@ -14,21 +14,21 @@ const ColumnDragger: FunctionComponent<ICommonPaneProps> = ({ type }) => {
   const dispatch = useDispatch()
 
   const { style, isInCorrectPane } = useTypedSelector((state) => {
-    const style = selectColumnDraggerStyle(state)
-    let isInCorrectPane = false
+    const newStyle = selectColumnDraggerStyle(state)
+    let newIsInCorrectPane = false
 
     switch (type) {
       case 'TOP_LEFT':
-        isInCorrectPane = selectIsDragColumnOffsetInTopLeftPane(state)
+        newIsInCorrectPane = selectIsDragColumnOffsetInTopLeftPane(state)
         break
       case 'TOP_RIGHT':
-        isInCorrectPane = selectIsDragColumnOffsetInInTopRightPane(state)
+        newIsInCorrectPane = selectIsDragColumnOffsetInInTopRightPane(state)
         break
       default:
         break
     }
 
-    return { style, isInCorrectPane }
+    return { style: newStyle, isInCorrectPane: newIsInCorrectPane }
   }, shallowEqual)
 
   const handleMouseDown = useCallback(

@@ -13,26 +13,26 @@ const InactiveSelectionAreas: FunctionComponent<ICommonPaneProps> = ({
   type,
 }) => {
   const inactiveSelectionAreasStyle = useTypedSelector((state) => {
-    let inactiveSelectionAreasStyle: CSSProperties[]
+    let newInactiveSelectionAreasStyle: CSSProperties[]
 
     switch (type) {
       case 'BOTTOM_LEFT':
-        inactiveSelectionAreasStyle = selectInactiveSelectionAreasBottomLeftStyle(
+        newInactiveSelectionAreasStyle = selectInactiveSelectionAreasBottomLeftStyle(
           state
         )
         break
       case 'BOTTOM_RIGHT':
-        inactiveSelectionAreasStyle = selectInactiveSelectionAreasBottomRightStyle(
+        newInactiveSelectionAreasStyle = selectInactiveSelectionAreasBottomRightStyle(
           state
         )
         break
       case 'TOP_LEFT':
-        inactiveSelectionAreasStyle = selectInactiveSelectionAreasTopLeftStyle(
+        newInactiveSelectionAreasStyle = selectInactiveSelectionAreasTopLeftStyle(
           state
         )
         break
       case 'TOP_RIGHT':
-        inactiveSelectionAreasStyle = selectInactiveSelectionAreasTopRightStyle(
+        newInactiveSelectionAreasStyle = selectInactiveSelectionAreasTopRightStyle(
           state
         )
         break
@@ -40,7 +40,7 @@ const InactiveSelectionAreas: FunctionComponent<ICommonPaneProps> = ({
         break
     }
 
-    return inactiveSelectionAreasStyle
+    return newInactiveSelectionAreasStyle
   }, shallowEqual)
 
   return (

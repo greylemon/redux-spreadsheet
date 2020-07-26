@@ -231,20 +231,20 @@ const computeDependents = (
   ) {
     const sheetDependents = independents[sheetName][position.y][position.x]
 
-    Object.keys(sheetDependents).forEach((sheetName) => {
-      const sheetDependent = sheetDependents[sheetName]
+    Object.keys(sheetDependents).forEach((dependentSheetName) => {
+      const sheetDependent = sheetDependents[dependentSheetName]
 
-      if (!visited[sheetName]) visited[sheetName] = {}
+      if (!visited[dependentSheetName]) visited[dependentSheetName] = {}
 
       Object.keys(sheetDependent).forEach((rowIndex) => {
         const rowDependents = sheetDependent[rowIndex]
-        if (!visited[sheetName][rowIndex])
-          visited[sheetName][rowIndex] = new Set()
+        if (!visited[dependentSheetName][rowIndex])
+          visited[dependentSheetName][rowIndex] = new Set()
 
         Object.keys(rowDependents).forEach((columnIndex) => {
           queue.enqueue({
             position: { x: +columnIndex, y: +rowIndex },
-            sheetName,
+            sheetName: dependentSheetName,
           })
         })
       })
@@ -252,39 +252,43 @@ const computeDependents = (
   }
 
   while (!queue.isEmpty()) {
-    const { sheetName, position } = queue.dequeue()
+    const {
+      sheetName: poppedSheetName,
+      position: poppedPosition,
+    } = queue.dequeue()
 
     if (
-      !visited[sheetName] ||
-      !visited[sheetName][position.y] ||
-      !visited[sheetName][position.y].has(+position.x)
+      !visited[poppedSheetName] ||
+      !visited[poppedSheetName][poppedPosition.y] ||
+      !visited[poppedSheetName][poppedPosition.y].has(+poppedPosition.x)
     ) {
-      visited[sheetName][position.y].add(position.x)
-      assignResult(parser, sheetsMap, sheetName, position)
+      visited[poppedSheetName][poppedPosition.y].add(poppedPosition.x)
+      assignResult(parser, sheetsMap, poppedSheetName, poppedPosition)
     }
 
     if (
-      independents[sheetName] &&
-      independents[sheetName][position.y] &&
-      independents[sheetName][position.y][position.x]
+      independents[poppedSheetName] &&
+      independents[poppedSheetName][poppedPosition.y] &&
+      independents[poppedSheetName][poppedPosition.y][poppedPosition.x]
     ) {
-      const sheetDependents = independents[sheetName][position.y][position.x]
+      const sheetDependents =
+        independents[poppedSheetName][poppedPosition.y][poppedPosition.x]
 
-      Object.keys(sheetDependents).forEach((sheetName) => {
-        const sheetDependent = sheetDependents[sheetName]
+      Object.keys(sheetDependents).forEach((dependentSheetName) => {
+        const sheetDependent = sheetDependents[dependentSheetName]
 
-        if (!visited[sheetName]) visited[sheetName] = {}
+        if (!visited[dependentSheetName]) visited[dependentSheetName] = {}
 
         Object.keys(sheetDependent).forEach((rowIndex) => {
           const rowDependents = sheetDependent[rowIndex]
-          if (!visited[sheetName][rowIndex])
-            visited[sheetName][rowIndex] = new Set()
+          if (!visited[dependentSheetName][rowIndex])
+            visited[dependentSheetName][rowIndex] = new Set()
 
           Object.keys(rowDependents).forEach((columnIndex) => {
-            if (!visited[sheetName][rowIndex].has(+columnIndex)) {
+            if (!visited[dependentSheetName][rowIndex].has(+columnIndex)) {
               queue.enqueue({
                 position: { x: +columnIndex, y: +rowIndex },
-                sheetName,
+                sheetName: dependentSheetName,
               })
             }
           })
@@ -489,7 +493,7 @@ export const visitFormulaCell = (
       if (!visited[refSheetName]) visited[refSheetName] = {}
 
       const { areaRanges, positions } = cellRefMap[refSheetName]
-      const visitedSheet = visited[refSheetName]
+      const refVisitedSheet = visited[refSheetName]
 
       if (!formulaIndependents[refSheetName])
         formulaIndependents[refSheetName] = {}
@@ -502,9 +506,9 @@ export const visitFormulaCell = (
       positions.forEach((position) => {
         const { x, y } = position
 
-        if (!visitedSheet[y]) visitedSheet[y] = new Set()
-        if (!visitedSheet[y].has(x)) {
-          visitedSheet[y].add(x)
+        if (!refVisitedSheet[y]) refVisitedSheet[y] = new Set()
+        if (!refVisitedSheet[y].has(x)) {
+          refVisitedSheet[y].add(x)
 
           if (refSheet[y] && refSheet[y][x]) {
             const cell = refSheet[y][x]
@@ -540,7 +544,7 @@ export const visitFormulaCell = (
           rowIndex += 1
         ) {
           const row = refSheet[rowIndex]
-          if (!visitedSheet[rowIndex]) visitedSheet[rowIndex] = new Set()
+          if (!refVisitedSheet[rowIndex]) refVisitedSheet[rowIndex] = new Set()
 
           for (
             let columnIndex = xRange.start;
@@ -549,8 +553,8 @@ export const visitFormulaCell = (
           ) {
             const position = { x: +columnIndex, y: +rowIndex }
 
-            if (!visitedSheet[rowIndex].has(columnIndex)) {
-              visitedSheet[rowIndex].add(columnIndex)
+            if (!refVisitedSheet[rowIndex].has(columnIndex)) {
+              refVisitedSheet[rowIndex].add(columnIndex)
 
               if (refSheet[rowIndex] && refSheet[rowIndex][columnIndex]) {
                 const cell = row[columnIndex]

@@ -43,11 +43,10 @@ export const MERGE_AREA = (state: IExcelState): IExcelState => {
   )
     return state
 
-  const mergedArea = nSelectMergeCell(state)
-
   const data = nSelectActiveSheetData(state)
 
   if (state.inactiveSelectionAreas.length === 0) {
+    const mergedArea = nSelectMergeCell(state)
     // Colapse merge area
     const { xRange, yRange } = getAreaRanges(mergedArea)
 
@@ -66,7 +65,6 @@ export const MERGE_AREA = (state: IExcelState): IExcelState => {
   } else {
     // Expand merge area
     const inactiveSelectionArea = state.inactiveSelectionAreas[0]
-    const data = nSelectActiveSheetData(state)
     const mergedArea: IArea = getOrderedAreaFromArea(inactiveSelectionArea)
 
     for (

@@ -13,13 +13,16 @@ const FormulaBar: FunctionComponent = () => {
   )
 
   const handleChange = useCallback(
-    (editorState) =>
-      dispatch(ExcelActions.CELL_EDITOR_STATE_UPDATE(editorState)),
+    (newEditorState) =>
+      dispatch(ExcelActions.CELL_EDITOR_STATE_UPDATE(newEditorState)),
     [dispatch]
   )
 
-  const handleKeyCommand = (command: string, editorState: EditorState) => {
-    const newState = RichUtils.handleKeyCommand(editorState, command)
+  const handleKeyCommand = (
+    command: string,
+    currentEditorState: EditorState
+  ) => {
+    const newState = RichUtils.handleKeyCommand(currentEditorState, command)
 
     if (newState) {
       handleChange(newState)

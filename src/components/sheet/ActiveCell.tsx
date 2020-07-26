@@ -39,14 +39,14 @@ const EditorCell: FunctionComponent<IEditorCellProps> = ({ style }) => {
   )
 
   const handleChange = useCallback(
-    (editorState) =>
-      dispatch(ExcelActions.CELL_EDITOR_STATE_UPDATE(editorState)),
+    (newEditorState) =>
+      dispatch(ExcelActions.CELL_EDITOR_STATE_UPDATE(newEditorState)),
     [dispatch]
   )
 
   const handleKeyCommand = useCallback(
-    (command: string, editorState: EditorState): DraftHandleValue => {
-      const newState = RichUtils.handleKeyCommand(editorState, command)
+    (command: string, currentEditorState: EditorState): DraftHandleValue => {
+      const newState = RichUtils.handleKeyCommand(currentEditorState, command)
 
       if (newState) {
         handleChange(newState)
@@ -105,25 +105,25 @@ const NormalActiveCell = ({ style }: INormalActiveCellProps) => {
 
 const ActiveCell: FunctionComponent<ICommonPaneProps> = ({ type }) => {
   const { isEditMode, style, isInCorrectPane } = useTypedSelector((state) => {
-    let style: CSSProperties
-    let isInCorrectPane: boolean
+    let newStyle: CSSProperties
+    let newIsInCorrectPane: boolean
 
     switch (type) {
       case 'BOTTOM_LEFT':
-        style = selectActiveCellAreaBottomLeftStyle(state)
-        isInCorrectPane = selectIsActiveCellInBottomLeftPane(state)
+        newStyle = selectActiveCellAreaBottomLeftStyle(state)
+        newIsInCorrectPane = selectIsActiveCellInBottomLeftPane(state)
         break
       case 'BOTTOM_RIGHT':
-        style = selectActiveCellAreaBottomRightStyle(state)
-        isInCorrectPane = selectIsActiveCellInBottomRightPane(state)
+        newStyle = selectActiveCellAreaBottomRightStyle(state)
+        newIsInCorrectPane = selectIsActiveCellInBottomRightPane(state)
         break
       case 'TOP_LEFT':
-        style = selectActiveCellAreaTopLeftStyle(state)
-        isInCorrectPane = selectIsActiveCellInTopLeftPane(state)
+        newStyle = selectActiveCellAreaTopLeftStyle(state)
+        newIsInCorrectPane = selectIsActiveCellInTopLeftPane(state)
         break
       case 'TOP_RIGHT':
-        style = selectActiveCellAreaTopRightStyle(state)
-        isInCorrectPane = selectIsActiveCellInTopRightPane(state)
+        newStyle = selectActiveCellAreaTopRightStyle(state)
+        newIsInCorrectPane = selectIsActiveCellInTopRightPane(state)
         break
       default:
         break
@@ -131,8 +131,8 @@ const ActiveCell: FunctionComponent<ICommonPaneProps> = ({ type }) => {
 
     return {
       isEditMode: selectIsEditMode(state),
-      style,
-      isInCorrectPane,
+      style: newStyle,
+      isInCorrectPane: newIsInCorrectPane,
     }
   }, shallowEqual)
 

@@ -159,16 +159,16 @@ const EditableCell: FunctionComponent<ICellProps> = ({
         component = <RichTextCellValue value={value as IRichTextValue} />
         break
       case TYPE_FORMULA: {
-        let value: undefined | string
+        let formulaStringValue: undefined | string
 
         try {
           const formulaValue = sheetResults[rowIndex][columnIndex]
-          value = formulaValue.toString()
+          formulaStringValue = formulaValue.toString()
         } catch (error) {
-          value = ''
+          formulaStringValue = ''
         }
 
-        component = <NormalCellValue value={value} />
+        component = <NormalCellValue value={formulaStringValue} />
         break
       }
       case TYPE_MERGE:

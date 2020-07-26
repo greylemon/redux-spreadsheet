@@ -20,34 +20,34 @@ const SelectionArea: FunctionComponent<ICommonPaneProps> = ({ type }) => {
     selectionAreaStyle,
     isSelectionMode,
   } = useTypedSelector((state) => {
-    let selectionAreaStyle: CSSProperties
-    let isInCorrectPane: boolean
+    let newSelectionAreaStyle: CSSProperties
+    let newIsInCorrectPane: boolean
 
     switch (type) {
       case 'BOTTOM_LEFT':
-        selectionAreaStyle = selectSelectionAreaBottomLeftStyle(state)
-        isInCorrectPane = selectIsAreaInBottomLeftPane(state)
+        newSelectionAreaStyle = selectSelectionAreaBottomLeftStyle(state)
+        newIsInCorrectPane = selectIsAreaInBottomLeftPane(state)
         break
       case 'BOTTOM_RIGHT':
-        selectionAreaStyle = selectSelectionAreaBottomRightStyle(state)
-        isInCorrectPane = selectIsAreaInBottomRightPane(state)
+        newSelectionAreaStyle = selectSelectionAreaBottomRightStyle(state)
+        newIsInCorrectPane = selectIsAreaInBottomRightPane(state)
         break
       case 'TOP_LEFT':
-        selectionAreaStyle = selectSelectionAreaTopLeftStyle(state)
-        isInCorrectPane = selectIsAreaInTopLeftPane(state)
+        newSelectionAreaStyle = selectSelectionAreaTopLeftStyle(state)
+        newIsInCorrectPane = selectIsAreaInTopLeftPane(state)
         break
       case 'TOP_RIGHT':
-        selectionAreaStyle = selectSelectionAreaTopRightStyle(state)
-        isInCorrectPane = selectIsAreaInTopRightPane(state)
+        newSelectionAreaStyle = selectSelectionAreaTopRightStyle(state)
+        newIsInCorrectPane = selectIsAreaInTopRightPane(state)
         break
       default:
         break
     }
 
     return {
-      isInCorrectPane,
+      isInCorrectPane: newIsInCorrectPane,
       isSelectionMode: selectIsSelectionMode(state),
-      selectionAreaStyle,
+      selectionAreaStyle: newSelectionAreaStyle,
     }
   }, shallowEqual)
 
