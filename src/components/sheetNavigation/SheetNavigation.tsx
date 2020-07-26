@@ -46,7 +46,7 @@ import STYLE_SHEET_NAVIGATION, {
   STYLE_SHEET_NAVIGATION_OPTION,
   STYLE_SHEET_NAVIGATION_SHEET_SHEETNAME,
 } from './style'
-import { THUNK_RENAME_SHEET } from '../../redux/thunks/sheet'
+import { THUNK_RENAME_SHEET, THUNK_ADD_SHEET } from '../../redux/thunks/sheet'
 
 const SheetOptionButton: FunctionComponent<{
   isActive: boolean
@@ -328,7 +328,7 @@ const SheetAdder: FunctionComponent = () => {
   const dispatch = useDispatch()
 
   const handleAddSheet = useCallback(() => {
-    dispatch(ExcelActions.ADD_SHEET())
+    dispatch(THUNK_ADD_SHEET())
   }, [dispatch])
 
   return (

@@ -1,6 +1,5 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { IExcelState, ISheetName } from '../../@types/state'
-import { generateNewSheetName } from '../../tools/sheet'
 import { createSheetState } from '../tools/state'
 import { changeSheetInPlace } from '../tools/sheet'
 
@@ -35,8 +34,11 @@ export const CHANGE_SHEET = (
   return state
 }
 
-export const ADD_SHEET = (state: IExcelState): IExcelState => {
-  const newSheetName = generateNewSheetName(state.sheetNames)
+export const ADD_SHEET = (
+  state: IExcelState,
+  action: PayloadAction<ISheetName>
+): IExcelState => {
+  const newSheetName = action.payload
 
   state.sheetNames.push(newSheetName)
 

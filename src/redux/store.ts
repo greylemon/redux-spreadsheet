@@ -37,6 +37,7 @@ export const createActionIgnoreMap = (): { [key: string]: boolean } => {
   // TODO : Ignore certain actions here
   ignoreActionMap[ExcelActions.UPDATE_STATE.type] = false
   ignoreActionMap[ExcelActions.CHANGE_SHEET.type] = false
+  ignoreActionMap[ExcelActions.ADD_SHEET.type] = false
   ignoreActionMap[ExcelActions.SAVE_ACTIVE_CELL.type] = false
   ignoreActionMap[ExcelActions.SET_BOLD.type] = false
   ignoreActionMap[ExcelActions.SET_ITALIC.type] = false
