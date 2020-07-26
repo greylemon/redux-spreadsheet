@@ -160,7 +160,7 @@ export const checkIsDragRowOffsetInTopLeftPane: ICheckIsDragRowOffsetInCorrectPa
     rowOffsets[freezeRowCount] + getRowHeight(freezeRowCount)
 
   return (
-    (freezeColumnCount && freezeColumnCount && freezeRowLength > offset) ||
+    (freezeColumnCount && freezeRowCount && freezeRowLength > offset) ||
     (offset > freezeRowLength && offset - scrollOffsetY <= freezeRowLength)
   )
 }

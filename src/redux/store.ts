@@ -8,6 +8,7 @@ import * as EVENT_REDUCERS from './reducers/events'
 import * as SHEET_REDUCERS from './reducers/sheet'
 import * as OPERATION_REDUCERS from './reducers/operations'
 import * as STYLE_REDUCERS from './reducers/style'
+import * as COMMON_REDUCERS from './reducers/common'
 
 export const initialExcelState = createInitialExcelState()
 
@@ -21,6 +22,7 @@ export const ExcelStore = createSlice({
     ...EVENT_REDUCERS,
     ...OPERATION_REDUCERS,
     ...STYLE_REDUCERS,
+    ...COMMON_REDUCERS,
   },
 })
 

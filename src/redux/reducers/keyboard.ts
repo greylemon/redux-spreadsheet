@@ -1,12 +1,6 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { EditorState } from 'draft-js'
-import {
-  IExcelState,
-  IEditorState,
-  IInactiveSelectionAreas,
-  ICell,
-  IPosition,
-} from '../../@types/state'
+import { IExcelState, IEditorState } from '../../@types/state'
 import {
   nSelectMergeCell,
   nSelectActiveSheet,
@@ -20,7 +14,6 @@ import {
 } from '../../tools/cell'
 import { getCellMapSetFromState } from '../tools/area'
 import { updateReferenceCell } from '../../tools/formula'
-import { updateActiveCellRef } from '../../tools/state'
 import { IGeneralActionPayload } from '../../@types/history'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
@@ -165,32 +158,6 @@ export const CELL_KEY_DELETE = (
       })
     }
   })
-
-  return state
-}
-
-export const SAVE_ACTIVE_CELL = (
-  state: IExcelState,
-  action: PayloadAction<{
-    cell: ICell
-    inactiveSelectionAreas: IInactiveSelectionAreas
-    activeCellPosition: IPosition
-  }>
-): IExcelState => {
-  const { activeCellPosition, cell, inactiveSelectionAreas } = action.payload
-  state.activeCellPosition = activeCellPosition
-  state.inactiveSelectionAreas = inactiveSelectionAreas
-  state.isEditMode = false
-
-  const activeSheet = nSelectActiveSheet(state)
-  const { x, y } = activeCellPosition
-
-  if (!activeSheet.data[y]) activeSheet.data[y] = {}
-  if (!activeSheet.data[y][x]) activeSheet.data[y][x] = {}
-
-  activeSheet.data[y][x] = cell
-
-  updateActiveCellRef(state)
 
   return state
 }
