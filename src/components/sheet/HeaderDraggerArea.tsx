@@ -9,6 +9,7 @@ import {
   THUNK_MOUSE_ENTER_DRAG_ROW,
   THUNK_MOUSE_ENTER_DRAG_COLUMN,
 } from '../../redux/thunks/mouse'
+import { ExcelActions } from '../../redux/store'
 
 const HeaderDraggerArea: FunctionComponent<{
   id: string
@@ -36,7 +37,29 @@ const HeaderDraggerArea: FunctionComponent<{
     [dispatch, type]
   )
 
-  return <div id={id} style={style} onMouseEnter={handleMouseEnter} />
+  const handleTouchStart = useCallback(() => {
+    switch (type) {
+      case 'column':
+        dispatch(THUNK_MOUSE_ENTER_DRAG_COLUMN(index))
+        dispatch(ExcelActions.COLUMN_DRAG_START())
+        break
+      case 'row':
+        dispatch(THUNK_MOUSE_ENTER_DRAG_ROW(index))
+        dispatch(ExcelActions.ROW_DRAG_START())
+        break
+      default:
+        break
+    }
+  }, [dispatch, type, index])
+
+  return (
+    <div
+      id={id}
+      style={style}
+      onMouseEnter={handleMouseEnter}
+      onTouchStart={handleTouchStart}
+    />
+  )
 }
 
 export default HeaderDraggerArea

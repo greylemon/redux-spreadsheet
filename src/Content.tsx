@@ -64,7 +64,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
 
   window.onmousemove = useCallback(
     (event: MouseEvent) => {
-      switch (event.buttons) {
+      switch (event.which) {
         case 1:
           dispatch(THUNK_MOUSE_MOVE({ x: event.clientX, y: event.clientY }))
           break
@@ -75,7 +75,19 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
     [dispatch]
   )
 
+  window.ontouchmove = useCallback(
+    (event: TouchEvent) => {
+      const { clientX, clientY } = event.touches[0]
+      dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }))
+    },
+    [dispatch]
+  )
+
   window.onmouseup = useCallback(() => {
+    dispatch(THUNK_MOUSE_UP())
+  }, [dispatch])
+
+  window.ontouchend = useCallback(() => {
     dispatch(THUNK_MOUSE_UP())
   }, [dispatch])
 
@@ -83,6 +95,8 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
     return () => {
       delete window.onmousedown
       delete window.onmouseup
+      delete window.ontouchmove
+      delete window.ontouchend
     }
   }, [])
 

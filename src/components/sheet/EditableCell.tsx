@@ -95,6 +95,10 @@ const EditableCell: FunctionComponent<ICellProps> = ({
     [dispatch]
   )
 
+  const handleTouchDown = useCallback(() => {
+    dispatch(THUNK_MOUSE_DOWN(position, false, false))
+  }, [dispatch])
+
   style = useMemo(
     (): CSSProperties =>
       merged && type !== TYPE_MERGE
@@ -182,7 +186,11 @@ const EditableCell: FunctionComponent<ICellProps> = ({
   ])
 
   return (
-    <div onMouseDown={handleMouseDown} onDoubleClick={handleDoubleClick}>
+    <div
+      onMouseDown={handleMouseDown}
+      onTouchStart={handleTouchDown}
+      onDoubleClick={handleDoubleClick}
+    >
       <span id={id} style={contentStyle} className="unselectable cell__content">
         {cellComponent}
       </span>
