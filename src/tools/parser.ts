@@ -12,7 +12,6 @@ import {
 } from 'exceljs'
 import uniqid from 'uniqid'
 import Color from 'color'
-import fs from 'fs'
 import cloneDeep from 'clone-deep'
 import {
   IRows,
@@ -57,7 +56,6 @@ import { initialExcelState } from '../redux/store'
 import { indexedColors, themes } from '../constants/colors'
 import { applyTintToColor } from './color'
 
-import { updateWorkbookReference } from './formula'
 import {
   setUnderlineStyle,
   setStrikethroughStyle,
@@ -429,7 +427,7 @@ export const getRowDataFromSheet = (
   }
 }
 
-const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
+export const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
   const sheetsMap: ISheetsMap = {}
 
   const sheetNames: ISheetNames = []
@@ -464,30 +462,3 @@ const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
     activeSheetName,
   }
 }
-
-export const convertRawExcelToState = async (
-  file: File | string
-): Promise<IExcelState> => {
-  const workbook = new Workbook()
-  let data: Workbook
-
-  if (file instanceof File) {
-    const arrayBuffer = await file.arrayBuffer()
-    data = await workbook.xlsx.load(arrayBuffer)
-  } else {
-    data = await workbook.xlsx.readFile(file)
-  }
-
-  return updateWorkbookReference(createStateFromWorkbook(data))
-}
-
-export const readFileFromPath = async (path: string): Promise<Buffer> =>
-  new Promise((resolve, reject) => {
-    fs.readFile(path, (error, data) => {
-      if (error) {
-        reject(error)
-      } else {
-        resolve(data)
-      }
-    })
-  })

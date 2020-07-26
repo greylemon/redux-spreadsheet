@@ -1,8 +1,5 @@
 import { mockStore, createRootMockStore } from '../mockStore'
-import {
-  convertRawExcelToState,
-  readFileFromPath,
-} from '../../../src/tools/parser'
+import { convertRawExcelToState, readFileFromPath } from '../../../src/tools/IO'
 import { selectData } from '../../../src/redux/selectors/activeSheet'
 import { createRootStoreFromExcelState } from '../../../src/redux/tools/state'
 
