@@ -1,6 +1,6 @@
 import { IPosition, IArea } from './state'
 
-export type IStyleActionPayload = {
+export type IGeneralActionPayload = {
   activeCellPosition: IPosition
   inactiveSelectionAreas: IArea[]
 }

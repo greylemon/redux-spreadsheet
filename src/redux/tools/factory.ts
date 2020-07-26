@@ -4,7 +4,7 @@ import { nSelectActiveSheetData } from './selectors'
 import { getCellMapSetFromState } from './area'
 import { ISetInlineStyleFn } from '../../@types/functions'
 import { TYPE_RICH_TEXT } from '../../constants/types'
-import { IStyleActionPayload } from '../../@types/history'
+import { IGeneralActionPayload } from '../../@types/history'
 
 export const setFontBlockFactoryStyle = (
   setInlineStyleFn: ISetInlineStyleFn
@@ -91,7 +91,7 @@ export const createFactoryReducerSetCellData = (
   setterFunction: (cell: ICell) => ICell
 ) => (
   state: IExcelState,
-  action: PayloadAction<IStyleActionPayload>
+  action: PayloadAction<IGeneralActionPayload>
 ): IExcelState => {
   const { activeCellPosition, inactiveSelectionAreas } = action.payload
   state.inactiveSelectionAreas = inactiveSelectionAreas
@@ -120,7 +120,7 @@ export const createFactoryReducerUnsetCellData = (
   unsetterFunction: (cell: ICell) => ICell
 ) => (
   state: IExcelState,
-  action: PayloadAction<IStyleActionPayload>
+  action: PayloadAction<IGeneralActionPayload>
 ): IExcelState => {
   const { activeCellPosition, inactiveSelectionAreas } = action.payload
   state.inactiveSelectionAreas = inactiveSelectionAreas

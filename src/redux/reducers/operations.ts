@@ -1,18 +1,15 @@
+import { PayloadAction } from '@reduxjs/toolkit'
 import { IExcelState, IArea } from '../../@types/state'
 import {
   nSelectActiveSheet,
   nSelectMergeCell,
   nSelectActiveSheetData,
-  nSelectActiveCell,
   nSelectActiveCellStyle,
 } from '../tools/selectors'
-import {
-  checkIsAreaEqualPosition,
-  getAreaRanges,
-  getOrderedAreaFromArea,
-} from '../../tools/area'
+import { getAreaRanges, getOrderedAreaFromArea } from '../../tools/area'
 
 import { TYPE_MERGE, TYPE_TEXT } from '../../constants/types'
+import { IGeneralActionPayload } from '../../@types/history'
 
 export const SELECT_ALL = (state: IExcelState): IExcelState => {
   if (state.isEditMode) return state
@@ -31,22 +28,16 @@ export const SELECT_ALL = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const MERGE_AREA = (state: IExcelState): IExcelState => {
-  const activeCell = nSelectActiveCell(state)
-  if (
-    (state.inactiveSelectionAreas.length !== 1 ||
-      state.isSelectionMode ||
-      checkIsAreaEqualPosition(state.inactiveSelectionAreas[0])) &&
-    (!activeCell ||
-      state.inactiveSelectionAreas.length !== 0 ||
-      activeCell.type === TYPE_MERGE ||
-      activeCell.merged === undefined)
-  )
-    return state
-
+export const MERGE_AREA = (
+  state: IExcelState,
+  action: PayloadAction<IGeneralActionPayload>
+): IExcelState => {
   const data = nSelectActiveSheetData(state)
+  const { activeCellPosition, inactiveSelectionAreas } = action.payload
 
-  if (state.inactiveSelectionAreas.length === 0) {
+  state.activeCellPosition = activeCellPosition
+
+  if (inactiveSelectionAreas.length === 0) {
     const mergedArea = nSelectMergeCell(state)
     // Colapse merge area
     const { xRange, yRange } = getAreaRanges(mergedArea)
@@ -67,7 +58,7 @@ export const MERGE_AREA = (state: IExcelState): IExcelState => {
     delete data[yRange.start][xRange.start].merged
   } else {
     // Expand merge area
-    const inactiveSelectionArea = state.inactiveSelectionAreas[0]
+    const inactiveSelectionArea = inactiveSelectionAreas[0]
     const mergedArea: IArea = getOrderedAreaFromArea(inactiveSelectionArea)
     const blockStyle = nSelectActiveCellStyle(state)
 

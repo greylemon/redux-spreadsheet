@@ -5,15 +5,15 @@ import {
   selectEditorState,
 } from '../selectors/base'
 import IRootStore from '../../@types/store'
-import { IStyleActionPayload } from '../../@types/history'
+import { IGeneralActionPayload } from '../../@types/history'
 import { ExcelActions } from '../store'
 import { selectCell } from '../selectors/activeSheet'
 import { createValueFromCellAndEditorState } from '../../tools/text'
 import { isCellEqualOtherCell } from './compare'
 
-export const getStyleActionPayload = (
+export const getGeneralActionPayload = (
   state: IRootStore
-): IStyleActionPayload => ({
+): IGeneralActionPayload => ({
   activeCellPosition: selectActiveCellPosition(state),
   inactiveSelectionAreas: selectInactiveSelectionAreas(state),
 })

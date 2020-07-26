@@ -36,7 +36,7 @@ import {
 } from '../../tools/dimensions'
 import { updateActiveCellValueInPlace } from '../tools/cell'
 import { TYPE_TEXT } from '../../constants/types'
-import { IStyleActionPayload } from '../../@types/history'
+import { IGeneralActionPayload } from '../../@types/history'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -311,7 +311,7 @@ export const COLUMN_DRAG_START = (state: IExcelState): IExcelState => {
 export const ROW_DRAG_END = (
   state: IExcelState,
   action: PayloadAction<
-    { height: IRowHeight; dragRowIndex: IDragRowIndex } & IStyleActionPayload
+    { height: IRowHeight; dragRowIndex: IDragRowIndex } & IGeneralActionPayload
   >
 ): IExcelState => {
   const {
@@ -341,7 +341,7 @@ export const COLUMN_DRAG_END = (
     {
       dragColumnIndex: IDragColumnIndex
       width: IColumnWidth
-    } & IStyleActionPayload
+    } & IGeneralActionPayload
   >
 ): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)

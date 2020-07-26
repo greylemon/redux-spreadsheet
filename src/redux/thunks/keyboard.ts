@@ -8,7 +8,10 @@ import {
   selectIsStrikeThrough,
   selectIsItalic,
 } from '../selectors/style'
-import { getStyleActionPayload, dispatchSaveActiveCell } from '../tools/history'
+import {
+  getGeneralActionPayload,
+  dispatchSaveActiveCell,
+} from '../tools/history'
 
 export const THUNK_KEY_ENTER = (
   gridRef: MutableRefObject<HTMLDivElement>
@@ -29,7 +32,7 @@ export const THUNK_KEY_ENTER = (
 export const THUNK_TOGGLE_BOLD = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
   const isBold = selectIsBold(state)
-  const payload = getStyleActionPayload(getState())
+  const payload = getGeneralActionPayload(getState())
 
   dispatch(
     isBold ? ExcelActions.UNSET_BOLD(payload) : ExcelActions.SET_BOLD(payload)
@@ -39,7 +42,7 @@ export const THUNK_TOGGLE_BOLD = (): IAppThunk => (dispatch, getState) => {
 export const THUNK_TOGGLE_ITALIC = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
   const isItalic = selectIsItalic(state)
-  const payload = getStyleActionPayload(getState())
+  const payload = getGeneralActionPayload(getState())
 
   dispatch(
     isItalic
@@ -54,7 +57,7 @@ export const THUNK_TOGGLE_STRIKETHROUGH = (): IAppThunk => (
 ) => {
   const state = getState()
   const isStrikethrough = selectIsStrikeThrough(state)
-  const payload = getStyleActionPayload(getState())
+  const payload = getGeneralActionPayload(getState())
 
   dispatch(
     isStrikethrough
@@ -66,7 +69,7 @@ export const THUNK_TOGGLE_STRIKETHROUGH = (): IAppThunk => (
 export const THUNK_TOGGLE_UNDERLINE = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
   const isUnderline = selectIsUnderline(state)
-  const payload = getStyleActionPayload(getState())
+  const payload = getGeneralActionPayload(getState())
 
   dispatch(
     isUnderline

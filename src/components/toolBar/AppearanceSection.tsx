@@ -4,7 +4,7 @@ import { shallowEqual, useDispatch } from 'react-redux'
 import { SmallLabelButton } from '../misc/buttons'
 import { useTypedSelector } from '../../redux/redux'
 import { selectIsMergable } from '../../redux/selectors/style'
-import { ExcelActions } from '../../redux/store'
+import { THUNK_MERGE_AREA } from '../../redux/thunks/operations'
 
 const MergeAction: FunctionComponent = () => {
   const dispatch = useDispatch()
@@ -14,7 +14,7 @@ const MergeAction: FunctionComponent = () => {
   )
 
   const handleClick = useCallback(() => {
-    dispatch(ExcelActions.MERGE_AREA())
+    dispatch(THUNK_MERGE_AREA())
   }, [dispatch])
 
   return (
