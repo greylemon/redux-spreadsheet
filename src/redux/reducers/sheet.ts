@@ -115,9 +115,12 @@ export const RESET_SHEET_NAME_EDIT = (state: IExcelState): IExcelState => {
 }
 
 // TODO : Update reference sheetname
-export const CHANGE_ACTIVE_SHEET_NAME = (state: IExcelState): IExcelState => {
+export const CHANGE_ACTIVE_SHEET_NAME = (
+  state: IExcelState,
+  action: PayloadAction<ISheetName>
+): IExcelState => {
   const { activeSheetName } = state
-  const newActiveSheetName = state.sheetNameText
+  const newActiveSheetName = action.payload
   const { sheetNames } = state
 
   state.isSheetNameEdit = false

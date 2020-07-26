@@ -46,6 +46,7 @@ import STYLE_SHEET_NAVIGATION, {
   STYLE_SHEET_NAVIGATION_OPTION,
   STYLE_SHEET_NAVIGATION_SHEET_SHEETNAME,
 } from './style'
+import { THUNK_RENAME_SHEET } from '../../redux/thunks/sheet'
 
 const SheetOptionButton: FunctionComponent<{
   isActive: boolean
@@ -193,7 +194,7 @@ const SheetEditText: FunctionComponent = () => {
   )
 
   const handleChangeActiveSheetName = useCallback(() => {
-    dispatch(ExcelActions.CHANGE_ACTIVE_SHEET_NAME())
+    dispatch(THUNK_RENAME_SHEET())
   }, [dispatch])
 
   const handleKeyDown = useCallback(
