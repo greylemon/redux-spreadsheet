@@ -37,6 +37,11 @@ export const createActionIgnoreMap = (): { [key: string]: boolean } => {
   // TODO : Ignore certain actions here
   ignoreActionMap[ExcelActions.UPDATE_STATE.type] = false
   ignoreActionMap[ExcelActions.CHANGE_SHEET.type] = false
+  ignoreActionMap[ExcelActions.CELL_KEY_ENTER_EDIT_END.type] = false
+  // ignoreActionMap[ExcelActions.SET_BOLD.type] = false
+  // ignoreActionMap[ExcelActions.SET_ITALIC.type] = false
+  // ignoreActionMap[ExcelActions.SET_STRIKETHROUGH.type] = false
+  // ignoreActionMap[ExcelActions.SET_UNDERLINE.type] = false
 
   return ignoreActionMap
 }
