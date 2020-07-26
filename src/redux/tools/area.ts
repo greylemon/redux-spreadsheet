@@ -1,5 +1,5 @@
 import { IExcelState, IArea } from '../../@types/state'
-import { getCellMapSetFromAreas } from '../../tools'
+import { getCellMapSetFromAreas } from '../../tools/area'
 import { ICellMapSet } from '../../@types/objects'
 
 export const getCellMapSetFromState = (state: IExcelState): ICellMapSet => {

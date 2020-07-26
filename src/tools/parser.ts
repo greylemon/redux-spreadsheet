@@ -62,6 +62,7 @@ import {
   setItalicStyle,
   setBoldStyle,
 } from './style'
+import { convertStringPositionToPosition } from './conversion'
 
 const getFormattedColor = (
   color: Partial<ExcelColor> & {
@@ -318,30 +319,6 @@ export const getSheetDataFromSheet = (sheet: Worksheet): IRows => {
   })
 
   return data
-}
-
-// https://stackoverflow.com/questions/667802/what-is-the-algorithm-to-convert-an-excel-column-letter-into-its-number
-export const getColumnNumberFromColumnName = (name: string): IColumnIndex => {
-  let sum = 0
-
-  for (let i = 0; i < name.length; i++) {
-    sum *= 26
-    sum += name.charCodeAt(i) - ('A'.charCodeAt(0) - 1)
-  }
-
-  return sum
-}
-
-export const convertStringPositionToPosition = (
-  stringPosition: string
-): IPosition => {
-  const rowStartIndex = stringPosition.search(numberRegex)
-  const columnLetter = stringPosition.substring(0, rowStartIndex)
-
-  return {
-    x: getColumnNumberFromColumnName(columnLetter),
-    y: +stringPosition.substring(rowStartIndex, stringPosition.length),
-  }
 }
 
 const getBoundedPositionFromString = (stringPosition: string): IPosition => {

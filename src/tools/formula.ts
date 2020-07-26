@@ -11,11 +11,12 @@ import {
   ISheetsMap,
   ICell,
 } from '../@types/state'
-import { convertStringPositionToPosition } from './parser'
 import { sheetNameAdressRegex } from './regex'
-import { convertAddressRangeToRange } from './conversion'
+import {
+  convertAddressRangeToRange,
+  convertStringPositionToPosition,
+} from './conversion'
 import { TYPE_FORMULA, TYPE_NUMBER, TYPE_TEXT } from '../constants/types'
-import { nSelectActiveCell } from '../redux/tools/selectors'
 import { Queue } from './data_structures/queue'
 
 export const createFormulaParser = (sheetsMap: ISheetsMap): FormulaParser =>
@@ -288,20 +289,6 @@ const computeDependents = (
       }
     }
   }
-}
-
-export const updateActiveCellRef = (state: IExcelState): void => {
-  const focusedCell = nSelectActiveCell(state)
-  const focusedCellPosition = state.activeCellPosition
-  const focusedSheetName = state.activeSheetName
-
-  updateReferenceCell(
-    state,
-    {},
-    focusedCell,
-    focusedCellPosition,
-    focusedSheetName
-  )
 }
 
 export const updateReferenceCell = (

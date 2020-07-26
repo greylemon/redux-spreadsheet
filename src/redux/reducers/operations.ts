@@ -9,7 +9,7 @@ import {
   checkIsAreaEqualPosition,
   getAreaRanges,
   getOrderedAreaFromArea,
-} from '../../tools'
+} from '../../tools/area'
 
 import { TYPE_MERGE, TYPE_TEXT } from '../../constants/types'
 

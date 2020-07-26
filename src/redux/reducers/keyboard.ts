@@ -9,12 +9,12 @@ import {
 } from '../tools/selectors'
 import { TYPE_TEXT, TYPE_MERGE } from '../../constants/types'
 import {
-  updateReferenceCell,
   createEditorStateFromCell,
   getFontBlockEditorState,
-} from '../../tools'
+} from '../../tools/cell'
 import { updateActiveCellValueInPlace } from '../tools/cell'
 import { getCellMapSetFromState } from '../tools/area'
+import { updateReferenceCell } from '../../tools/formula'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state

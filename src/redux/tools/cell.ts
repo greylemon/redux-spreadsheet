@@ -1,5 +1,5 @@
 import { IExcelState } from '../../@types/state'
-import { updateActiveCellRef } from '../../tools/formula'
+import { updateActiveCellRef } from '../../tools/state'
 import { nSelectActiveSheet, nSelectActiveCell } from './selectors'
 import { createValueFromCellAndEditorState } from '../../tools/text'
 

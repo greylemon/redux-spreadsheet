@@ -1,7 +1,6 @@
-import { IColumnIndex, IAreaRange } from '../@types/state'
-import { columnNameRegex } from './regex'
+import { IColumnIndex, IAreaRange, IPosition } from '../@types/state'
+import { columnNameRegex, numberRegex } from './regex'
 import { isFloat } from './validation'
-import { convertStringPositionToPosition } from './parser'
 import { getAreaRanges } from './area'
 
 /**
@@ -55,4 +54,27 @@ export const convertAddressRangeToRange = (range: string): IAreaRange => {
     start: convertStringPositionToPosition(topLeftAdr),
     end: convertStringPositionToPosition(bottomRightAdr),
   })
+}
+
+export const convertStringPositionToPosition = (
+  stringPosition: string
+): IPosition => {
+  const rowStartIndex = stringPosition.search(numberRegex)
+  const columnLetter = stringPosition.substring(0, rowStartIndex)
+
+  return {
+    x: getColumnNumberFromColumnName(columnLetter),
+    y: +stringPosition.substring(rowStartIndex, stringPosition.length),
+  }
+}
+
+export const getColumnNumberFromColumnName = (name: string): IColumnIndex => {
+  let sum = 0
+
+  for (let i = 0; i < name.length; i++) {
+    sum *= 26
+    sum += name.charCodeAt(i) - ('A'.charCodeAt(0) - 1)
+  }
+
+  return sum
 }
