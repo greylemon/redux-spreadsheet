@@ -7,7 +7,6 @@ import React, {
 } from 'react'
 import { useDispatch } from 'react-redux'
 import { ICellProps } from '../../@types/components'
-import { ExcelActions } from '../../redux/store'
 import {
   IRichTextValue,
   IFragment,
@@ -27,6 +26,7 @@ import {
   STYLE_BLOCK_Z_INDEX,
   STYLE_CONTENT_Z_INDEX,
 } from '../../constants/styles'
+import { THUNK_MOUSE_DOWN } from '../../redux/thunks/mouse'
 
 const RichTextFragment: FunctionComponent<IFragment> = ({
   text: value,
@@ -90,15 +90,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
     (event: MouseEvent) => {
       const { ctrlKey, shiftKey, buttons } = event
 
-      if (buttons === 1) {
-        if (ctrlKey) {
-          dispatch(ExcelActions.CELL_MOUSE_DOWN_CTRL(position))
-        } else if (shiftKey) {
-          dispatch(ExcelActions.CELL_MOUSE_DOWN_SHIFT(position))
-        } else {
-          dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
-        }
-      }
+      if (buttons === 1) dispatch(THUNK_MOUSE_DOWN(position, shiftKey, ctrlKey))
     },
     [dispatch]
   )

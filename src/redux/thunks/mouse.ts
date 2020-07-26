@@ -11,6 +11,7 @@ import {
   selectDragColumnOffset,
   selectSelectionArea,
   selectIsSelectionMode,
+  selectIsEditMode,
 } from '../selectors/base'
 import { IPosition, IArea, IRowIndex, IColumnIndex } from '../../@types/state'
 import {
@@ -31,6 +32,7 @@ import {
   selectFreezeRowCount,
   selectFreezeColumnCount,
 } from '../selectors/activeSheet'
+import { dispatchSaveActiveCell } from '../tools/history'
 
 export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
@@ -212,4 +214,22 @@ export const THUNK_MOUSE_ENTER_DRAG_COLUMN = (
         columnOffsets[columnIndex] + columnWidthGetter(columnIndex) - 2,
     })
   )
+}
+
+export const THUNK_MOUSE_DOWN = (
+  position: IPosition,
+  shiftKey: boolean,
+  ctrlKey: boolean
+): IAppThunk => (dispatch, getState) => {
+  const state = getState()
+
+  if (selectIsEditMode(state)) dispatchSaveActiveCell(dispatch, getState())
+
+  if (ctrlKey) {
+    dispatch(ExcelActions.CELL_MOUSE_DOWN_CTRL(position))
+  } else if (shiftKey) {
+    dispatch(ExcelActions.CELL_MOUSE_DOWN_SHIFT(position))
+  } else {
+    dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
+  }
 }

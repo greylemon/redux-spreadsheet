@@ -164,7 +164,7 @@ export const CELL_KEY_DELETE = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_ENTER_EDIT_END = (
+export const SAVE_ACTIVE_CELL = (
   state: IExcelState,
   action: PayloadAction<{
     cell: ICell

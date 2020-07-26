@@ -1,12 +1,6 @@
 import { MutableRefObject } from 'react'
 import { IAppThunk } from '../../@types/store'
-import {
-  selectIsEditMode,
-  selectSelectionAreaIndex,
-  selectInactiveSelectionAreas,
-  selectEditorState,
-  selectActiveCellPosition,
-} from '../selectors/base'
+import { selectIsEditMode, selectSelectionAreaIndex } from '../selectors/base'
 import { ExcelActions } from '../store'
 import {
   selectIsBold,
@@ -14,9 +8,7 @@ import {
   selectIsStrikeThrough,
   selectIsItalic,
 } from '../selectors/style'
-import { selectCell } from '../selectors/activeSheet'
-import { createValueFromCellAndEditorState } from '../../tools/text'
-import { getStyleActionPayload } from '../tools/history'
+import { getStyleActionPayload, dispatchSaveActiveCell } from '../tools/history'
 
 export const THUNK_KEY_ENTER = (
   gridRef: MutableRefObject<HTMLDivElement>
@@ -29,16 +21,7 @@ export const THUNK_KEY_ENTER = (
   if (!isEditMode && selectionAreaIndex === -1) {
     dispatch(ExcelActions.CELL_KEY_ENTER_EDIT_START())
   } else {
-    dispatch(
-      ExcelActions.CELL_KEY_ENTER_EDIT_END({
-        cell: createValueFromCellAndEditorState(
-          selectCell(state),
-          selectEditorState(state)
-        ),
-        inactiveSelectionAreas: selectInactiveSelectionAreas(state),
-        activeCellPosition: selectActiveCellPosition(state),
-      })
-    )
+    dispatchSaveActiveCell(dispatch, getState())
   }
 
   gridRef.current.focus()
