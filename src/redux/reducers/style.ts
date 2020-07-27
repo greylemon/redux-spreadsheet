@@ -1,3 +1,5 @@
+import { RichUtils, DraftInlineStyleType, EditorState } from 'draft-js'
+import { PayloadAction } from '@reduxjs/toolkit'
 import {
   createFactoryReducerSetCellData,
   createFactoryReducerUnsetCellData,
@@ -12,6 +14,7 @@ import {
   unsetFontUnderline,
   unsetFontStrikeThrough,
 } from '../tools/style'
+import { IExcelState } from '../../@types/state'
 
 export const SET_BOLD = createFactoryReducerSetCellData(setFontBold)
 
@@ -34,3 +37,19 @@ export const UNSET_UNDERLINE = createFactoryReducerUnsetCellData(
 export const UNSET_STRIKETHROUGH = createFactoryReducerUnsetCellData(
   unsetFontStrikeThrough
 )
+
+export const TOGGLE_EDITOR_STATE_STYLE = (
+  state: IExcelState,
+  action: PayloadAction<DraftInlineStyleType>
+): IExcelState => {
+  const selection = state.editorState.getSelection()
+
+  state.editorState = EditorState.forceSelection(
+    EditorState.moveFocusToEnd(
+      RichUtils.toggleInlineStyle(state.editorState, action.payload)
+    ),
+    selection
+  )
+
+  return state
+}
