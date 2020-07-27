@@ -9,6 +9,8 @@ import {
 import {
   selectActiveCellPositionRow,
   selectActiveCellPositionColumn,
+  selectActiveCellPosition,
+  selectInactiveSelectionAreas,
 } from '../../../../../src/redux/selectors/base'
 import { mockState } from '../../../mockState'
 import { createEditorStateFromText } from '../../../../../src/tools/text'
@@ -117,7 +119,13 @@ describe('Cell keyboard operations', () => {
       expect(cell.type).toEqual(TYPE_TEXT)
 
       store.dispatch(ExcelActions.CELL_MOUSE_DOWN({ x: 1, y: 1 }))
-      store.dispatch(ExcelActions.CELL_KEY_DELETE())
+      const state3 = store.getState()
+      store.dispatch(
+        ExcelActions.CELL_KEY_DELETE({
+          activeCellPosition: selectActiveCellPosition(state3),
+          inactiveSelectionAreas: selectInactiveSelectionAreas(state3),
+        })
+      )
 
       const cell2 = selectData(store.getState())[1][1]
       expect(cell2.type).toEqual(TYPE_TEXT)

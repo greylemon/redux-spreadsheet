@@ -4,8 +4,8 @@ import { Excel } from '../src/Excel'
 import { IExcelState } from '../src/@types/state'
 import formulaState from '../samples/formulas.json'
 import { initialExcelState } from '../src/redux/store'
-import { updateWorkbookReference } from '../src/tools/formula'
 import { selectExcel } from '../src/redux/selectors/base'
+import { updateWorkbookReference } from '../src/tools/formula/formula'
 
 const initialState: IExcelState = updateWorkbookReference({
   ...initialExcelState,

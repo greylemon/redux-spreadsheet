@@ -13,8 +13,8 @@ import {
   getFontBlockEditorState,
 } from '../../tools/cell'
 import { getCellMapSetFromState } from '../tools/area'
-import { updateReferenceCell } from '../../tools/formula'
 import { IGeneralActionPayload } from '../../@types/history'
+import { updateActiveCellRef } from '../../tools/formula/formula'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state
@@ -147,12 +147,13 @@ export const CELL_KEY_DELETE = (
             delete cell.value
           }
 
-          updateReferenceCell(
-            state,
-            {},
-            cell,
-            { x: columnIndex, y: +rowIndex },
-            state.activeSheetName
+          updateActiveCellRef(
+            state.activeSheetName,
+            state.activeCellPosition,
+            state.sheetsMap,
+            state.dependentReferences,
+            state.independentReferences,
+            state.results
           )
         }
       })

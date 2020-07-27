@@ -1,7 +1,7 @@
 import { IExcelState } from '../../@types/state'
-import { updateActiveCellRef } from '../../tools/state'
 import { nSelectActiveSheet, nSelectActiveCell } from './selectors'
 import { createValueFromCellAndEditorState } from '../../tools/text'
+import { updateActiveCellRef } from '../../tools/formula/formula'
 
 export const updateActiveCellValueInPlace = (state: IExcelState): void => {
   const cellValue = createValueFromCellAndEditorState(
@@ -17,5 +17,12 @@ export const updateActiveCellValueInPlace = (state: IExcelState): void => {
 
   activeSheet.data[y][x] = cellValue
 
-  updateActiveCellRef(state)
+  updateActiveCellRef(
+    state.activeSheetName,
+    state.activeCellPosition,
+    state.sheetsMap,
+    state.dependentReferences,
+    state.independentReferences,
+    state.results
+  )
 }

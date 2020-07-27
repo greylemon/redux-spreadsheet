@@ -6,7 +6,7 @@ import {
   IPosition,
 } from '../../@types/state'
 import { nSelectActiveSheet } from '../tools/selectors'
-import { updateActiveCellRef } from '../../tools/state'
+import { updateActiveCellRef } from '../../tools/formula/formula'
 
 export const SAVE_ACTIVE_CELL = (
   state: IExcelState,
@@ -29,7 +29,14 @@ export const SAVE_ACTIVE_CELL = (
 
   activeSheet.data[y][x] = cell
 
-  updateActiveCellRef(state)
+  updateActiveCellRef(
+    state.activeSheetName,
+    state.activeCellPosition,
+    state.sheetsMap,
+    state.dependentReferences,
+    state.independentReferences,
+    state.results
+  )
 
   return state
 }
