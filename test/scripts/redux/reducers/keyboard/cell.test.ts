@@ -128,7 +128,7 @@ describe('Cell keyboard operations', () => {
       )
 
       const cell2 = selectData(store.getState())[1][1]
-      expect(cell2.type).toEqual(TYPE_TEXT)
+      expect(cell2.type).toEqual(undefined)
       expect(cell2.value).toBe(undefined)
     })
   })
