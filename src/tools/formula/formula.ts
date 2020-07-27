@@ -94,40 +94,27 @@ const computeResult = (
   sheetName: ISheetName,
   position: IPosition
 ) => {
-  const { results } = window
+  try {
+    const { results } = window
 
-  if (!results[sheetName]) results[sheetName] = {}
-  if (!results[sheetName][position.y]) results[sheetName][position.y] = {}
+    if (!results[sheetName]) results[sheetName] = {}
+    if (!results[sheetName][position.y]) results[sheetName][position.y] = {}
 
-  results[sheetName][position.y][position.x] = parser.parse(
-    sheetsMap[sheetName].data[position.y][position.x].value,
-    {
-      sheet: sheetName,
-      row: position.y,
-      col: position.x,
-    }
-  )
-  // try {
-  //   const { results } = window
-
-  //   if (!results[sheetName]) results[sheetName] = {}
-  //   if (!results[sheetName][position.y]) results[sheetName][position.y] = {}
-
-  //   results[sheetName][position.y][position.x] = parser.parse(
-  //     sheetsMap[sheetName].data[position.y][position.x].value,
-  //     {
-  //       sheet: sheetName,
-  //       row: position.y,
-  //       col: position.x,
-  //     }
-  //   )
-  // } catch (error) {
-  //   console.error(
-  //     `Error at [ sheet name: ${sheetName} | position:  ${JSON.stringify(
-  //       position
-  //     )} ] - ${error}`
-  //   )
-  // }
+    results[sheetName][position.y][position.x] = parser.parse(
+      sheetsMap[sheetName].data[position.y][position.x].value,
+      {
+        sheet: sheetName,
+        row: position.y,
+        col: position.x,
+      }
+    )
+  } catch (error) {
+    console.error(
+      `Error at [ sheet name: ${sheetName} | position:  ${JSON.stringify(
+        position
+      )} ] - ${error}`
+    )
+  }
 }
 
 const computeFormulas = (
