@@ -1,8 +1,8 @@
 import { Workbook } from 'exceljs'
 import fs from 'fs'
 import { IExcelState } from '../@types/state'
-import { updateWorkbookReference } from './formula'
 import { createStateFromWorkbook } from './parser'
+import { updateWorkbookReference } from './formula/formula'
 
 export const convertRawExcelToState = async (
   file: File | string

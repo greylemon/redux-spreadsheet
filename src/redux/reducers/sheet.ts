@@ -2,6 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { IExcelState, ISheetName } from '../../@types/state'
 import { createSheetState } from '../tools/state'
 import { changeSheetInPlace } from '../tools/sheet'
+import { deleteSheetRef } from '../../tools/formula/formula'
 
 export const CHANGE_SHEET_ORDER = (
   state: IExcelState,
@@ -53,11 +54,11 @@ export const ADD_SHEET = (
 export const DELETE_SHEET = (state: IExcelState): IExcelState => {
   const { sheetNames } = state
 
-  if (sheetNames.length === 1) return state
-
   const sheetIndex = sheetNames.findIndex(
     (sheetName) => sheetName === state.activeSheetName
   )
+
+  const sheetName = sheetNames[sheetIndex]
 
   state.sheetNames = [
     ...sheetNames.slice(0, sheetIndex),
@@ -68,6 +69,16 @@ export const DELETE_SHEET = (state: IExcelState): IExcelState => {
     state.sheetNames[sheetIndex - 1 >= 0 ? sheetIndex - 1 : sheetIndex]
 
   changeSheetInPlace(newActiveSheet, state)
+
+  delete state.sheetsMap[sheetName]
+
+  deleteSheetRef(
+    sheetName,
+    state.sheetsMap,
+    state.dependentReferences,
+    state.independentReferences,
+    state.results
+  )
 
   return state
 }

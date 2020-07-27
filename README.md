@@ -98,7 +98,7 @@ const SomeComponent = () => {
   - [x] Switch sheet name
   - [x] Delete sheet name
   - [x] Update sheet name
-  - [ ] Update formula references
+  - [ ] Update formula references for rename
 - Row / Column
   - [x] Resize
   - [ ] Resize Freeze
