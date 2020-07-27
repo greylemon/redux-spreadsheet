@@ -145,11 +145,12 @@ export const CELL_KEY_DELETE = (
           if (cell.type !== TYPE_MERGE) {
             cell.type = TYPE_TEXT
             delete cell.value
+            delete cell.type
           }
 
           updateActiveCellRef(
             state.activeSheetName,
-            state.activeCellPosition,
+            { x: columnIndex, y: +rowIndex },
             state.sheetsMap,
             state.dependentReferences,
             state.independentReferences,

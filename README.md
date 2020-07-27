@@ -81,7 +81,7 @@ const SomeComponent = () => {
   - [x] Formula dependents map
   - [x] Formula independents map
   - [x] Formula results
-  - [ ] Clean Up formula references
+  - [ ] Clean up formula independent references
   - [ ] Column/row references (=SUM(A:A) or =SUM(1:1))
   - [ ] Variables
   - [ ] Optimize range edit/delete
