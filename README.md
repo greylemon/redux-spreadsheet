@@ -86,6 +86,7 @@ const SomeComponent = () => {
   - [ ] Variables
   - [ ] Optimize range edit/delete
   - [ ] Normalize dependents/independents
+  - [ ] Error on cyclic reference
 - Formula bar
   - [ ] Input
 - File upload
