@@ -1,14 +1,16 @@
 import { PayloadAction } from '@reduxjs/toolkit'
+import cloneDeep from 'clone-deep'
 import { IExcelState, IArea } from '../../@types/state'
 import {
   nSelectActiveSheet,
   nSelectMergeCellArea,
   nSelectActiveSheetData,
   nSelectActiveCellStyle,
+  nSelectActiveCell,
 } from '../tools/selectors'
 import { getAreaRanges, getOrderedAreaFromArea } from '../../tools/area'
 
-import { TYPE_MERGE, TYPE_TEXT } from '../../constants/types'
+import { TYPE_MERGE } from '../../constants/types'
 import { IGeneralActionPayload } from '../../@types/history'
 
 export const SELECT_ALL = (state: IExcelState): IExcelState => {
@@ -39,7 +41,10 @@ export const MERGE_AREA = (
     // Colapse merge area
     const mergedArea = nSelectMergeCellArea(state)
     const { xRange, yRange } = getAreaRanges(mergedArea)
-    state.activeCellPosition = mergedArea.start
+
+    const topLeftCell = cloneDeep(data[yRange.start][xRange.start])
+    delete topLeftCell.merged
+    const { activeCellPosition } = state
 
     for (let rowIndex = yRange.start; rowIndex <= yRange.end; rowIndex += 1) {
       for (
@@ -47,21 +52,20 @@ export const MERGE_AREA = (
         columnIndex <= xRange.end;
         columnIndex += 1
       ) {
-        if (rowIndex !== yRange.start || columnIndex !== xRange.start) {
-          delete data[rowIndex][columnIndex].type
-          delete data[rowIndex][columnIndex].merged
+        data[rowIndex][columnIndex] = {
+          style: data[rowIndex][columnIndex].style,
         }
       }
     }
 
-    delete data[yRange.start][xRange.start].merged
+    state.inactiveSelectionAreas = [mergedArea]
+    data[activeCellPosition.y][activeCellPosition.x] = topLeftCell
   } else {
     // Expand merge area
     const inactiveSelectionArea = inactiveSelectionAreas[0]
     const mergedArea: IArea = getOrderedAreaFromArea(inactiveSelectionArea)
     const blockStyle = nSelectActiveCellStyle(state)
-
-    state.activeCellPosition = mergedArea.start
+    const cell = cloneDeep(nSelectActiveCell(state))
 
     for (
       let rowIndex = mergedArea.start.y;
@@ -90,10 +94,8 @@ export const MERGE_AREA = (
     }
 
     if (!data[mergedArea.start.y]) data[mergedArea.start.y] = {}
-    if (!data[mergedArea.start.y][mergedArea.start.x])
-      data[mergedArea.start.y][mergedArea.start.x] = {
-        type: TYPE_TEXT,
-      }
+
+    data[mergedArea.start.y][mergedArea.start.x] = cell || {}
 
     data[mergedArea.start.y][mergedArea.start.x].merged = {
       area: mergedArea,

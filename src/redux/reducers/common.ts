@@ -17,7 +17,7 @@ export const SAVE_ACTIVE_CELL = (
   }>
 ): IExcelState => {
   const { activeCellPosition, cell, inactiveSelectionAreas } = action.payload
-  state.activeCellPosition = activeCellPosition
+
   state.inactiveSelectionAreas = inactiveSelectionAreas
   state.isEditMode = false
 
@@ -26,6 +26,7 @@ export const SAVE_ACTIVE_CELL = (
   const area = nSelectMergeCellArea(state)
 
   const finalPosition = area ? area.start : activeCellPosition
+  state.activeCellPosition = finalPosition
   const { x, y } = finalPosition
 
   if (!activeSheet.data[y]) activeSheet.data[y] = {}

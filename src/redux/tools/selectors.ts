@@ -54,3 +54,11 @@ export const nSelectMergeCellArea = (state: IExcelState): IArea | undefined => {
     ? getMergeArea(nSelectActiveSheetData(state), merged)
     : undefined
 }
+
+export const selectPosition = (state: IExcelState) => {
+  const merged = nSelectMerged(state)
+
+  return merged
+    ? getMergeArea(nSelectActiveSheetData(state), merged).start
+    : state.activeCellPosition
+}

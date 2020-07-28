@@ -11,11 +11,10 @@ import {
   selectCellFontStyle,
   selectCellBlockStyle,
   selectMerged,
-  selectCellType,
 } from './activeSheet'
 import { IRichTextValue } from '../../@types/state'
 import { checkIsAreaEqualPosition } from '../../tools'
-import { TYPE_MERGE, TYPE_RICH_TEXT } from '../../constants/types'
+import { TYPE_RICH_TEXT } from '../../constants/types'
 import { IInlineStyleEqFn } from '../../@types/functions'
 
 /* eslint-disable */
@@ -84,17 +83,10 @@ export const selectCombinedCellStyle = createSelector(
 )
 
 export const selectIsMergable = createSelector(
-  [
-    selectInactiveSelectionAreas,
-    selectIsSelectionMode,
-    selectCellType,
-    selectMerged,
-  ],
-  (inactiveSelectionAreas, isSelectionMode, cellType, merged) =>
+  [selectInactiveSelectionAreas, selectIsSelectionMode, selectMerged],
+  (inactiveSelectionAreas, isSelectionMode, merged) =>
     !isSelectionMode &&
     ((inactiveSelectionAreas.length === 1 &&
       !checkIsAreaEqualPosition(inactiveSelectionAreas[0])) ||
-      (inactiveSelectionAreas.length === 0 &&
-        cellType !== TYPE_MERGE &&
-        merged !== undefined))
+      (inactiveSelectionAreas.length === 0 && merged !== undefined))
 )
