@@ -2,7 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { EditorState } from 'draft-js'
 import { IExcelState, IEditorState } from '../../@types/state'
 import {
-  nSelectMergeCell,
+  nSelectMergeCellArea,
   nSelectActiveSheet,
   nSelectActiveSheetData,
   nSelectActiveCell,
@@ -25,7 +25,7 @@ export const CELL_KEY_DOWN = (state: IExcelState): IExcelState => {
   if (state.isEditMode || state.activeCellPosition.y >= activeSheet.rowCount)
     return state
 
-  const mergeData = nSelectMergeCell(state)
+  const mergeData = nSelectMergeCellArea(state)
 
   state.activeCellPosition.y = mergeData
     ? mergeData.end.y + 1
@@ -44,10 +44,10 @@ export const CELL_KEY_UP_SHIFT = (state: IExcelState): IExcelState => {
 export const CELL_KEY_UP = (state: IExcelState): IExcelState => {
   if (state.isEditMode || state.activeCellPosition.y < 2) return state
 
-  const mergeData = nSelectMergeCell(state)
+  const mergeData = nSelectMergeCellArea(state)
 
   state.activeCellPosition.y = mergeData
-    ? mergeData.end.y - 1
+    ? mergeData.start.y - 1
     : state.activeCellPosition.y - 1
   state.inactiveSelectionAreas = []
   state.selectionAreaIndex = -1
@@ -65,7 +65,7 @@ export const CELL_KEY_RIGHT = (state: IExcelState): IExcelState => {
   if (state.isEditMode || state.activeCellPosition.x >= activeSheet.columnCount)
     return state
 
-  const mergeData = nSelectMergeCell(state)
+  const mergeData = nSelectMergeCellArea(state)
 
   state.activeCellPosition.x = mergeData
     ? mergeData.end.x + 1
@@ -84,10 +84,10 @@ export const CELL_KEY_LEFT_SHIFT = (state: IExcelState): IExcelState => {
 export const CELL_KEY_LEFT = (state: IExcelState): IExcelState => {
   if (state.isEditMode || state.activeCellPosition.x < 2) return state
 
-  const mergeData = nSelectMergeCell(state)
+  const mergeData = nSelectMergeCellArea(state)
 
   state.activeCellPosition.x = mergeData
-    ? mergeData.end.x - 1
+    ? mergeData.start.x - 1
     : state.activeCellPosition.x - 1
   state.inactiveSelectionAreas = []
   state.selectionAreaIndex = -1

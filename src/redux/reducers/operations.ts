@@ -2,7 +2,7 @@ import { PayloadAction } from '@reduxjs/toolkit'
 import { IExcelState, IArea } from '../../@types/state'
 import {
   nSelectActiveSheet,
-  nSelectMergeCell,
+  nSelectMergeCellArea,
   nSelectActiveSheetData,
   nSelectActiveCellStyle,
 } from '../tools/selectors'
@@ -38,7 +38,7 @@ export const MERGE_AREA = (
   state.activeCellPosition = activeCellPosition
 
   if (inactiveSelectionAreas.length === 0) {
-    const mergedArea = nSelectMergeCell(state)
+    const mergedArea = nSelectMergeCellArea(state)
     // Colapse merge area
     const { xRange, yRange } = getAreaRanges(mergedArea)
 
@@ -79,7 +79,9 @@ export const MERGE_AREA = (
         )
           data[rowIndex][columnIndex] = {
             type: TYPE_MERGE,
-            merged: mergedArea,
+            merged: {
+              parent: mergedArea.start,
+            },
           }
 
         if (blockStyle) data[rowIndex][columnIndex].style = blockStyle
@@ -92,7 +94,10 @@ export const MERGE_AREA = (
         type: TYPE_TEXT,
       }
 
-    data[mergedArea.start.y][mergedArea.start.x].merged = mergedArea
+    data[mergedArea.start.y][mergedArea.start.x].merged = {
+      area: mergedArea,
+    }
+
     state.inactiveSelectionAreas = []
     state.selectionAreaIndex = -1
   }

@@ -81,10 +81,15 @@ export type IHyperlink = {
   link: string
 }
 
+export type IMerged = {
+  area?: IArea
+  parent?: IPosition
+}
+
 export type ICell = {
   value?: IValue
   hyperlink?: IHyperlink
-  merged?: IArea
+  merged?: IMerged
   type?: string
   style?: IStyles
 }
@@ -262,4 +267,6 @@ export type IExcelState = {
   dragColumnIndex?: IDragColumnIndex
 
   sheetDimensions: ISheetDimensions
+
+  lastVisitedCell: IPosition
 }

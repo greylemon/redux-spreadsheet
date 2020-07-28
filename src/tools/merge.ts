@@ -1,5 +1,7 @@
 import cloneDeep from 'clone-deep'
 import { IRows, IArea, IRange, IColumnIndex, IRowIndex } from '../@types/state'
+import { TYPE_MERGE } from '../constants/types'
+import { checkIsAreaEqualOtherArea } from './area'
 
 /**
  * Sets the new area to be the smallest area which covers both newArea and mergeArea in place
@@ -10,15 +12,21 @@ const changeAreaToSuperAreaInPlace = (
 ): void => {
   const { start, end } = mergeArea
 
-  const minMergedX = Math.min(start.x, end.x)
-  const maxMergedX = Math.max(start.x, end.x)
-  const minMergedY = Math.min(start.y, end.y)
-  const maxMergedY = Math.max(start.y, end.y)
+  if (newArea.start.x < newArea.end.x) {
+    if (start.x < newArea.start.x) newArea.start.x = start.x
+    if (end.x > newArea.end.x) newArea.end.x = end.x
+  } else {
+    if (start.x < newArea.end.x) newArea.end.x = start.x
+    if (end.x > newArea.start.x) newArea.start.x = end.x
+  }
 
-  if (minMergedX < newArea.start.x) newArea.start.x = minMergedX
-  if (minMergedY < newArea.start.y) newArea.start.y = minMergedY
-  if (maxMergedX > newArea.end.x) newArea.end.x = maxMergedX
-  if (maxMergedY > newArea.end.y) newArea.end.y = maxMergedY
+  if (newArea.start.y < newArea.end.y) {
+    if (start.y < newArea.start.y) newArea.start.y = start.y
+    if (end.y > newArea.end.y) newArea.end.y = end.y
+  } else {
+    if (start.y < newArea.end.y) newArea.end.y = start.y
+    if (end.y > newArea.start.y) newArea.start.y = end.y
+  }
 }
 
 /**
@@ -37,8 +45,17 @@ const getPartialSuperAreaFromColumnRange = (
   for (let column = xRange.start; column <= xRange.end; column += 1) {
     const cellData = rowData[column]
 
-    if (cellData && cellData.merged)
-      changeAreaToSuperAreaInPlace(cellData.merged, newArea)
+    if (cellData && cellData.merged) {
+      let mergedArea: IArea
+      if (cellData.type === TYPE_MERGE) {
+        const { parent } = cellData.merged
+        mergedArea = data[parent.y][parent.x].merged.area
+      } else {
+        mergedArea = cellData.merged.area
+      }
+
+      changeAreaToSuperAreaInPlace(mergedArea, newArea)
+    }
   }
 
   return newArea
@@ -59,8 +76,20 @@ const getPartialSuperAreaFromRowRange = (
     const rowData = data[row]
 
     if (rowData && rowData[column]) {
-      const mergedArea = rowData[column].merged
-      if (mergedArea) changeAreaToSuperAreaInPlace(mergedArea, newArea)
+      const cellData = rowData[column]
+
+      if (cellData.merged) {
+        let mergedArea: IArea
+
+        if (cellData.type === TYPE_MERGE) {
+          const { parent } = cellData.merged
+          mergedArea = data[parent.y][parent.x].merged.area
+        } else {
+          mergedArea = cellData.merged.area
+        }
+
+        changeAreaToSuperAreaInPlace(mergedArea, newArea)
+      }
     }
   }
 
@@ -83,9 +112,18 @@ const getPartialSuperAreaFromArea = (area: IArea, data: IRows): IArea => {
   const top = data[start.y]
   const bottom = data[end.y]
 
+  const horizontalRange: IRange = {
+    start: Math.min(newArea.start.x, newArea.end.x),
+    end: Math.max(newArea.start.x, newArea.end.x),
+  }
+  const verticalContainedRange: IRange = {
+    start: Math.min(newArea.start.y, newArea.end.y) + 1,
+    end: Math.max(newArea.start.y, newArea.end.y) - 1,
+  }
+
   if (top)
     newArea = getPartialSuperAreaFromColumnRange(
-      { start: newArea.start.x, end: newArea.end.x },
+      horizontalRange,
       newArea,
       start.y,
       data
@@ -94,7 +132,7 @@ const getPartialSuperAreaFromArea = (area: IArea, data: IRows): IArea => {
   // Bottom might be the same as top (1 row)
   if (bottom && start.y !== end.y)
     newArea = getPartialSuperAreaFromColumnRange(
-      { start: newArea.start.x, end: newArea.end.x },
+      horizontalRange,
       newArea,
       end.y,
       data
@@ -102,7 +140,7 @@ const getPartialSuperAreaFromArea = (area: IArea, data: IRows): IArea => {
 
   // Do not need to check edges because top and bottom covers those already
   newArea = getPartialSuperAreaFromRowRange(
-    { start: newArea.start.y + 1, end: newArea.end.y - 1 },
+    verticalContainedRange,
     newArea,
     start.x,
     data
@@ -110,8 +148,8 @@ const getPartialSuperAreaFromArea = (area: IArea, data: IRows): IArea => {
 
   // left might be the same as right (1 column)
   if (start.x !== end.x)
-    getPartialSuperAreaFromRowRange(
-      { start: newArea.start.y + 1, end: newArea.end.y - 1 },
+    newArea = getPartialSuperAreaFromRowRange(
+      verticalContainedRange,
       newArea,
       end.x,
       data
@@ -129,12 +167,7 @@ export const getEntireSuperArea = (orderedArea: IArea, data: IRows): IArea => {
   let subArea = cloneDeep(orderedArea)
   let superArea = getPartialSuperAreaFromArea(subArea, data)
 
-  while (
-    superArea.start.x !== subArea.start.x ||
-    superArea.end.x !== subArea.end.x ||
-    superArea.start.y !== subArea.start.y ||
-    superArea.end.y !== subArea.end.y
-  ) {
+  while (!checkIsAreaEqualOtherArea(superArea, subArea)) {
     subArea = superArea
     superArea = getPartialSuperAreaFromArea(superArea, data)
   }
