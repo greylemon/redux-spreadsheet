@@ -77,6 +77,11 @@ export const selectInactiveSelectionAreas = createSelector(
   (excel) => excel.inactiveSelectionAreas
 )
 
+export const selectLastVisitedCell = createSelector(
+  [selectExcel],
+  (excel) => excel.lastVisitedCell
+)
+
 export const selectResults = createSelector(
   [selectExcel],
   (excel) => excel.results

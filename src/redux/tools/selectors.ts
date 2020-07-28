@@ -6,6 +6,7 @@ import {
   ICell,
   IArea,
   IStyles,
+  IMerged,
 } from '../../@types/state'
 
 // //////////////////////////////////////////////////////////////
@@ -39,8 +40,29 @@ export const nSelectActiveCellStyle = (
   return activeCell ? activeCell.style : undefined
 }
 
-export const nSelectMergeCell = (state: IExcelState): IArea | undefined => {
+export const nSelectMerged = (state: IExcelState): IMerged | undefined => {
   const cell = nSelectActiveCell(state)
 
   return cell ? cell.merged : undefined
+}
+
+export const nSelectMergeCellArea = (state: IExcelState): IArea | undefined => {
+  const merged = nSelectMerged(state)
+
+  if (merged) {
+    let mergedArea: IArea
+
+    if (merged.area) {
+      mergedArea = merged.area
+    } else {
+      const data = nSelectActiveSheetData(state)
+      const { parent } = merged
+
+      mergedArea = data[parent.y][parent.x].merged.area
+    }
+
+    return mergedArea
+  }
+
+  return undefined
 }

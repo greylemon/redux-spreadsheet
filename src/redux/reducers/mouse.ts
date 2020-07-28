@@ -28,7 +28,7 @@ import {
 import {
   nSelectActiveSheet,
   nSelectActiveCell,
-  nSelectMergeCell,
+  nSelectMergeCellArea,
 } from '../tools/selectors'
 import {
   denormalizeRowHeight,
@@ -132,14 +132,15 @@ export const CELL_MOUSE_DOWN = (
 
   state.activeCellPosition = position
 
-  const merged = nSelectMergeCell(state)
+  const merged = nSelectMergeCellArea(state)
 
   if (merged) {
-    state.activeCellPosition = merged.start
     state.selectionArea = merged
   } else {
     state.selectionArea = { start: position, end: position }
   }
+
+  state.lastVisitedCell = position
 
   return state
 }
@@ -151,12 +152,13 @@ export const CELL_MOUSE_ENTER = (
   const activeSheet = nSelectActiveSheet(state)
   if (state.isSelectionMode) {
     const position = action.payload
-    const orderedArea = getOrderedAreaFromPositions(
-      position,
-      state.activeCellPosition
+
+    state.selectionArea = getEntireSuperArea(
+      { start: state.activeCellPosition, end: position },
+      activeSheet.data
     )
 
-    state.selectionArea = getEntireSuperArea(orderedArea, activeSheet.data)
+    state.lastVisitedCell = position
   }
 
   return state
@@ -166,9 +168,9 @@ export const CELL_MOUSE_UP = (
   state: IExcelState,
   action: PayloadAction<ISelectionArea>
 ): IExcelState => {
-  if (!state.isSelectionMode) return state
-
   state.isSelectionMode = false
+
+  delete state.lastVisitedCell
 
   const selectionArea = action.payload
 
@@ -200,7 +202,7 @@ export const CELL_MOUSE_UP = (
         )
       } else {
         // Last area to eliminate - no more possible occupation
-        const merged = nSelectMergeCell(state)
+        const merged = nSelectMergeCellArea(state)
         if (
           merged &&
           state.inactiveSelectionAreas.length === 1 &&

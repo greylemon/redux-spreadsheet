@@ -12,6 +12,7 @@ import {
   selectSelectionArea,
   selectIsSelectionMode,
   selectIsEditMode,
+  selectLastVisitedCell,
 } from '../selectors/base'
 import { IPosition, IArea, IRowIndex, IColumnIndex } from '../../@types/state'
 import {
@@ -124,8 +125,6 @@ export const THUNK_MOUSE_MOVE = (mousePosition: IPosition): IAppThunk => (
 
     let scopedPosition: IPosition
 
-    const selectionArea = selectSelectionArea(state)
-
     switch (
       type as
         | 'cell'
@@ -167,7 +166,10 @@ export const THUNK_MOUSE_MOVE = (mousePosition: IPosition): IAppThunk => (
 
     if (
       scopedPosition &&
-      !checkIsPositionEqualOtherPosition(selectionArea.end, scopedPosition)
+      !checkIsPositionEqualOtherPosition(
+        selectLastVisitedCell(state),
+        scopedPosition
+      )
     ) {
       dispatch(dispatch(ExcelActions.CELL_MOUSE_ENTER(scopedPosition)))
     }

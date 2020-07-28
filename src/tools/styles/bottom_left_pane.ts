@@ -20,6 +20,7 @@ import {
   IFreezeColumnCount,
   IFreezeRowCount,
   ISelectionArea,
+  IArea,
 } from '../../@types/state'
 import {
   STYLE_SELECTION_BORDER_WIDTH,
@@ -48,7 +49,17 @@ export const computeActiveCellBottomLeftStyle: IComputeActiveCellStyle = (
       : undefined
 
   if (mergeData) {
-    const { start, end } = mergeData
+    let mergedArea: IArea
+
+    if (mergeData.area) {
+      mergedArea = mergeData.area
+    } else {
+      const { parent } = mergeData
+
+      mergedArea = data[parent.y][parent.x].merged.area
+    }
+
+    const { start, end } = mergedArea
 
     height =
       rowOffsets[end.y] +

@@ -40,6 +40,7 @@ import {
   selectGetColumnWidth,
   selectGetRowHeight,
 } from './custom'
+import { IArea } from '../../@types/state'
 
 export const selectFactoryIsAreaInRelevantPane = (
   checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
@@ -150,8 +151,17 @@ export const selectFactoryActiveCellStyle = (
         let height: number, width: number, top: number, left: number
 
         if (cellMergeArea) {
+          let mergedArea: IArea
+
+          if (cellMergeArea.area) {
+            mergedArea = cellMergeArea.area
+          } else {
+            const parent = cellMergeArea.parent
+            mergedArea = data[parent.y][parent.x].merged.area
+          }
+
           const mergeDimensions = getAreaDimensions(
-            cellMergeArea,
+            mergedArea,
             rowOffsets,
             columnOffsets
           )
@@ -159,8 +169,8 @@ export const selectFactoryActiveCellStyle = (
           height = mergeDimensions.height
           width = mergeDimensions.width
 
-          top = rowOffsets[cellMergeArea.start.y]
-          left = columnOffsets[cellMergeArea.start.x]
+          top = rowOffsets[mergedArea.start.y]
+          left = columnOffsets[mergedArea.start.x]
         } else {
           top = rowOffsets[activeCellPosition.y]
           left = columnOffsets[activeCellPosition.x]

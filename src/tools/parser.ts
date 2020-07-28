@@ -258,9 +258,6 @@ export const getCellContent = (data: IRows, cell: any): ICell | undefined => {
     case ValueType.Error:
       break
     case ValueType.Merge: {
-      const {
-        model: { address, master },
-      } = cell._value
       const cellAddress = convertStringPositionToPosition(
         cell._value.model.address
       )
@@ -268,18 +265,18 @@ export const getCellContent = (data: IRows, cell: any): ICell | undefined => {
         cell._value.model.master
       )
 
-      const merged = {
-        start: masterAddress,
-        end: cellAddress,
+      content.type = TYPE_MERGE
+
+      content.merged = {
+        parent: masterAddress,
       }
 
-      content.merged = merged
-      content.type = TYPE_MERGE
-      if (address !== master) {
-        data[masterAddress.y][masterAddress.x] = {
-          ...data[masterAddress.y][masterAddress.x],
-          merged,
-        }
+      const parentCell = data[masterAddress.y][masterAddress.x]
+      parentCell.merged = {
+        area: {
+          start: masterAddress,
+          end: cellAddress,
+        },
       }
 
       break
