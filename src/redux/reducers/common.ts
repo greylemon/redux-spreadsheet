@@ -5,7 +5,7 @@ import {
   ICell,
   IPosition,
 } from '../../@types/state'
-import { nSelectActiveSheet } from '../tools/selectors'
+import { nSelectActiveSheet, nSelectMergeCellArea } from '../tools/selectors'
 import { updateActiveCellRef } from '../../tools/formula/formula'
 
 export const SAVE_ACTIVE_CELL = (
@@ -17,12 +17,17 @@ export const SAVE_ACTIVE_CELL = (
   }>
 ): IExcelState => {
   const { activeCellPosition, cell, inactiveSelectionAreas } = action.payload
-  state.activeCellPosition = activeCellPosition
+
   state.inactiveSelectionAreas = inactiveSelectionAreas
   state.isEditMode = false
 
   const activeSheet = nSelectActiveSheet(state)
-  const { x, y } = activeCellPosition
+
+  const area = nSelectMergeCellArea(state)
+
+  const finalPosition = area ? area.start : activeCellPosition
+  state.activeCellPosition = finalPosition
+  const { x, y } = finalPosition
 
   if (!activeSheet.data[y]) activeSheet.data[y] = {}
   if (!activeSheet.data[y][x]) activeSheet.data[y][x] = {}
@@ -31,7 +36,7 @@ export const SAVE_ACTIVE_CELL = (
 
   updateActiveCellRef(
     state.activeSheetName,
-    state.activeCellPosition,
+    finalPosition,
     state.sheetsMap,
     state.dependentReferences,
     state.independentReferences,
