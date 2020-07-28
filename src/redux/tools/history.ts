@@ -10,6 +10,7 @@ import { ExcelActions } from '../store'
 import { selectCell, selectData } from '../selectors/activeSheet'
 import { createValueFromCellAndEditorState } from '../../tools/text'
 import { isCellEqualOtherCell } from './compare'
+import { selectPosition } from '../selectors/custom'
 
 export const getGeneralActionPayload = (
   state: IRootStore
@@ -33,7 +34,7 @@ export const dispatchSaveActiveCell = (
       ExcelActions.SAVE_ACTIVE_CELL({
         cell: newCell,
         inactiveSelectionAreas: selectInactiveSelectionAreas(state),
-        activeCellPosition: selectActiveCellPosition(state),
+        activeCellPosition: selectPosition(state),
       })
     )
 }

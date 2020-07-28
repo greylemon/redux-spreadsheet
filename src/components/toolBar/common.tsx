@@ -31,7 +31,7 @@ export const GenericStyleButton: FunctionComponent<{
   return (
     <SmallLabelButton
       title={title}
-      isToggled={isToggled}
+      isToggled={!disableOnOffToggle && isToggled}
       onMouseDown={handleMouseDown}
       onClick={handleClick}
       disabled={disableOnOffToggle && !isToggled}

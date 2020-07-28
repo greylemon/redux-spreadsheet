@@ -29,7 +29,7 @@ import {
   nSelectActiveSheet,
   nSelectActiveCell,
   nSelectMergeCellArea,
-  selectPosition,
+  nSelectPosition,
 } from '../tools/selectors'
 import {
   denormalizeRowHeight,
@@ -122,7 +122,7 @@ export const CELL_MOUSE_DOWN = (
 
   if (
     state.isEditMode &&
-    !checkIsPositionEqualOtherPosition(selectPosition(state), position)
+    !checkIsPositionEqualOtherPosition(nSelectPosition(state), position)
   ) {
     updateActiveCellValueInPlace(state)
   }
@@ -132,7 +132,7 @@ export const CELL_MOUSE_DOWN = (
   state.isSelectionMode = true
 
   state.activeCellPosition = position
-  state.activeCellPosition = selectPosition(state)
+  state.activeCellPosition = nSelectPosition(state)
 
   const merged = nSelectMergeCellArea(state)
 
