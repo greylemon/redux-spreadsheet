@@ -53,7 +53,7 @@ export const MERGE_AREA = (
         columnIndex += 1
       ) {
         data[rowIndex][columnIndex] = {
-          style: data[rowIndex][columnIndex].style,
+          style: topLeftCell.style,
         }
       }
     }
@@ -87,9 +87,8 @@ export const MERGE_AREA = (
             merged: {
               parent: mergedArea.start,
             },
+            style: blockStyle,
           }
-
-        if (blockStyle) data[rowIndex][columnIndex].style = blockStyle
       }
     }
 
