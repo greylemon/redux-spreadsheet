@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from 'react'
+import React, { FunctionComponent, useCallback, MouseEvent } from 'react'
 import {
   FormatBold,
   FormatItalic,
@@ -20,94 +20,78 @@ import {
   THUNK_TOGGLE_ITALIC,
   THUNK_TOGGLE_BOLD,
 } from '../../redux/thunks/style'
+import IRootStore, { IAppThunk } from '../../@types/store'
 
-const UnderlineAction: FunctionComponent = () => {
-  const isUnderline = useTypedSelector(
-    (state) => selectIsUnderline(state),
+const GenericStyleButton: FunctionComponent<{
+  selectIsToggled: (rootStore: IRootStore) => boolean
+  title: string
+  IconComponent: FunctionComponent
+  thunk: () => IAppThunk
+}> = ({ title, selectIsToggled, IconComponent, thunk }) => {
+  const dispatch = useDispatch()
+  const isToggled = useTypedSelector(
+    (state) => selectIsToggled(state),
     shallowEqual
   )
 
-  const dispatch = useDispatch()
+  const handleMouseDown = useCallback(
+    (event: MouseEvent) => {
+      event.preventDefault()
+    },
+    [dispatch]
+  )
 
   const handleClick = useCallback(() => {
-    dispatch(THUNK_TOGGLE_UNDERLINE())
+    dispatch(thunk())
   }, [dispatch])
 
   return (
     <SmallLabelButton
-      title="Underline (Ctrl+U)"
-      isToggled={isUnderline}
+      title={title}
+      isToggled={isToggled}
+      onMouseDown={handleMouseDown}
       onClick={handleClick}
     >
-      <FormatUnderlined />
+      <IconComponent />
     </SmallLabelButton>
   )
 }
 
-const StrikethroughAction: FunctionComponent = () => {
-  const isStrikethrough = useTypedSelector(
-    (state) => selectIsStrikeThrough(state),
-    shallowEqual
-  )
+const UnderlineAction: FunctionComponent = () => (
+  <GenericStyleButton
+    title="Underline (Ctrl+U)"
+    selectIsToggled={selectIsUnderline}
+    IconComponent={FormatUnderlined}
+    thunk={THUNK_TOGGLE_UNDERLINE}
+  />
+)
 
-  const dispatch = useDispatch()
+const StrikethroughAction: FunctionComponent = () => (
+  <GenericStyleButton
+    title="Strikethrough"
+    selectIsToggled={selectIsStrikeThrough}
+    IconComponent={FormatStrikethrough}
+    thunk={THUNK_TOGGLE_STRIKETHROUGH}
+  />
+)
 
-  const handleClick = useCallback(() => {
-    dispatch(THUNK_TOGGLE_STRIKETHROUGH())
-  }, [dispatch])
+const ItalicAction: FunctionComponent = () => (
+  <GenericStyleButton
+    title="Italic (Ctrl+I)"
+    selectIsToggled={selectIsItalic}
+    IconComponent={FormatItalic}
+    thunk={THUNK_TOGGLE_ITALIC}
+  />
+)
 
-  return (
-    <SmallLabelButton
-      title="Strikethrough"
-      isToggled={isStrikethrough}
-      onClick={handleClick}
-    >
-      <FormatStrikethrough />
-    </SmallLabelButton>
-  )
-}
-
-const ItalicAction: FunctionComponent = () => {
-  const isItalic = useTypedSelector(
-    (state) => selectIsItalic(state),
-    shallowEqual
-  )
-
-  const dispatch = useDispatch()
-
-  const handleClick = useCallback(() => {
-    dispatch(THUNK_TOGGLE_ITALIC())
-  }, [dispatch])
-
-  return (
-    <SmallLabelButton
-      title="Italic (Ctrl+I)"
-      isToggled={isItalic}
-      onClick={handleClick}
-    >
-      <FormatItalic />
-    </SmallLabelButton>
-  )
-}
-
-const BoldAction: FunctionComponent = () => {
-  const isBold = useTypedSelector((state) => selectIsBold(state), shallowEqual)
-  const dispatch = useDispatch()
-
-  const handleClick = useCallback(() => {
-    dispatch(THUNK_TOGGLE_BOLD())
-  }, [dispatch])
-
-  return (
-    <SmallLabelButton
-      title="Bold (Ctrl+B)"
-      isToggled={isBold}
-      onClick={handleClick}
-    >
-      <FormatBold />
-    </SmallLabelButton>
-  )
-}
+const BoldAction: FunctionComponent = () => (
+  <GenericStyleButton
+    title="Bold (Ctrl+B)"
+    selectIsToggled={selectIsBold}
+    IconComponent={FormatBold}
+    thunk={THUNK_TOGGLE_BOLD}
+  />
+)
 
 const BlockStyleSection: FunctionComponent = () => (
   <div>

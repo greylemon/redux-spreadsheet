@@ -1,4 +1,4 @@
-import { RichUtils, DraftInlineStyleType, EditorState } from 'draft-js'
+import { RichUtils, DraftInlineStyleType } from 'draft-js'
 import { PayloadAction } from '@reduxjs/toolkit'
 import {
   createFactoryReducerSetCellData,
@@ -42,14 +42,9 @@ export const TOGGLE_EDITOR_STATE_STYLE = (
   state: IExcelState,
   action: PayloadAction<DraftInlineStyleType>
 ): IExcelState => {
-  const selection = state.editorState.getSelection()
-
-  state.editorState = EditorState.forceSelection(
-    EditorState.moveFocusToEnd(
-      RichUtils.toggleInlineStyle(state.editorState, action.payload)
-    ),
-    selection
+  state.editorState = RichUtils.toggleInlineStyle(
+    state.editorState,
+    action.payload
   )
-
   return state
 }

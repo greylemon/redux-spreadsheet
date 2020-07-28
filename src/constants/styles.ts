@@ -16,7 +16,6 @@ export const STYLE_TOOLBAR_BUTTON: CSSProperties = {
   minWidth: 25,
   height: 25,
   width: 25,
-  margin: 3,
   padding: 15,
   color: '#585858',
 }
