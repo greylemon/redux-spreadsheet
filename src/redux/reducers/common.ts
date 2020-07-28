@@ -23,10 +23,12 @@ export const SAVE_ACTIVE_CELL = (
 
   const activeSheet = nSelectActiveSheet(state)
 
+  state.activeCellPosition = activeCellPosition
   const area = nSelectMergeCellArea(state)
 
   const finalPosition = area ? area.start : activeCellPosition
   state.activeCellPosition = finalPosition
+
   const { x, y } = finalPosition
 
   if (!activeSheet.data[y]) activeSheet.data[y] = {}

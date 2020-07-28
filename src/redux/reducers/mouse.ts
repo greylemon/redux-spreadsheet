@@ -12,10 +12,7 @@ import {
   IColumnWidth,
 } from '../../@types/state'
 import { getEntireSuperArea } from '../../tools/merge'
-import {
-  checkIsCellPositionValid,
-  createEditorStateFromCell,
-} from '../../tools/cell'
+import { createEditorStateFromCell } from '../../tools/cell'
 import {
   getOrderedAreaFromPositions,
   getAndAddArea,
@@ -43,17 +40,7 @@ export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
   action: PayloadAction<IPosition>
 ): IExcelState => {
-  const activeSheet = nSelectActiveSheet(state)
   const position = action.payload
-
-  if (
-    !checkIsCellPositionValid(
-      position,
-      activeSheet.columnCount,
-      activeSheet.rowCount
-    )
-  )
-    return state
 
   if (!checkIsPositionEqualOtherPosition(state.activeCellPosition, position)) {
     if (!state.inactiveSelectionAreas.length) {
@@ -81,15 +68,6 @@ export const CELL_MOUSE_DOWN_SHIFT = (
   const activeSheet = nSelectActiveSheet(state)
   const position = action.payload
 
-  if (
-    !checkIsCellPositionValid(
-      position,
-      activeSheet.columnCount,
-      activeSheet.rowCount
-    )
-  )
-    return state
-
   const orderedArea = getOrderedAreaFromPositions(
     position,
     state.activeCellPosition
@@ -108,17 +86,7 @@ export const CELL_MOUSE_DOWN = (
   state: IExcelState,
   action: PayloadAction<IPosition>
 ): IExcelState => {
-  const activeSheet = nSelectActiveSheet(state)
   const position = action.payload
-
-  if (
-    !checkIsCellPositionValid(
-      position,
-      activeSheet.columnCount,
-      activeSheet.rowCount
-    )
-  )
-    return state
 
   if (
     state.isEditMode &&
