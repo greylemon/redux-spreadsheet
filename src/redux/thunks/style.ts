@@ -11,6 +11,7 @@ import {
 import { getGeneralActionPayload } from '../tools/history'
 import { selectIsEditMode } from '../selectors/base'
 import { IStyleReducer } from '../../@types/reducer'
+import { selectCell } from '../selectors/activeSheet'
 
 export const TOGGLE_STYLE = (
   editorStateString: DraftInlineStyleType,
@@ -67,5 +68,12 @@ export const THUNK_TOGGLE_UNDERLINE = () =>
   )
 
 export const THUNK_MERGE_AREA = (): IAppThunk => (dispatch, getState) => {
-  dispatch(ExcelActions.MERGE_AREA(getGeneralActionPayload(getState())))
+  const state = getState()
+  const activeCell = selectCell(state)
+  dispatch(
+    ExcelActions.MERGE_AREA({
+      ...getGeneralActionPayload(getState()),
+      activeCell,
+    })
+  )
 }

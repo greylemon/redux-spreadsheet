@@ -24,6 +24,7 @@ import {
   selectColumnWidths,
   selectRowHeights,
   selectData,
+  selectMerged,
 } from './activeSheet'
 
 import {
@@ -32,6 +33,7 @@ import {
   columnDraggerStyle,
   columnDraggerIndicatorStyle,
 } from '../../constants/styles'
+import { getMergeArea } from '../tools/merge'
 
 export const selectTableColumnCount = createSelector(
   [selectColumnCount],
@@ -212,5 +214,12 @@ export const selectCellLayering = createSelector(
     }
 
     return layering
+  }
+)
+
+export const selectPosition = createSelector(
+  [selectMerged, selectData, selectActiveCellPosition],
+  (merged, data, activeCellPosition) => {
+    return merged ? getMergeArea(data, merged).start : activeCellPosition
   }
 )

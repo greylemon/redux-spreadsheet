@@ -1,17 +1,12 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import cloneDeep from 'clone-deep'
-import { IExcelState, IArea } from '../../@types/state'
-import {
-  nSelectActiveSheet,
-  nSelectMergeCellArea,
-  nSelectActiveSheetData,
-  nSelectActiveCellStyle,
-  nSelectActiveCell,
-} from '../tools/selectors'
+import { IExcelState, IArea, ICell } from '../../@types/state'
+import { nSelectActiveSheet, nSelectActiveSheetData } from '../tools/selectors'
 import { getAreaRanges, getOrderedAreaFromArea } from '../../tools/area'
 
 import { TYPE_MERGE } from '../../constants/types'
 import { IGeneralActionPayload } from '../../@types/history'
+import { getMergeArea } from '../tools/merge'
 
 export const SELECT_ALL = (state: IExcelState): IExcelState => {
   if (state.isEditMode) return state
@@ -32,21 +27,31 @@ export const SELECT_ALL = (state: IExcelState): IExcelState => {
 
 export const MERGE_AREA = (
   state: IExcelState,
-  action: PayloadAction<IGeneralActionPayload>
+  action: PayloadAction<IGeneralActionPayload & { activeCell: ICell }>
 ): IExcelState => {
   const data = nSelectActiveSheetData(state)
-  const { inactiveSelectionAreas } = action.payload
+  let {
+    inactiveSelectionAreas,
+    activeCellPosition,
+    activeCell,
+  } = action.payload
+
+  activeCell = cloneDeep(activeCell)
+
+  state.activeCellPosition = activeCellPosition
 
   if (inactiveSelectionAreas.length === 0) {
     // Colapse merge area
-    const mergedArea = nSelectMergeCellArea(state)
+    const mergedArea = getMergeArea(data, activeCell.merged)
+
     const { xRange, yRange } = getAreaRanges(mergedArea)
 
     const topLeftCell = cloneDeep(data[yRange.start][xRange.start])
     delete topLeftCell.merged
-    const { activeCellPosition } = state
 
     for (let rowIndex = yRange.start; rowIndex <= yRange.end; rowIndex += 1) {
+      if (data[rowIndex] === undefined) data[rowIndex] = {}
+
       for (
         let columnIndex = xRange.start;
         columnIndex <= xRange.end;
@@ -64,8 +69,7 @@ export const MERGE_AREA = (
     // Expand merge area
     const inactiveSelectionArea = inactiveSelectionAreas[0]
     const mergedArea: IArea = getOrderedAreaFromArea(inactiveSelectionArea)
-    const blockStyle = nSelectActiveCellStyle(state)
-    const cell = cloneDeep(nSelectActiveCell(state))
+    const blockStyle = activeCell ? activeCell.style : undefined
 
     for (
       let rowIndex = mergedArea.start.y;
@@ -94,7 +98,7 @@ export const MERGE_AREA = (
 
     if (!data[mergedArea.start.y]) data[mergedArea.start.y] = {}
 
-    data[mergedArea.start.y][mergedArea.start.x] = cell || {}
+    data[mergedArea.start.y][mergedArea.start.x] = activeCell || {}
 
     data[mergedArea.start.y][mergedArea.start.x].merged = {
       area: mergedArea,
