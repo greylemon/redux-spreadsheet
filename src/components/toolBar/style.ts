@@ -15,4 +15,8 @@ export const STYLE_TOOL_BAR_CONTENT: CSSProperties = {
   display: 'flex',
 }
 
+export const STYLE_VERTICAL_DIVIDER: CSSProperties = {
+  margin: '0 3px',
+}
+
 export default STYLE_TOOL_BAR

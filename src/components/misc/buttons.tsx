@@ -10,7 +10,16 @@ export const SmallLabelButton: FunctionComponent<{
   isToggled?: boolean
   disabled?: boolean
   onClick?: (event: MouseEvent) => void
-}> = ({ children, title, disabled, style, onClick, isToggled = false }) => (
+  onMouseDown?: (event: MouseEvent) => void
+}> = ({
+  children,
+  title,
+  disabled,
+  style,
+  onClick,
+  onMouseDown,
+  isToggled = false,
+}) => (
   <Tooltip title={title}>
     <Button
       style={{
@@ -22,6 +31,7 @@ export const SmallLabelButton: FunctionComponent<{
       component="label"
       size="small"
       onClick={onClick}
+      onMouseDown={onMouseDown}
       disabled={disabled}
     >
       {children}

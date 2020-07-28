@@ -15,8 +15,8 @@ import { IStyleReducer } from '../../@types/reducer'
 export const TOGGLE_STYLE = (
   editorStateString: DraftInlineStyleType,
   styleSelctor: Selector<IRootStore, any>,
-  toggleOnAction: IStyleReducer,
-  toggleOffAction: IStyleReducer
+  TOGGLE_STYLE_ON_ACTION: IStyleReducer,
+  TOGGLE_STYLE_OFF_ACTION: IStyleReducer
 ): IAppThunk => (dispatch, getState) => {
   const state = getState()
   const payload = getGeneralActionPayload(state)
@@ -26,7 +26,11 @@ export const TOGGLE_STYLE = (
   if (isEditMode) {
     dispatch(ExcelActions.TOGGLE_EDITOR_STATE_STYLE(editorStateString))
   } else {
-    dispatch(isToggleOn ? toggleOffAction(payload) : toggleOnAction(payload))
+    dispatch(
+      isToggleOn
+        ? TOGGLE_STYLE_OFF_ACTION(payload)
+        : TOGGLE_STYLE_ON_ACTION(payload)
+    )
   }
 }
 
