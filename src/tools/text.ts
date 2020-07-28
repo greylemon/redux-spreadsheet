@@ -16,6 +16,7 @@ import {
   IRichTextBlock,
   IInlineStyles,
   ICell,
+  IRows,
 } from '../@types/state'
 import { getElementaryRanges, mergeRanges } from './range'
 import { IInlineStylesRange } from '../@types/general'
@@ -27,6 +28,7 @@ import {
 } from '../constants/types'
 import { exactNumberRegex } from './regex'
 import { getFontStyleFromEditorState } from './style'
+import { getMergeArea } from '../redux/tools/merge'
 
 export const getRangesFromInlineRanges = (
   inlineStyleRanges: RawDraftInlineStyleRange[]
@@ -168,6 +170,7 @@ export const createValueFromEditorState = (
 }
 
 export const createValueFromCellAndEditorState = (
+  data: IRows,
   cell: ICell,
   editorState: EditorState
 ): ICell => {
@@ -177,7 +180,11 @@ export const createValueFromCellAndEditorState = (
     if (newCell === undefined) newCell = {}
     if (newCell.style === undefined) newCell.style = {}
 
-    if (cell.merged) newCell.merged = cell.merged
+    if (cell.merged) {
+      newCell.merged = {
+        area: getMergeArea(data, cell.merged),
+      }
+    }
 
     if (cell.style && cell.style.block) newCell.style.block = cell.style.block
   }

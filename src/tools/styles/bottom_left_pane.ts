@@ -20,7 +20,6 @@ import {
   IFreezeColumnCount,
   IFreezeRowCount,
   ISelectionArea,
-  IArea,
 } from '../../@types/state'
 import {
   STYLE_SELECTION_BORDER_WIDTH,
@@ -28,6 +27,7 @@ import {
   STYLE_SELECTION_BORDER_STYLE,
   STYLE_SELECTION_AREA_Z_INDEX,
 } from '../../constants/styles'
+import { getMergeArea } from '../../redux/tools/merge'
 
 export const computeActiveCellBottomLeftStyle: IComputeActiveCellStyle = (
   position,
@@ -49,17 +49,7 @@ export const computeActiveCellBottomLeftStyle: IComputeActiveCellStyle = (
       : undefined
 
   if (mergeData) {
-    let mergedArea: IArea
-
-    if (mergeData.area) {
-      mergedArea = mergeData.area
-    } else {
-      const { parent } = mergeData
-
-      mergedArea = data[parent.y][parent.x].merged.area
-    }
-
-    const { start, end } = mergedArea
+    const { start, end } = getMergeArea(data, mergeData)
 
     height =
       rowOffsets[end.y] +

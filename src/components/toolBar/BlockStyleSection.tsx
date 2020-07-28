@@ -1,13 +1,10 @@
-import React, { FunctionComponent, useCallback, MouseEvent } from 'react'
+import React, { FunctionComponent } from 'react'
 import {
   FormatBold,
   FormatItalic,
   FormatStrikethrough,
   FormatUnderlined,
 } from '@material-ui/icons'
-import { shallowEqual, useDispatch } from 'react-redux'
-import { SmallLabelButton } from '../misc/buttons'
-import { useTypedSelector } from '../../redux/redux'
 import {
   selectIsBold,
   selectIsItalic,
@@ -20,42 +17,7 @@ import {
   THUNK_TOGGLE_ITALIC,
   THUNK_TOGGLE_BOLD,
 } from '../../redux/thunks/style'
-import IRootStore, { IAppThunk } from '../../@types/store'
-
-const GenericStyleButton: FunctionComponent<{
-  selectIsToggled: (rootStore: IRootStore) => boolean
-  title: string
-  IconComponent: FunctionComponent
-  thunk: () => IAppThunk
-}> = ({ title, selectIsToggled, IconComponent, thunk }) => {
-  const dispatch = useDispatch()
-  const isToggled = useTypedSelector(
-    (state) => selectIsToggled(state),
-    shallowEqual
-  )
-
-  const handleMouseDown = useCallback(
-    (event: MouseEvent) => {
-      event.preventDefault()
-    },
-    [dispatch]
-  )
-
-  const handleClick = useCallback(() => {
-    dispatch(thunk())
-  }, [dispatch])
-
-  return (
-    <SmallLabelButton
-      title={title}
-      isToggled={isToggled}
-      onMouseDown={handleMouseDown}
-      onClick={handleClick}
-    >
-      <IconComponent />
-    </SmallLabelButton>
-  )
-}
+import { GenericStyleButton } from './common'
 
 const UnderlineAction: FunctionComponent = () => (
   <GenericStyleButton

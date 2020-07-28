@@ -7,7 +7,7 @@ import {
 import IRootStore from '../../@types/store'
 import { IGeneralActionPayload } from '../../@types/history'
 import { ExcelActions } from '../store'
-import { selectCell } from '../selectors/activeSheet'
+import { selectCell, selectData } from '../selectors/activeSheet'
 import { createValueFromCellAndEditorState } from '../../tools/text'
 import { isCellEqualOtherCell } from './compare'
 
@@ -23,6 +23,7 @@ export const dispatchSaveActiveCell = (
   state: IRootStore
 ) => {
   const newCell = createValueFromCellAndEditorState(
+    selectData(state),
     selectCell(state),
     selectEditorState(state)
   )

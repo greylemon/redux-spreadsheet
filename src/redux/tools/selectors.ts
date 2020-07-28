@@ -8,6 +8,7 @@ import {
   IStyles,
   IMerged,
 } from '../../@types/state'
+import { getMergeArea } from './merge'
 
 // //////////////////////////////////////////////////////////////
 // FUNCTIONS TO FETCH EXCEL DATA FROM REDUCER
@@ -49,20 +50,7 @@ export const nSelectMerged = (state: IExcelState): IMerged | undefined => {
 export const nSelectMergeCellArea = (state: IExcelState): IArea | undefined => {
   const merged = nSelectMerged(state)
 
-  if (merged) {
-    let mergedArea: IArea
-
-    if (merged.area) {
-      mergedArea = merged.area
-    } else {
-      const data = nSelectActiveSheetData(state)
-      const { parent } = merged
-
-      mergedArea = data[parent.y][parent.x].merged.area
-    }
-
-    return mergedArea
-  }
-
-  return undefined
+  return merged
+    ? getMergeArea(nSelectActiveSheetData(state), merged)
+    : undefined
 }

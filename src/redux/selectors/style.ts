@@ -96,5 +96,5 @@ export const selectIsMergable = createSelector(
       !checkIsAreaEqualPosition(inactiveSelectionAreas[0])) ||
       (inactiveSelectionAreas.length === 0 &&
         cellType !== TYPE_MERGE &&
-        merged))
+        merged !== undefined))
 )

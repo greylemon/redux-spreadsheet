@@ -33,14 +33,13 @@ export const MERGE_AREA = (
   action: PayloadAction<IGeneralActionPayload>
 ): IExcelState => {
   const data = nSelectActiveSheetData(state)
-  const { activeCellPosition, inactiveSelectionAreas } = action.payload
-
-  state.activeCellPosition = activeCellPosition
+  const { inactiveSelectionAreas } = action.payload
 
   if (inactiveSelectionAreas.length === 0) {
-    const mergedArea = nSelectMergeCellArea(state)
     // Colapse merge area
+    const mergedArea = nSelectMergeCellArea(state)
     const { xRange, yRange } = getAreaRanges(mergedArea)
+    state.activeCellPosition = mergedArea.start
 
     for (let rowIndex = yRange.start; rowIndex <= yRange.end; rowIndex += 1) {
       for (
@@ -61,6 +60,8 @@ export const MERGE_AREA = (
     const inactiveSelectionArea = inactiveSelectionAreas[0]
     const mergedArea: IArea = getOrderedAreaFromArea(inactiveSelectionArea)
     const blockStyle = nSelectActiveCellStyle(state)
+
+    state.activeCellPosition = mergedArea.start
 
     for (
       let rowIndex = mergedArea.start.y;

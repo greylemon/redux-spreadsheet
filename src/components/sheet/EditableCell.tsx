@@ -101,7 +101,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 
   style = useMemo(
     (): CSSProperties =>
-      merged && type !== TYPE_MERGE
+      merged && merged.area && type !== TYPE_MERGE
         ? {
             ...style,
             height:

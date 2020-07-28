@@ -1,7 +1,7 @@
 import cloneDeep from 'clone-deep'
 import { IRows, IArea, IRange, IColumnIndex, IRowIndex } from '../@types/state'
-import { TYPE_MERGE } from '../constants/types'
 import { checkIsAreaEqualOtherArea } from './area'
+import { getMergeArea } from '../redux/tools/merge'
 
 /**
  * Sets the new area to be the smallest area which covers both newArea and mergeArea in place
@@ -45,17 +45,8 @@ const getPartialSuperAreaFromColumnRange = (
   for (let column = xRange.start; column <= xRange.end; column += 1) {
     const cellData = rowData[column]
 
-    if (cellData && cellData.merged) {
-      let mergedArea: IArea
-      if (cellData.type === TYPE_MERGE) {
-        const { parent } = cellData.merged
-        mergedArea = data[parent.y][parent.x].merged.area
-      } else {
-        mergedArea = cellData.merged.area
-      }
-
-      changeAreaToSuperAreaInPlace(mergedArea, newArea)
-    }
+    if (cellData && cellData.merged)
+      changeAreaToSuperAreaInPlace(getMergeArea(data, cellData.merged), newArea)
   }
 
   return newArea
@@ -78,18 +69,11 @@ const getPartialSuperAreaFromRowRange = (
     if (rowData && rowData[column]) {
       const cellData = rowData[column]
 
-      if (cellData.merged) {
-        let mergedArea: IArea
-
-        if (cellData.type === TYPE_MERGE) {
-          const { parent } = cellData.merged
-          mergedArea = data[parent.y][parent.x].merged.area
-        } else {
-          mergedArea = cellData.merged.area
-        }
-
-        changeAreaToSuperAreaInPlace(mergedArea, newArea)
-      }
+      if (cellData.merged)
+        changeAreaToSuperAreaInPlace(
+          getMergeArea(data, cellData.merged),
+          newArea
+        )
     }
   }
 

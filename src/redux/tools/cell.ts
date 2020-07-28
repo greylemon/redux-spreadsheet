@@ -1,10 +1,15 @@
 import { IExcelState } from '../../@types/state'
-import { nSelectActiveSheet, nSelectActiveCell } from './selectors'
+import {
+  nSelectActiveSheet,
+  nSelectActiveCell,
+  nSelectActiveSheetData,
+} from './selectors'
 import { createValueFromCellAndEditorState } from '../../tools/text'
 import { updateActiveCellRef } from '../../tools/formula/formula'
 
 export const updateActiveCellValueInPlace = (state: IExcelState): void => {
   const cellValue = createValueFromCellAndEditorState(
+    nSelectActiveSheetData(state),
     nSelectActiveCell(state),
     state.editorState
   )
