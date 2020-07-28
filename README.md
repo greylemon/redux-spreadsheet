@@ -85,6 +85,7 @@ const SomeComponent = () => {
   - [ ] Column/row references (=SUM(A:A) or =SUM(1:1))
   - [ ] Variables
   - [ ] Optimize range edit/delete
+  - [ ] Normalize dependents/independents
 - Formula bar
   - [ ] Input
 - File upload
