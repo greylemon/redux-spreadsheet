@@ -27,9 +27,10 @@ export const CELL_KEY_DOWN = (state: IExcelState): IExcelState => {
 
   const mergeData = nSelectMergeCellArea(state)
 
-  state.activeCellPosition.y = mergeData
-    ? mergeData.end.y + 1
-    : state.activeCellPosition.y + 1
+  state.activeCellPosition.y = Math.min(
+    mergeData ? mergeData.end.y + 1 : state.activeCellPosition.y + 1,
+    activeSheet.rowCount
+  )
   state.inactiveSelectionAreas = []
   state.selectionAreaIndex = -1
   state.selectionArea = undefined
@@ -46,9 +47,12 @@ export const CELL_KEY_UP = (state: IExcelState): IExcelState => {
 
   const mergeData = nSelectMergeCellArea(state)
 
-  state.activeCellPosition.y = mergeData
-    ? mergeData.start.y - 1
-    : state.activeCellPosition.y - 1
+  state.activeCellPosition.y = Math.max(
+    mergeData
+      ? mergeData.start.y - 1
+      : Math.max(state.activeCellPosition.y - 1, 1),
+    1
+  )
   state.inactiveSelectionAreas = []
   state.selectionAreaIndex = -1
   state.selectionArea = undefined
@@ -67,9 +71,10 @@ export const CELL_KEY_RIGHT = (state: IExcelState): IExcelState => {
 
   const mergeData = nSelectMergeCellArea(state)
 
-  state.activeCellPosition.x = mergeData
-    ? mergeData.end.x + 1
-    : state.activeCellPosition.x + 1
+  state.activeCellPosition.x = Math.min(
+    mergeData ? mergeData.end.x + 1 : state.activeCellPosition.x + 1,
+    activeSheet.columnCount
+  )
   state.inactiveSelectionAreas = []
   state.selectionAreaIndex = -1
   state.selectionArea = undefined
@@ -86,9 +91,10 @@ export const CELL_KEY_LEFT = (state: IExcelState): IExcelState => {
 
   const mergeData = nSelectMergeCellArea(state)
 
-  state.activeCellPosition.x = mergeData
-    ? mergeData.start.x - 1
-    : state.activeCellPosition.x - 1
+  state.activeCellPosition.x = Math.max(
+    mergeData ? mergeData.start.x - 1 : state.activeCellPosition.x - 1,
+    1
+  )
   state.inactiveSelectionAreas = []
   state.selectionAreaIndex = -1
   state.selectionArea = undefined
