@@ -3,13 +3,16 @@ import IRootStore from '../@types/store'
 import { ExcelActions } from './store'
 import { IExcelState } from '../@types/state'
 
-const BLOB_PLACEHOLDER = '<<LONG_BLOB>>'
+const BLOB_PLACEHOLDER = {}
 
-const BIG_DATA: Partial<IExcelState> | any = {
+const BIG_DATA: Partial<IExcelState> = {
   sheetsMap: BLOB_PLACEHOLDER,
   results: BLOB_PLACEHOLDER,
   dependentReferences: BLOB_PLACEHOLDER,
+  dependentIndependentReferences: BLOB_PLACEHOLDER,
   independentReferences: BLOB_PLACEHOLDER,
+  independentDependentReferences: BLOB_PLACEHOLDER,
+  sheetToIndependentDependentMap: BLOB_PLACEHOLDER,
 }
 
 export const devTools: any = {
