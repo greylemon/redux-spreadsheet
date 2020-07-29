@@ -7,6 +7,7 @@ import {
   IRowIndex,
   IColumnIndex,
   IIndependentReferences,
+  IIndependentDependentReferenceMap,
 } from '../../@types/state'
 import { IAddressReference } from '../../@types/objects'
 
@@ -53,10 +54,12 @@ export const createDependentRowAddressReferences = (
 
 export const createDependentAddressReferences = (
   row: IColumnIndependentReference,
+  independentDependents: IIndependentDependentReferenceMap,
   columnIndex: IColumnIndex
 ): IAddressReference[] => {
   let addressReferences: IAddressReference[] = []
-  const dependentSheets = row[columnIndex]
+  const dependentSheetId = row[columnIndex]
+  const dependentSheets = independentDependents[dependentSheetId]
 
   if (dependentSheets)
     Object.keys(dependentSheets).forEach((dependentSheetName) => {
@@ -70,6 +73,7 @@ export const createDependentAddressReferences = (
 
 export const createIndependentRowAddressReferences = (
   sheetIndependents: IRowIndependentReference,
+  independentDependents: IIndependentDependentReferenceMap,
   rowIndex: IRowIndex
 ): IAddressReference[] => {
   const row = sheetIndependents[rowIndex]
@@ -78,7 +82,11 @@ export const createIndependentRowAddressReferences = (
   if (row)
     Object.keys(row).forEach((columnIndex) => {
       addressReferences = addressReferences.concat(
-        createDependentAddressReferences(row, +columnIndex)
+        createDependentAddressReferences(
+          row,
+          independentDependents,
+          +columnIndex
+        )
       )
     })
 
@@ -87,6 +95,7 @@ export const createIndependentRowAddressReferences = (
 
 export const createSheetAddressReferences = (
   independents: IIndependentReferences,
+  independentDependents: IIndependentDependentReferenceMap,
   sheetName: ISheetName
 ) => {
   const sheetIndependents = independents[sheetName]
@@ -95,7 +104,11 @@ export const createSheetAddressReferences = (
   if (sheetIndependents)
     Object.keys(sheetIndependents).forEach((rowIndex) => {
       addressReferences = addressReferences.concat(
-        createIndependentRowAddressReferences(sheetIndependents, +rowIndex)
+        createIndependentRowAddressReferences(
+          sheetIndependents,
+          independentDependents,
+          +rowIndex
+        )
       )
     })
 
@@ -103,13 +116,18 @@ export const createSheetAddressReferences = (
 }
 
 export const createWorkbookAddressReferences = (
-  independents: IIndependentReferences
+  independents: IIndependentReferences,
+  independentDependents: IIndependentDependentReferenceMap
 ) => {
   let addressReferences: IAddressReference[] = []
 
   Object.keys(independents).forEach((sheetName) => {
     addressReferences = addressReferences.concat(
-      createSheetAddressReferences(independents, sheetName)
+      createSheetAddressReferences(
+        independents,
+        independentDependents,
+        sheetName
+      )
     )
   })
 

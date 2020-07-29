@@ -2,7 +2,7 @@ import {
   ISheetName,
   IDependentReferences,
   IIndependentReferences,
-  IDependentReference,
+  IDependentIndependentReference,
   IAreaRange,
   IPosition,
   IColumnDependentReference,
@@ -12,7 +12,7 @@ import {
 } from '../../@types/state'
 
 const clearIndependentsDependentAreaRanges = (
-  sheetIndependents: IDependentReference,
+  sheetIndependents: IDependentIndependentReference,
   sheetName: ISheetName,
   areaRanges: IAreaRange[]
 ): void => {
@@ -27,7 +27,7 @@ const clearIndependentsDependentAreaRanges = (
 }
 
 const clearIndependentsDependentPositions = (
-  sheetIndependents: IDependentReference,
+  sheetIndependents: IDependentIndependentReference,
   sheetName: ISheetName,
   positions: IPosition[]
 ): void => {

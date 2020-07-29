@@ -27,7 +27,9 @@ export const updateActiveCellValueInPlace = (state: IExcelState): void => {
     state.activeCellPosition,
     state.sheetsMap,
     state.dependentReferences,
+    state.dependentIndependentReferences,
     state.independentReferences,
+    state.independentDependentReferences,
     state.results
   )
 }

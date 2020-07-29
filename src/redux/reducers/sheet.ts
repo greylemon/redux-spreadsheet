@@ -77,6 +77,7 @@ export const DELETE_SHEET = (state: IExcelState): IExcelState => {
     state.sheetsMap,
     state.dependentReferences,
     state.independentReferences,
+    state.independentDependentReferences,
     state.results
   )
 
