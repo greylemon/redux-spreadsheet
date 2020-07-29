@@ -10,7 +10,7 @@ const ColumnCell: FunctionComponent<ICellProps> = ({ style, columnIndex }) => {
   return (
     <div
       id={`column={"x":${columnIndex}}`}
-      className="unselectable cell cellHeader cellHeader--column"
+      className="unselectable cell cellHeader cellHeader__column"
       style={style}
     >
       {columnName}

@@ -63,10 +63,12 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   )
 
   window.onmousemove = useCallback(
-    (event: MouseEvent) => {
-      switch (event.which) {
+    ({ which, clientX, clientY, shiftKey, ctrlKey }: MouseEvent) => {
+      switch (which) {
         case 1:
-          dispatch(THUNK_MOUSE_MOVE({ x: event.clientX, y: event.clientY }))
+          dispatch(
+            THUNK_MOUSE_MOVE({ x: clientX, y: clientY }, shiftKey, ctrlKey)
+          )
           break
         default:
           break
@@ -76,8 +78,8 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   )
 
   window.ontouchmove = useCallback(
-    (event: TouchEvent) => {
-      const { clientX, clientY } = event.touches[0]
+    ({ touches }: TouchEvent) => {
+      const { clientX, clientY } = touches[0]
       dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }))
     },
     [dispatch]

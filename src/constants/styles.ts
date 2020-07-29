@@ -41,7 +41,7 @@ export const STYLE_BOX_SHADOW = (value: string): CSSProperties => ({
 export const rowDraggerStyle: CSSProperties = {
   zIndex: 100000,
   position: 'absolute',
-  bottom: -3,
+  bottom: 0,
 
   width: SHEET_COLUMN_WIDTH_HEADER - 1,
   height: 5,
@@ -57,12 +57,15 @@ export const columnDraggerStyle: CSSProperties = {
   zIndex: 100000,
   position: 'absolute',
   top: 0,
-  right: -3,
+  right: 0,
 
   width: 5,
   height: SHEET_ROW_HEIGHT_HEADER - 1,
   borderRadius: 1,
 }
+
+export const rowDraggerSpaceOffset = 6
+export const columnDraggerSpaceOffset = 6
 
 export const columnDraggerIndicatorStyle: CSSProperties = {
   backgroundColor: '#1E90FF',

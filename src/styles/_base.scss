@@ -34,8 +34,8 @@ $customBorderStyle: 'solid';
   }
 
   &__block {
-    border-left: thin solid rgba(223, 223, 223, 0.938);
-    border-top: thin solid rgba(223, 223, 223, 0.938);
+    border-right: thin solid rgba(223, 223, 223, 0.938);
+    border-bottom: thin solid rgba(223, 223, 223, 0.938);
     
     padding: 2px 5px;
     z-index: 0;
@@ -68,10 +68,18 @@ $customBorderStyle: 'solid';
   background-color: #f6f6f6 !important;
   font-size: 12px;
 
-  border-left: thin solid rgb(199, 199, 199);
-  border-top: thin solid rgb(199, 199, 199);
+  border-right: thin solid rgb(199, 199, 199);
+  border-bottom: thin solid rgb(199, 199, 199);
   
   box-sizing: border-box;
+
+  &__row {
+    border-left: thin solid rgb(199, 199, 199);
+  }
+
+  &__column {
+    border-top: thin solid rgb(199, 199, 199);
+  }
 }
 
 .richText {

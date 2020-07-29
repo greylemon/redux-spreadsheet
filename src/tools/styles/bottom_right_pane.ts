@@ -120,10 +120,11 @@ export const computeSelectionAreaBottomRightStyle: IComputeSelectionAreaStyle = 
     customSelectionStyle.borderTopStyle = STYLE_SELECTION_BORDER_STYLE
   }
 
-  customSelectionStyle.left = left
-  customSelectionStyle.top = top
-  customSelectionStyle.width = selectionAreaWidth - 1
-  customSelectionStyle.height = selectionAreaHeight - 1
+  customSelectionStyle.left = left - 1
+  customSelectionStyle.top = top - 1
+  customSelectionStyle.width = selectionAreaWidth + 1
+  customSelectionStyle.height = selectionAreaHeight + 1
+  customSelectionStyle.boxSizing = 'border-box'
 
   return customSelectionStyle
 }

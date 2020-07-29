@@ -145,7 +145,7 @@ export const selectRowDraggerStyle = createSelector(
         dragRowOffset > freezeRowLength &&
         dragRowOffset - scrollOffsetY <= freezeRowLength
       ) {
-        style.top = dragRowOffset - scrollOffsetY
+        style.top = +style.top - scrollOffsetY
       }
     }
 
@@ -186,7 +186,7 @@ export const selectColumnDraggerStyle = createSelector(
         dragColumnOffset > freezeColumnLength &&
         dragColumnOffset - scrollOffsetX <= freezeColumnLength
       ) {
-        style.left = dragColumnOffset - scrollOffsetX
+        style.left = +style.left - scrollOffsetX
       }
     }
 

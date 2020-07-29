@@ -269,8 +269,8 @@ export const getCellMapSetFromAreas = (areas: IArea[]): ICellMapSet => {
 export const boundPositionInOrderedArea = (
   position: IPosition,
   orderedSheetArea: IArea,
-  rowAdjustment = -1,
-  columnAdjustment = -1
+  rowAdjustment = -2,
+  columnAdjustment = -2
 ): IPosition => {
   const boundedPosition: IPosition = { ...position }
   const scrollBarSize = getScrollbarSize()

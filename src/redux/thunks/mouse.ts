@@ -37,6 +37,10 @@ import {
   dispatchSaveActiveCell,
   getGeneralActionPayload,
 } from '../tools/history'
+import {
+  rowDraggerSpaceOffset,
+  columnDraggerSpaceOffset,
+} from '../../constants/styles'
 
 export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
@@ -62,7 +66,7 @@ export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
       ExcelActions.ROW_DRAG_END({
         ...getGeneralActionPayload(state),
         dragRowIndex,
-        height: denormalizeRowHeight(value),
+        height: denormalizeRowHeight(value + rowDraggerSpaceOffset - 1),
       })
     )
   } else if (isColumnDrag) {
@@ -72,23 +76,26 @@ export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
     const scrollOffsetX = selectScrollOffsetX(state)
     const freezeColumnCount = selectFreezeColumnCount(state)
 
-    let value = dragColumnOffset - columnOffsets[dragColumnIndex]
+    let value =
+      Math.max(dragColumnOffset, columnDraggerSpaceOffset) -
+      columnOffsets[dragColumnIndex]
 
     if (dragColumnIndex <= freezeColumnCount) value -= scrollOffsetX
     dispatch(
       ExcelActions.COLUMN_DRAG_END({
         ...getGeneralActionPayload(state),
         dragColumnIndex,
-        width: denormalizeColumnWidth(value),
+        width: denormalizeColumnWidth(value + columnDraggerSpaceOffset - 1),
       })
     )
   }
 }
 
-export const THUNK_MOUSE_MOVE = (mousePosition: IPosition): IAppThunk => (
-  dispatch,
-  getState
-) => {
+export const THUNK_MOUSE_MOVE = (
+  mousePosition: IPosition,
+  shiftKey?: boolean,
+  ctrlKey?: boolean
+): IAppThunk => (dispatch, getState) => {
   const state = getState()
 
   const freezeColumnCount = selectFreezeColumnCount(state)
@@ -152,6 +159,7 @@ export const THUNK_MOUSE_MOVE = (mousePosition: IPosition): IAppThunk => (
 
         if (cellElement) {
           const { id: cellId } = cellElement
+
           const [, cellAddress] = cellId.split('=')
           scopedPosition = JSON.parse(cellAddress)
         }
@@ -171,7 +179,11 @@ export const THUNK_MOUSE_MOVE = (mousePosition: IPosition): IAppThunk => (
         scopedPosition
       )
     ) {
-      dispatch(dispatch(ExcelActions.CELL_MOUSE_ENTER(scopedPosition)))
+      dispatch(
+        ctrlKey
+          ? ExcelActions.CELL_MOUSE_ENTER_CTRL(scopedPosition)
+          : ExcelActions.CELL_MOUSE_ENTER(scopedPosition)
+      )
     }
   } else if (selectIsRowDrag(state)) {
     const rowOffsets = selectRowOffsets(state)
@@ -181,7 +193,7 @@ export const THUNK_MOUSE_MOVE = (mousePosition: IPosition): IAppThunk => (
     dispatch(
       ExcelActions.ROW_DRAG_MOVE(
         Math.max(
-          rowOffsets[dragRowIndex] + 3,
+          rowOffsets[dragRowIndex] + 1,
           boundedPosition.y + scrollOffsetY - sheetAreaStart.y
         )
       )
@@ -193,7 +205,7 @@ export const THUNK_MOUSE_MOVE = (mousePosition: IPosition): IAppThunk => (
     dispatch(
       ExcelActions.COLUMN_DRAG_MOVE(
         Math.max(
-          columnOffsets[dragColumnIndex] + 3,
+          columnOffsets[dragColumnIndex] + 1,
           boundedPosition.x + scrollOffsetX - sheetAreaStart.x
         )
       )
@@ -212,7 +224,7 @@ export const THUNK_MOUSE_ENTER_DRAG_ROW = (rowIndex: IRowIndex): IAppThunk => (
   dispatch(
     ExcelActions.ROW_DRAG_ENTER({
       dragRowIndex: rowIndex,
-      dragRowOffset: rowOffsets[rowIndex] + rowHeightGetter(rowIndex) - 2,
+      dragRowOffset: rowOffsets[rowIndex] + rowHeightGetter(rowIndex) - 5,
     })
   )
 }
@@ -228,7 +240,7 @@ export const THUNK_MOUSE_ENTER_DRAG_COLUMN = (
     ExcelActions.COLUMN_DRAG_ENTER({
       dragColumnIndex: columnIndex,
       dragColumnOffset:
-        columnOffsets[columnIndex] + columnWidthGetter(columnIndex) - 2,
+        columnOffsets[columnIndex] + columnWidthGetter(columnIndex) - 5,
     })
   )
 }

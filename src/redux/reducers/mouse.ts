@@ -35,6 +35,10 @@ import {
 import { updateActiveCellValueInPlace } from '../tools/cell'
 import { TYPE_TEXT } from '../../constants/types'
 import { IGeneralActionPayload } from '../../@types/history'
+import {
+  rowDraggerSpaceOffset,
+  columnDraggerSpaceOffset,
+} from '../../constants/styles'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -122,16 +126,35 @@ export const CELL_MOUSE_ENTER = (
   action: PayloadAction<IPosition>
 ): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
-  if (state.isSelectionMode) {
-    const position = action.payload
 
-    state.selectionArea = getEntireSuperArea(
-      { start: state.activeCellPosition, end: position },
-      activeSheet.data
-    )
+  const position = action.payload
 
-    state.lastVisitedCell = position
-  }
+  state.selectionArea = getEntireSuperArea(
+    { start: state.activeCellPosition, end: position },
+    activeSheet.data
+  )
+
+  state.inactiveSelectionAreas = []
+
+  state.lastVisitedCell = position
+
+  return state
+}
+
+export const CELL_MOUSE_ENTER_CTRL = (
+  state: IExcelState,
+  action: PayloadAction<IPosition>
+): IExcelState => {
+  const activeSheet = nSelectActiveSheet(state)
+
+  const position = action.payload
+
+  state.selectionArea = getEntireSuperArea(
+    { start: state.activeCellPosition, end: position },
+    activeSheet.data
+  )
+
+  state.lastVisitedCell = position
 
   return state
 }
@@ -300,7 +323,7 @@ export const ROW_DRAG_END = (
 
   const activeSheet = nSelectActiveSheet(state)
 
-  if (height <= denormalizeRowHeight(1))
+  if (height <= denormalizeRowHeight(rowDraggerSpaceOffset))
     activeSheet.hiddenRows[dragRowIndex] = true
 
   activeSheet.rowHeights[dragRowIndex] = height
@@ -330,7 +353,7 @@ export const COLUMN_DRAG_END = (
   state.activeCellPosition = activeCellPosition
   state.inactiveSelectionAreas = inactiveSelectionAreas
 
-  if (width <= denormalizeColumnWidth(1))
+  if (width <= denormalizeColumnWidth(columnDraggerSpaceOffset))
     activeSheet.hiddenColumns[dragColumnIndex] = true
 
   activeSheet.columnWidths[dragColumnIndex] = width

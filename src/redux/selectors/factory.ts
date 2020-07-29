@@ -177,8 +177,8 @@ export const selectFactoryActiveCellStyle = (
         }
 
         activeCellStyle = {
-          top: top,
-          left: left,
+          top: top - 1,
+          left: left - 1,
           height: height + 1,
           width: width + 1,
           minHeight: height + 1,

@@ -8,7 +8,7 @@ const RowCell: FunctionComponent<ICellProps> = ({ style, rowIndex }) => {
   return (
     <div
       id={`row={"y":${rowIndex}}`}
-      className="unselectable cell cellHeader cellHeader--row"
+      className="unselectable cell cellHeader cellHeader__row"
       style={style}
     >
       {rowIndex}
