@@ -64,12 +64,17 @@ export const createInitialExcelState = (): IExcelState => ({
 
   sheetsMap: createSheetsMap(),
 
-  dependentReferences: {},
-  independentReferences: {},
   results: {},
   sheetNameText: '',
   scrollOffset: { x: 0, y: 0 },
   sheetDimensions: { x: 0, y: 0 },
 
   lastVisitedCell: { x: 0, y: 0 },
+
+  dependentReferences: {},
+  dependentIndependentReferences: {},
+
+  independentReferences: {},
+  independentDependentReferences: {},
+  sheetToIndependentDependentMap: {},
 })

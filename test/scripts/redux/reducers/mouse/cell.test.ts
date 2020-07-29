@@ -45,32 +45,6 @@ describe('Cell mouse operations', () => {
         expect(activeCellPosition).toEqual(position)
       })
     })
-
-    describe('Move to invalid position', () => {
-      it('Move to negative position', () => {
-        const position: IPosition = { x: -1, y: -2 }
-
-        store.dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
-
-        const activeCellPosition = selectActiveCellPosition(store.getState())
-
-        expect(activeCellPosition).toEqual(initialExcelState.activeCellPosition)
-      })
-
-      it('Move to out of bound positive position', () => {
-        const activeSheet = nSelectActiveSheet(initialExcelState)
-        const position: IPosition = {
-          x: activeSheet.columnCount + 1,
-          y: activeSheet.rowCount + 1,
-        }
-
-        store.dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
-
-        const activeCellPosition = selectActiveCellPosition(store.getState())
-
-        expect(activeCellPosition).toEqual(initialExcelState.activeCellPosition)
-      })
-    })
   })
 
   describe('Cell selection', () => {

@@ -1,5 +1,5 @@
 import FormulaParser from 'fast-formula-parser'
-import { ISheetsMap } from '../../@types/state'
+import { ISheetsMap, ISheetName, IPosition } from '../../@types/state'
 import { TYPE_FORMULA, TYPE_NUMBER, TYPE_TEXT } from '../../constants/types'
 
 export const createFormulaParser = (sheetsMap: ISheetsMap): FormulaParser =>
@@ -79,3 +79,33 @@ export const createFormulaParser = (sheetsMap: ISheetsMap): FormulaParser =>
       return rangeData
     },
   })
+
+export const computeResult = (
+  parser: FormulaParser,
+  sheetsMap: ISheetsMap,
+  sheetName: ISheetName,
+  position: IPosition
+) => {
+  try {
+    const cell = sheetsMap[sheetName].data[position.y][position.x]
+
+    if (cell.type === TYPE_FORMULA) {
+      const { results } = window
+
+      if (!results[sheetName]) results[sheetName] = {}
+      if (!results[sheetName][position.y]) results[sheetName][position.y] = {}
+
+      results[sheetName][position.y][position.x] = parser.parse(cell.value, {
+        sheet: sheetName,
+        row: position.y,
+        col: position.x,
+      })
+    }
+  } catch (error) {
+    console.error(
+      `Error at [ sheet name: ${sheetName} | position:  ${JSON.stringify(
+        position
+      )} ] - ${error}`
+    )
+  }
+}

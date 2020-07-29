@@ -1,20 +1,20 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { EditorState } from 'draft-js'
-import { IExcelState, IEditorState } from '../../@types/state'
+import { IExcelState, IEditorState, IPosition } from '../../@types/state'
 import {
   nSelectMergeCellArea,
   nSelectActiveSheet,
   nSelectActiveSheetData,
   nSelectActiveCell,
 } from '../tools/selectors'
-import { TYPE_TEXT, TYPE_MERGE } from '../../constants/types'
+import { TYPE_MERGE } from '../../constants/types'
 import {
   createEditorStateFromCell,
   getFontBlockEditorState,
 } from '../../tools/cell'
 import { getCellMapSetFromState } from '../tools/area'
 import { IGeneralActionPayload } from '../../@types/history'
-import { updateActiveCellRef } from '../../tools/formula/formula'
+import { deletePositions } from '../../tools/formula/formula'
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state
@@ -138,6 +138,8 @@ export const CELL_KEY_DELETE = (
   const cellMapSet = getCellMapSetFromState(state)
   const data = nSelectActiveSheetData(state)
 
+  const positionsToUpdate: IPosition[] = []
+
   Object.keys(cellMapSet).forEach((rowIndex) => {
     const columnIndices = cellMapSet[rowIndex]
 
@@ -147,25 +149,29 @@ export const CELL_KEY_DELETE = (
       columnIndices.forEach((columnIndex) => {
         const cell = row[columnIndex]
 
-        if (cell) {
+        if (cell && cell.value !== undefined) {
           if (cell.type !== TYPE_MERGE) {
-            cell.type = TYPE_TEXT
             delete cell.value
             delete cell.type
           }
 
-          updateActiveCellRef(
-            state.activeSheetName,
-            { x: columnIndex, y: +rowIndex },
-            state.sheetsMap,
-            state.dependentReferences,
-            state.independentReferences,
-            state.results
-          )
+          positionsToUpdate.push({ x: columnIndex, y: +rowIndex })
         }
       })
     }
   })
+
+  deletePositions(
+    state.activeSheetName,
+    positionsToUpdate,
+    state.sheetsMap,
+    state.dependentReferences,
+    state.independentDependentReferences,
+    state.independentReferences,
+    state.independentDependentReferences,
+    state.sheetToIndependentDependentMap,
+    state.results
+  )
 
   return state
 }

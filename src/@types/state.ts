@@ -159,17 +159,24 @@ export type ISheetsMap = {
   [key: string]: ISheet
 }
 
-export type IDependentReferenceData = {
+// Dependent independent references
+export type IDependentIndependentReferenceData = {
   positions?: IPosition[]
   areaRanges?: IAreaRange[]
 }
 
-export type IDependentReference = {
-  [key: string]: IDependentReferenceData
+export type IDependentIndependentReference = {
+  [key: string]: IDependentIndependentReferenceData
 }
 
+// Dependent to independent reference map
+export type IDependentIndependentReferenceMap = {
+  [key: string]: IDependentIndependentReference
+}
+
+// Dependent references
 export type IColumnDependentReference = {
-  [key: string]: IDependentReference
+  [key: string]: string
 }
 
 export type IRowDependentReference = {
@@ -180,8 +187,7 @@ export type IDependentReferences = {
   [key: string]: IRowDependentReference
 }
 
-// Independent references
-
+// Independent dependent references
 export type IIndependentDependentColumnReference = {
   [key: string]: boolean
 }
@@ -194,8 +200,23 @@ export type IIndependentDependentReference = {
   [key: string]: IIndependentDependentRowReference
 }
 
-export type IColumnIndependentReference = {
+// Sheet name to independent map
+export type ISheetIndependentDependentSet = {
+  [key: string]: boolean
+}
+
+export type ISheetToIndependentDependentMap = {
+  [key: string]: ISheetIndependentDependentSet
+}
+
+// Independent dependent references
+export type IIndependentDependentReferenceMap = {
   [key: string]: IIndependentDependentReference
+}
+
+// Independent references
+export type IColumnIndependentReference = {
+  [key: string]: string
 }
 
 export type IRowIndependentReference = {
@@ -252,8 +273,7 @@ export type IExcelState = {
   selectionArea?: ISelectionArea
   activeCellPosition: IActiveCellPosition
   inactiveSelectionAreas: IInactiveSelectionAreas
-  dependentReferences: IDependentReferences
-  independentReferences: IIndependentReferences
+
   results: IResults
   sheetNameText: ISheetNameText
   scrollOffset: IScrollOffset
@@ -269,4 +289,11 @@ export type IExcelState = {
   sheetDimensions: ISheetDimensions
 
   lastVisitedCell: IPosition
+
+  dependentReferences: IDependentReferences
+  dependentIndependentReferences: IDependentIndependentReferenceMap
+
+  independentReferences: IIndependentReferences
+  independentDependentReferences: IIndependentDependentReferenceMap
+  sheetToIndependentDependentMap: ISheetToIndependentDependentMap
 }

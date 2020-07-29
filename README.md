@@ -81,12 +81,13 @@ const SomeComponent = () => {
   - [x] Formula dependents map
   - [x] Formula independents map
   - [x] Formula results
-  - [ ] Clean up formula independent references
+  - [x] Clean up formula independent references
   - [ ] Column/row references (=SUM(A:A) or =SUM(1:1))
   - [ ] Variables
-  - [ ] Optimize range edit/delete
-  - [ ] Normalize dependents/independents
+  - [x] Optimize range edit/delete
+  - [x] Normalize dependents/independents
   - [ ] Error on cyclic reference
+  - [ ] Update cell only when value change
 - Formula bar
   - [ ] Input
 - File upload
