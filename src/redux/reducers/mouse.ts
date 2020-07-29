@@ -57,6 +57,7 @@ export const CELL_MOUSE_DOWN_CTRL = (
   state.activeCellPosition = position
   state.isEditMode = false
   state.isSelectionMode = true
+  state.lastVisitedCell = position
 
   return state
 }
@@ -78,6 +79,7 @@ export const CELL_MOUSE_DOWN_SHIFT = (
   state.selectionAreaIndex = 0
   state.inactiveSelectionAreas = []
   state.isEditMode = false
+  state.lastVisitedCell = position
 
   return state
 }
