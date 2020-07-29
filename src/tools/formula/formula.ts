@@ -280,19 +280,30 @@ export const updateActiveCellRef = (
       ? sheetsMap[sheetName].data[y][x]
       : undefined
 
-  // TODO : Check if the references change.. only update when there's new references
   // Delete dependency on independent
-  const sheetDependents = sheetToIndependentDependentMap[sheetName]
+  if (
+    dependents[sheetName] &&
+    dependents[sheetName][y] &&
+    dependents[sheetName][y][x]
+  ) {
+    const dependentIndependentId = dependents[sheetName][y][x]
 
-  if (sheetDependents) {
-    Object.keys(sheetDependents).forEach((id) => {
-      if (
-        independentDependent[id][sheetName] &&
-        independentDependent[id][sheetName][y] &&
-        independentDependent[id][sheetName][y][x]
-      )
-        delete independentDependent[id][sheetName][y][x]
-    })
+    const positionDependents = dependentIndependent[dependentIndependentId]
+
+    if (positionDependents)
+      Object.keys(positionDependents).forEach((independentSheetName) => {
+        const rows = independentDependent[independentSheetName]
+
+        Object.keys(rows).forEach((rowIndex) => {
+          const columns = rows[rowIndex]
+
+          Object.keys(columns).forEach((columnIndex) => {
+            delete independentDependent[
+              independents[independentSheetName][rowIndex][columnIndex]
+            ][sheetName][y][x]
+          })
+        })
+      })
   }
 
   if (cell && cell.type === TYPE_FORMULA) {
@@ -382,6 +393,118 @@ export const deleteSheetRef = (
     independentDependent,
     sheetName
   )
+
+  computeFormulas(
+    sheetsMap,
+    independents,
+    independentDependent,
+    results,
+    addressReferences
+  )
+}
+
+export const deletePositions = (
+  sheetName: ISheetName,
+  positions: IPosition[],
+  sheetsMap: ISheetsMap,
+  dependents: IDependentReferences,
+  dependentIndependent: IDependentIndependentReferenceMap,
+  independents: IIndependentReferences,
+  independentDependent: IIndependentDependentReferenceMap,
+  sheetToIndependentDependentMap: ISheetToIndependentDependentMap,
+  results: IResults
+) => {
+  const sheetIndependents = independents[sheetName]
+  const addressReferences: IAddressReference[] = []
+
+  // Remove independent dependents first
+  positions.forEach((position) => {
+    const { x, y } = position
+
+    if (
+      dependents[sheetName] &&
+      dependents[sheetName][y] &&
+      dependents[sheetName][y][x]
+    ) {
+      const dependentIndependentId = dependents[sheetName][y][x]
+
+      const positionDependents = dependentIndependent[dependentIndependentId]
+
+      if (positionDependents)
+        Object.keys(positionDependents).forEach((independentSheetName) => {
+          const rows = independentDependent[independentSheetName]
+
+          Object.keys(rows).forEach((rowIndex) => {
+            const columns = rows[rowIndex]
+
+            Object.keys(columns).forEach((columnIndex) => {
+              delete independentDependent[
+                independents[independentSheetName][rowIndex][columnIndex]
+              ][sheetName][y][x]
+            })
+          })
+        })
+    }
+
+    if (results[sheetName] && results[sheetName][y] && results[sheetName][y][x])
+      delete results[sheetName][y][x]
+    if (
+      dependents[sheetName] &&
+      dependents[sheetName][y] &&
+      dependents[sheetName][y][x]
+    ) {
+      delete dependents[sheetName][y][x]
+    }
+  })
+
+  positions.forEach((position) => {
+    const { x, y } = position
+    const cell =
+      sheetsMap[sheetName].data[y] && sheetsMap[sheetName].data[y][x]
+        ? sheetsMap[sheetName].data[y][x]
+        : undefined
+
+    if (sheetIndependents && sheetIndependents[y] && sheetIndependents[y][x]) {
+      const independentDependentId = sheetIndependents[y][x]
+
+      if (independentDependent[independentDependentId]) {
+        Object.keys(independentDependent[independentDependentId]).forEach(
+          (dependentSheetName) => {
+            const dependentSheet =
+              independentDependent[independentDependentId][dependentSheetName]
+
+            if (dependentSheet)
+              Object.keys(dependentSheet).forEach((rowIndex) => {
+                const row = dependentSheet[rowIndex]
+
+                if (row) {
+                  Object.keys(row).forEach((columnIndex) => {
+                    addressReferences.push({
+                      sheetName: dependentSheetName,
+                      position: { y: +rowIndex, x: +columnIndex },
+                    })
+                  })
+                }
+              })
+          }
+        )
+      }
+    }
+
+    if (cell && cell.type === TYPE_FORMULA) {
+      addressReferences.push({ position, sheetName })
+      assignDependentsAndIndependents(
+        independents,
+        independentDependent,
+        sheetToIndependentDependentMap,
+        dependents,
+        dependentIndependent,
+        position,
+        cell,
+        sheetName
+      )
+    }
+  })
 
   computeFormulas(
     sheetsMap,
