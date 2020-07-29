@@ -10,6 +10,7 @@ import {
   ICell,
   IIndependentDependentReferenceMap,
   IDependentIndependentReferenceMap,
+  ISheetToIndependentDependentMap,
 } from '../../@types/state'
 import { createSheetAddressReferences } from './addressReference'
 import { IAddressReference, IVisited, ICellRefMap } from '../../@types/objects'
@@ -25,6 +26,7 @@ import {
 const assignSheetIndependents = (
   independents: IIndependentReferences,
   independentDependents: IIndependentDependentReferenceMap,
+  sheetToIndependentDependentMap: ISheetToIndependentDependentMap,
   sheetName: ISheetName,
   dependentSheetName: ISheetName,
   position: IPosition,
@@ -41,8 +43,9 @@ const assignSheetIndependents = (
   if (!independentDependents[independentDependentId])
     independentDependents[independentDependentId] = {}
 
-  if (!independentDependents[independentDependentId][dependentSheetName])
+  if (!independentDependents[independentDependentId][dependentSheetName]) {
     independentDependents[independentDependentId][dependentSheetName] = {}
+  }
   if (
     !independentDependents[independentDependentId][dependentSheetName][
       dependentPosition.y
@@ -59,6 +62,13 @@ const assignSheetIndependents = (
     independentDependents[independentDependentId][dependentSheetName][
       dependentPosition.y
     ][dependentPosition.x] = true
+
+  // Assign sheet to id reference map
+  if (!sheetToIndependentDependentMap[dependentSheetName])
+    sheetToIndependentDependentMap[dependentSheetName] = {}
+  sheetToIndependentDependentMap[dependentSheetName][
+    independents[sheetName][y][x]
+  ] = true
 }
 
 export const createCellRefMap = (
@@ -177,6 +187,7 @@ const computeFormulas = (
 const assignDependentsAndIndependents = (
   independents: IIndependentReferences,
   independentDependents: IIndependentDependentReferenceMap,
+  sheetToIndependentDependentMap: ISheetToIndependentDependentMap,
   dependents: IDependentReferences,
   dependentsIndependents: IDependentIndependentReferenceMap,
   position: IPosition,
@@ -218,6 +229,7 @@ const assignDependentsAndIndependents = (
       assignSheetIndependents(
         independents,
         independentDependents,
+        sheetToIndependentDependentMap,
         refSheetName,
         sheetName,
         refPosition,
@@ -237,6 +249,7 @@ const assignDependentsAndIndependents = (
           assignSheetIndependents(
             independents,
             independentDependents,
+            sheetToIndependentDependentMap,
             refSheetName,
             sheetName,
             { x: columnIndex, y: rowIndex },
@@ -257,6 +270,7 @@ export const updateActiveCellRef = (
   dependentIndependent: IDependentIndependentReferenceMap,
   independents: IIndependentReferences,
   independentDependent: IIndependentDependentReferenceMap,
+  sheetToIndependentDependentMap: ISheetToIndependentDependentMap,
   results: IResults
 ) => {
   const addressReferences: IAddressReference[] = []
@@ -266,22 +280,27 @@ export const updateActiveCellRef = (
       ? sheetsMap[sheetName].data[y][x]
       : undefined
 
-  // ! Check if the references change.. only update when there's new references!!!!
+  // TODO : Check if the references change.. only update when there's new references
   // Delete dependency on independent
-  Object.keys(independentDependent).forEach((id) => {
-    if (
-      independentDependent[id][sheetName] &&
-      independentDependent[id][sheetName][y] &&
-      independentDependent[id][sheetName][y][x]
-    )
-      delete independentDependent[id][sheetName][y][x]
-  })
+  const sheetDependents = sheetToIndependentDependentMap[sheetName]
+
+  if (sheetDependents) {
+    Object.keys(sheetDependents).forEach((id) => {
+      if (
+        independentDependent[id][sheetName] &&
+        independentDependent[id][sheetName][y] &&
+        independentDependent[id][sheetName][y][x]
+      )
+        delete independentDependent[id][sheetName][y][x]
+    })
+  }
 
   if (cell && cell.type === TYPE_FORMULA) {
     addressReferences.push({ position, sheetName })
     assignDependentsAndIndependents(
       independents,
       independentDependent,
+      sheetToIndependentDependentMap,
       dependents,
       dependentIndependent,
       position,
@@ -343,13 +362,17 @@ export const deleteSheetRef = (
   dependents: IDependentReferences,
   independents: IIndependentReferences,
   independentDependent: IIndependentDependentReferenceMap,
+  sheetToIndependentDependentMap: ISheetToIndependentDependentMap,
   results: IResults
 ) => {
   // Delete dependency on independent
-  Object.keys(independentDependent).forEach((id) => {
-    if (independentDependent[id][sheetName])
+  const sheetDependents = sheetToIndependentDependentMap[sheetName]
+
+  if (sheetDependents) {
+    Object.keys(sheetDependents).forEach((id) => {
       delete independentDependent[id][sheetName]
-  })
+    })
+  }
 
   delete dependents[sheetName]
   delete results[sheetName]
@@ -385,6 +408,7 @@ export const updateWorkbookReference = (state: IExcelState): IExcelState => {
           assignDependentsAndIndependents(
             state.independentReferences,
             state.independentDependentReferences,
+            state.sheetToIndependentDependentMap,
             state.dependentReferences,
             state.dependentIndependentReferences,
             position,

@@ -162,6 +162,7 @@ export const CELL_KEY_DELETE = (
             state.independentDependentReferences,
             state.independentReferences,
             state.independentDependentReferences,
+            state.sheetToIndependentDependentMap,
             state.results
           )
         }

@@ -44,6 +44,7 @@ export const SAVE_ACTIVE_CELL = (
     state.dependentIndependentReferences,
     state.independentReferences,
     state.independentDependentReferences,
+    state.sheetToIndependentDependentMap,
     state.results
   )
 

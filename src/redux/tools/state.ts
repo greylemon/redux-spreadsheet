@@ -76,4 +76,5 @@ export const createInitialExcelState = (): IExcelState => ({
 
   independentReferences: {},
   independentDependentReferences: {},
+  sheetToIndependentDependentMap: {},
 })

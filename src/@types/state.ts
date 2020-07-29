@@ -200,6 +200,15 @@ export type IIndependentDependentReference = {
   [key: string]: IIndependentDependentRowReference
 }
 
+// Sheet name to independent map
+export type ISheetIndependentDependentSet = {
+  [key: string]: boolean
+}
+
+export type ISheetToIndependentDependentMap = {
+  [key: string]: ISheetIndependentDependentSet
+}
+
 // Independent dependent references
 export type IIndependentDependentReferenceMap = {
   [key: string]: IIndependentDependentReference
@@ -286,4 +295,5 @@ export type IExcelState = {
 
   independentReferences: IIndependentReferences
   independentDependentReferences: IIndependentDependentReferenceMap
+  sheetToIndependentDependentMap: ISheetToIndependentDependentMap
 }
