@@ -117,12 +117,7 @@ export const THUNK_MOUSE_MOVE = (
     const sheetArea: IArea = { start: sheetAreaStart, end: sheetAreaEnd }
 
     // Bound the position - account for unexpected dimensions in react-window fork
-    const boundedPosition = boundPositionInOrderedArea(
-      mousePosition,
-      sheetArea,
-      freezeRowCount ? -2 : -1,
-      freezeColumnCount ? -2 : -1
-    )
+    const boundedPosition = boundPositionInOrderedArea(mousePosition, sheetArea)
 
     if (selectIsSelectionMode(state)) {
       const element = document.elementFromPoint(

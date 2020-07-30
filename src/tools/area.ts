@@ -266,6 +266,7 @@ export const getCellMapSetFromAreas = (areas: IArea[]): ICellMapSet => {
   return cellMapSet
 }
 
+// ? If there's no scrollbar, this may fail?
 export const boundPositionInOrderedArea = (
   position: IPosition,
   orderedSheetArea: IArea,
@@ -274,13 +275,13 @@ export const boundPositionInOrderedArea = (
 ): IPosition => {
   const boundedPosition: IPosition = { ...position }
   const scrollBarSize = getScrollbarSize()
-  if (position.x < orderedSheetArea.start.x)
-    boundedPosition.x = orderedSheetArea.start.x
+  if (position.x < orderedSheetArea.start.x + 2)
+    boundedPosition.x = orderedSheetArea.start.x + 2
   if (position.x >= orderedSheetArea.end.x - scrollBarSize + columnAdjustment)
     boundedPosition.x =
       orderedSheetArea.end.x - scrollBarSize + columnAdjustment
-  if (position.y < orderedSheetArea.start.y)
-    boundedPosition.y = orderedSheetArea.start.y
+  if (position.y < orderedSheetArea.start.y + 2)
+    boundedPosition.y = orderedSheetArea.start.y + 2
   if (position.y >= orderedSheetArea.end.y - scrollBarSize + rowAdjustment)
     boundedPosition.y = orderedSheetArea.end.y - scrollBarSize + rowAdjustment
 
