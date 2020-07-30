@@ -30,15 +30,16 @@ $customBorderStyle: 'solid';
   }
 
   &__content {
-    padding: 2px 5px;
+    padding: 2px 3px;
   }
 
   &__block {
     border-right: thin solid rgba(223, 223, 223, 0.938);
     border-bottom: thin solid rgba(223, 223, 223, 0.938);
     
-    padding: 2px 5px;
     z-index: 0;
+    padding: 0 3px;
+    box-sizing: border-box;
   }
 
   &__active {
@@ -51,7 +52,9 @@ $customBorderStyle: 'solid';
     }
 
     &--edit {
-      padding: 2px 5px;
+      border-top: thin solid transparent;
+      border-left: thin solid transparent;
+      padding: 2px 3px;
       background-color: white;
       height: fit-content !important;
       width: fit-content !important;

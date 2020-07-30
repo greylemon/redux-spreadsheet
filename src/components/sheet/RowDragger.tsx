@@ -47,19 +47,8 @@ const RowDragger: FunctionComponent<ICommonPaneProps> = ({ type }) => {
     [dispatch]
   )
 
-  const handleMouseLeave = useCallback(
-    (event: MouseEvent) => {
-      if (!event.buttons) dispatch(ExcelActions.ROW_DRAG_LEAVE())
-    },
-    [dispatch]
-  )
-
   return isInCorrectPane ? (
-    <div
-      style={style}
-      onMouseLeave={handleMouseLeave}
-      onMouseDown={handleMouseDown}
-    />
+    <div id="row_dragger" style={style} onMouseDown={handleMouseDown} />
   ) : (
     <></>
   )

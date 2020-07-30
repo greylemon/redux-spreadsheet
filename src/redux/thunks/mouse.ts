@@ -37,10 +37,6 @@ import {
   dispatchSaveActiveCell,
   getGeneralActionPayload,
 } from '../tools/history'
-import {
-  rowDraggerSpaceOffset,
-  columnDraggerSpaceOffset,
-} from '../../constants/styles'
 
 export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
@@ -66,7 +62,7 @@ export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
       ExcelActions.ROW_DRAG_END({
         ...getGeneralActionPayload(state),
         dragRowIndex,
-        height: denormalizeRowHeight(value + rowDraggerSpaceOffset - 1),
+        height: denormalizeRowHeight(value + 8),
       })
     )
   } else if (isColumnDrag) {
@@ -76,16 +72,15 @@ export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
     const scrollOffsetX = selectScrollOffsetX(state)
     const freezeColumnCount = selectFreezeColumnCount(state)
 
-    let value =
-      Math.max(dragColumnOffset, columnDraggerSpaceOffset) -
-      columnOffsets[dragColumnIndex]
+    let value = dragColumnOffset - columnOffsets[dragColumnIndex]
 
     if (dragColumnIndex <= freezeColumnCount) value -= scrollOffsetX
+
     dispatch(
       ExcelActions.COLUMN_DRAG_END({
         ...getGeneralActionPayload(state),
         dragColumnIndex,
-        width: denormalizeColumnWidth(value + columnDraggerSpaceOffset - 1),
+        width: denormalizeColumnWidth(value + 8),
       })
     )
   }
@@ -98,118 +93,136 @@ export const THUNK_MOUSE_MOVE = (
 ): IAppThunk => (dispatch, getState) => {
   const state = getState()
 
-  const freezeColumnCount = selectFreezeColumnCount(state)
-  const freezeRowCount = selectFreezeRowCount(state)
+  if (
+    selectIsSelectionMode(state) ||
+    selectIsRowDrag(state) ||
+    selectIsColumnDrag(state) ||
+    selectDragColumnIndex(state) ||
+    selectDragRowIndex(state)
+  ) {
+    const freezeColumnCount = selectFreezeColumnCount(state)
+    const freezeRowCount = selectFreezeRowCount(state)
 
-  const sheet = document.getElementById('sheet')
-  const sheetLocation = getDocumentOffsetPosition(sheet)
+    const sheet = document.getElementById('sheet')
+    const sheetLocation = getDocumentOffsetPosition(sheet)
 
-  const sheetAreaStart: IPosition = {
-    x: sheetLocation.left,
-    y: sheetLocation.top,
-  }
-  const sheetAreaEnd: IPosition = {
-    x: sheetAreaStart.x + sheet.scrollWidth,
-    y: sheetAreaStart.y + sheet.scrollHeight,
-  }
-  const sheetArea: IArea = { start: sheetAreaStart, end: sheetAreaEnd }
+    const sheetAreaStart: IPosition = {
+      x: sheetLocation.left,
+      y: sheetLocation.top,
+    }
+    const sheetAreaEnd: IPosition = {
+      x: sheetAreaStart.x + sheet.scrollWidth,
+      y: sheetAreaStart.y + sheet.scrollHeight,
+    }
+    const sheetArea: IArea = { start: sheetAreaStart, end: sheetAreaEnd }
 
-  // Bound the position - account for unexpected dimensions in react-window fork
-  const boundedPosition = boundPositionInOrderedArea(
-    mousePosition,
-    sheetArea,
-    freezeRowCount ? -2 : -1,
-    freezeColumnCount ? -2 : -1
-  )
-
-  if (selectIsSelectionMode(state)) {
-    const element = document.elementFromPoint(
-      boundedPosition.x,
-      boundedPosition.y
+    // Bound the position - account for unexpected dimensions in react-window fork
+    const boundedPosition = boundPositionInOrderedArea(
+      mousePosition,
+      sheetArea,
+      freezeRowCount ? -2 : -1,
+      freezeColumnCount ? -2 : -1
     )
-    const { id: elementId } = element
-    const [type, address] = elementId.split('=')
 
-    let scopedPosition: IPosition
+    if (selectIsSelectionMode(state)) {
+      const element = document.elementFromPoint(
+        boundedPosition.x,
+        boundedPosition.y
+      )
+      const { id: elementId } = element
+      const [type, address] = elementId.split('=')
 
-    switch (
-      type as
-        | 'cell'
-        | 'row'
-        | 'column'
-        | 'root'
-        | 'row_dragger'
-        | 'column_dragger'
-    ) {
-      case 'cell':
-        scopedPosition = JSON.parse(address)
-        break
-      case 'column_dragger':
-      case 'row_dragger':
-      case 'column':
-      case 'row': {
-        const cellPosition = getEditableCellPositionFromBoundedPosition(
-          boundedPosition,
-          sheetArea
-        )
-        const cellElement = document.elementFromPoint(
-          cellPosition.x,
-          cellPosition.y
-        )
+      let scopedPosition: IPosition
 
-        if (cellElement) {
-          const { id: cellId } = cellElement
+      switch (
+        type as
+          | 'cell'
+          | 'row'
+          | 'column'
+          | 'root'
+          | 'row_dragger'
+          | 'column_dragger'
+      ) {
+        case 'cell':
+          scopedPosition = JSON.parse(address)
+          break
+        case 'column_dragger':
+        case 'row_dragger':
+        case 'column':
+        case 'row': {
+          const cellPosition = getEditableCellPositionFromBoundedPosition(
+            boundedPosition,
+            sheetArea
+          )
+          const cellElement = document.elementFromPoint(
+            cellPosition.x,
+            cellPosition.y
+          )
 
-          const [, cellAddress] = cellId.split('=')
-          scopedPosition = JSON.parse(cellAddress)
+          if (cellElement) {
+            const { id: cellId } = cellElement
+
+            const [, cellAddress] = cellId.split('=')
+            scopedPosition = JSON.parse(cellAddress)
+          }
+          break
         }
-        break
+        case 'root':
+          scopedPosition = { x: 1, y: 1 }
+          break
+        default:
+          break
       }
-      case 'root':
-        scopedPosition = { x: 1, y: 1 }
-        break
-      default:
-        break
-    }
 
-    if (
-      scopedPosition &&
-      !checkIsPositionEqualOtherPosition(
-        selectLastVisitedCell(state),
-        scopedPosition
-      )
-    ) {
+      if (
+        scopedPosition &&
+        !checkIsPositionEqualOtherPosition(
+          selectLastVisitedCell(state),
+          scopedPosition
+        )
+      ) {
+        dispatch(
+          ctrlKey
+            ? ExcelActions.CELL_MOUSE_ENTER_CTRL(scopedPosition)
+            : ExcelActions.CELL_MOUSE_ENTER(scopedPosition)
+        )
+      }
+    } else if (selectIsRowDrag(state)) {
+      const rowOffsets = selectRowOffsets(state)
+      const dragRowIndex = selectDragRowIndex(state)
+      const scrollOffsetY = selectScrollOffsetY(state)
+
       dispatch(
-        ctrlKey
-          ? ExcelActions.CELL_MOUSE_ENTER_CTRL(scopedPosition)
-          : ExcelActions.CELL_MOUSE_ENTER(scopedPosition)
+        ExcelActions.ROW_DRAG_MOVE(
+          Math.max(
+            rowOffsets[dragRowIndex] + 1,
+            boundedPosition.y + scrollOffsetY - sheetAreaStart.y - 4
+          )
+        )
       )
-    }
-  } else if (selectIsRowDrag(state)) {
-    const rowOffsets = selectRowOffsets(state)
-    const dragRowIndex = selectDragRowIndex(state)
-    const scrollOffsetY = selectScrollOffsetY(state)
+    } else if (selectIsColumnDrag(state)) {
+      const columnOffsets = selectColumnOffsets(state)
+      const dragColumnIndex = selectDragColumnIndex(state)
+      const scrollOffsetX = selectScrollOffsetX(state)
+      dispatch(
+        ExcelActions.COLUMN_DRAG_MOVE(
+          Math.max(
+            columnOffsets[dragColumnIndex] + 1,
+            boundedPosition.x + scrollOffsetX - sheetAreaStart.x - 4
+          )
+        )
+      )
+    } else if (selectDragColumnIndex(state) || selectDragRowIndex(state)) {
+      const element = document.elementFromPoint(
+        boundedPosition.x,
+        boundedPosition.y
+      )
+      const { id: elementId } = element
+      const [type] = elementId.split('=')
 
-    dispatch(
-      ExcelActions.ROW_DRAG_MOVE(
-        Math.max(
-          rowOffsets[dragRowIndex] + 1,
-          boundedPosition.y + scrollOffsetY - sheetAreaStart.y
-        )
-      )
-    )
-  } else if (selectIsColumnDrag(state)) {
-    const columnOffsets = selectColumnOffsets(state)
-    const dragColumnIndex = selectDragColumnIndex(state)
-    const scrollOffsetX = selectScrollOffsetX(state)
-    dispatch(
-      ExcelActions.COLUMN_DRAG_MOVE(
-        Math.max(
-          columnOffsets[dragColumnIndex] + 1,
-          boundedPosition.x + scrollOffsetX - sheetAreaStart.x
-        )
-      )
-    )
+      if (type !== 'row_dragger' && type !== 'column_dragger')
+        dispatch(ExcelActions.CLEAN_STATE())
+    }
   }
 }
 
@@ -224,7 +237,7 @@ export const THUNK_MOUSE_ENTER_DRAG_ROW = (rowIndex: IRowIndex): IAppThunk => (
   dispatch(
     ExcelActions.ROW_DRAG_ENTER({
       dragRowIndex: rowIndex,
-      dragRowOffset: rowOffsets[rowIndex] + rowHeightGetter(rowIndex) - 5,
+      dragRowOffset: rowOffsets[rowIndex] + rowHeightGetter(rowIndex) - 8,
     })
   )
 }
@@ -240,7 +253,7 @@ export const THUNK_MOUSE_ENTER_DRAG_COLUMN = (
     ExcelActions.COLUMN_DRAG_ENTER({
       dragColumnIndex: columnIndex,
       dragColumnOffset:
-        columnOffsets[columnIndex] + columnWidthGetter(columnIndex) - 5,
+        columnOffsets[columnIndex] + columnWidthGetter(columnIndex) - 8,
     })
   )
 }

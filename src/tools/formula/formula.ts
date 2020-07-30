@@ -294,15 +294,17 @@ export const updateActiveCellRef = (
       Object.keys(positionDependents).forEach((independentSheetName) => {
         const rows = independentDependent[independentSheetName]
 
-        Object.keys(rows).forEach((rowIndex) => {
-          const columns = rows[rowIndex]
+        if (rows)
+          Object.keys(rows).forEach((rowIndex) => {
+            const columns = rows[rowIndex]
 
-          Object.keys(columns).forEach((columnIndex) => {
-            delete independentDependent[
-              independents[independentSheetName][rowIndex][columnIndex]
-            ][sheetName][y][x]
+            if (columns)
+              Object.keys(columns).forEach((columnIndex) => {
+                delete independentDependent[
+                  independents[independentSheetName][rowIndex][columnIndex]
+                ][sheetName][y][x]
+              })
           })
-        })
       })
   }
 
@@ -434,15 +436,17 @@ export const deletePositions = (
         Object.keys(positionDependents).forEach((independentSheetName) => {
           const rows = independentDependent[independentSheetName]
 
-          Object.keys(rows).forEach((rowIndex) => {
-            const columns = rows[rowIndex]
+          if (rows)
+            Object.keys(rows).forEach((rowIndex) => {
+              const columns = rows[rowIndex]
 
-            Object.keys(columns).forEach((columnIndex) => {
-              delete independentDependent[
-                independents[independentSheetName][rowIndex][columnIndex]
-              ][sheetName][y][x]
+              if (columns)
+                Object.keys(columns).forEach((columnIndex) => {
+                  delete independentDependent[
+                    independents[independentSheetName][rowIndex][columnIndex]
+                  ][sheetName][y][x]
+                })
             })
-          })
         })
     }
 

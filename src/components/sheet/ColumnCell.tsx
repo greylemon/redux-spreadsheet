@@ -9,11 +9,10 @@ const ColumnCell: FunctionComponent<ICellProps> = ({ style, columnIndex }) => {
 
   return (
     <div
-      id={`column={"x":${columnIndex}}`}
       className="unselectable cell cellHeader cellHeader__column"
       style={style}
     >
-      {columnName}
+      <span id={`column={"x":${columnIndex}}`}>{columnName}</span>
       <HeaderDraggerArea
         id={`column_dragger={"x":${columnIndex}}`}
         type="column"

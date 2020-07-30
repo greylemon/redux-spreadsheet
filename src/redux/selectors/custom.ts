@@ -205,7 +205,8 @@ export const selectCellLayering = createSelector(
       const row = data[rowIndex]
 
       for (let columnIndex = 0; columnIndex <= columnCount; columnIndex += 1) {
-        if (row && row[columnIndex] && row[columnIndex].value) layerIndex += 1
+        if (row && row[columnIndex] && row[columnIndex].value !== undefined)
+          layerIndex += 1
 
         rowLayer.push(layerIndex)
       }

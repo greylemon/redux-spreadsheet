@@ -92,12 +92,12 @@ const EditableCell: FunctionComponent<ICellProps> = ({
 
       if (buttons === 1) dispatch(THUNK_MOUSE_DOWN(position, shiftKey, ctrlKey))
     },
-    [dispatch]
+    [dispatch, position]
   )
 
   const handleTouchDown = useCallback(() => {
     dispatch(THUNK_MOUSE_DOWN(position, false, false))
-  }, [dispatch])
+  }, [dispatch, position])
 
   style = useMemo(
     (): CSSProperties =>

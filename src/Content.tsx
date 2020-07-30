@@ -63,16 +63,8 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   )
 
   window.onmousemove = useCallback(
-    ({ which, clientX, clientY, shiftKey, ctrlKey }: MouseEvent) => {
-      switch (which) {
-        case 1:
-          dispatch(
-            THUNK_MOUSE_MOVE({ x: clientX, y: clientY }, shiftKey, ctrlKey)
-          )
-          break
-        default:
-          break
-      }
+    ({ clientX, clientY, shiftKey, ctrlKey }: MouseEvent) => {
+      dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }, shiftKey, ctrlKey))
     },
     [dispatch]
   )

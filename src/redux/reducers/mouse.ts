@@ -35,10 +35,6 @@ import {
 import { updateActiveCellValueInPlace } from '../tools/cell'
 import { TYPE_TEXT } from '../../constants/types'
 import { IGeneralActionPayload } from '../../@types/history'
-import {
-  rowDraggerSpaceOffset,
-  columnDraggerSpaceOffset,
-} from '../../constants/styles'
 
 export const CELL_MOUSE_DOWN_CTRL = (
   state: IExcelState,
@@ -264,7 +260,6 @@ export const COLUMN_DRAG_ENTER = (
 }
 
 export const ROW_DRAG_LEAVE = (state: IExcelState): IExcelState => {
-  state.isRowDrag = false
   delete state.dragRowOffset
   delete state.dragRowIndex
 
@@ -272,7 +267,6 @@ export const ROW_DRAG_LEAVE = (state: IExcelState): IExcelState => {
 }
 
 export const COLUMN_DRAG_LEAVE = (state: IExcelState): IExcelState => {
-  state.isColumnDrag = false
   delete state.dragColumnOffset
   delete state.dragColumnIndex
 
@@ -323,12 +317,12 @@ export const ROW_DRAG_END = (
 
   const activeSheet = nSelectActiveSheet(state)
 
-  if (height <= denormalizeRowHeight(rowDraggerSpaceOffset))
+  if (height <= denormalizeRowHeight(9))
     activeSheet.hiddenRows[dragRowIndex] = true
 
   activeSheet.rowHeights[dragRowIndex] = height
 
-  ROW_DRAG_LEAVE(state)
+  state.isRowDrag = false
   return state
 }
 
@@ -353,11 +347,11 @@ export const COLUMN_DRAG_END = (
   state.activeCellPosition = activeCellPosition
   state.inactiveSelectionAreas = inactiveSelectionAreas
 
-  if (width <= denormalizeColumnWidth(columnDraggerSpaceOffset))
+  if (width <= denormalizeColumnWidth(9))
     activeSheet.hiddenColumns[dragColumnIndex] = true
 
   activeSheet.columnWidths[dragColumnIndex] = width
 
-  COLUMN_DRAG_LEAVE(state)
+  state.isColumnDrag = false
   return state
 }

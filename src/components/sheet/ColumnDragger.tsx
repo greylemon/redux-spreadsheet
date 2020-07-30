@@ -40,19 +40,8 @@ const ColumnDragger: FunctionComponent<ICommonPaneProps> = ({ type }) => {
     [dispatch]
   )
 
-  const handleMouseLeave = useCallback(
-    (event: MouseEvent) => {
-      if (!event.buttons) dispatch(ExcelActions.COLUMN_DRAG_LEAVE())
-    },
-    [dispatch]
-  )
-
   return isInCorrectPane ? (
-    <div
-      style={style}
-      onMouseLeave={handleMouseLeave}
-      onMouseDown={handleMouseDown}
-    />
+    <div id="column_dragger" style={style} onMouseDown={handleMouseDown} />
   ) : (
     <></>
   )
