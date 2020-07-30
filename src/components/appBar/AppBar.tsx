@@ -4,10 +4,11 @@ import { SmallLabelButton } from '../misc/buttons'
 import STYLE_APP_BAR, {
   STYLE_APP_BAR_ICON,
   STYLE_APP_BAR_BUTTON_ICON,
-  // appBarContentStyle,
+  STYLE_APP_BAR_CONTENT,
 } from './style'
-// import AppBarMenu from './AppBarMenu'
-// import AppBarName from './AppBarName'
+import AppBarMenu from './AppBarMenu'
+import AppBarName from './AppBarName'
+import { ISheetRef } from '../../@types/ref'
 
 const SpreadSheetButton: FunctionComponent = () => {
   return (
@@ -17,17 +18,19 @@ const SpreadSheetButton: FunctionComponent = () => {
   )
 }
 
-// const AppBarContent: FunctionComponent = () => (
-//   <div style={appBarContentStyle}>
-//     <AppBarName />
-//     <AppBarMenu />
-//   </div>
-// )
+const AppBarContent: FunctionComponent<{ sheetRef: ISheetRef }> = ({
+  sheetRef,
+}) => (
+  <div style={STYLE_APP_BAR_CONTENT}>
+    <AppBarName sheetRef={sheetRef} />
+    <AppBarMenu />
+  </div>
+)
 
-const AppBar: FunctionComponent = () => (
+const AppBar: FunctionComponent<{ sheetRef: ISheetRef }> = ({ sheetRef }) => (
   <div style={STYLE_APP_BAR}>
     <SpreadSheetButton />
-    {/* <AppBarContent /> */}
+    <AppBarContent sheetRef={sheetRef} />
   </div>
 )
 

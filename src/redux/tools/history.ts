@@ -2,7 +2,7 @@ import { Dispatch } from '@reduxjs/toolkit'
 import {
   selectActiveCellPosition,
   selectInactiveSelectionAreas,
-  selectEditorState,
+  selectCellEditorState,
 } from '../selectors/base'
 import IRootStore from '../../@types/store'
 import { IGeneralActionPayload } from '../../@types/history'
@@ -26,7 +26,7 @@ export const dispatchSaveActiveCell = (
   const newCell = createValueFromCellAndEditorState(
     selectData(state),
     selectCell(state),
-    selectEditorState(state)
+    selectCellEditorState(state)
   )
 
   if (!isCellEqualOtherCell(newCell, selectCell(state)))

@@ -1,7 +1,7 @@
 import { EditorState, SelectionState } from 'draft-js'
 import {
   IInlineStyles,
-  IEditorState,
+  ICellEditorState,
   ITextDecorationStyle,
 } from '../@types/state'
 import { ISetInlineStyleFn } from '../@types/functions'
@@ -88,7 +88,7 @@ export const getFirstSelectionState = (
 }
 
 export const getFontStyleFromEditorState = (
-  editorState: IEditorState
+  editorState: ICellEditorState
 ): IInlineStyles | null => {
   const style: IInlineStyles = {}
   const inlineStyle = editorState.getCurrentInlineStyle()

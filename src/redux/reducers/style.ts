@@ -42,8 +42,8 @@ export const TOGGLE_EDITOR_STATE_STYLE = (
   state: IExcelState,
   action: PayloadAction<DraftInlineStyleType>
 ): IExcelState => {
-  state.editorState = RichUtils.toggleInlineStyle(
-    state.editorState,
+  state.cellEditorState = RichUtils.toggleInlineStyle(
+    state.cellEditorState,
     action.payload
   )
   return state

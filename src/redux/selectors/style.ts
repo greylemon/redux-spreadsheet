@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit'
 import { DraftInlineStyleType } from 'draft-js'
 import {
-  selectEditorState,
+  selectCellEditorState,
   selectIsEditMode,
   selectIsSelectionMode,
   selectInactiveSelectionAreas,
@@ -23,7 +23,7 @@ export const selectFactoryIsStyle = (
   inlineStyleEqFn: IInlineStyleEqFn
 ) =>
   createSelector(
-    [selectIsEditMode, selectCell, selectEditorState],
+    [selectIsEditMode, selectCell, selectCellEditorState],
     (isEditMode, activeCell, editorState) => {
       let isToggled = false
 

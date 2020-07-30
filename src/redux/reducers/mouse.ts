@@ -228,7 +228,7 @@ export const CELL_DOUBLE_CLICK = (state: IExcelState): IExcelState => {
   )
     editorState = EditorState.moveFocusToEnd(editorState)
 
-  state.editorState = editorState
+  state.cellEditorState = editorState
 
   return state
 }

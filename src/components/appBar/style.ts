@@ -4,6 +4,8 @@ import { STYLE_APP_BAR_HEIGHT } from '../../constants/styles'
 const STYLE_APP_BAR: CSSProperties = {
   display: 'flex',
   height: STYLE_APP_BAR_HEIGHT,
+  padding: 5,
+  boxSizing: 'border-box',
 }
 
 export const STYLE_APP_BAR_BUTTON_ICON: CSSProperties = {
@@ -14,14 +16,8 @@ export const STYLE_APP_BAR_BUTTON_ICON: CSSProperties = {
 export const STYLE_APP_BAR_CONTENT: CSSProperties = {
   display: 'flex',
   flexFlow: 'column nowrap',
+  marginLeft: 5,
 }
-
-export const STYLE_APP_BAR_TEXT_FIELD_INPUT: CSSProperties = {
-  padding: '10 10 !important',
-  height: STYLE_APP_BAR_HEIGHT / 2 - 4,
-}
-
-export const STYLE_APP_BAR_TEXT_FIELD: CSSProperties = {}
 
 export const STYLE_APP_BAR_ICON: CSSProperties = {
   padding: 10,

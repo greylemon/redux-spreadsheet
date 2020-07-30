@@ -23,5 +23,5 @@ export const changeSheetInPlace = (
 
   const activeCell = nSelectActiveCell(state)
 
-  state.editorState = createEditorStateFromCell(activeCell)
+  state.cellEditorState = createEditorStateFromCell(activeCell)
 }

@@ -1,51 +1,75 @@
 import React, {
   FunctionComponent,
-  useRef,
   useCallback,
+  KeyboardEventHandler,
   KeyboardEvent,
+  useRef,
 } from 'react'
-import {
-  TextField,
-  // ClickAwayListener
-} from '@material-ui/core'
 import { shallowEqual, useDispatch } from 'react-redux'
-import { STYLE_APP_BAR_TEXT_FIELD_INPUT } from './style'
+import { Editor, EditorState, DraftHandleValue } from 'draft-js'
 import { useTypedSelector } from '../../redux/redux'
-import { selectName } from '../../redux/selectors/base'
+import { selectTitleEditorState } from '../../redux/selectors/base'
+import { ExcelActions } from '../../redux/store'
+import { ISheetRef } from '../../@types/ref'
 
-const AppBarName: FunctionComponent = () => {
+const AppBarName: FunctionComponent<{ sheetRef: ISheetRef }> = ({
+  sheetRef,
+}) => {
   const dispatch = useDispatch()
-  const ref = useRef<HTMLInputElement>()
-  const name = useTypedSelector((state) => selectName(state), shallowEqual)
+  const editorRef = useRef<Editor>()
+  const titleEditorState = useTypedSelector(
+    (state) => selectTitleEditorState(state),
+    shallowEqual
+  )
 
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent) => {
-      const { key } = event
-
-      switch (key) {
-        case 'Enter':
-          // console.log('blur')
-          ref.current.blur()
-          break
-        case 'Escape':
-          break
-        default:
-          break
-      }
+  const handleChange = useCallback(
+    (editorState: EditorState) => {
+      dispatch(ExcelActions.UPDATE_TITLE_EDITOR_STATE(editorState))
     },
     [dispatch]
   )
 
-  // const handleClickAway = useCallback()
+  const handleKeyCommand: KeyboardEventHandler = useCallback(
+    (event) => {
+      switch (event.key) {
+        case 'Escape':
+          dispatch(ExcelActions.ESCAPE_TITLE_EDITOR_STATE())
+          // editorRef.current.blur()
+          sheetRef.current.focus()
+          break
+        case 'Enter':
+          dispatch(ExcelActions.SAVE_TITLE_EDITOR_STATE())
+          // editorRef.current.blur()
+          sheetRef.current.focus()
+          break
+        default:
+          event.stopPropagation()
+          break
+      }
+    },
+    [dispatch, editorRef, sheetRef]
+  )
+
+  const handleReturn = useCallback(
+    (event: KeyboardEvent): DraftHandleValue => {
+      const { key } = event
+
+      if (key === 'Enter') return 'handled'
+
+      return 'not-handled'
+    },
+    [dispatch]
+  )
 
   return (
-    <TextField
-      inputRef={ref}
-      onKeyDown={handleKeyDown}
-      value={name}
-      InputProps={{ style: STYLE_APP_BAR_TEXT_FIELD_INPUT }}
-      variant="outlined"
-    />
+    <div className="title" onKeyDown={handleKeyCommand}>
+      <Editor
+        ref={editorRef}
+        editorState={titleEditorState}
+        onChange={handleChange}
+        handleReturn={handleReturn}
+      />
+    </div>
   )
 }
 

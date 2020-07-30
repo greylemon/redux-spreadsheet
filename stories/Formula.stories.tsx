@@ -10,7 +10,7 @@ import { updateWorkbookReference } from '../src/tools/formula/formula'
 const initialState: IExcelState = updateWorkbookReference({
   ...initialExcelState,
   ...selectExcel(JSON.parse(JSON.stringify(formulaState))),
-  editorState: EditorState.createEmpty(),
+  cellEditorState: EditorState.createEmpty(),
 })
 
 const Formulas: any = () => <Excel key="formula" initialState={initialState} />

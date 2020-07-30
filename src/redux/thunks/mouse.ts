@@ -100,9 +100,6 @@ export const THUNK_MOUSE_MOVE = (
     selectDragColumnIndex(state) ||
     selectDragRowIndex(state)
   ) {
-    const freezeColumnCount = selectFreezeColumnCount(state)
-    const freezeRowCount = selectFreezeRowCount(state)
-
     const sheet = document.getElementById('sheet')
     const sheetLocation = getDocumentOffsetPosition(sheet)
 

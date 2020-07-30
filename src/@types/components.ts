@@ -16,6 +16,7 @@ import {
   IComputeSelectionAreaStyle,
   IHandleSave,
 } from './functions'
+import { ISheetRef, IGridRef } from './ref'
 
 export type ExcelComponentProps = {
   /** Initial excel state */
@@ -76,4 +77,9 @@ export interface IInactiveSelectionAreasComponentsProps {
 export interface IInactiveSelectionAreasProps {
   computeSelectionAreaStyle: IComputeSelectionAreaStyle
   checkIsAreaInRelevantPane: ICheckIsAreaInRelevantPane
+}
+
+export type ISheetProps = {
+  sheetRef: ISheetRef
+  gridRef: IGridRef
 }

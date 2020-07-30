@@ -1,6 +1,5 @@
 import React, {
   useEffect,
-  useRef,
   FunctionComponent,
   useCallback,
   KeyboardEvent,
@@ -33,7 +32,7 @@ import CommonPane from './CommonPane'
 import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 import { ExcelActions } from '../../redux/store'
 import STYLE_SHEET from './style'
-import { IItemData } from '../../@types/components'
+import { IItemData, ISheetProps } from '../../@types/components'
 import {
   THUNK_KEY_ENTER,
   THUNK_CELL_KEY_DELETE,
@@ -45,10 +44,14 @@ import {
   THUNK_TOGGLE_STRIKETHROUGH,
 } from '../../redux/thunks/style'
 
-export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
+export const Sheet: FunctionComponent<Size & ISheetProps> = ({
+  gridRef,
+  sheetRef,
+  height,
+  width,
+}) => {
   const dispatch = useDispatch()
-  const sheetRef = useRef<HTMLDivElement>(null)
-  const gridRef = useRef<VariableSizeGrid>(null)
+
   const {
     sheetResults,
     tableColumnCount,
@@ -225,15 +228,27 @@ export const Sheet: FunctionComponent<Size> = ({ height, width }) => {
   )
 }
 
-const SheetSizer: FunctionComponent<Size> = ({ height, width }) => (
-  <ContextMenuTrigger id="react-context-menu" holdToDisplay={-1}>
-    <Sheet height={height} width={width} />
-  </ContextMenuTrigger>
+const SheetSizer: FunctionComponent<ISheetProps> = ({ gridRef, sheetRef }) => (
+  <AutoSizer>
+    {({ height, width }) => (
+      <ContextMenuTrigger id="react-context-menu" holdToDisplay={-1}>
+        <Sheet
+          gridRef={gridRef}
+          sheetRef={sheetRef}
+          height={height}
+          width={width}
+        />
+      </ContextMenuTrigger>
+    )}
+  </AutoSizer>
 )
 
-const SheetContainer: FunctionComponent = () => (
+const SheetContainer: FunctionComponent<ISheetProps> = ({
+  gridRef,
+  sheetRef,
+}) => (
   <div style={STYLE_SHEET}>
-    <AutoSizer>{SheetSizer}</AutoSizer>
+    <SheetSizer gridRef={gridRef} sheetRef={sheetRef} />
     <CustomContextMenu />
   </div>
 )

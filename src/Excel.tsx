@@ -1,6 +1,5 @@
 import React, { FunctionComponent } from 'react'
 import { Provider } from 'react-redux'
-import './index.scss'
 import { ExcelRouter, ExcelContent } from './Content'
 import store from './redux/redux'
 import { ExcelComponentProps } from './@types/components'

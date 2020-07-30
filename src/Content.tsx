@@ -3,6 +3,7 @@ import React, {
   useEffect,
   useCallback,
   KeyboardEvent,
+  useRef,
 } from 'react'
 
 import './styles/styles.scss'
@@ -10,6 +11,7 @@ import './styles/styles.scss'
 import { Route, useRouteMatch, Switch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Divider } from '@material-ui/core'
+import { VariableSizeGrid } from 'react-window'
 import SheetContainer from './components/sheet/Sheet'
 import ToolBar from './components/toolBar/ToolBar'
 import SheetNavigation from './components/sheetNavigation/SheetNavigation'
@@ -20,6 +22,7 @@ import { THUNK_COMMAND_SAVE } from './redux/thunks/IO'
 import { THUNK_MOUSE_UP, THUNK_MOUSE_MOVE } from './redux/thunks/mouse'
 import { THUNK_HISTORY_UNDO, THUNK_HISTORY_REDO } from './redux/thunks/history'
 import AppBar from './components/appBar/AppBar'
+import { STYLE_EXCEL } from './style'
 
 export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   style,
@@ -28,6 +31,8 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   isToolBarDisabled,
   handleSave,
 }) => {
+  const gridRef = useRef<VariableSizeGrid>(null)
+  const sheetRef = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -97,15 +102,15 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   return (
     <div
       className="excel"
-      style={style}
+      style={{ ...STYLE_EXCEL, ...style }}
       onKeyDown={handleKeyDown}
       tabIndex={-1}
     >
-      <AppBar />
+      <AppBar sheetRef={sheetRef} />
       <Divider />
       {!isToolBarDisabled && <ToolBar />}
       {/* <FormulaBar /> */}
-      <SheetContainer />
+      <SheetContainer gridRef={gridRef} sheetRef={sheetRef} />
       <Divider />
       <SheetNavigation isRouted={isRouted} />
     </div>

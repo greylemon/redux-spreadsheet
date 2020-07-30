@@ -1,6 +1,11 @@
 import { PayloadAction } from '@reduxjs/toolkit'
-import { EditorState } from 'draft-js'
-import { IExcelState, IEditorState, IPosition } from '../../@types/state'
+import { EditorState, ContentState } from 'draft-js'
+import {
+  IExcelState,
+  ICellEditorState,
+  IPosition,
+  ITitleEditorState,
+} from '../../@types/state'
 import {
   nSelectMergeCellArea,
   nSelectActiveSheet,
@@ -15,6 +20,26 @@ import {
 import { getCellMapSetFromState } from '../tools/area'
 import { IGeneralActionPayload } from '../../@types/history'
 import { deletePositions } from '../../tools/formula/formula'
+
+export const UPDATE_TITLE_EDITOR_STATE = (
+  state: IExcelState,
+  action: PayloadAction<ITitleEditorState>
+): IExcelState => {
+  state.titleEditorState = action.payload
+  return state
+}
+
+export const SAVE_TITLE_EDITOR_STATE = (state: IExcelState): IExcelState => {
+  state.title = state.titleEditorState.getCurrentContent().getPlainText()
+  return state
+}
+
+export const ESCAPE_TITLE_EDITOR_STATE = (state: IExcelState): IExcelState => {
+  state.titleEditorState = EditorState.createWithContent(
+    ContentState.createFromText(state.title)
+  )
+  return state
+}
 
 export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state
@@ -104,10 +129,10 @@ export const CELL_KEY_LEFT = (state: IExcelState): IExcelState => {
 
 export const CELL_EDITOR_STATE_UPDATE = (
   state: IExcelState,
-  action: PayloadAction<IEditorState>
+  action: PayloadAction<ICellEditorState>
 ): IExcelState => {
   const editorState = action.payload
-  state.editorState = editorState
+  state.cellEditorState = editorState
   return state
 }
 
@@ -122,7 +147,7 @@ export const CELL_EDITOR_STATE_START = (state: IExcelState): IExcelState => {
   if (activeCell && activeCell.style && activeCell.style.font)
     editorState = getFontBlockEditorState(editorState, activeCell.style.font)
 
-  state.editorState = editorState
+  state.cellEditorState = editorState
 
   return state
 }
@@ -180,6 +205,6 @@ export const CELL_KEY_ENTER_EDIT_START = (state: IExcelState): IExcelState => {
   state.isEditMode = true
   const cell = nSelectActiveCell(state)
 
-  state.editorState = createEditorStateFromCell(cell, true)
+  state.cellEditorState = createEditorStateFromCell(cell, true)
   return state
 }

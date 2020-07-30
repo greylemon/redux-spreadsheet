@@ -9,6 +9,7 @@ import {
   SHEET_NAME,
   SHEET_NAMES,
 } from '../../constants/defaults'
+import { createEditorStateFromText } from '../../tools/text'
 
 export const createRootStoreFromExcelState = (
   state: IExcelState
@@ -44,7 +45,7 @@ export const createSheetsMap = (): ISheetsMap => ({
 export const createInitialExcelState = (): IExcelState => ({
   sheetNames: SHEET_NAMES,
 
-  name: '',
+  title: 'Untitled spreadsheet',
 
   isEditMode: false,
   isSheetNavigationOpen: false,
@@ -53,7 +54,9 @@ export const createInitialExcelState = (): IExcelState => ({
   isColumnDrag: false,
   isRowDrag: false,
 
-  editorState: EditorState.createEmpty(),
+  cellEditorState: EditorState.createEmpty(),
+  titleEditorState: createEditorStateFromText('Untitled spreadsheet'),
+
   activeSheetName: SHEET_NAME,
 
   error: {},

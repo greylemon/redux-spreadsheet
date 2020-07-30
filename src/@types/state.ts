@@ -129,7 +129,8 @@ export type IInactiveSelectionAreas = Array<IArea>
 
 export type ISelectionAreaIndex = number
 
-export type IEditorState = EditorState
+export type ICellEditorState = EditorState
+export type ITitleEditorState = EditorState
 export type ISheetName = string
 export type ISheetNames = ISheetName[]
 export type IName = string
@@ -256,7 +257,7 @@ export type IDragColumnIndex = IColumnIndex
 export type ISheetDimensions = IPosition
 
 export type IExcelState = {
-  name: IName
+  title: IName
   activeSheetName: ISheetName
   sheetNames: ISheetNames
   sheetsMap: ISheetsMap
@@ -268,7 +269,8 @@ export type IExcelState = {
   isSheetNameEdit: IIsSheetEditText
   isSelectionMode: IIsSelectionMode
 
-  editorState: IEditorState
+  cellEditorState: ICellEditorState
+  titleEditorState: ICellEditorState
   selectionAreaIndex: ISelectionAreaIndex
   selectionArea?: ISelectionArea
   activeCellPosition: IActiveCellPosition

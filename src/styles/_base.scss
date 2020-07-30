@@ -124,3 +124,19 @@ $customBorderStyle: 'solid';
     }
   }
 }
+
+.title {
+  border: 2px solid transparent;
+  border-radius: 4px;
+  padding: 5px;
+  font-size: 16px;
+  font-weight: 400;
+  
+  &:hover {
+    border: 2px solid lightgray;
+  }
+
+  &:focus-within {
+    border: 2px solid #1E70FF;
+  }
+}

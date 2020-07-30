@@ -11,7 +11,7 @@ export const updateActiveCellValueInPlace = (state: IExcelState): void => {
   const cellValue = createValueFromCellAndEditorState(
     nSelectActiveSheetData(state),
     nSelectActiveCell(state),
-    state.editorState
+    state.cellEditorState
   )
 
   const activeSheet = nSelectActiveSheet(state)

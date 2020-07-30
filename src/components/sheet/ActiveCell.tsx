@@ -23,7 +23,10 @@ import {
   selectIsActiveCellInTopLeftPane,
   selectIsActiveCellInTopRightPane,
 } from '../../redux/selectors/pane'
-import { selectIsEditMode, selectEditorState } from '../../redux/selectors/base'
+import {
+  selectIsEditMode,
+  selectCellEditorState,
+} from '../../redux/selectors/base'
 import { ExcelActions } from '../../redux/store'
 import { selectCellBlockStyle } from '../../redux/selectors/activeSheet'
 
@@ -32,7 +35,7 @@ const EditorCell: FunctionComponent<IEditorCellProps> = ({ style }) => {
 
   const { editorState, blockStyle } = useTypedSelector(
     (state) => ({
-      editorState: selectEditorState(state),
+      editorState: selectCellEditorState(state),
       blockStyle: selectCellBlockStyle(state),
     }),
     shallowEqual

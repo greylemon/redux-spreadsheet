@@ -105,7 +105,7 @@ describe('Cell keyboard operations', () => {
     it('Active cell', () => {
       const text = 'Value to delete'
       const state = cloneDeep(initialExcelState)
-      state.editorState = createEditorStateFromText(text)
+      state.cellEditorState = createEditorStateFromText(text)
       state.isEditMode = true
 
       store.dispatch(ExcelActions.UPDATE_STATE(state))
