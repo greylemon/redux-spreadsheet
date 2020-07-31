@@ -5,7 +5,7 @@ export const CustomMenuItem: FunctionComponent<{
   IconComponent?: FunctionComponent
   text: string
 }> = ({ IconComponent, text }) => (
-  <MenuItem>
+  <MenuItem className="contextMenu__menu">
     {IconComponent && <IconComponent />}
     {text}
   </MenuItem>

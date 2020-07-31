@@ -3,6 +3,7 @@ import {
   STYLE_SHEET_NAVIGATION_HEIGHT,
   STYLE_UNSELECTABLE,
   STYLE_BOX_SHADOW,
+  STYLE_BORDER_RADIUS,
 } from '../../constants/styles'
 
 const STYLE_SHEET_NAVIGATION: CSSProperties = {
@@ -60,6 +61,11 @@ export const STYLE_SHEET_NAVIGATION_OPTIONS: CSSProperties = {
 
 export const STYLE_SHEET_NAVIGATION_ADD_SHEET: CSSProperties = {
   minWidth: `${STYLE_SHEET_NAVIGATION_HEIGHT} !important`,
+}
+
+export const STYLE_SHEET_OPTIONS: CSSProperties = {
+  borderRadius: STYLE_BORDER_RADIUS,
+  width: 150,
 }
 
 export default STYLE_SHEET_NAVIGATION

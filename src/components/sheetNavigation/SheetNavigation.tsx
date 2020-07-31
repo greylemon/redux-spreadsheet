@@ -45,6 +45,7 @@ import STYLE_SHEET_NAVIGATION, {
   STYLE_SHEET_NAVIGATION_OPTIONS,
   STYLE_SHEET_NAVIGATION_OPTION,
   STYLE_SHEET_NAVIGATION_SHEET_SHEETNAME,
+  STYLE_SHEET_OPTIONS,
 } from './style'
 import { THUNK_RENAME_SHEET, THUNK_ADD_SHEET } from '../../redux/thunks/sheet'
 
@@ -139,10 +140,18 @@ const SheetOption: FunctionComponent<{
   }, [dispatch, handleClose])
 
   return (
-    <Popper open={isSheetNavigationOpen} anchorEl={anchorRef.current}>
-      <Paper>
+    <Popper
+      open={isSheetNavigationOpen}
+      anchorEl={anchorRef.current}
+      placement="top-start"
+    >
+      <Paper style={STYLE_SHEET_OPTIONS}>
         <ClickAwayListener onClickAway={handleClickAway}>
-          <MenuList autoFocusItem={isSheetNavigationOpen} id="menu-list-grow">
+          <MenuList
+            autoFocusItem={isSheetNavigationOpen}
+            id="menu-list-grow"
+            tabIndex={undefined}
+          >
             <MenuItem
               onClick={handleDeleteSheet}
               disabled={sheetNames.length === 1}

@@ -113,11 +113,12 @@ $customBorderStyle: 'solid';
 
 .contextMenu {
   @include unselectable;
-  padding: 10px;
+  padding: 6px 0;
   cursor: default;
+  
 
   &__menu {
-    padding: 20px;
+    padding: 10px;
 
     &:hover {
       background-color: lightgray;

@@ -34,12 +34,10 @@ const AppBarName: FunctionComponent<{ sheetRef: ISheetRef }> = ({
       switch (event.key) {
         case 'Escape':
           dispatch(ExcelActions.ESCAPE_TITLE_EDITOR_STATE())
-          // editorRef.current.blur()
           sheetRef.current.focus()
           break
         case 'Enter':
           dispatch(ExcelActions.SAVE_TITLE_EDITOR_STATE())
-          // editorRef.current.blur()
           sheetRef.current.focus()
           break
         default:

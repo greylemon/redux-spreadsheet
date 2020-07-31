@@ -9,6 +9,7 @@ import STYLE_APP_BAR, {
 import AppBarMenu from './AppBarMenu'
 import AppBarName from './AppBarName'
 import { ISheetRef } from '../../@types/ref'
+import { IHandleSave } from '../../@types/functions'
 
 const SpreadSheetButton: FunctionComponent = () => {
   return (
@@ -18,19 +19,23 @@ const SpreadSheetButton: FunctionComponent = () => {
   )
 }
 
-const AppBarContent: FunctionComponent<{ sheetRef: ISheetRef }> = ({
-  sheetRef,
-}) => (
+const AppBarContent: FunctionComponent<{
+  sheetRef: ISheetRef
+  handleSave: IHandleSave
+}> = ({ sheetRef, handleSave }) => (
   <div style={STYLE_APP_BAR_CONTENT}>
     <AppBarName sheetRef={sheetRef} />
-    <AppBarMenu />
+    <AppBarMenu handleSave={handleSave} />
   </div>
 )
 
-const AppBar: FunctionComponent<{ sheetRef: ISheetRef }> = ({ sheetRef }) => (
+const AppBar: FunctionComponent<{
+  sheetRef: ISheetRef
+  handleSave: IHandleSave
+}> = ({ sheetRef, handleSave }) => (
   <div style={STYLE_APP_BAR}>
     <SpreadSheetButton />
-    <AppBarContent sheetRef={sheetRef} />
+    <AppBarContent sheetRef={sheetRef} handleSave={handleSave} />
   </div>
 )
 

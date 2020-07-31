@@ -106,7 +106,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
       onKeyDown={handleKeyDown}
       tabIndex={-1}
     >
-      <AppBar sheetRef={sheetRef} />
+      <AppBar sheetRef={sheetRef} handleSave={handleSave} />
       <Divider />
       {!isToolBarDisabled && <ToolBar />}
       {/* <FormulaBar /> */}

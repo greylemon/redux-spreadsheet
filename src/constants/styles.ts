@@ -64,6 +64,8 @@ export const columnDraggerStyle: CSSProperties = {
   boxSizing: 'border-box',
 }
 
+export const STYLE_BORDER_RADIUS = 1
+
 export const columnDraggerIndicatorStyle: CSSProperties = {
   backgroundColor: '#1E90FF',
 }
