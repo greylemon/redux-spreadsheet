@@ -146,3 +146,13 @@ export const selectSheetDimensions = createSelector(
   [selectExcel],
   (excel) => excel.sheetDimensions
 )
+
+export const selectScrollHorizontal = createSelector(
+  [selectExcel],
+  (excel) => excel.scrollHorizontal
+)
+
+export const selectScrollVertical = createSelector(
+  [selectExcel],
+  (excel) => excel.scrollVertical
+)

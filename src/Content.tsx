@@ -19,10 +19,16 @@ import SheetNavigation from './components/sheetNavigation/SheetNavigation'
 import { ExcelActions } from './redux/store'
 import { ExcelComponentProps } from './@types/components'
 import { THUNK_COMMAND_SAVE } from './redux/thunks/IO'
-import { THUNK_MOUSE_UP, THUNK_MOUSE_MOVE } from './redux/thunks/mouse'
+import {
+  THUNK_MOUSE_UP,
+  THUNK_MOUSE_MOVE,
+  THUNK_MOUSE_DOWN,
+  THUNK_MOUSE_DOUBLE_CLICK,
+} from './redux/thunks/mouse'
 import { THUNK_HISTORY_UNDO, THUNK_HISTORY_REDO } from './redux/thunks/history'
 import AppBar from './components/appBar/AppBar'
 import { STYLE_EXCEL } from './style'
+import ScrollListener from './components/ScrollListener'
 
 export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   style,
@@ -69,7 +75,9 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
 
   window.onmousemove = useCallback(
     ({ clientX, clientY, shiftKey, ctrlKey }: MouseEvent) => {
-      dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }, shiftKey, ctrlKey))
+      dispatch(
+        THUNK_MOUSE_MOVE({ x: clientX, y: clientY }, gridRef, shiftKey, ctrlKey)
+      )
     },
     [dispatch]
   )
@@ -77,7 +85,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   window.ontouchmove = useCallback(
     ({ touches }: TouchEvent) => {
       const { clientX, clientY } = touches[0]
-      dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }))
+      dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }, gridRef))
     },
     [dispatch]
   )
@@ -90,12 +98,39 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
     dispatch(THUNK_MOUSE_UP())
   }, [dispatch])
 
+  window.onmousedown = useCallback(
+    ({ clientX, clientY, ctrlKey, shiftKey, buttons }: MouseEvent) => {
+      if (buttons === 1)
+        dispatch(
+          THUNK_MOUSE_DOWN({ x: clientX, y: clientY }, shiftKey, ctrlKey)
+        )
+    },
+    [dispatch]
+  )
+
+  window.ontouchstart = useCallback(
+    ({ touches }: TouchEvent) => {
+      const { clientX, clientY } = touches[0]
+      dispatch(THUNK_MOUSE_DOWN({ x: clientX, y: clientY }, false, false))
+    },
+    [dispatch]
+  )
+
+  window.ondblclick = useCallback(
+    ({ clientX, clientY }: MouseEvent) => {
+      dispatch(THUNK_MOUSE_DOUBLE_CLICK({ x: clientX, y: clientY }))
+    },
+    [dispatch]
+  )
+
   useEffect(() => {
     return () => {
       delete window.onmousedown
       delete window.onmouseup
       delete window.ontouchmove
       delete window.ontouchend
+      delete window.ondblclick
+      delete window.ontouchstart
     }
   }, [])
 
@@ -113,6 +148,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
       <SheetContainer gridRef={gridRef} sheetRef={sheetRef} />
       <Divider />
       <SheetNavigation isRouted={isRouted} />
+      <ScrollListener gridRef={gridRef} />
     </div>
   )
 }

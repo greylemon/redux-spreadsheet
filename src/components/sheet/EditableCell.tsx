@@ -1,11 +1,4 @@
-import React, {
-  MouseEvent,
-  FunctionComponent,
-  useMemo,
-  useCallback,
-  CSSProperties,
-} from 'react'
-import { useDispatch } from 'react-redux'
+import React, { FunctionComponent, useMemo, CSSProperties } from 'react'
 import { ICellProps } from '../../@types/components'
 import {
   IRichTextValue,
@@ -26,7 +19,6 @@ import {
   STYLE_BLOCK_Z_INDEX,
   STYLE_CONTENT_Z_INDEX,
 } from '../../constants/styles'
-import { THUNK_MOUSE_DOWN } from '../../redux/thunks/mouse'
 
 const RichTextFragment: FunctionComponent<IFragment> = ({
   text: value,
@@ -65,8 +57,6 @@ const EditableCell: FunctionComponent<ICellProps> = ({
   columnIndex,
   rowIndex,
 }) => {
-  const dispatch = useDispatch()
-
   const {
     data: sheetData,
     columnWidthsAdjusted,
@@ -74,30 +64,12 @@ const EditableCell: FunctionComponent<ICellProps> = ({
     cellLayering,
     columnOffsets,
     rowOffsets,
-    handleDoubleClick,
   } = data
 
   const rowData = sheetData[rowIndex]
-
   const cellData = rowData && rowData[columnIndex] ? rowData[columnIndex] : {}
-
   const { value, type, style: cellStyle, merged } = cellData
-
-  const position = { x: columnIndex, y: rowIndex }
   const layerIndex = cellLayering[rowIndex][columnIndex]
-
-  const handleMouseDown = useCallback(
-    (event: MouseEvent) => {
-      const { ctrlKey, shiftKey, buttons } = event
-
-      if (buttons === 1) dispatch(THUNK_MOUSE_DOWN(position, shiftKey, ctrlKey))
-    },
-    [dispatch, position]
-  )
-
-  const handleTouchDown = useCallback(() => {
-    dispatch(THUNK_MOUSE_DOWN(position, false, false))
-  }, [dispatch, position])
 
   style = useMemo(
     (): CSSProperties =>
@@ -189,11 +161,7 @@ const EditableCell: FunctionComponent<ICellProps> = ({
   ])
 
   return (
-    <div
-      onMouseDown={handleMouseDown}
-      onTouchStart={handleTouchDown}
-      onDoubleClick={handleDoubleClick}
-    >
+    <div>
       <span id={id} style={contentStyle} className="unselectable cell__content">
         {cellComponent}
       </span>

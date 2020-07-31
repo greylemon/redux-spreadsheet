@@ -1,15 +1,7 @@
 import { initialExcelState, ExcelActions } from '../../../../../src/redux/store'
-import { IPosition, IArea } from '../../../../../src/@types/state'
+import { IPosition } from '../../../../../src/@types/state'
 import { mockStore, createRootMockStore } from '../../../mockStore'
-import {
-  selectColumnCount,
-  selectRowCount,
-} from '../../../../../src/redux/selectors/activeSheet'
-import {
-  selectActiveCellPosition,
-  selectSelectionArea,
-  selectInactiveSelectionAreas,
-} from '../../../../../src/redux/selectors/base'
+import { selectActiveCellPosition } from '../../../../../src/redux/selectors/base'
 import { nSelectActiveSheet } from '../../../../../src/redux/tools/selectors'
 
 describe('Cell mouse operations', () => {
@@ -47,26 +39,26 @@ describe('Cell mouse operations', () => {
     })
   })
 
-  describe('Cell selection', () => {
-    it('All cells', () => {
-      const initState = store.getState()
-      const area: IArea = {
-        start: { x: 1, y: 1 },
-        end: { x: selectColumnCount(initState), y: selectRowCount(initState) },
-      }
+  // describe('Cell selection', () => {
+  //   it('All cells', () => {
+  //     const initState = store.getState()
+  //     const area: IArea = {
+  //       start: { x: 1, y: 1 },
+  //       end: { x: selectColumnCount(initState), y: selectRowCount(initState) },
+  //     }
 
-      store.dispatch(ExcelActions.CELL_MOUSE_DOWN(area.start))
-      store.dispatch(ExcelActions.CELL_MOUSE_ENTER(area.end))
+  //     store.dispatch(ExcelActions.CELL_MOUSE_DOWN(area.start))
+  //     store.dispatch(ExcelActions.CELL_MOUSE_ENTER(area.end))
 
-      expect(selectSelectionArea(store.getState())).toEqual(area)
+  //     expect(selectSelectionArea(store.getState())).toEqual(area)
 
-      store.dispatch(ExcelActions.CELL_MOUSE_UP(area))
+  //     store.dispatch(ExcelActions.CELL_MOUSE_UP(area))
 
-      const state3 = store.getState()
-      const inactiveSelectionAreas = selectInactiveSelectionAreas(state3)
-      expect(selectSelectionArea(state3)).toEqual(undefined)
-      expect(inactiveSelectionAreas.length).toBe(1)
-      expect(inactiveSelectionAreas[0]).toEqual(area)
-    })
-  })
+  //     const state3 = store.getState()
+  //     const inactiveSelectionAreas = selectInactiveSelectionAreas(state3)
+  //     expect(selectSelectionArea(state3)).toEqual(undefined)
+  //     expect(inactiveSelectionAreas.length).toBe(1)
+  //     expect(inactiveSelectionAreas[0]).toEqual(area)
+  //   })
+  // })
 })

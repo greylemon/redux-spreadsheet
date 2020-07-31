@@ -1,11 +1,14 @@
 import { EditorState } from 'draft-js'
 import { CSSProperties } from 'react'
+import { IHorizontalOffsetType, IVerticalOffsetType } from './general'
 
 export type IPosition = { x: number; y: number }
 
 export type IArea = { start: IPosition; end: IPosition }
 
 export type IRange = { start: number; end: number }
+
+export type IInlineStylesRange = { [key: string]: IRange[] }
 
 export type IAreaRange = {
   xRange: IRange
@@ -294,8 +297,10 @@ export type IExcelState = {
 
   dependentReferences: IDependentReferences
   dependentIndependentReferences: IDependentIndependentReferenceMap
-
   independentReferences: IIndependentReferences
   independentDependentReferences: IIndependentDependentReferenceMap
   sheetToIndependentDependentMap: ISheetToIndependentDependentMap
+
+  scrollHorizontal: IHorizontalOffsetType
+  scrollVertical: IVerticalOffsetType
 }

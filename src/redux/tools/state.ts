@@ -80,4 +80,7 @@ export const createInitialExcelState = (): IExcelState => ({
   independentReferences: {},
   independentDependentReferences: {},
   sheetToIndependentDependentMap: {},
+
+  scrollHorizontal: 'neutral',
+  scrollVertical: 'neutral',
 })

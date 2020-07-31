@@ -1,5 +1,9 @@
 import { PayloadAction } from '@reduxjs/toolkit'
 import { IExcelState, IScrollOffset, IPosition } from '../../@types/state'
+import {
+  IVerticalOffsetType,
+  IHorizontalOffsetType,
+} from '../../@types/general'
 
 export const UPDATE_STATE = (
   state: IExcelState,
@@ -22,5 +26,20 @@ export const UPDATE_SHEET_DIMENSIONS = (
   action: PayloadAction<IPosition>
 ): IExcelState => {
   state.sheetDimensions = action.payload
+  return state
+}
+
+export const UPDATE_SCROLL_EVENT = (
+  state: IExcelState,
+  action: PayloadAction<{
+    scrollVertical: IVerticalOffsetType
+    scrollHorizontal: IHorizontalOffsetType
+  }>
+): IExcelState => {
+  const { scrollHorizontal, scrollVertical } = action.payload
+
+  state.scrollHorizontal = scrollHorizontal
+  state.scrollVertical = scrollVertical
+
   return state
 }

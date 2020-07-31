@@ -89,16 +89,11 @@ export const Sheet: FunctionComponent<Size & ISheetProps> = ({
     if (current) current.resetAfterIndices({ columnIndex: 0, rowIndex: 0 })
   }, [getColumnWidth, getRowHeight])
 
-  const handleDoubleClick = useCallback(() => {
-    dispatch(ExcelActions.CELL_DOUBLE_CLICK())
-  }, [dispatch])
-
   const itemData: IItemData = {
     data,
     columnWidthsAdjusted,
     sheetResults,
     cellLayering,
-    handleDoubleClick,
     rowOffsets,
     columnOffsets,
   }

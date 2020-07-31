@@ -145,6 +145,9 @@ export const CELL_MOUSE_ENTER_CTRL = (
 
   const position = action.payload
 
+  delete state.scrollHorizontal
+  delete state.scrollVertical
+
   state.selectionArea = getEntireSuperArea(
     { start: state.activeCellPosition, end: position },
     activeSheet.data
@@ -162,6 +165,8 @@ export const CELL_MOUSE_UP = (
   state.isSelectionMode = false
 
   delete state.lastVisitedCell
+  state.scrollHorizontal = 'neutral'
+  state.scrollVertical = 'neutral'
 
   const selectionArea = action.payload
 

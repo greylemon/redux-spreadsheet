@@ -38,7 +38,6 @@ export type IItemData = {
   cellLayering: number[][]
   rowOffsets: IRowOffsets
   columnOffsets: IColumnOffsets
-  handleDoubleClick: () => void
 }
 
 export interface ICellProps {

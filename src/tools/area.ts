@@ -11,6 +11,7 @@ import {
   SHEET_ROW_HEIGHT_HEADER,
 } from '../constants/defaults'
 import { ICellMapSet } from '../@types/objects'
+import { IHorizontalOffsetType, IVerticalOffsetType } from '../@types/general'
 
 export const getMinPositionFromArea = ({ start, end }: IArea): IPosition => ({
   x: Math.min(start.x, end.x),
@@ -272,18 +273,39 @@ export const boundPositionInOrderedArea = (
   orderedSheetArea: IArea,
   rowAdjustment = -2,
   columnAdjustment = -2
-): IPosition => {
+): {
+  boundedPosition: IPosition
+  scrollHorizontal: IHorizontalOffsetType
+  scrollVertical: IVerticalOffsetType
+} => {
   const boundedPosition: IPosition = { ...position }
   const scrollBarSize = getScrollbarSize()
-  if (position.x < orderedSheetArea.start.x + 2)
+
+  let scrollHorizontal: IHorizontalOffsetType = 'neutral'
+  let scrollVertical: IVerticalOffsetType = 'neutral'
+
+  if (position.x < orderedSheetArea.start.x + 2) {
     boundedPosition.x = orderedSheetArea.start.x + 2
-  if (position.x >= orderedSheetArea.end.x - scrollBarSize + columnAdjustment)
+    scrollHorizontal = 'left'
+  } else if (
+    position.x >=
+    orderedSheetArea.end.x - scrollBarSize + columnAdjustment
+  ) {
     boundedPosition.x =
       orderedSheetArea.end.x - scrollBarSize + columnAdjustment
-  if (position.y < orderedSheetArea.start.y + 2)
-    boundedPosition.y = orderedSheetArea.start.y + 2
-  if (position.y >= orderedSheetArea.end.y - scrollBarSize + rowAdjustment)
-    boundedPosition.y = orderedSheetArea.end.y - scrollBarSize + rowAdjustment
+    scrollHorizontal = 'right'
+  }
 
-  return boundedPosition
+  if (position.y < orderedSheetArea.start.y + 4) {
+    boundedPosition.y = orderedSheetArea.start.y + 4
+    scrollVertical = 'top'
+  } else if (
+    position.y >=
+    orderedSheetArea.end.y - scrollBarSize + rowAdjustment
+  ) {
+    boundedPosition.y = orderedSheetArea.end.y - scrollBarSize + rowAdjustment
+    scrollVertical = 'bottom'
+  }
+
+  return { boundedPosition, scrollHorizontal, scrollVertical }
 }

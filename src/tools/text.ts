@@ -17,9 +17,9 @@ import {
   IInlineStyles,
   ICell,
   IRows,
+  IInlineStylesRange,
 } from '../@types/state'
 import { getElementaryRanges, mergeRanges } from './range'
-import { IInlineStylesRange } from '../@types/general'
 import {
   TYPE_RICH_TEXT,
   TYPE_TEXT,
@@ -318,4 +318,4 @@ export const createEditorStateFromText = (value: string): EditorState =>
   EditorState.createWithContent(ContentState.createFromText(value))
 
 export const createEmptyEditorState = (): EditorState =>
-  EditorState.createEmpty()
+  createEditorStateFromText('')
