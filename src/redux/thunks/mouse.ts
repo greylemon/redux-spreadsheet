@@ -41,6 +41,10 @@ import {
   dispatchSaveActiveCell,
   getGeneralActionPayload,
 } from '../tools/history'
+import {
+  SHEET_ROW_HEIGHT_HEADER,
+  SHEET_COLUMN_WIDTH_HEADER,
+} from '../../constants/defaults'
 
 export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
@@ -120,7 +124,7 @@ export const THUNK_MOUSE_MOVE = (
       const sheetArea: IArea = { start: sheetAreaStart, end: sheetAreaEnd }
 
       // Bound the position - account for unexpected dimensions in react-window fork
-      const {
+      let {
         boundedPosition,
         scrollHorizontal,
         scrollVertical,
@@ -153,6 +157,19 @@ export const THUNK_MOUSE_MOVE = (
           case 'row_dragger':
           case 'column':
           case 'row': {
+            if (type === 'row' || type === 'row_dragger') {
+              boundedPosition.x += SHEET_COLUMN_WIDTH_HEADER
+              scrollHorizontal = 'left'
+            } else if (type === 'column' || type === 'column_dragger') {
+              boundedPosition.y += SHEET_ROW_HEIGHT_HEADER
+              scrollVertical = 'top'
+            } else if (type === 'root') {
+              boundedPosition.x += SHEET_COLUMN_WIDTH_HEADER
+              boundedPosition.y += SHEET_ROW_HEIGHT_HEADER
+              scrollVertical = 'top'
+              scrollHorizontal = 'left'
+            }
+
             const cellPosition = getEditableCellPositionFromBoundedPosition(
               boundedPosition,
               sheetArea

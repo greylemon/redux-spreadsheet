@@ -296,8 +296,8 @@ export const boundPositionInOrderedArea = (
     scrollHorizontal = 'right'
   }
 
-  if (position.y < orderedSheetArea.start.y + 4) {
-    boundedPosition.y = orderedSheetArea.start.y + 4
+  if (position.y < orderedSheetArea.start.y + 2) {
+    boundedPosition.y = orderedSheetArea.start.y + 2
     scrollVertical = 'top'
   } else if (
     position.y >=
