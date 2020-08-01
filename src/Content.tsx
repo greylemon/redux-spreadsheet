@@ -12,7 +12,7 @@ import { Route, useRouteMatch, Switch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Divider } from '@material-ui/core'
 import { VariableSizeGrid } from 'react-window'
-import SheetContainer from './components/sheet/Sheet'
+// import SheetContainer from './components/sheet/Sheet'
 import ToolBar from './components/toolBar/ToolBar'
 import SheetNavigation from './components/sheetNavigation/SheetNavigation'
 // import FormulaBar from './components/formulaBar/FormulaBar'
@@ -29,6 +29,7 @@ import { THUNK_HISTORY_UNDO, THUNK_HISTORY_REDO } from './redux/thunks/history'
 import AppBar from './components/appBar/AppBar'
 import { STYLE_EXCEL } from './style'
 import ScrollListener from './components/ScrollListener'
+import CanvasSheet from './components/canvas_sheet/Sheet'
 
 export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   style,
@@ -143,7 +144,8 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
       <Divider />
       {!isToolBarDisabled && <ToolBar />}
       {/* <FormulaBar /> */}
-      <SheetContainer gridRef={gridRef} sheetRef={sheetRef} />
+      {/* <SheetContainer gridRef={gridRef} sheetRef={sheetRef} /> */}
+      <CanvasSheet />
       <Divider />
       <SheetNavigation isRouted={isRouted} />
       <ScrollListener gridRef={gridRef} />

@@ -14,6 +14,7 @@ const STYLE_SHEET: CSSProperties = {
     STYLE_APP_BAR_HEIGHT +
     DIVIDER_COUNT
   }px)`,
+  overflow: 'auto',
 }
 
 export default STYLE_SHEET
