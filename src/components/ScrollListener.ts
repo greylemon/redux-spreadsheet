@@ -24,9 +24,15 @@ const ScrollListener: FunctionComponent<{ gridRef: IGridRef }> = ({
   )
 
   useEffect(() => {
-    if (scrollVertical !== 'neutral' || scrollHorizontal !== 'neutral') {
+    if (
+      (scrollVertical !== 'neutral' || scrollHorizontal !== 'neutral') &&
+      gridRef.current
+    ) {
       intervalRef.current = setTimeout(
-        () => dispatch(THUNK_UPDATE_SCROLL_EVENT(gridRef)),
+        () =>
+          dispatch(
+            THUNK_UPDATE_SCROLL_EVENT(gridRef, scrollVertical, scrollHorizontal)
+          ),
         50
       )
     }

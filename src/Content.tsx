@@ -75,9 +75,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
 
   window.onmousemove = useCallback(
     ({ clientX, clientY, shiftKey, ctrlKey }: MouseEvent) => {
-      dispatch(
-        THUNK_MOUSE_MOVE({ x: clientX, y: clientY }, gridRef, shiftKey, ctrlKey)
-      )
+      dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }, shiftKey, ctrlKey))
     },
     [dispatch]
   )
@@ -85,7 +83,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   window.ontouchmove = useCallback(
     ({ touches }: TouchEvent) => {
       const { clientX, clientY } = touches[0]
-      dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }, gridRef))
+      dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }))
     },
     [dispatch]
   )

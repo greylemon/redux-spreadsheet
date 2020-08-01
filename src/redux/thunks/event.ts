@@ -9,37 +9,43 @@ import {
 import { IPosition } from '../../@types/state'
 import { ExcelActions } from '../store'
 import { selectColumnCount, selectRowCount } from '../selectors/activeSheet'
+import {
+  IVerticalOffsetType,
+  IHorizontalOffsetType,
+} from '../../@types/general'
 
-export const THUNK_UPDATE_SCROLL_EVENT = (gridRef: IGridRef): IAppThunk => (
-  dispatch,
-  getState
-) => {
+export const THUNK_UPDATE_SCROLL_EVENT = (
+  gridRef: IGridRef,
+  startedScrollVertical: IVerticalOffsetType,
+  startedScrollHorizontal: IHorizontalOffsetType
+): IAppThunk => (dispatch, getState) => {
   const state = getState()
 
   const isSelectionMode = selectIsSelectionMode(state)
+  const scrollHorizontal = selectScrollHorizontal(state)
+  const scrollVertical = selectScrollVertical(state)
 
-  if (isSelectionMode) {
-    const scrollHorizontal = selectScrollHorizontal(state)
-    const scrollVertical = selectScrollVertical(state)
-
+  if (
+    isSelectionMode &&
+    (scrollHorizontal !== 'neutral' || scrollVertical !== 'neutral') &&
+    scrollHorizontal === startedScrollHorizontal &&
+    scrollVertical === startedScrollVertical
+  ) {
     const selectionArea = selectSelectionArea(state)
     const position: IPosition = { ...selectionArea.end }
 
     let rowIndex = position.y
     let columnIndex = position.x
-
-    gridRef.current.scrollToItem({
-      align: 'smart',
-      rowIndex: rowIndex === 1 ? 0 : rowIndex,
-      columnIndex: columnIndex === 1 ? 0 : columnIndex,
-    })
+    const scrollPosition: IPosition = { ...position }
 
     switch (scrollHorizontal) {
       case 'right':
         columnIndex = Math.min(position.x + 1, selectColumnCount(state))
+        scrollPosition.x += 1
         break
       case 'left':
         columnIndex = Math.max(position.x - 1, 1)
+        scrollPosition.x -= 2
         break
       default:
         columnIndex = position.x
@@ -49,14 +55,22 @@ export const THUNK_UPDATE_SCROLL_EVENT = (gridRef: IGridRef): IAppThunk => (
     switch (scrollVertical) {
       case 'bottom':
         rowIndex = Math.min(position.y + 1, selectRowCount(state))
+        scrollPosition.y += 1
         break
       case 'top':
         rowIndex = Math.max(position.y - 1, 1)
+        scrollPosition.y -= 2
         break
       default:
         rowIndex = position.y
         break
     }
+
+    gridRef.current.scrollToItem({
+      align: 'smart',
+      rowIndex: scrollPosition.y,
+      columnIndex: scrollPosition.x,
+    })
 
     dispatch(ExcelActions.CELL_MOUSE_ENTER({ x: columnIndex, y: rowIndex }))
   }

@@ -105,6 +105,11 @@ const SomeComponent = () => {
   - [x] Resize
   - [ ] Resize Freeze
   - [ ] Set row / column count
+- Scroll
+  - [x] Selection area (may crash -- need to limit trigger)
+  - [ ] Key press
+- Alternative container experiments
+  - [ ] react-canvas container - Google Spreadsheet uses canvas
 - ...many more to do
 
 ## Main Libraries Used

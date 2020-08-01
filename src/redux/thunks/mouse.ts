@@ -41,7 +41,6 @@ import {
   dispatchSaveActiveCell,
   getGeneralActionPayload,
 } from '../tools/history'
-import { IGridRef } from '../../@types/ref'
 
 export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
@@ -93,7 +92,6 @@ export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
 
 export const THUNK_MOUSE_MOVE = (
   mousePosition: IPosition,
-  gridRef: IGridRef,
   shiftKey?: boolean,
   ctrlKey?: boolean
 ): IAppThunk => (dispatch, getState) => {
@@ -190,12 +188,9 @@ export const THUNK_MOUSE_MOVE = (
             )
 
           if (scrollVertical !== 'neutral' || scrollHorizontal !== 'neutral') {
-            const scrollPosition: IPosition = { ...scopedPosition }
-
             switch (scrollHorizontal) {
               case 'left':
-                scrollPosition.x -= 1
-                scopedPosition.x = Math.max(scopedPosition.x - 2, 1)
+                scopedPosition.x = Math.max(scopedPosition.x - 1, 1)
                 break
               case 'right':
                 scopedPosition.x = Math.min(
@@ -209,8 +204,7 @@ export const THUNK_MOUSE_MOVE = (
 
             switch (scrollVertical) {
               case 'top':
-                scrollPosition.y -= 1
-                scopedPosition.y = Math.max(scopedPosition.y - 2, 1)
+                scopedPosition.y = Math.max(scopedPosition.y - 1, 1)
                 break
               case 'bottom':
                 scopedPosition.y = Math.min(
@@ -221,12 +215,6 @@ export const THUNK_MOUSE_MOVE = (
               default:
                 break
             }
-
-            gridRef.current.scrollToItem({
-              align: 'smart',
-              rowIndex: scrollPosition.y,
-              columnIndex: scrollPosition.x,
-            })
           }
 
           if (
