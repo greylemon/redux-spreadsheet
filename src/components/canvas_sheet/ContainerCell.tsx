@@ -25,7 +25,7 @@ export const Cell: FunctionComponent<{
         y={rowOffsets[rowIndex]}
         width={getColumnWidth(columnIndex)}
         height={getRowHeight(rowIndex)}
-        stroke="black"
+        stroke="rgb(199, 199, 199)"
         strokeWidth={1}
       />
       <Text

@@ -5,6 +5,10 @@ import {
   getRowOffsets,
   normalizeRowHeightFromArray,
   normalizeColumnWidthFromArray,
+  getScrolledDimensionOffsets,
+  getScrollLength,
+  getEndDimension,
+  getScrollBlock,
 } from '../../tools/dimensions'
 import {
   selectActiveSheetName,
@@ -15,6 +19,10 @@ import {
   selectDragColumnOffset,
   selectScrollOffsetY,
   selectScrollOffsetX,
+  selectScrollTopLeftPositionX,
+  selectScrollTopLeftPositionY,
+  selectSheetDimensionsY,
+  selectSheetDimensionsX,
 } from './base'
 import {
   selectColumnCount,
@@ -63,6 +71,84 @@ export const selectColumnOffsets = createSelector(
 export const selectRowOffsets = createSelector(
   [selectRowHeights, selectRowCount],
   (rowHeights, rowCount) => getRowOffsets(rowHeights, rowCount)
+)
+
+export const selectScrollColumnOffsets = createSelector(
+  [
+    selectColumnOffsets,
+    selectTableFreezeColumnCount,
+    selectScrollTopLeftPositionX,
+  ],
+  (columnOffsets, tableFreezeColumnCount, topLeftPositionX) =>
+    getScrolledDimensionOffsets(
+      columnOffsets,
+      tableFreezeColumnCount,
+      topLeftPositionX
+    )
+)
+
+export const selectScrollRowOffsets = createSelector(
+  [selectRowOffsets, selectTableFreezeRowCount, selectScrollTopLeftPositionY],
+  (rowOffsets, tableFreezeRowCount, topLeftPositionY) =>
+    getScrolledDimensionOffsets(
+      rowOffsets,
+      tableFreezeRowCount,
+      topLeftPositionY
+    )
+)
+
+export const selectViewRowEnd = createSelector(
+  [
+    selectScrollTopLeftPositionY,
+    selectRowOffsets,
+    selectFreezeRowCount,
+    selectSheetDimensionsY,
+  ],
+  (topLeftPositionY, rowOffsets, freezeRowCount, sheetDimensionsY) =>
+    getEndDimension(
+      topLeftPositionY,
+      rowOffsets,
+      freezeRowCount,
+      sheetDimensionsY
+    )
+)
+
+export const selectViewColumnEnd = createSelector(
+  [
+    selectScrollTopLeftPositionX,
+    selectColumnOffsets,
+    selectFreezeColumnCount,
+    selectSheetDimensionsX,
+  ],
+  (topLeftPositionX, columnOffsets, freezeColumnCount, sheetDimensionsX) =>
+    getEndDimension(
+      topLeftPositionX,
+      columnOffsets,
+      freezeColumnCount,
+      sheetDimensionsX
+    )
+)
+
+export const selectScrollHorizontalWidth = createSelector(
+  [selectColumnOffsets, selectFreezeColumnCount],
+  (columnOffsets, freezeColumnCount) =>
+    getScrollLength(columnOffsets, freezeColumnCount)
+)
+
+export const selectScrollVerticalHeight = createSelector(
+  [selectRowOffsets, selectFreezeRowCount],
+  (rowOffsets, freezeRowCount) => getScrollLength(rowOffsets, freezeRowCount)
+)
+
+export const selectScrollVerticalBlock = createSelector(
+  [selectRowOffsets, selectFreezeRowCount],
+  (rowOffsets, freezeRowCount) => getScrollBlock(rowOffsets, freezeRowCount)
+)
+
+export const selectScrollHorizontalBlock = createSelector(
+  [selectColumnOffsets, selectFreezeColumnCount],
+  (columnOffsets, freezeColumnCount) =>
+    getScrollBlock(columnOffsets, freezeColumnCount)
 )
 
 export const selectGetRowHeight = createSelector(

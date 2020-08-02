@@ -83,4 +83,6 @@ export const createInitialExcelState = (): IExcelState => ({
 
   scrollHorizontal: 'neutral',
   scrollVertical: 'neutral',
+
+  topLeftPosition: { x: 1, y: 1 },
 })

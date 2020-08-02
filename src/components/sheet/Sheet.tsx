@@ -31,7 +31,7 @@ import CommonPane from './CommonPane'
 
 import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 import { ExcelActions } from '../../redux/store'
-import STYLE_SHEET from './style'
+import { STYLE_SHEET } from './style'
 import { IItemData, ISheetProps } from '../../@types/components'
 import {
   THUNK_KEY_ENTER,

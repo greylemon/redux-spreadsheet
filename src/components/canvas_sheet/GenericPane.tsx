@@ -1,35 +1,35 @@
 import React, { FunctionComponent, useMemo } from 'react'
-import { Group } from 'react-konva'
+import { Group, Layer } from 'react-konva'
 import { IRowOffsets, IColumnOffsets } from '../../@types/state'
 import { IGetRowHeight, IGetColumnWidth } from '../../@types/functions'
 import { Cell } from './ContainerCell'
 
-const TopLeftPane: FunctionComponent<{
-  tableRowCount: number
-  tableColumnCount: number
+const GenericPane: FunctionComponent<{
   rowOffsets: IRowOffsets
   columnOffsets: IColumnOffsets
   getRowHeight: IGetRowHeight
   getColumnWidth: IGetColumnWidth
-  tableFreezeColumnCount: number
-  tableFreezeRowCount: number
+  rowStart: number
+  rowEnd: number
+  columnStart: number
+  columnEnd: number
 }> = ({
-  tableFreezeColumnCount,
-  tableFreezeRowCount,
-  tableRowCount,
-  tableColumnCount,
+  rowStart,
+  rowEnd,
+  columnStart,
+  columnEnd,
   rowOffsets,
   columnOffsets,
   getColumnWidth,
   getRowHeight,
 }) => {
-  const TopLeftComponents = useMemo(() => {
+  const Rows = useMemo(() => {
     const RowList: JSX.Element[] = []
-    for (let rowIndex = 0; rowIndex < tableFreezeRowCount; rowIndex += 1) {
+    for (let rowIndex = rowStart; rowIndex < rowEnd; rowIndex += 1) {
       const ColumnList: JSX.Element[] = []
       for (
-        let columnIndex = 0;
-        columnIndex < tableFreezeColumnCount;
+        let columnIndex = columnStart;
+        columnIndex < columnEnd;
         columnIndex += 1
       ) {
         ColumnList.push(
@@ -46,22 +46,16 @@ const TopLeftPane: FunctionComponent<{
       }
 
       RowList.push(
-        <Group
-          key={`sheet-top-left-row-${rowIndex}`}
-          clipX={0}
-          clipY={0}
-          clipWidth={50}
-          clipHeight={50}
-        >
-          {ColumnList}
-        </Group>
+        <Group key={`sheet-top-left-row-${rowIndex}`}>{ColumnList}</Group>
       )
     }
 
     return RowList
   }, [
-    tableFreezeColumnCount,
-    tableFreezeRowCount,
+    rowStart,
+    rowEnd,
+    columnStart,
+    columnEnd,
     rowOffsets,
     columnOffsets,
     getColumnWidth,
@@ -69,13 +63,10 @@ const TopLeftPane: FunctionComponent<{
   ])
 
   return (
-    <Group
-      height={rowOffsets[tableFreezeRowCount]}
-      width={columnOffsets[tableFreezeColumnCount]}
-    >
-      {TopLeftComponents}
-    </Group>
+    <Layer>
+      <Group>{Rows}</Group>
+    </Layer>
   )
 }
 
-export default TopLeftPane
+export default GenericPane

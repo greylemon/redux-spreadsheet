@@ -303,4 +303,6 @@ export type IExcelState = {
 
   scrollHorizontal: IHorizontalOffsetType
   scrollVertical: IVerticalOffsetType
+
+  topLeftPosition: IPosition
 }
