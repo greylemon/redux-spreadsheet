@@ -8,10 +8,11 @@ import { nSelectActiveSheet } from '../tools/selectors'
 
 export const UPDATE_STATE = (
   state: IExcelState,
-  action: PayloadAction<IExcelState>
+  action: PayloadAction<Partial<IExcelState>>
 ): IExcelState => ({
   ...state,
   ...action.payload,
+  sheetDimensions: state.sheetDimensions,
 })
 
 export const UPDATE_SCROLL_OFFSET = (

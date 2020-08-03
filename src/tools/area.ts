@@ -309,3 +309,20 @@ export const boundPositionInOrderedArea = (
 
   return { boundedPosition, scrollHorizontal, scrollVertical }
 }
+
+export const getlDimensionOffset = (
+  offsets: number[],
+  index: number,
+  startIndex: number,
+  freezeCount: number
+) => offsets[index] - offsets[startIndex] + offsets[freezeCount]
+
+export const getActualDimensionOffset = (
+  offsets: number[],
+  index: number,
+  startIndex: number,
+  freezeCount: number
+) =>
+  startIndex
+    ? getlDimensionOffset(offsets, index, startIndex, freezeCount)
+    : offsets[index]

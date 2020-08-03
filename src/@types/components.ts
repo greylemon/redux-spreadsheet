@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react'
+import { CSSProperties, FunctionComponent } from 'react'
 import {
   IRows,
   IColumnIndex,
@@ -15,8 +15,11 @@ import {
   IComputeActiveCellStyle,
   IComputeSelectionAreaStyle,
   IHandleSave,
+  IGetRowHeight,
+  IGetColumnWidth,
 } from './functions'
 import { ISheetRef, IGridRef } from './ref'
+import { IViewWidths } from './objects'
 
 export type ExcelComponentProps = {
   /** Initial excel state */
@@ -38,6 +41,14 @@ export type IItemData = {
   cellLayering: number[][]
   rowOffsets: IRowOffsets
   columnOffsets: IColumnOffsets
+}
+
+export type ICanvasItemData = {
+  data: IRows
+  sheetResults: IRowResults
+  rowOffsets: IRowOffsets
+  columnOffsets: IColumnOffsets
+  viewWidths: IViewWidths
 }
 
 export interface ICellProps {
@@ -81,4 +92,74 @@ export interface IInactiveSelectionAreasProps {
 export type ISheetProps = {
   sheetRef: ISheetRef
   gridRef: IGridRef
+}
+
+export type ICanvasCellProps = {
+  x: number
+  y: number
+  width: number
+  height: number
+  columnIndex: number
+  rowIndex: number
+  data: ICanvasItemData
+}
+
+export type ICanvasCellComponentProps = {
+  rowOffsets: IRowOffsets
+  columnOffsets: IColumnOffsets
+  columnIndex: number
+  rowIndex: number
+  getRowHeight: IGetRowHeight
+  getColumnWidth: IGetColumnWidth
+  data: ICanvasItemData
+}
+
+export type IGenericLayerProps = {
+  rowOffsets: IRowOffsets
+  columnOffsets: IColumnOffsets
+  getRowHeight: IGetRowHeight
+  getColumnWidth: IGetColumnWidth
+  rowStart: number
+  rowEnd: number
+  columnStart: number
+  columnEnd: number
+  topLeftPositionX?: number
+  topLeftPositionY?: number
+  tableFreezeRowCount?: number
+  tableFreezeColumnCount?: number
+  data: ICanvasItemData
+}
+
+export type IGenergicPaneProps = {
+  rowOffsets: IRowOffsets
+  columnOffsets: IColumnOffsets
+  getRowHeight: IGetRowHeight
+  getColumnWidth: IGetColumnWidth
+  rowStart: number
+  rowEnd: number
+  columnStart: number
+  columnEnd: number
+  tableFreezeRowCount?: number
+  tableFreezeColumnCount?: number
+  topLeftPositionX?: number
+  topLeftPositionY?: number
+  CellComponent: FunctionComponent<ICanvasCellProps>
+  data: ICanvasItemData
+}
+
+export type ITextLayerProps = {
+  rowOffsets: IRowOffsets
+  columnOffsets: IColumnOffsets
+  getRowHeight: IGetRowHeight
+  getColumnWidth: IGetColumnWidth
+  rowStart: number
+  rowEnd: number
+  columnStart: number
+  columnEnd: number
+  CellComponent: FunctionComponent<any>
+  data: ICanvasItemData
+  topLeftPositionX: number
+  topLeftPositionY: number
+  tableFreezeRowCount: number
+  tableFreezeColumnCount: number
 }

@@ -69,3 +69,6 @@ export const STYLE_BORDER_RADIUS = 1
 export const columnDraggerIndicatorStyle: CSSProperties = {
   backgroundColor: '#1E90FF',
 }
+
+export const STYLE_CELL_BORDER = 'rgba(199, 199, 199,0.7)'
+export const STYLE_HEADER_FILL = '#F8F8F8'

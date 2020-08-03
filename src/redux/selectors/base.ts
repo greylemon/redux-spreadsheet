@@ -117,12 +117,12 @@ export const selectTopLeftPosition = createSelector(
   (excel) => excel.topLeftPosition
 )
 
-export const selectScrollTopLeftPositionX = createSelector(
+export const selectTopLeftPositionX = createSelector(
   [selectTopLeftPosition],
   (topLeftPosition) => topLeftPosition.x
 )
 
-export const selectScrollTopLeftPositionY = createSelector(
+export const selectTopLeftPositionY = createSelector(
   [selectTopLeftPosition],
   (topLeftPosition) => topLeftPosition.y
 )

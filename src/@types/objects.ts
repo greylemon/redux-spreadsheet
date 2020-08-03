@@ -25,3 +25,5 @@ export type IAddressReference = {
 }
 
 export type ICellMapSet = { [key: string]: Set<number> }
+
+export type IViewWidths = { [key: string]: { [key: string]: number } }

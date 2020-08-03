@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback, useEffect } from 'react'
-import { Stage } from 'react-konva'
+import { Stage, Layer } from 'react-konva'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { shallowEqual, useDispatch } from 'react-redux'
 import {
@@ -14,64 +14,67 @@ import {
   selectData,
 } from '../../redux/selectors/activeSheet'
 import {
-  selectTableColumnCount,
-  selectTableRowCount,
   selectGetColumnWidth,
   selectGetRowHeight,
   selectTableFreezeRowCount,
   selectTableFreezeColumnCount,
-  selectColumnWidthsAdjusted,
-  selectCellLayering,
-  selectScrollColumnOffsets,
-  selectScrollRowOffsets,
   selectViewRowEnd,
   selectViewColumnEnd,
+  selectTableRowCount,
+  selectTableColumnCount,
+  selectVisibleCellWidths,
+  selectRowOffsets,
+  selectColumnOffsets,
 } from '../../redux/selectors/custom'
 import GenericPane from './GenericPane'
 import { ExcelActions } from '../../redux/store'
 import {
-  selectScrollTopLeftPositionY,
-  selectScrollTopLeftPositionX,
+  selectTopLeftPositionY,
+  selectTopLeftPositionX,
 } from '../../redux/selectors/base'
 import { CanvasHorizontalScroll, CanvasVerticalScroll } from './Scroll'
+import Cell from './text_layer/Cell'
+import { ICanvasItemData } from '../../@types/components'
 
 const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
   const {
-    // sheetResults,
-    // tableColumnCount,
-    // tableRowCount,
-    // data,
+    sheetResults,
+    data,
     getColumnWidth,
     getRowHeight,
     tableFreezeColumnCount,
     tableFreezeRowCount,
-    // columnWidthsAdjusted,
-    // cellLayering,
+    tableColumnCount,
+    // tableRowCount,
     rowOffsets,
     columnOffsets,
-    viewColumnEnd,
+    // viewColumnEnd,
     viewRowEnd,
     viewRowStart,
     viewColumnStart,
+    viewWidths,
   } = useTypedSelector(
     (state) => ({
       sheetResults: selectActiveResults(state),
-      tableColumnCount: selectTableColumnCount(state),
-      tableRowCount: selectTableRowCount(state),
       data: selectData(state),
       getColumnWidth: selectGetColumnWidth(state),
       getRowHeight: selectGetRowHeight(state),
       tableFreezeRowCount: selectTableFreezeRowCount(state),
       tableFreezeColumnCount: selectTableFreezeColumnCount(state),
-      columnWidthsAdjusted: selectColumnWidthsAdjusted(state),
-      cellLayering: selectCellLayering(state),
-      rowOffsets: selectScrollRowOffsets(state),
-      columnOffsets: selectScrollColumnOffsets(state),
+
+      tableRowCount: selectTableRowCount(state),
+      tableColumnCount: selectTableColumnCount(state),
       viewRowEnd: selectViewRowEnd(state),
       viewColumnEnd: selectViewColumnEnd(state),
-      viewRowStart: selectScrollTopLeftPositionY(state),
-      viewColumnStart: selectScrollTopLeftPositionX(state),
+
+      viewWidths: selectVisibleCellWidths(state),
+
+      rowOffsets: selectRowOffsets(state),
+      columnOffsets: selectColumnOffsets(state),
+
+      viewRowStart: selectTopLeftPositionY(state),
+      viewColumnStart: selectTopLeftPositionX(state),
     }),
     shallowEqual
   )
@@ -80,51 +83,77 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     dispatch(ExcelActions.UPDATE_SHEET_DIMENSIONS({ x: width, y: height }))
   }, [dispatch, height, width])
 
+  const itemData: ICanvasItemData = {
+    data,
+    sheetResults,
+    rowOffsets,
+    columnOffsets,
+    viewWidths,
+  }
+
   return (
     <Stage height={height} width={width}>
-      <GenericPane
-        columnStart={viewColumnStart}
-        columnEnd={viewColumnEnd}
-        rowStart={viewRowStart}
-        rowEnd={viewRowEnd}
-        columnOffsets={columnOffsets}
-        rowOffsets={rowOffsets}
-        getColumnWidth={getColumnWidth}
-        getRowHeight={getRowHeight}
-      />
-      {/* bottom left */}
-      <GenericPane
-        columnStart={0}
-        columnEnd={tableFreezeColumnCount}
-        rowStart={viewRowStart}
-        rowEnd={viewRowEnd}
-        columnOffsets={columnOffsets}
-        rowOffsets={rowOffsets}
-        getColumnWidth={getColumnWidth}
-        getRowHeight={getRowHeight}
-      />
-      {/* top right */}
-      <GenericPane
-        columnStart={viewColumnStart}
-        columnEnd={viewColumnEnd}
-        rowStart={0}
-        rowEnd={tableFreezeRowCount}
-        columnOffsets={columnOffsets}
-        rowOffsets={rowOffsets}
-        getColumnWidth={getColumnWidth}
-        getRowHeight={getRowHeight}
-      />
-      {/* top left */}
-      <GenericPane
-        columnStart={0}
-        columnEnd={tableFreezeColumnCount}
-        rowStart={0}
-        rowEnd={tableFreezeRowCount}
-        columnOffsets={columnOffsets}
-        rowOffsets={rowOffsets}
-        getColumnWidth={getColumnWidth}
-        getRowHeight={getRowHeight}
-      />
+      <Layer>
+        <GenericPane
+          columnStart={tableFreezeColumnCount}
+          rowStart={viewRowStart}
+          columnEnd={tableColumnCount}
+          rowEnd={viewRowEnd}
+          columnOffsets={columnOffsets}
+          rowOffsets={rowOffsets}
+          getColumnWidth={getColumnWidth}
+          getRowHeight={getRowHeight}
+          CellComponent={Cell}
+          data={itemData}
+          topLeftPositionX={viewColumnStart}
+          topLeftPositionY={viewRowStart}
+          tableFreezeRowCount={tableFreezeRowCount}
+          tableFreezeColumnCount={tableFreezeColumnCount}
+        />
+        {/* bottom left */}
+        <GenericPane
+          columnStart={0}
+          columnEnd={tableFreezeColumnCount}
+          rowStart={viewRowStart}
+          rowEnd={viewRowEnd}
+          columnOffsets={columnOffsets}
+          rowOffsets={rowOffsets}
+          getColumnWidth={getColumnWidth}
+          getRowHeight={getRowHeight}
+          CellComponent={Cell}
+          data={itemData}
+          topLeftPositionY={viewRowStart}
+          tableFreezeRowCount={tableFreezeRowCount}
+        />
+        {/* top right */}
+        <GenericPane
+          columnStart={tableFreezeColumnCount}
+          rowStart={0}
+          columnEnd={tableColumnCount}
+          rowEnd={tableFreezeRowCount}
+          columnOffsets={columnOffsets}
+          rowOffsets={rowOffsets}
+          getColumnWidth={getColumnWidth}
+          getRowHeight={getRowHeight}
+          CellComponent={Cell}
+          data={itemData}
+          topLeftPositionX={viewColumnStart}
+          tableFreezeColumnCount={tableFreezeColumnCount}
+        />
+        {/* top left */}
+        <GenericPane
+          columnStart={0}
+          rowStart={0}
+          columnEnd={tableFreezeColumnCount}
+          rowEnd={tableFreezeRowCount}
+          columnOffsets={columnOffsets}
+          rowOffsets={rowOffsets}
+          getColumnWidth={getColumnWidth}
+          getRowHeight={getRowHeight}
+          CellComponent={Cell}
+          data={itemData}
+        />
+      </Layer>
     </Stage>
   )
 }
@@ -154,6 +183,7 @@ export const CanvasSheetContent: FunctionComponent = () => (
 const CanvasSheetContainer: FunctionComponent = () => {
   const dispatch = useDispatch()
 
+  // CONVERT TO THUNK AND BOUND
   const handleScroll = useCallback(
     ({ deltaY, deltaX }) => {
       if (deltaY > 0) {

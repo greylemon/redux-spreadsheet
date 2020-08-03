@@ -168,7 +168,8 @@ export const getEndDimension = (
   dimension: number,
   offsets: number[],
   frozenCount: number,
-  screenDimension: number
+  screenDimension: number,
+  tableRowCount: number
 ): number => {
   const dimensionOffset = offsets[dimension]
   const frozenOffset = offsets[frozenCount]
@@ -177,14 +178,11 @@ export const getEndDimension = (
   const dimensionOffsetEnd = dimensionOffset + nonFrozenLength
 
   let dimensionEnd = dimension
-  for (let i = dimension; i < offsets.length; i += 1) {
+  for (let i = dimension; i <= tableRowCount; i += 1) {
     const curEndOffset = offsets[i]
+    dimensionEnd = i
 
-    if (curEndOffset < dimensionOffsetEnd) {
-      dimensionEnd = i
-    } else {
-      break
-    }
+    if (curEndOffset > dimensionOffsetEnd) break
   }
 
   return dimensionEnd

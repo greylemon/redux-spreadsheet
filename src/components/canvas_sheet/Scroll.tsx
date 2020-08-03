@@ -11,8 +11,8 @@ import {
 import { getScrollbarSize } from '../../tools/misc'
 import { ExcelActions } from '../../redux/store'
 import {
-  selectScrollTopLeftPositionY,
-  selectScrollTopLeftPositionX,
+  selectTopLeftPositionY,
+  selectTopLeftPositionX,
 } from '../../redux/selectors/base'
 
 const CustomSlider = (type: 'horizontal' | 'vertical') =>
@@ -20,6 +20,7 @@ const CustomSlider = (type: 'horizontal' | 'vertical') =>
     root: {
       color: '#52af77',
     },
+    active: {},
     thumb: {
       height: type === 'vertical' ? 20 : 12,
       width: type === 'horizontal' ? 20 : 12,
@@ -41,7 +42,7 @@ export const CanvasHorizontalScroll: FunctionComponent = () => {
   const { scrollLength, scrollOffsetDimension, blockLength } = useTypedSelector(
     (state) => ({
       scrollLength: selectScrollHorizontalWidth(state),
-      scrollOffsetDimension: selectScrollTopLeftPositionX(state),
+      scrollOffsetDimension: selectTopLeftPositionX(state),
       blockLength: selectScrollHorizontalBlock(state),
     }),
     shallowEqual
@@ -56,7 +57,7 @@ export const CanvasHorizontalScroll: FunctionComponent = () => {
 
   return (
     <div style={{ display: 'flex' }}>
-      <span style={{ width: blockLength }} />
+      <span style={{ width: blockLength, borderRadius: 1 }} />
       <HorizontalConfiguredSlider
         orientation="horizontal"
         style={{
@@ -77,7 +78,7 @@ export const CanvasVerticalScroll: FunctionComponent = () => {
   const { scrollLength, scrollOffsetDimension, blockLength } = useTypedSelector(
     (state) => ({
       scrollLength: selectScrollVerticalHeight(state),
-      scrollOffsetDimension: selectScrollTopLeftPositionY(state),
+      scrollOffsetDimension: selectTopLeftPositionY(state),
       blockLength: selectScrollVerticalBlock(state),
     }),
     shallowEqual
