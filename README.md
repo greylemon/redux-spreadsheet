@@ -9,6 +9,10 @@
 
 Excel/Google-like spreadsheet
 
+## NOTE
+
+Currently working on a canvas version as the performance is much faster since it can utilize GPU and can have less overhead than the usual DOM elements.
+
 ## Demos
 
 [Storybook](https://greylemon.github.io/redux-spreadsheet/)
