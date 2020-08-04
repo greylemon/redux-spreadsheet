@@ -336,6 +336,7 @@ const getPaneDataFromSheetViews = (
     activeCellPosition: ACTIVE_CELL_POSITION,
     freezeColumnCount: SHEET_FREEZE_COLUMN_COUNT,
     freezeRowCount: SHEET_FREEZE_ROW_COUNT,
+    topLeftPosition: { x: 1, y: 1 },
   }
 
   views.forEach((view) => {
@@ -349,6 +350,8 @@ const getPaneDataFromSheetViews = (
       case 'frozen':
         paneData.freezeColumnCount = view.xSplit ? view.xSplit : 0
         paneData.freezeRowCount = view.ySplit ? view.ySplit : 0
+        paneData.topLeftPosition.x = paneData.freezeColumnCount + 1
+        paneData.topLeftPosition.y = paneData.freezeRowCount + 1
         break
       case 'split':
         break

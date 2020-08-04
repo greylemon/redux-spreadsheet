@@ -156,11 +156,11 @@ export const getScrolledDimensionOffsets = (
       (index < freezeCount ? 0 : offsets[padding] - offsets[freezeCount])
   )
 
-export const getScrollLength = (offsets: number[], freezeCount: number) =>
-  offsets.length - 1 - freezeCount
+export const getScrollLength = (count: number, freezeCount: number) =>
+  count - freezeCount
 
 export const getScrollBlock = (offsets: number[], freezeCount: number) =>
-  offsets[freezeCount + 1]
+  offsets[freezeCount]
 /**
  * Gets the final dimension that's viewable
  */
@@ -169,7 +169,7 @@ export const getEndDimension = (
   offsets: number[],
   frozenCount: number,
   screenDimension: number,
-  tableRowCount: number
+  tableDimensionCount: number
 ): number => {
   const dimensionOffset = offsets[dimension]
   const frozenOffset = offsets[frozenCount]
@@ -178,10 +178,9 @@ export const getEndDimension = (
   const dimensionOffsetEnd = dimensionOffset + nonFrozenLength
 
   let dimensionEnd = dimension
-  for (let i = dimension; i <= tableRowCount; i += 1) {
+  for (let i = dimension; i <= tableDimensionCount; i += 1) {
     const curEndOffset = offsets[i]
     dimensionEnd = i
-
     if (curEndOffset > dimensionOffsetEnd) break
   }
 

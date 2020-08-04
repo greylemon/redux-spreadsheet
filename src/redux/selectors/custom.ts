@@ -143,25 +143,26 @@ export const selectViewColumnEnd = createSelector(
 )
 
 export const selectScrollHorizontalWidth = createSelector(
-  [selectColumnOffsets, selectFreezeColumnCount],
-  (columnOffsets, freezeColumnCount) =>
-    getScrollLength(columnOffsets, freezeColumnCount)
+  [selectColumnCount, selectFreezeColumnCount],
+  (columnCount, freezeColumnCount) =>
+    getScrollLength(columnCount, freezeColumnCount)
 )
 
 export const selectScrollVerticalHeight = createSelector(
-  [selectRowOffsets, selectFreezeRowCount],
-  (rowOffsets, freezeRowCount) => getScrollLength(rowOffsets, freezeRowCount)
+  [selectRowCount, selectFreezeRowCount],
+  (rowCount, freezeRowCount) => getScrollLength(rowCount, freezeRowCount)
 )
 
 export const selectScrollVerticalBlock = createSelector(
-  [selectRowOffsets, selectFreezeRowCount],
-  (rowOffsets, freezeRowCount) => getScrollBlock(rowOffsets, freezeRowCount)
+  [selectRowOffsets, selectTableFreezeRowCount],
+  (rowOffsets, tableFreezeRowCount) =>
+    getScrollBlock(rowOffsets, tableFreezeRowCount)
 )
 
 export const selectScrollHorizontalBlock = createSelector(
-  [selectColumnOffsets, selectFreezeColumnCount],
-  (columnOffsets, freezeColumnCount) =>
-    getScrollBlock(columnOffsets, freezeColumnCount)
+  [selectColumnOffsets, selectTableFreezeColumnCount],
+  (columnOffsets, tableFreezeColumnCount) =>
+    getScrollBlock(columnOffsets, tableFreezeColumnCount)
 )
 
 export const selectGetRowHeight = createSelector(

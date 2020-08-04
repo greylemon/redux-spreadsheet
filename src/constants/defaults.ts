@@ -1,6 +1,6 @@
 import { IPosition } from '../@types/state'
 
-export const SHEET_ROW_COUNT = 200
+export const SHEET_ROW_COUNT = 1000
 export const SHEET_COLUMN_COUNT = 26
 
 export const SHEET_MIN_ROW_COUNT = 200

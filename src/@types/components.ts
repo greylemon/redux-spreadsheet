@@ -123,10 +123,8 @@ export type IGenericLayerProps = {
   rowEnd: number
   columnStart: number
   columnEnd: number
-  topLeftPositionX?: number
-  topLeftPositionY?: number
-  tableFreezeRowCount?: number
-  tableFreezeColumnCount?: number
+  rowStartBound: number
+  columnStartBound: number
   data: ICanvasItemData
 }
 
@@ -139,10 +137,8 @@ export type IGenergicPaneProps = {
   rowEnd: number
   columnStart: number
   columnEnd: number
-  tableFreezeRowCount?: number
-  tableFreezeColumnCount?: number
-  topLeftPositionX?: number
-  topLeftPositionY?: number
+  rowStartBound: number
+  columnStartBound: number
   CellComponent: FunctionComponent<ICanvasCellProps>
   data: ICanvasItemData
 }
@@ -158,8 +154,6 @@ export type ITextLayerProps = {
   columnEnd: number
   CellComponent: FunctionComponent<any>
   data: ICanvasItemData
-  topLeftPositionX: number
-  topLeftPositionY: number
-  tableFreezeRowCount: number
-  tableFreezeColumnCount: number
+  rowStartBound: number
+  columnStartBound: number
 }

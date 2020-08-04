@@ -3,6 +3,8 @@ import { Group } from 'react-konva'
 import { IGenergicPaneProps } from '../../@types/components'
 import GridLayer from './grid_layer/GridLayer'
 import TextLayer from './text_layer/TextLayer'
+import ContainerLayer from './container_layer/ContainerLayer'
+import BlockLayer from './block_layer/ContainerLayer'
 
 const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
   rowStart,
@@ -13,14 +15,27 @@ const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
   columnOffsets,
   getColumnWidth,
   getRowHeight,
-  topLeftPositionX,
-  topLeftPositionY,
-  tableFreezeRowCount,
-  tableFreezeColumnCount,
+
+  columnStartBound,
+  rowStartBound,
+
   CellComponent,
   data,
 }) => (
   <Group>
+    <BlockLayer
+      rowStart={rowStart}
+      rowEnd={rowEnd}
+      columnStart={columnStart}
+      columnEnd={columnEnd}
+      rowOffsets={rowOffsets}
+      columnOffsets={columnOffsets}
+      getColumnWidth={getColumnWidth}
+      getRowHeight={getRowHeight}
+      columnStartBound={columnStartBound}
+      rowStartBound={rowStartBound}
+      data={data}
+    />
     <GridLayer
       rowStart={rowStart}
       rowEnd={rowEnd}
@@ -30,11 +45,10 @@ const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
       columnOffsets={columnOffsets}
       getColumnWidth={getColumnWidth}
       getRowHeight={getRowHeight}
-      topLeftPositionX={topLeftPositionX}
-      topLeftPositionY={topLeftPositionY}
-      tableFreezeRowCount={tableFreezeRowCount}
-      tableFreezeColumnCount={tableFreezeColumnCount}
+      columnStartBound={columnStartBound}
+      rowStartBound={rowStartBound}
     />
+
     <TextLayer
       rowStart={rowStart}
       rowEnd={rowEnd}
@@ -46,10 +60,20 @@ const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
       getRowHeight={getRowHeight}
       CellComponent={CellComponent}
       data={data}
-      topLeftPositionX={topLeftPositionX}
-      topLeftPositionY={topLeftPositionY}
-      tableFreezeRowCount={tableFreezeRowCount}
-      tableFreezeColumnCount={tableFreezeColumnCount}
+      columnStartBound={columnStartBound}
+      rowStartBound={rowStartBound}
+    />
+    <ContainerLayer
+      rowStart={rowStart}
+      rowEnd={rowEnd}
+      columnStart={columnStart}
+      columnEnd={columnEnd}
+      rowOffsets={rowOffsets}
+      columnOffsets={columnOffsets}
+      getColumnWidth={getColumnWidth}
+      getRowHeight={getRowHeight}
+      columnStartBound={columnStartBound}
+      rowStartBound={rowStartBound}
     />
   </Group>
 )

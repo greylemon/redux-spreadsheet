@@ -21,6 +21,7 @@ const ColumnCell: FunctionComponent<ICanvasCellProps> = ({
       stroke={STYLE_CELL_BORDER}
       strokeWidth={1}
       fill={STYLE_HEADER_FILL}
+      transformsEnabled="position"
     />
     <Text
       id={`column={"x":${columnIndex}}`}
@@ -31,6 +32,7 @@ const ColumnCell: FunctionComponent<ICanvasCellProps> = ({
       height={height}
       align="center"
       verticalAlign="middle"
+      transformsEnabled="position"
     />
   </Group>
 )

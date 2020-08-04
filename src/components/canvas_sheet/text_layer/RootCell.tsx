@@ -18,6 +18,7 @@ const RootCell: FunctionComponent<ICanvasCellProps> = ({
       stroke={STYLE_CELL_BORDER}
       strokeWidth={1}
       fill={STYLE_HEADER_FILL}
+      transformsEnabled="position"
     />
   )
 }

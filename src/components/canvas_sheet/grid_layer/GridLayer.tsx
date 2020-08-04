@@ -1,8 +1,7 @@
 import React, { FunctionComponent, useMemo } from 'react'
-import { Group, Rect } from 'react-konva'
+import { Group, Line } from 'react-konva'
 import { IGenericLayerProps } from '../../../@types/components'
 import { STYLE_CELL_BORDER } from '../../../constants/styles'
-import { getActualDimensionOffset } from '../../../tools/area'
 
 const GridLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
   rowStart,
@@ -11,70 +10,91 @@ const GridLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
   columnEnd,
   rowOffsets,
   columnOffsets,
-  getColumnWidth,
-  getRowHeight,
-  topLeftPositionX,
-  topLeftPositionY,
-  tableFreezeRowCount,
-  tableFreezeColumnCount,
+  columnStartBound,
+  rowStartBound,
 }) => {
   const Rows = useMemo(() => {
     const RowList: JSX.Element[] = []
-    for (let rowIndex = rowStart; rowIndex < rowEnd; rowIndex += 1) {
-      const ColumnList: JSX.Element[] = []
-      for (
-        let columnIndex = columnStart;
-        columnIndex < columnEnd;
-        columnIndex += 1
-      ) {
-        const x = getActualDimensionOffset(
-          columnOffsets,
-          columnIndex,
-          topLeftPositionX,
-          tableFreezeColumnCount
-        )
-        const y = getActualDimensionOffset(
-          rowOffsets,
-          rowIndex,
-          topLeftPositionY,
-          tableFreezeRowCount
-        )
+    const x1 = columnOffsets[columnStartBound]
+    const x2 =
+      columnOffsets[columnEnd] -
+      columnOffsets[columnStart] +
+      columnOffsets[columnStartBound]
 
-        ColumnList.push(
-          <Rect
-            key={`sheet-columns-${columnIndex}`}
-            x={x}
-            y={y}
-            width={getColumnWidth(columnIndex)}
-            height={getRowHeight(rowIndex)}
-            stroke={STYLE_CELL_BORDER}
-            strokeWidth={1}
-          />
-        )
-      }
+    for (let rowIndex = rowStart; rowIndex <= rowEnd; rowIndex += 1) {
+      const y =
+        rowOffsets[rowIndex] - rowOffsets[rowStart] + rowOffsets[rowStartBound]
 
       RowList.push(
-        <Group key={`sheet-top-left-row-${rowIndex}`}>{ColumnList}</Group>
+        <Line
+          key={`sheet-columns-${rowIndex}`}
+          points={[x1, y, x2, y]}
+          stroke={STYLE_CELL_BORDER}
+          strokeWidth={1}
+          shadowForStrokeEnabled={false}
+          transformsEnabled="position"
+          perfectDrawEnabled={false}
+        />
       )
     }
 
     return RowList
   }, [
-    rowStart,
-    rowEnd,
+    columnOffsets,
+    columnStartBound,
     columnStart,
     columnEnd,
     rowOffsets,
-    columnOffsets,
-    getColumnWidth,
-    getRowHeight,
-    topLeftPositionX,
-    topLeftPositionY,
-    tableFreezeRowCount,
-    tableFreezeColumnCount,
+    rowStart,
+    rowStartBound,
   ])
 
-  return <Group>{Rows}</Group>
+  const Columns = useMemo(() => {
+    const ColumnList: JSX.Element[] = []
+    const y1 = rowOffsets[rowStartBound]
+    const y2 =
+      rowOffsets[rowEnd] - rowOffsets[rowStart] + rowOffsets[rowStartBound]
+
+    for (
+      let columnIndex = columnStart;
+      columnIndex <= columnEnd;
+      columnIndex += 1
+    ) {
+      const x =
+        columnOffsets[columnIndex] -
+        columnOffsets[columnStart] +
+        columnOffsets[columnStartBound]
+      ColumnList.push(
+        <Line
+          key={`sheet-columns-${columnIndex}`}
+          points={[x, y1, x, y2]}
+          stroke={STYLE_CELL_BORDER}
+          strokeWidth={1}
+          shadowEnabled={false}
+          shadowForStrokeEnabled={false}
+          transformsEnabled="position"
+          perfectDrawEnabled={false}
+        />
+      )
+    }
+
+    return ColumnList
+  }, [
+    rowOffsets,
+    rowStartBound,
+    rowStart,
+    rowEnd,
+    columnOffsets,
+    columnStart,
+    columnStartBound,
+  ])
+
+  return (
+    <Group listening={false}>
+      {Rows}
+      {Columns}
+    </Group>
+  )
 }
 
 export default GridLayer

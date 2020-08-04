@@ -1,52 +1,86 @@
-import React, { FunctionComponent, useMemo } from 'react'
+import React, { FunctionComponent, useMemo, CSSProperties } from 'react'
 import { Text } from 'react-konva'
 import { ICanvasCellProps } from '../../../@types/components'
-import {
-  IRichTextValue,
-  IFragment,
-  IRichTextBlock,
-} from '../../../@types/state'
+// import {
+//   IRichTextValue,
+//   IFragment,
+//   IRichTextBlock,
+// } from '../../../@types/state'
 
 import {
-  TYPE_RICH_TEXT,
+  // TYPE_RICH_TEXT,
   TYPE_FORMULA,
   TYPE_TEXT,
   TYPE_MERGE,
   TYPE_NUMBER,
 } from '../../../constants/types'
 
-const RichTextFragment: FunctionComponent<IFragment> = ({
-  text: value,
-  styles,
-}) => (
-  <div className="richText__cell" style={styles}>
-    {value}
-  </div>
-)
+// const RichTextFragment: FunctionComponent<IFragment> = ({
+//   text: value,
+//   styles,
+// }) => (
+//   <div className="richText__cell" style={styles}>
+//     {value}
+//   </div>
+// )
 
-const RichTextBlock: FunctionComponent<IRichTextBlock> = ({ fragments }) => (
-  <div className="richText__block">
-    {fragments.map(({ key, styles, text }) => (
-      <RichTextFragment key={key} styles={styles} text={text} />
-    ))}
-  </div>
-)
+// const RichTextBlock: FunctionComponent<IRichTextBlock> = ({ fragments }) => (
+//   <Group className="richText__block">
+//     {fragments.map(({ key, styles, text }) => (
+//       <RichTextFragment key={key} styles={styles} text={text} />
+//     ))}
+//   </Group>
+// )
 
-const RichTextCellValue: FunctionComponent<
-  Partial<ICanvasCellProps> & { value: IRichTextValue }
-> = ({ value }) => (
-  <>
-    {value.map(({ key, fragments }) => (
-      <RichTextBlock key={key} fragments={fragments} />
-    ))}
-  </>
-)
+// const RichTextCellValue: FunctionComponent<
+//   Partial<ICanvasCellProps> & { value: IRichTextValue }
+// > = ({ value }) => (
+//   <Group>
+//     {value.map(({ key, fragments }) => (
+//       <RichTextBlock key={key} fragments={fragments} />
+//     ))}
+//   </Group>
+// )
+
+// fontWeight?: 'normal' | 'bold'
+// fontStyle?: 'normal' | 'italic'
+// fontFamily?: string
+// fontSize?: ICSSLength | ICSSPercentage
+// textDecoration?: ITextDecorationStyle
+// verticalAlign?: 'sub' | 'super'
+// color?: string
 
 const NormalCellValue: FunctionComponent<
-  Partial<ICanvasCellProps> & { value?: string }
-> = ({ x, y, width, height, value }) => (
-  <Text text={value} x={x} y={y} width={width} height={height} />
-)
+  Partial<ICanvasCellProps> & {
+    value?: string
+    style: CSSProperties | undefined
+  }
+> = ({ x, y, width, height, value, style }) => {
+  let fontStyle = ''
+  let textDecoration = ''
+  const verticalAlign = 'bottom'
+
+  if (style) {
+    if (style.fontWeight) fontStyle += style.fontWeight
+    if (style.fontStyle) fontStyle += ` ${style.fontStyle}`
+    if (style.textDecoration) textDecoration = style.textDecoration as string
+  }
+
+  return (
+    <Text
+      text={value}
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      transformsEnabled="position"
+      verticalAlign={verticalAlign}
+      fontStyle={fontStyle}
+      padding={4}
+      textDecoration={textDecoration}
+    />
+  )
+}
 
 const EditableCell: FunctionComponent<ICanvasCellProps> = ({
   x,
@@ -61,23 +95,24 @@ const EditableCell: FunctionComponent<ICanvasCellProps> = ({
 
   const rowData = sheetData[rowIndex]
   const cellData = rowData && rowData[columnIndex] ? rowData[columnIndex] : {}
-  const { value, type } = cellData
+  const { value, type, style } = cellData
 
   const cellComponent = useMemo(() => {
     let component: JSX.Element = null
+    const fontStyle = style ? style.font : undefined
 
     switch (type) {
-      case TYPE_RICH_TEXT:
-        component = (
-          <RichTextCellValue
-            x={x}
-            y={y}
-            width={width}
-            height={height}
-            value={value as IRichTextValue}
-          />
-        )
-        break
+      // case TYPE_RICH_TEXT:
+      //   component = (
+      //     <RichTextCellValue
+      //       x={x}
+      //       y={y}
+      //       width={width}
+      //       height={height}
+      //       value={value as IRichTextValue}
+      //     />
+      //   )
+      //   break
       case TYPE_FORMULA: {
         let formulaStringValue: undefined | string
 
@@ -95,6 +130,7 @@ const EditableCell: FunctionComponent<ICanvasCellProps> = ({
             width={width}
             height={height}
             value={formulaStringValue}
+            style={fontStyle}
           />
         )
         break
@@ -109,11 +145,11 @@ const EditableCell: FunctionComponent<ICanvasCellProps> = ({
             width={width}
             height={height}
             value={value.toString()}
+            style={fontStyle}
           />
         )
         break
       case TYPE_TEXT:
-      default:
         component = (
           <NormalCellValue
             x={x}
@@ -121,17 +157,15 @@ const EditableCell: FunctionComponent<ICanvasCellProps> = ({
             width={width}
             height={height}
             value={value as string | undefined}
+            style={fontStyle}
           />
         )
         break
+      default:
+        break
     }
     return component
-  }, [value, sheetResults, x, y, width, height])
-
-  // const id = useMemo(() => `cell={"y":${rowIndex},"x":${columnIndex}}`, [
-  //   rowIndex,
-  //   columnIndex,
-  // ])
+  }, [value, sheetResults, x, y, width, height, style])
 
   return cellComponent
 }

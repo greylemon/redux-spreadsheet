@@ -14,6 +14,10 @@ import {
   selectTopLeftPositionY,
   selectTopLeftPositionX,
 } from '../../redux/selectors/base'
+import {
+  selectFreezeColumnCount,
+  selectFreezeRowCount,
+} from '../../redux/selectors/activeSheet'
 
 const CustomSlider = (type: 'horizontal' | 'vertical') =>
   withStyles({
@@ -39,11 +43,17 @@ const HorizontalConfiguredSlider = CustomSlider('horizontal')
 const VerticalConfiguredSlider = CustomSlider('vertical')
 export const CanvasHorizontalScroll: FunctionComponent = () => {
   const dispatch = useDispatch()
-  const { scrollLength, scrollOffsetDimension, blockLength } = useTypedSelector(
+  const {
+    scrollLength,
+    scrollOffsetDimension,
+    blockLength,
+    freezeColumnCount,
+  } = useTypedSelector(
     (state) => ({
       scrollLength: selectScrollHorizontalWidth(state),
       scrollOffsetDimension: selectTopLeftPositionX(state),
       blockLength: selectScrollHorizontalBlock(state),
+      freezeColumnCount: selectFreezeColumnCount(state),
     }),
     shallowEqual
   )
@@ -61,12 +71,12 @@ export const CanvasHorizontalScroll: FunctionComponent = () => {
       <HorizontalConfiguredSlider
         orientation="horizontal"
         style={{
-          width: '100%',
+          width: `calc(100% - ${blockLength}px)`,
           height: '100%',
         }}
         value={scrollOffsetDimension}
-        min={1}
-        max={scrollLength - 1}
+        min={freezeColumnCount + 1}
+        max={scrollLength + freezeColumnCount}
         onChange={handleScroll}
         track={false}
       />
@@ -75,11 +85,17 @@ export const CanvasHorizontalScroll: FunctionComponent = () => {
 }
 export const CanvasVerticalScroll: FunctionComponent = () => {
   const dispatch = useDispatch()
-  const { scrollLength, scrollOffsetDimension, blockLength } = useTypedSelector(
+  const {
+    scrollLength,
+    scrollOffsetDimension,
+    blockLength,
+    freezeRowCount,
+  } = useTypedSelector(
     (state) => ({
       scrollLength: selectScrollVerticalHeight(state),
       scrollOffsetDimension: selectTopLeftPositionY(state),
       blockLength: selectScrollVerticalBlock(state),
+      freezeRowCount: selectFreezeRowCount(state),
     }),
     shallowEqual
   )
@@ -88,7 +104,7 @@ export const CanvasVerticalScroll: FunctionComponent = () => {
     (_, value) => {
       dispatch(ExcelActions.SCROLL_VERTICAL(scrollLength - value))
     },
-    [dispatch, scrollLength]
+    [dispatch, scrollLength, freezeRowCount]
   )
 
   return (
@@ -101,8 +117,8 @@ export const CanvasVerticalScroll: FunctionComponent = () => {
           height: `calc(100% - ${getScrollbarSize() + blockLength}px)`,
         }}
         value={scrollLength - scrollOffsetDimension}
-        min={1}
-        max={scrollLength - 1}
+        min={-freezeRowCount}
+        max={scrollLength - 1 - freezeRowCount}
         onChange={handleScroll}
         track={false}
       />

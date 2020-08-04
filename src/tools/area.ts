@@ -315,7 +315,7 @@ export const getlDimensionOffset = (
   index: number,
   startIndex: number,
   freezeCount: number
-) => offsets[index] - offsets[startIndex] + offsets[freezeCount]
+) => offsets[index] + offsets[startIndex] - offsets[freezeCount]
 
 export const getActualDimensionOffset = (
   offsets: number[],

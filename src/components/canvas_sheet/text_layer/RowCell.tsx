@@ -20,6 +20,7 @@ const RowCell: FunctionComponent<ICanvasCellProps> = ({
       stroke={STYLE_CELL_BORDER}
       strokeWidth={1}
       fill={STYLE_HEADER_FILL}
+      transformsEnabled="position"
     />
     <Text
       id={`row={"y":${rowIndex}}`}
@@ -30,6 +31,7 @@ const RowCell: FunctionComponent<ICanvasCellProps> = ({
       height={height}
       align="center"
       verticalAlign="middle"
+      transformsEnabled="position"
     />
   </Group>
 )

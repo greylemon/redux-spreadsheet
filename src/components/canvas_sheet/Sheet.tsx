@@ -35,6 +35,8 @@ import {
 import { CanvasHorizontalScroll, CanvasVerticalScroll } from './Scroll'
 import Cell from './text_layer/Cell'
 import { ICanvasItemData } from '../../@types/components'
+// import { THUNK_MOUSE_DOUBLE_CLICK } from '../../redux/thunks/mouse'
+import { IPosition } from '../../@types/state'
 
 const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
@@ -49,7 +51,7 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     // tableRowCount,
     rowOffsets,
     columnOffsets,
-    // viewColumnEnd,
+    viewColumnEnd,
     viewRowEnd,
     viewRowStart,
     viewColumnStart,
@@ -91,13 +93,53 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     viewWidths,
   }
 
+  const handleDoubleClick = useCallback(
+    (event) => {
+      const [, address] = event.currentTarget.clickStartShape.attrs.id.split(
+        '='
+      )
+      const position: IPosition = JSON.parse(address)
+      if (position.x || position.y) dispatch(ExcelActions.CELL_DOUBLE_CLICK())
+    },
+    [dispatch]
+  )
+
+  const handleClick = useCallback(
+    ({ evt, currentTarget }) => {
+      const [, address] = currentTarget.clickStartShape.attrs.id.split('=')
+      const position: IPosition = JSON.parse(address)
+      const {
+        // ctrlKey,
+        // shiftKey,
+        button,
+      } = evt
+
+      switch (button) {
+        case 0:
+          dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
+          break
+        case 2:
+          break
+        default:
+          break
+      }
+    },
+    [dispatch]
+  )
+
+  // ! OPTIMIZE THIS !
   return (
-    <Stage height={height} width={width}>
+    <Stage
+      height={height}
+      width={width}
+      onDblClick={handleDoubleClick}
+      onClick={handleClick}
+    >
       <Layer>
         <GenericPane
-          columnStart={tableFreezeColumnCount}
+          columnStart={viewColumnStart}
           rowStart={viewRowStart}
-          columnEnd={tableColumnCount}
+          columnEnd={viewColumnEnd}
           rowEnd={viewRowEnd}
           columnOffsets={columnOffsets}
           rowOffsets={rowOffsets}
@@ -105,12 +147,9 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
           getRowHeight={getRowHeight}
           CellComponent={Cell}
           data={itemData}
-          topLeftPositionX={viewColumnStart}
-          topLeftPositionY={viewRowStart}
-          tableFreezeRowCount={tableFreezeRowCount}
-          tableFreezeColumnCount={tableFreezeColumnCount}
+          columnStartBound={tableFreezeColumnCount}
+          rowStartBound={tableFreezeRowCount}
         />
-        {/* bottom left */}
         <GenericPane
           columnStart={0}
           columnEnd={tableFreezeColumnCount}
@@ -122,14 +161,13 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
           getRowHeight={getRowHeight}
           CellComponent={Cell}
           data={itemData}
-          topLeftPositionY={viewRowStart}
-          tableFreezeRowCount={tableFreezeRowCount}
+          columnStartBound={0}
+          rowStartBound={tableFreezeRowCount}
         />
-        {/* top right */}
         <GenericPane
-          columnStart={tableFreezeColumnCount}
-          rowStart={0}
+          columnStart={viewColumnStart}
           columnEnd={tableColumnCount}
+          rowStart={0}
           rowEnd={tableFreezeRowCount}
           columnOffsets={columnOffsets}
           rowOffsets={rowOffsets}
@@ -137,10 +175,9 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
           getRowHeight={getRowHeight}
           CellComponent={Cell}
           data={itemData}
-          topLeftPositionX={viewColumnStart}
-          tableFreezeColumnCount={tableFreezeColumnCount}
+          columnStartBound={tableFreezeColumnCount}
+          rowStartBound={0}
         />
-        {/* top left */}
         <GenericPane
           columnStart={0}
           rowStart={0}
@@ -152,6 +189,8 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
           getRowHeight={getRowHeight}
           CellComponent={Cell}
           data={itemData}
+          columnStartBound={0}
+          rowStartBound={0}
         />
       </Layer>
     </Stage>

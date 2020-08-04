@@ -1,57 +1,52 @@
 import React, { FunctionComponent, useMemo } from 'react'
-import { Group } from 'react-konva'
-import { ITextLayerProps } from '../../../@types/components'
+import { Group, Rect } from 'react-konva'
+import { IGenericLayerProps } from '../../../@types/components'
 
-const TextLayer: FunctionComponent<ITextLayerProps> = ({
+const ContainerLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
   rowStart,
   rowEnd,
   columnStart,
   columnEnd,
   rowOffsets,
   columnOffsets,
-  getColumnWidth,
-  getRowHeight,
-  CellComponent,
-  data,
   columnStartBound,
   rowStartBound,
+  getColumnWidth,
+  getRowHeight,
 }) => {
   const Rows = useMemo(() => {
     const RowList: JSX.Element[] = []
-    for (let rowIndex = rowStart; rowIndex < rowEnd; rowIndex += 1) {
+    for (let rowIndex = rowStart; rowIndex <= rowEnd; rowIndex += 1) {
       const ColumnList: JSX.Element[] = []
-
       const y =
         rowOffsets[rowIndex] - rowOffsets[rowStart] + rowOffsets[rowStartBound]
 
+      const rowHeight = getRowHeight(rowIndex)
       for (
         let columnIndex = columnStart;
-        columnIndex < columnEnd;
+        columnIndex <= columnEnd;
         columnIndex += 1
       ) {
         const x =
           columnOffsets[columnIndex] -
           columnOffsets[columnStart] +
           columnOffsets[columnStartBound]
-
         ColumnList.push(
-          <CellComponent
-            key={`sheet-columns-${columnIndex}`}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-            getColumnWidth={getColumnWidth}
-            getRowHeight={getRowHeight}
+          <Rect
+            key={`sheet-container-columns-${columnIndex}`}
+            id={`cell={"y":${rowIndex},"x":${columnIndex}}`}
             x={x}
             y={y}
             width={getColumnWidth(columnIndex)}
-            height={getRowHeight(rowIndex)}
-            data={data}
+            height={rowHeight}
+            // fill="gray"
+            transformsEnabled="position"
           />
         )
       }
 
       RowList.push(
-        <Group key={`sheet-top-left-row-${rowIndex}`}>{ColumnList}</Group>
+        <Group key={`sheet-container-rows-${rowIndex}`}>{ColumnList}</Group>
       )
     }
 
@@ -63,12 +58,11 @@ const TextLayer: FunctionComponent<ITextLayerProps> = ({
     columnEnd,
     rowOffsets,
     columnOffsets,
-    getColumnWidth,
-    getRowHeight,
     columnStartBound,
     rowStartBound,
   ])
-  return <Group listening={false}>{Rows}</Group>
+
+  return <Group>{Rows}</Group>
 }
 
-export default TextLayer
+export default ContainerLayer

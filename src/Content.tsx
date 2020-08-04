@@ -11,7 +11,7 @@ import './styles/styles.scss'
 import { Route, useRouteMatch, Switch } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { Divider } from '@material-ui/core'
-import { VariableSizeGrid } from 'react-window'
+// import { VariableSizeGrid } from 'react-window'
 // import SheetContainer from './components/sheet/Sheet'
 import ToolBar from './components/toolBar/ToolBar'
 import SheetNavigation from './components/sheetNavigation/SheetNavigation'
@@ -19,16 +19,16 @@ import SheetNavigation from './components/sheetNavigation/SheetNavigation'
 import { ExcelActions } from './redux/store'
 import { ExcelComponentProps } from './@types/components'
 import { THUNK_COMMAND_SAVE } from './redux/thunks/IO'
-import {
-  THUNK_MOUSE_UP,
-  THUNK_MOUSE_MOVE,
-  THUNK_MOUSE_DOWN,
-  THUNK_MOUSE_DOUBLE_CLICK,
-} from './redux/thunks/mouse'
+// import {
+//   THUNK_MOUSE_UP,
+//   THUNK_MOUSE_MOVE,
+//   THUNK_MOUSE_DOWN,
+//   THUNK_MOUSE_DOUBLE_CLICK,
+// } from './redux/thunks/mouse'
 import { THUNK_HISTORY_UNDO, THUNK_HISTORY_REDO } from './redux/thunks/history'
 import AppBar from './components/appBar/AppBar'
 import { STYLE_EXCEL } from './style'
-import ScrollListener from './components/ScrollListener'
+// import ScrollListener from './components/ScrollListener'
 import CanvasSheet from './components/canvas_sheet/Sheet'
 
 export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
@@ -38,7 +38,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   isToolBarDisabled,
   handleSave,
 }) => {
-  const gridRef = useRef<VariableSizeGrid>(null)
+  // const gridRef = useRef<VariableSizeGrid>(null)
   const sheetRef = useRef<HTMLDivElement>(null)
   const dispatch = useDispatch()
 
@@ -74,53 +74,53 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
     [dispatch, THUNK_HISTORY_REDO, THUNK_HISTORY_UNDO, handleSave]
   )
 
-  window.onmousemove = useCallback(
-    ({ clientX, clientY, shiftKey, ctrlKey }: MouseEvent) => {
-      dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }, shiftKey, ctrlKey))
-    },
-    [dispatch]
-  )
+  // window.onmousemove = useCallback(
+  //   ({ clientX, clientY, shiftKey, ctrlKey }: MouseEvent) => {
+  //     dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }, shiftKey, ctrlKey))
+  //   },
+  //   [dispatch]
+  // )
 
-  window.ontouchmove = useCallback(
-    ({ touches }: TouchEvent) => {
-      const { clientX, clientY } = touches[0]
-      dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }))
-    },
-    [dispatch]
-  )
+  // window.ontouchmove = useCallback(
+  //   ({ touches }: TouchEvent) => {
+  //     const { clientX, clientY } = touches[0]
+  //     dispatch(THUNK_MOUSE_MOVE({ x: clientX, y: clientY }))
+  //   },
+  //   [dispatch]
+  // )
 
-  window.onmouseup = useCallback(() => {
-    dispatch(THUNK_MOUSE_UP())
-  }, [dispatch])
+  // window.onmouseup = useCallback(() => {
+  //   dispatch(THUNK_MOUSE_UP())
+  // }, [dispatch])
 
-  window.ontouchend = useCallback(() => {
-    dispatch(THUNK_MOUSE_UP())
-  }, [dispatch])
+  // window.ontouchend = useCallback(() => {
+  //   dispatch(THUNK_MOUSE_UP())
+  // }, [dispatch])
 
-  window.onmousedown = useCallback(
-    ({ clientX, clientY, ctrlKey, shiftKey, buttons }: MouseEvent) => {
-      if (buttons === 1)
-        dispatch(
-          THUNK_MOUSE_DOWN({ x: clientX, y: clientY }, shiftKey, ctrlKey)
-        )
-    },
-    [dispatch]
-  )
+  // window.onmousedown = useCallback(
+  //   ({ clientX, clientY, ctrlKey, shiftKey, buttons }: MouseEvent) => {
+  //     if (buttons === 1)
+  //       dispatch(
+  //         THUNK_MOUSE_DOWN({ x: clientX, y: clientY }, shiftKey, ctrlKey)
+  //       )
+  //   },
+  //   [dispatch]
+  // )
 
-  window.ontouchstart = useCallback(
-    ({ touches }: TouchEvent) => {
-      const { clientX, clientY } = touches[0]
-      dispatch(THUNK_MOUSE_DOWN({ x: clientX, y: clientY }, false, false))
-    },
-    [dispatch]
-  )
+  // window.ontouchstart = useCallback(
+  //   ({ touches }: TouchEvent) => {
+  //     const { clientX, clientY } = touches[0]
+  //     dispatch(THUNK_MOUSE_DOWN({ x: clientX, y: clientY }, false, false))
+  //   },
+  //   [dispatch]
+  // )
 
-  window.ondblclick = useCallback(
-    ({ clientX, clientY }: MouseEvent) => {
-      dispatch(THUNK_MOUSE_DOUBLE_CLICK({ x: clientX, y: clientY }))
-    },
-    [dispatch]
-  )
+  // window.ondblclick = useCallback(
+  //   ({ clientX, clientY }: MouseEvent) => {
+  //     dispatch(THUNK_MOUSE_DOUBLE_CLICK({ x: clientX, y: clientY }))
+  //   },
+  //   [dispatch]
+  // )
 
   useEffect(() => {
     return () => {
@@ -148,7 +148,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
       <CanvasSheet />
       <Divider />
       <SheetNavigation isRouted={isRouted} />
-      <ScrollListener gridRef={gridRef} />
+      {/* <ScrollListener gridRef={gridRef} /> */}
     </div>
   )
 }

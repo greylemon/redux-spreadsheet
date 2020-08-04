@@ -24,4 +24,9 @@ export const changeSheetInPlace = (
   const activeCell = nSelectActiveCell(state)
 
   state.cellEditorState = createEditorStateFromCell(activeCell)
+
+  state.topLeftPosition = {
+    x: newActiveSheet.freezeColumnCount + 1,
+    y: newActiveSheet.freezeRowCount + 1,
+  }
 }
