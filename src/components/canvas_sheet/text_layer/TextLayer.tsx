@@ -27,31 +27,35 @@ const TextLayer: FunctionComponent<ITextLayerProps> = ({
       const y =
         rowOffsets[rowIndex] - rowOffsets[rowStart] + rowOffsets[rowStartBound]
 
-      for (
-        let columnIndex = columnStart;
-        columnIndex < columnEnd;
-        columnIndex += 1
-      ) {
-        if (rowIndex === 0 || columnIndex === 0 || (row && row[columnIndex])) {
-          const x =
-            columnOffsets[columnIndex] -
-            columnOffsets[columnStart] +
-            columnOffsets[columnStartBound]
+      // TODO : Replace with a flag instead for row and column to optimize
+      // ! FLAG: isRowHeaderPossible and isColumnHeaderPossible (for top left, bottom left, top right panes)
+      if (row) {
+        for (
+          let columnIndex = columnStart;
+          columnIndex < columnEnd;
+          columnIndex += 1
+        ) {
+          if (row[columnIndex]) {
+            const x =
+              columnOffsets[columnIndex] -
+              columnOffsets[columnStart] +
+              columnOffsets[columnStartBound]
 
-          ColumnList.push(
-            <CellComponent
-              key={`sheet-columns-${columnIndex}`}
-              rowIndex={rowIndex}
-              columnIndex={columnIndex}
-              getColumnWidth={getColumnWidth}
-              getRowHeight={getRowHeight}
-              x={x}
-              y={y}
-              width={getColumnWidth(columnIndex)}
-              height={getRowHeight(rowIndex)}
-              data={data}
-            />
-          )
+            ColumnList.push(
+              <CellComponent
+                key={`sheet-columns-${columnIndex}`}
+                rowIndex={rowIndex}
+                columnIndex={columnIndex}
+                getColumnWidth={getColumnWidth}
+                getRowHeight={getRowHeight}
+                x={x}
+                y={y}
+                width={getColumnWidth(columnIndex)}
+                height={getRowHeight(rowIndex)}
+                data={data}
+              />
+            )
+          }
         }
       }
 
