@@ -15,8 +15,8 @@ const BlockLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
   getRowHeight,
   data,
 }) => {
-  const { data: sheetData } = data
   const Rows = useMemo(() => {
+    const { data: sheetData } = data
     const RowList: JSX.Element[] = []
     for (let rowIndex = rowStart; rowIndex <= rowEnd; rowIndex += 1) {
       const ColumnList: JSX.Element[] = []
@@ -77,7 +77,7 @@ const BlockLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
     columnOffsets,
     columnStartBound,
     rowStartBound,
-    sheetData,
+    data,
   ])
 
   return <Group>{Rows}</Group>

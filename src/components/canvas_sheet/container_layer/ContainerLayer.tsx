@@ -39,7 +39,6 @@ const ContainerLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
             y={y}
             width={getColumnWidth(columnIndex)}
             height={rowHeight}
-            // fill="gray"
             transformsEnabled="position"
           />
         )

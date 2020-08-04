@@ -5,6 +5,8 @@ import {
   selectScrollHorizontal,
   selectScrollVertical,
   selectSelectionArea,
+  selectTopLeftPositionY,
+  selectTopLeftPositionX,
 } from '../selectors/base'
 import { IPosition } from '../../@types/state'
 import { ExcelActions } from '../store'
@@ -75,3 +77,23 @@ export const THUNK_UPDATE_SCROLL_EVENT = (
     dispatch(ExcelActions.CELL_MOUSE_ENTER({ x: columnIndex, y: rowIndex }))
   }
 }
+
+const THUNK_SCROLL = (
+  scroll: number,
+  action: any,
+  selectDimension: any
+): IAppThunk => (dispatch, getState) => {
+  const state = getState()
+
+  const oldScroll = selectDimension(state)
+
+  if (oldScroll !== scroll) {
+    dispatch(action(scroll))
+  }
+}
+
+export const THUNK_VERTICAL_SCROLL = (scroll: number): IAppThunk =>
+  THUNK_SCROLL(scroll, ExcelActions.SCROLL_VERTICAL, selectTopLeftPositionY)
+
+export const THUNK_HORIZONTAL_SCROLL = (scroll: number): IAppThunk =>
+  THUNK_SCROLL(scroll, ExcelActions.SCROLL_HORIZONTAL, selectTopLeftPositionX)

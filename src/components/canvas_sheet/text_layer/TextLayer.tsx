@@ -17,8 +17,11 @@ const TextLayer: FunctionComponent<ITextLayerProps> = ({
   rowStartBound,
 }) => {
   const Rows = useMemo(() => {
+    const sheetData = data.data
     const RowList: JSX.Element[] = []
     for (let rowIndex = rowStart; rowIndex < rowEnd; rowIndex += 1) {
+      const row = sheetData[rowIndex]
+
       const ColumnList: JSX.Element[] = []
 
       const y =
@@ -29,25 +32,27 @@ const TextLayer: FunctionComponent<ITextLayerProps> = ({
         columnIndex < columnEnd;
         columnIndex += 1
       ) {
-        const x =
-          columnOffsets[columnIndex] -
-          columnOffsets[columnStart] +
-          columnOffsets[columnStartBound]
+        if (rowIndex === 0 || columnIndex === 0 || (row && row[columnIndex])) {
+          const x =
+            columnOffsets[columnIndex] -
+            columnOffsets[columnStart] +
+            columnOffsets[columnStartBound]
 
-        ColumnList.push(
-          <CellComponent
-            key={`sheet-columns-${columnIndex}`}
-            rowIndex={rowIndex}
-            columnIndex={columnIndex}
-            getColumnWidth={getColumnWidth}
-            getRowHeight={getRowHeight}
-            x={x}
-            y={y}
-            width={getColumnWidth(columnIndex)}
-            height={getRowHeight(rowIndex)}
-            data={data}
-          />
-        )
+          ColumnList.push(
+            <CellComponent
+              key={`sheet-columns-${columnIndex}`}
+              rowIndex={rowIndex}
+              columnIndex={columnIndex}
+              getColumnWidth={getColumnWidth}
+              getRowHeight={getRowHeight}
+              x={x}
+              y={y}
+              width={getColumnWidth(columnIndex)}
+              height={getRowHeight(rowIndex)}
+              data={data}
+            />
+          )
+        }
       }
 
       RowList.push(
@@ -57,6 +62,7 @@ const TextLayer: FunctionComponent<ITextLayerProps> = ({
 
     return RowList
   }, [
+    data,
     rowStart,
     rowEnd,
     columnStart,

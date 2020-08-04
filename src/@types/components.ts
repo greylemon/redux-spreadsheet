@@ -19,7 +19,7 @@ import {
   IGetColumnWidth,
 } from './functions'
 import { ISheetRef, IGridRef } from './ref'
-import { IViewWidths } from './objects'
+// import { IViewWidths } from './objects'
 
 export type ExcelComponentProps = {
   /** Initial excel state */
@@ -48,7 +48,7 @@ export type ICanvasItemData = {
   sheetResults: IRowResults
   rowOffsets: IRowOffsets
   columnOffsets: IColumnOffsets
-  viewWidths: IViewWidths
+  // viewWidths: IViewWidths
 }
 
 export interface ICellProps {

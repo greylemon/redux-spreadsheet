@@ -22,7 +22,7 @@ import {
   selectViewColumnEnd,
   selectTableRowCount,
   selectTableColumnCount,
-  selectVisibleCellWidths,
+  // selectVisibleCellWidths,
   selectRowOffsets,
   selectColumnOffsets,
 } from '../../redux/selectors/custom'
@@ -55,7 +55,7 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     viewRowEnd,
     viewRowStart,
     viewColumnStart,
-    viewWidths,
+    // viewWidths,
   } = useTypedSelector(
     (state) => ({
       sheetResults: selectActiveResults(state),
@@ -70,7 +70,7 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
       viewRowEnd: selectViewRowEnd(state),
       viewColumnEnd: selectViewColumnEnd(state),
 
-      viewWidths: selectVisibleCellWidths(state),
+      // viewWidths: selectVisibleCellWidths(state),
 
       rowOffsets: selectRowOffsets(state),
       columnOffsets: selectColumnOffsets(state),
@@ -90,7 +90,7 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     sheetResults,
     rowOffsets,
     columnOffsets,
-    viewWidths,
+    // viewWidths,
   }
 
   const handleDoubleClick = useCallback(

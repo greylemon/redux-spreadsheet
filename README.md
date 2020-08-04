@@ -17,7 +17,7 @@ However, some behaviours with DOM elements are different from canvas, and may no
 
 - [x] Create four panes - top left, top right, bottom left, and bottom right
 - [x] Optimize by limiting render to 'visible' items (excluding columns)
-- [ ] Grid layer - currently uses n * m shapes. This can be converted to n + m lines.
+- [ ] Grid layer - currently uses n \* m shapes. This can be converted to n + m lines.
 - [x] Custom scrollbar
 - [ ] Cell layering
 

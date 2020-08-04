@@ -48,7 +48,6 @@ const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
       columnStartBound={columnStartBound}
       rowStartBound={rowStartBound}
     />
-
     <TextLayer
       rowStart={rowStart}
       rowEnd={rowEnd}
