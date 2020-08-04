@@ -9,6 +9,18 @@
 
 Excel/Google-like spreadsheet
 
+## Note - Canvas with react-konva
+
+Currently working on a canvas version as the performance is much faster since it can utilize GPU and can have less overhead than the usual DOM elements.
+
+However, some behaviours with DOM elements are different from canvas, and may not be fully supported in canvas. For example, z-index exists in a different way in canvas - things are layered on top of one another by the order they are drawn.
+
+- [x] Create four panes - top left, top right, bottom left, and bottom right
+- [x] Optimize by limiting render to 'visible' items (excluding columns)
+- [ ] Grid layer - currently uses n * m shapes. This can be converted to n + m lines.
+- [x] Custom scrollbar
+- [ ] Cell layering
+
 ## Demos
 
 [Storybook](https://greylemon.github.io/redux-spreadsheet/)
