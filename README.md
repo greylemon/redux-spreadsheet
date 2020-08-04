@@ -23,7 +23,7 @@ However, some behaviours with DOM elements are different from canvas, and may no
   - [x] Grid layer
   - [x] Text layer
   - [x] Block layer
-  - [ ] Event layer
+  - [x] Event layer
   - [ ] Spacing layer
 
 ## Demos
