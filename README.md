@@ -24,6 +24,7 @@ However, some behaviours with DOM elements are different from canvas, and may no
   - [x] Block layer
   - [x] Event layer
   - [ ] Spacing layer
+- Update block/font style state?
 
 ## Demos
 

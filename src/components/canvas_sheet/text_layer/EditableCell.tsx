@@ -24,11 +24,18 @@ const NormalCellValue: FunctionComponent<
   let fontStyle = ''
   let textDecoration = ''
   const verticalAlign = 'bottom'
+  let fontFamily = 'Calibri'
+  let fontSize = 12
+  let fontColor = 'black'
 
   if (style) {
     if (style.fontWeight) fontStyle += style.fontWeight
     if (style.fontStyle) fontStyle += ` ${style.fontStyle}`
     if (style.textDecoration) textDecoration = style.textDecoration as string
+
+    if (style.fontFamily) fontFamily = style.fontFamily
+    if (style.fontSize) fontSize = style.fontSize as number
+    if (style.color) fontColor = style.color
   }
 
   return (
@@ -41,6 +48,9 @@ const NormalCellValue: FunctionComponent<
       transformsEnabled="position"
       verticalAlign={verticalAlign}
       fontStyle={fontStyle}
+      fontSize={fontSize}
+      fontFamily={fontFamily}
+      fill={fontColor}
       padding={4}
       textDecoration={textDecoration}
     />
@@ -57,21 +67,21 @@ const NormalCellValue: FunctionComponent<
 // )
 
 // const RichTextBlock: FunctionComponent<IRichTextBlock> = ({ fragments }) => (
-//   <Group className="richText__block">
+//   <>
 //     {fragments.map(({ key, style: styles, text }) => (
 //       <RichTextFragment key={key} style={styles} text={text} />
 //     ))}
-//   </Group>
+//   </>
 // )
 
 // const RichTextCellValue: FunctionComponent<
 //   Partial<ICanvasCellProps> & { value: IRichTextValue }
 // > = ({ value }) => (
-//   <Group>
+//   <>
 //     {value.map(({ key, fragments }) => (
 //       <RichTextBlock key={key} fragments={fragments} />
 //     ))}
-//   </Group>
+//   </>
 // )
 
 const EditableCell: FunctionComponent<ICanvasCellProps> = ({

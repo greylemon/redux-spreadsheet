@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react'
 import { Group, Rect } from 'react-konva'
-import { IGenericLayerProps } from '../../../@types/components'
+import { IGenericLayerProps } from '../../@types/components'
 
 const ContainerLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
   id,

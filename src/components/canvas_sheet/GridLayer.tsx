@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useMemo } from 'react'
 import { Group, Line } from 'react-konva'
-import { IGenericLayerProps } from '../../../@types/components'
-import { STYLE_CELL_BORDER } from '../../../constants/styles'
+import { IGenericLayerProps } from '../../@types/components'
+import { STYLE_CELL_BORDER } from '../../constants/styles'
 
 const GridLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
   rowStart,
@@ -32,7 +32,6 @@ const GridLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
           stroke={STYLE_CELL_BORDER}
           strokeWidth={1}
           transformsEnabled="position"
-          perfectDrawEnabled={false}
         />
       )
     }
@@ -70,7 +69,6 @@ const GridLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
           stroke={STYLE_CELL_BORDER}
           strokeWidth={1}
           transformsEnabled="position"
-          perfectDrawEnabled={false}
         />
       )
     }

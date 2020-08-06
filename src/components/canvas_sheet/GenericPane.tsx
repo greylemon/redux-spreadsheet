@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react'
 import { Group } from 'react-konva'
 import { IGenergicPaneProps } from '../../@types/components'
-import GridLayer from './grid_layer/GridLayer'
+import GridLayer from './GridLayer'
 import TextLayer from './text_layer/TextLayer'
-import ContainerLayer from './container_layer/ContainerLayer'
-import BlockLayer from './block_layer/BlockLayer'
+import ContainerLayer from './ContainerLayer'
+import BlockLayer from './BlockLayer'
 
 const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
   id,
@@ -26,6 +26,19 @@ const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
   enableColumnHeader,
 }) => (
   <Group>
+    <GridLayer
+      id={id}
+      rowStart={rowStart}
+      rowEnd={rowEnd}
+      columnStart={columnStart}
+      columnEnd={columnEnd}
+      rowOffsets={rowOffsets}
+      columnOffsets={columnOffsets}
+      getColumnWidth={getColumnWidth}
+      getRowHeight={getRowHeight}
+      columnStartBound={columnStartBound}
+      rowStartBound={rowStartBound}
+    />
     <BlockLayer
       id={id}
       rowStart={rowStart}
@@ -39,19 +52,6 @@ const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
       columnStartBound={columnStartBound}
       rowStartBound={rowStartBound}
       data={data}
-    />
-    <GridLayer
-      id={id}
-      rowStart={rowStart}
-      rowEnd={rowEnd}
-      columnStart={columnStart}
-      columnEnd={columnEnd}
-      rowOffsets={rowOffsets}
-      columnOffsets={columnOffsets}
-      getColumnWidth={getColumnWidth}
-      getRowHeight={getRowHeight}
-      columnStartBound={columnStartBound}
-      rowStartBound={rowStartBound}
     />
     <TextLayer
       id={id}
