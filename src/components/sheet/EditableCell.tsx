@@ -22,7 +22,7 @@ import {
 
 const RichTextFragment: FunctionComponent<IFragment> = ({
   text: value,
-  styles,
+  style: styles,
 }) => (
   <div className="richText__cell" style={styles}>
     {value}
@@ -31,8 +31,8 @@ const RichTextFragment: FunctionComponent<IFragment> = ({
 
 const RichTextBlock: FunctionComponent<IRichTextBlock> = ({ fragments }) => (
   <div className="richText__block">
-    {fragments.map(({ key, styles, text }) => (
-      <RichTextFragment key={key} styles={styles} text={text} />
+    {fragments.map(({ key, style: styles, text }) => (
+      <RichTextFragment key={key} style={styles} text={text} />
     ))}
   </div>
 )

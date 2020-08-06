@@ -115,6 +115,7 @@ export type ICanvasCellComponentProps = {
 }
 
 export type IGenericLayerProps = {
+  id: string
   rowOffsets: IRowOffsets
   columnOffsets: IColumnOffsets
   getRowHeight: IGetRowHeight
@@ -129,6 +130,7 @@ export type IGenericLayerProps = {
 }
 
 export type IGenergicPaneProps = {
+  id: string
   rowOffsets: IRowOffsets
   columnOffsets: IColumnOffsets
   getRowHeight: IGetRowHeight
@@ -141,9 +143,12 @@ export type IGenergicPaneProps = {
   columnStartBound: number
   CellComponent: FunctionComponent<ICanvasCellProps>
   data: ICanvasItemData
+  enableRowHeader?: boolean
+  enableColumnHeader?: boolean
 }
 
 export type ITextLayerProps = {
+  id: string
   rowOffsets: IRowOffsets
   columnOffsets: IColumnOffsets
   getRowHeight: IGetRowHeight
@@ -156,4 +161,6 @@ export type ITextLayerProps = {
   data: ICanvasItemData
   rowStartBound: number
   columnStartBound: number
+  enableRowHeader?: boolean
+  enableColumnHeader?: boolean
 }

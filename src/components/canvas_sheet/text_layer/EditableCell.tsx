@@ -15,41 +15,6 @@ import {
   TYPE_NUMBER,
 } from '../../../constants/types'
 
-// const RichTextFragment: FunctionComponent<IFragment> = ({
-//   text: value,
-//   styles,
-// }) => (
-//   <div className="richText__cell" style={styles}>
-//     {value}
-//   </div>
-// )
-
-// const RichTextBlock: FunctionComponent<IRichTextBlock> = ({ fragments }) => (
-//   <Group className="richText__block">
-//     {fragments.map(({ key, styles, text }) => (
-//       <RichTextFragment key={key} styles={styles} text={text} />
-//     ))}
-//   </Group>
-// )
-
-// const RichTextCellValue: FunctionComponent<
-//   Partial<ICanvasCellProps> & { value: IRichTextValue }
-// > = ({ value }) => (
-//   <Group>
-//     {value.map(({ key, fragments }) => (
-//       <RichTextBlock key={key} fragments={fragments} />
-//     ))}
-//   </Group>
-// )
-
-// fontWeight?: 'normal' | 'bold'
-// fontStyle?: 'normal' | 'italic'
-// fontFamily?: string
-// fontSize?: ICSSLength | ICSSPercentage
-// textDecoration?: ITextDecorationStyle
-// verticalAlign?: 'sub' | 'super'
-// color?: string
-
 const NormalCellValue: FunctionComponent<
   Partial<ICanvasCellProps> & {
     value?: string
@@ -81,6 +46,33 @@ const NormalCellValue: FunctionComponent<
     />
   )
 }
+
+// const RichTextFragment: FunctionComponent<IFragment> = ({
+//   text: value,
+//   style,
+// }) => (
+//   <div className="richText__cell" style={style}>
+//     {value}
+//   </div>
+// )
+
+// const RichTextBlock: FunctionComponent<IRichTextBlock> = ({ fragments }) => (
+//   <Group className="richText__block">
+//     {fragments.map(({ key, style: styles, text }) => (
+//       <RichTextFragment key={key} style={styles} text={text} />
+//     ))}
+//   </Group>
+// )
+
+// const RichTextCellValue: FunctionComponent<
+//   Partial<ICanvasCellProps> & { value: IRichTextValue }
+// > = ({ value }) => (
+//   <Group>
+//     {value.map(({ key, fragments }) => (
+//       <RichTextBlock key={key} fragments={fragments} />
+//     ))}
+//   </Group>
+// )
 
 const EditableCell: FunctionComponent<ICanvasCellProps> = ({
   x,

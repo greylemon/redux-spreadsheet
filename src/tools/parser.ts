@@ -210,7 +210,7 @@ export const getRichTextFromCellValue = (
     if (font) setFontStyleInPlaceFromFont(font, style)
 
     richTextBlock.fragments.push({
-      styles: style,
+      style,
       text,
       key: uniqid(),
     })

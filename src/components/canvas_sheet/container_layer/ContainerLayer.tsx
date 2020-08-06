@@ -3,6 +3,7 @@ import { Group, Rect } from 'react-konva'
 import { IGenericLayerProps } from '../../../@types/components'
 
 const ContainerLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
+  id,
   rowStart,
   rowEnd,
   columnStart,
@@ -16,7 +17,7 @@ const ContainerLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
 }) => {
   const Rows = useMemo(() => {
     const RowList: JSX.Element[] = []
-    for (let rowIndex = rowStart; rowIndex <= rowEnd; rowIndex += 1) {
+    for (let rowIndex = rowStart; rowIndex < rowEnd; rowIndex += 1) {
       const ColumnList: JSX.Element[] = []
       const y =
         rowOffsets[rowIndex] - rowOffsets[rowStart] + rowOffsets[rowStartBound]
@@ -24,7 +25,7 @@ const ContainerLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
       const rowHeight = getRowHeight(rowIndex)
       for (
         let columnIndex = columnStart;
-        columnIndex <= columnEnd;
+        columnIndex < columnEnd;
         columnIndex += 1
       ) {
         const x =
@@ -33,7 +34,7 @@ const ContainerLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
           columnOffsets[columnStartBound]
         ColumnList.push(
           <Rect
-            key={`sheet-container-columns-${columnIndex}`}
+            key={`${id}-container-columns-${columnIndex}`}
             id={`cell={"y":${rowIndex},"x":${columnIndex}}`}
             x={x}
             y={y}
@@ -45,12 +46,13 @@ const ContainerLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
       }
 
       RowList.push(
-        <Group key={`sheet-container-rows-${rowIndex}`}>{ColumnList}</Group>
+        <Group key={`${id}-container-rows-${rowIndex}`}>{ColumnList}</Group>
       )
     }
 
     return RowList
   }, [
+    id,
     rowStart,
     rowEnd,
     columnStart,

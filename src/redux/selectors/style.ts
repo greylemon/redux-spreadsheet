@@ -39,7 +39,7 @@ export const selectFactoryIsStyle = (
 
               if (fragments.length) {
                 isToggled =
-                  fragments[0].styles && inlineStyleEqFn(fragments[0].styles)
+                  fragments[0].style && inlineStyleEqFn(fragments[0].style)
               }
             }
           } else if (activeCell.style && activeCell.style.font) {

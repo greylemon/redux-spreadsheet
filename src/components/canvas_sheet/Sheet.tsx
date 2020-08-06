@@ -127,7 +127,6 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     [dispatch]
   )
 
-  // ! OPTIMIZE THIS !
   return (
     <Stage
       height={height}
@@ -137,6 +136,7 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     >
       <Layer>
         <GenericPane
+          id="bottom-right"
           columnStart={viewColumnStart}
           rowStart={viewRowStart}
           columnEnd={viewColumnEnd}
@@ -151,6 +151,7 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
           rowStartBound={tableFreezeRowCount}
         />
         <GenericPane
+          id="top-right"
           columnStart={0}
           columnEnd={tableFreezeColumnCount}
           rowStart={viewRowStart}
@@ -163,8 +164,10 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
           data={itemData}
           columnStartBound={0}
           rowStartBound={tableFreezeRowCount}
+          enableRowHeader
         />
         <GenericPane
+          id="bottom-left"
           columnStart={viewColumnStart}
           columnEnd={tableColumnCount}
           rowStart={0}
@@ -177,8 +180,10 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
           data={itemData}
           columnStartBound={tableFreezeColumnCount}
           rowStartBound={0}
+          enableColumnHeader
         />
         <GenericPane
+          id="top-left"
           columnStart={0}
           rowStart={0}
           columnEnd={tableFreezeColumnCount}
@@ -191,6 +196,8 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
           data={itemData}
           columnStartBound={0}
           rowStartBound={0}
+          enableColumnHeader
+          enableRowHeader
         />
       </Layer>
     </Stage>

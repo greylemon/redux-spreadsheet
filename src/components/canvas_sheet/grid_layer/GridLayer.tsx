@@ -31,7 +31,6 @@ const GridLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
           points={[x1, y, x2, y]}
           stroke={STYLE_CELL_BORDER}
           strokeWidth={1}
-          shadowForStrokeEnabled={false}
           transformsEnabled="position"
           perfectDrawEnabled={false}
         />
@@ -70,8 +69,6 @@ const GridLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
           points={[x, y1, x, y2]}
           stroke={STYLE_CELL_BORDER}
           strokeWidth={1}
-          shadowEnabled={false}
-          shadowForStrokeEnabled={false}
           transformsEnabled="position"
           perfectDrawEnabled={false}
         />

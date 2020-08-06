@@ -67,7 +67,7 @@ export type IStyles = {
 export type IFragment = {
   key?: string
   text?: string
-  styles?: IInlineStyles
+  style?: IInlineStyles
 }
 
 export type IRichTextBlock = {

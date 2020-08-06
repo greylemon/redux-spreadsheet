@@ -70,5 +70,5 @@ export const columnDraggerIndicatorStyle: CSSProperties = {
   backgroundColor: '#1E90FF',
 }
 
-export const STYLE_CELL_BORDER = 'gray'
+export const STYLE_CELL_BORDER = 'darkgray'
 export const STYLE_HEADER_FILL = '#F8F8F8'

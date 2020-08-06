@@ -3,6 +3,7 @@ import { Group } from 'react-konva'
 import { ITextLayerProps } from '../../../@types/components'
 
 const TextLayer: FunctionComponent<ITextLayerProps> = ({
+  id,
   rowStart,
   rowEnd,
   columnStart,
@@ -15,6 +16,8 @@ const TextLayer: FunctionComponent<ITextLayerProps> = ({
   data,
   columnStartBound,
   rowStartBound,
+  enableColumnHeader,
+  enableRowHeader,
 }) => {
   const Rows = useMemo(() => {
     const sheetData = data.data
@@ -29,13 +32,21 @@ const TextLayer: FunctionComponent<ITextLayerProps> = ({
 
       // TODO : Replace with a flag instead for row and column to optimize
       // ! FLAG: isRowHeaderPossible and isColumnHeaderPossible (for top left, bottom left, top right panes)
-      if (row) {
+      if (
+        row ||
+        (enableRowHeader && rowIndex > 0) ||
+        (enableColumnHeader && rowIndex === 0)
+      ) {
         for (
           let columnIndex = columnStart;
           columnIndex < columnEnd;
           columnIndex += 1
         ) {
-          if (row[columnIndex]) {
+          if (
+            (row && row[columnIndex]) ||
+            (enableRowHeader && columnIndex === 0) ||
+            (enableColumnHeader && columnIndex > 0)
+          ) {
             const x =
               columnOffsets[columnIndex] -
               columnOffsets[columnStart] +
@@ -43,7 +54,7 @@ const TextLayer: FunctionComponent<ITextLayerProps> = ({
 
             ColumnList.push(
               <CellComponent
-                key={`sheet-columns-${columnIndex}`}
+                key={`${id}-text-columns-${columnIndex}`}
                 rowIndex={rowIndex}
                 columnIndex={columnIndex}
                 getColumnWidth={getColumnWidth}
@@ -60,12 +71,13 @@ const TextLayer: FunctionComponent<ITextLayerProps> = ({
       }
 
       RowList.push(
-        <Group key={`sheet-top-left-row-${rowIndex}`}>{ColumnList}</Group>
+        <Group key={`${id}-text-row-${rowIndex}`}>{ColumnList}</Group>
       )
     }
 
     return RowList
   }, [
+    id,
     data,
     rowStart,
     rowEnd,
@@ -77,6 +89,8 @@ const TextLayer: FunctionComponent<ITextLayerProps> = ({
     getRowHeight,
     columnStartBound,
     rowStartBound,
+    enableColumnHeader,
+    enableRowHeader,
   ])
   return <Group listening={false}>{Rows}</Group>
 }

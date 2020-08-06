@@ -4,9 +4,10 @@ import { IGenergicPaneProps } from '../../@types/components'
 import GridLayer from './grid_layer/GridLayer'
 import TextLayer from './text_layer/TextLayer'
 import ContainerLayer from './container_layer/ContainerLayer'
-import BlockLayer from './block_layer/ContainerLayer'
+import BlockLayer from './block_layer/BlockLayer'
 
 const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
+  id,
   rowStart,
   rowEnd,
   columnStart,
@@ -21,9 +22,12 @@ const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
 
   CellComponent,
   data,
+  enableRowHeader,
+  enableColumnHeader,
 }) => (
   <Group>
     <BlockLayer
+      id={id}
       rowStart={rowStart}
       rowEnd={rowEnd}
       columnStart={columnStart}
@@ -37,6 +41,7 @@ const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
       data={data}
     />
     <GridLayer
+      id={id}
       rowStart={rowStart}
       rowEnd={rowEnd}
       columnStart={columnStart}
@@ -49,6 +54,7 @@ const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
       rowStartBound={rowStartBound}
     />
     <TextLayer
+      id={id}
       rowStart={rowStart}
       rowEnd={rowEnd}
       columnStart={columnStart}
@@ -61,8 +67,11 @@ const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
       data={data}
       columnStartBound={columnStartBound}
       rowStartBound={rowStartBound}
+      enableRowHeader={enableRowHeader}
+      enableColumnHeader={enableColumnHeader}
     />
     <ContainerLayer
+      id={id}
       rowStart={rowStart}
       rowEnd={rowEnd}
       columnStart={columnStart}
