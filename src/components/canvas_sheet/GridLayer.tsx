@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useMemo } from 'react'
-import { Group, Line } from 'react-konva'
+import { Group, Line, Rect } from 'react-konva'
 import { IGenericLayerProps } from '../../@types/components'
 import { STYLE_CELL_BORDER } from '../../constants/styles'
 
@@ -86,6 +86,13 @@ const GridLayer: FunctionComponent<Partial<IGenericLayerProps>> = ({
 
   return (
     <Group listening={false}>
+      <Rect
+        x={columnOffsets[columnStart]}
+        y={rowOffsets[rowStart]}
+        width={columnOffsets[columnEnd] - columnOffsets[columnStart]}
+        height={rowOffsets[rowEnd] - rowOffsets[rowStart]}
+        fill="white"
+      />
       {Rows}
       {Columns}
     </Group>
