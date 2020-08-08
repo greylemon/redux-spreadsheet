@@ -1,6 +1,6 @@
 import path from 'path'
 import pkg from './package.json'
-import typescript from 'rollup-plugin-typescript'
+import typescript from '@rollup/plugin-typescript'
 import scss from 'rollup-plugin-scss'
 import resolve from '@rollup/plugin-node-resolve'
 
