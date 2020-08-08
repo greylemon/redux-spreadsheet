@@ -168,9 +168,9 @@ export const setFontStyleInPlaceFromFont = (
   if (italic) setItalicStyle(style)
   if (strike) setStrikethroughStyle(style)
   if (underline) setUnderlineStyle(style)
-  style.fontFamily = name
-  style.fontSize = size
-  style.color = getFormattedColor(color)
+  if (style.fontFamily) style.fontFamily = name
+  if (style.fontSize) style.fontSize = size
+  if (style.color) style.color = getFormattedColor(color)
 }
 
 export const getStylesFromCell = (cell: Cell): IStyles | undefined => {

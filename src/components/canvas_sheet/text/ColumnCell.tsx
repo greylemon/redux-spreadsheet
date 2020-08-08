@@ -22,6 +22,8 @@ const ColumnCell: FunctionComponent<ICanvasCellProps> = ({
       strokeWidth={1}
       fill={STYLE_HEADER_FILL}
       transformsEnabled="position"
+      perfectDrawEnabled={false}
+      hitStrokeWidth={0}
     />
     <Text
       id={`column={"x":${columnIndex}}`}
@@ -33,6 +35,8 @@ const ColumnCell: FunctionComponent<ICanvasCellProps> = ({
       align="center"
       verticalAlign="middle"
       transformsEnabled="position"
+      perfectDrawEnabled={false}
+      hitStrokeWidth={0}
     />
   </Group>
 )

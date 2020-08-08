@@ -41,6 +41,7 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "react/no-array-index-key": "off",
+    "no-continue": "off",
     "constructor-super": "error",
     "dot-notation": ["error", { "allowKeywords": true }],
     "eqeqeq": ["error", "smart"],

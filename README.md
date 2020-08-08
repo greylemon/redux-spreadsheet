@@ -145,3 +145,7 @@ const SomeComponent = () => {
 | [undox](https://github.com/greylemon/undox)                                                          | Fork of [JannieBeck](https://github.com/JannicBeck/undox) with ignore history                                                |
 | [react-sortable-hoc](https://github.com/clauderic/react-sortable-hoc)                                | Draggable list for sheet navigation                                                                                          |
 | [material-ui](https://github.com/mui-org/material-ui)                                                | Customized styled base components                                                                                            |
+
+## Issues
+
+- Adding keys on canvas elements causes lag

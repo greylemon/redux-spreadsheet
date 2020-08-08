@@ -9,6 +9,7 @@ export const Excel: FunctionComponent<ExcelComponentProps> = ({
   style,
   isRouted,
   isToolBarDisabled,
+  returnLink,
   handleSave,
 }) => (
   <Provider store={store}>
@@ -17,6 +18,7 @@ export const Excel: FunctionComponent<ExcelComponentProps> = ({
         style={style}
         isToolBarDisabled={isToolBarDisabled}
         initialState={initialState}
+        returnLink={returnLink}
         handleSave={handleSave}
       />
     ) : (
@@ -24,6 +26,7 @@ export const Excel: FunctionComponent<ExcelComponentProps> = ({
         style={style}
         isToolBarDisabled={isToolBarDisabled}
         initialState={initialState}
+        returnLink={returnLink}
         handleSave={handleSave}
       />
     )}

@@ -36,6 +36,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   isRouted,
   initialState,
   isToolBarDisabled,
+  returnLink,
   handleSave,
 }) => {
   // const gridRef = useRef<VariableSizeGrid>(null)
@@ -140,7 +141,11 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
       onKeyDown={handleKeyDown}
       tabIndex={-1}
     >
-      <AppBar sheetRef={sheetRef} handleSave={handleSave} />
+      <AppBar
+        sheetRef={sheetRef}
+        handleSave={handleSave}
+        returnLink={returnLink}
+      />
       <Divider />
       {!isToolBarDisabled && <ToolBar />}
       {/* <FormulaBar /> */}
@@ -157,6 +162,7 @@ const ExcelRoute: FunctionComponent<Partial<ExcelComponentProps>> = ({
   style,
   initialState,
   isToolBarDisabled,
+  returnLink,
   handleSave,
 }) => {
   const dispatch = useDispatch()
@@ -168,12 +174,19 @@ const ExcelRoute: FunctionComponent<Partial<ExcelComponentProps>> = ({
     dispatch(ExcelActions.CHANGE_SHEET(activeSheetName))
   }, [activeSheetName])
 
+  useEffect(() => {
+    return () => {
+      dispatch(ExcelActions.CLEAR_STATE())
+    }
+  }, [dispatch])
+
   return (
     <ExcelContent
       style={style}
       initialState={initialState}
       isToolBarDisabled={isToolBarDisabled}
       handleSave={handleSave}
+      returnLink={returnLink}
       isRouted
     />
   )
@@ -184,6 +197,7 @@ export const ExcelRouter: FunctionComponent<Partial<ExcelComponentProps>> = ({
   style,
   isToolBarDisabled,
   handleSave,
+  returnLink,
 }) => {
   const { url } = useRouteMatch()
 
@@ -198,6 +212,7 @@ export const ExcelRouter: FunctionComponent<Partial<ExcelComponentProps>> = ({
             isToolBarDisabled={isToolBarDisabled}
             initialState={initialState}
             handleSave={handleSave}
+            returnLink={returnLink}
             isRouted
           />
         )}
@@ -210,6 +225,7 @@ export const ExcelRouter: FunctionComponent<Partial<ExcelComponentProps>> = ({
             style={style}
             isToolBarDisabled={isToolBarDisabled}
             initialState={initialState}
+            returnLink={returnLink}
             handleSave={handleSave}
           />
         )}

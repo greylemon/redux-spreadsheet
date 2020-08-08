@@ -416,16 +416,16 @@ const SheetNavigation: FunctionComponent<{
 
 const RoutedSheetNavigation = () => {
   const history = useHistory()
-  const match = useRouteMatch<{ activeSheetName: ISheetName }>()
+  const { params, url } = useRouteMatch<{ activeSheetName: ISheetName }>()
 
   const handleSheetPress = useCallback(
     (sheetName) => {
-      const { activeSheetName } = match.params
+      const { activeSheetName } = params
       if (sheetName !== activeSheetName) {
-        history.push(sheetName)
+        history.push(activeSheetName ? sheetName : `${url}/${sheetName}`)
       }
     },
-    [history, match]
+    [history, params, url]
   )
 
   return <SheetNavigation handleSheetPress={handleSheetPress} />

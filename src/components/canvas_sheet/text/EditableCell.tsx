@@ -53,6 +53,8 @@ const NormalCellValue: FunctionComponent<
       fill={fontColor}
       padding={4}
       textDecoration={textDecoration}
+      perfectDrawEnabled={false}
+      hitStrokeWidth={0}
     />
   )
 }
@@ -167,7 +169,7 @@ const EditableCell: FunctionComponent<ICanvasCellProps> = ({
         break
     }
     return component
-  }, [value, sheetResults, x, y, width, height, style])
+  }, [value, type, sheetResults, x, y, width, height, style])
 
   return cellComponent
 }

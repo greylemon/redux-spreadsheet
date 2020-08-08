@@ -1,89 +1,47 @@
-import React, { FunctionComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
+
 import { Group } from 'react-konva'
 import { IGenergicPaneProps } from '../../@types/components'
-import GridLayer from './GridLayer'
-import TextLayer from './text_layer/TextLayer'
-import ContainerLayer from './ContainerLayer'
-import BlockLayer from './BlockLayer'
+import ContentLayer from './ContentPane'
 
-const GenericPane: FunctionComponent<IGenergicPaneProps> = ({
-  id,
-  rowStart,
-  rowEnd,
-  columnStart,
-  columnEnd,
-  rowOffsets,
-  columnOffsets,
-  getColumnWidth,
-  getRowHeight,
-
-  columnStartBound,
-  rowStartBound,
-
-  CellComponent,
-  data,
-  enableRowHeader,
-  enableColumnHeader,
-}) => (
-  <Group>
-    <GridLayer
-      id={id}
-      rowStart={rowStart}
-      rowEnd={rowEnd}
-      columnStart={columnStart}
-      columnEnd={columnEnd}
-      rowOffsets={rowOffsets}
-      columnOffsets={columnOffsets}
-      getColumnWidth={getColumnWidth}
-      getRowHeight={getRowHeight}
-      columnStartBound={columnStartBound}
-      rowStartBound={rowStartBound}
-    />
-    <BlockLayer
-      id={id}
-      rowStart={rowStart}
-      rowEnd={rowEnd}
-      columnStart={columnStart}
-      columnEnd={columnEnd}
-      rowOffsets={rowOffsets}
-      columnOffsets={columnOffsets}
-      getColumnWidth={getColumnWidth}
-      getRowHeight={getRowHeight}
-      columnStartBound={columnStartBound}
-      rowStartBound={rowStartBound}
-      data={data}
-    />
-    <TextLayer
-      id={id}
-      rowStart={rowStart}
-      rowEnd={rowEnd}
-      columnStart={columnStart}
-      columnEnd={columnEnd}
-      rowOffsets={rowOffsets}
-      columnOffsets={columnOffsets}
-      getColumnWidth={getColumnWidth}
-      getRowHeight={getRowHeight}
-      CellComponent={CellComponent}
-      data={data}
-      columnStartBound={columnStartBound}
-      rowStartBound={rowStartBound}
-      enableRowHeader={enableRowHeader}
-      enableColumnHeader={enableColumnHeader}
-    />
-    <ContainerLayer
-      id={id}
-      rowStart={rowStart}
-      rowEnd={rowEnd}
-      columnStart={columnStart}
-      columnEnd={columnEnd}
-      rowOffsets={rowOffsets}
-      columnOffsets={columnOffsets}
-      getColumnWidth={getColumnWidth}
-      getRowHeight={getRowHeight}
-      columnStartBound={columnStartBound}
-      rowStartBound={rowStartBound}
-    />
-  </Group>
+const GenericPane: FunctionComponent<Partial<IGenergicPaneProps>> = memo(
+  ({
+    id,
+    rowStart,
+    rowEnd,
+    columnStart,
+    columnEnd,
+    rowOffsets,
+    columnOffsets,
+    columnStartBound,
+    rowStartBound,
+    getColumnWidth,
+    getRowHeight,
+    data,
+    CellComponent,
+    enableColumnHeader,
+    enableRowHeader,
+  }) => (
+    <Group>
+      <ContentLayer
+        id={id}
+        rowStart={rowStart}
+        rowEnd={rowEnd}
+        columnStart={columnStart}
+        columnEnd={columnEnd}
+        rowOffsets={rowOffsets}
+        columnOffsets={columnOffsets}
+        columnStartBound={columnStartBound}
+        rowStartBound={rowStartBound}
+        getColumnWidth={getColumnWidth}
+        getRowHeight={getRowHeight}
+        data={data}
+        CellComponent={CellComponent}
+        enableColumnHeader={enableColumnHeader}
+        enableRowHeader={enableRowHeader}
+      />
+    </Group>
+  )
 )
 
 export default GenericPane

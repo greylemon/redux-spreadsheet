@@ -17,10 +17,7 @@ import {
   selectFreezeColumnCount,
   selectFreezeRowCount,
 } from '../../redux/selectors/activeSheet'
-import {
-  THUNK_VERTICAL_SCROLL,
-  THUNK_HORIZONTAL_SCROLL,
-} from '../../redux/thunks/event'
+import { ExcelActions } from '../../redux/store'
 
 const CustomSlider = (type: 'horizontal' | 'vertical') =>
   withStyles({
@@ -63,9 +60,10 @@ export const CanvasHorizontalScroll: FunctionComponent = () => {
 
   const handleScroll = useCallback(
     (_, value) => {
-      dispatch(THUNK_HORIZONTAL_SCROLL(value))
+      if (value !== scrollOffsetDimension)
+        dispatch(ExcelActions.SCROLL_HORIZONTAL(value))
     },
-    [dispatch, scrollLength]
+    [dispatch, scrollLength, scrollOffsetDimension]
   )
 
   return (
@@ -105,9 +103,12 @@ export const CanvasVerticalScroll: FunctionComponent = () => {
 
   const handleScroll = useCallback(
     (_, value) => {
-      dispatch(THUNK_VERTICAL_SCROLL(scrollLength - value))
+      const newOffset = scrollLength - value
+
+      if (newOffset !== scrollOffsetDimension)
+        dispatch(ExcelActions.SCROLL_VERTICAL(newOffset))
     },
-    [dispatch, scrollLength, freezeRowCount]
+    [dispatch, scrollLength, freezeRowCount, scrollOffsetDimension]
   )
 
   return (

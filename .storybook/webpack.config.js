@@ -21,7 +21,7 @@ module.exports = ({ config }) => {
       use: ['file-loader'],
     },
     {
-      test: /\.stories\.jsx?$/,
+      test: /\.stories\.tsx?$/,
       loaders: [
         {
           loader: '@storybook/source-loader',

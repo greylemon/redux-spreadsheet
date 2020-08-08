@@ -1,17 +1,15 @@
 import React, { FunctionComponent } from 'react'
-
-import { Group, Text, Rect } from 'react-konva'
+import { Rect } from 'react-konva'
 import { ICanvasCellProps } from '../../../@types/components'
 import { STYLE_CELL_BORDER, STYLE_HEADER_FILL } from '../../../constants/styles'
 
-const RowCell: FunctionComponent<ICanvasCellProps> = ({
+const RootCell: FunctionComponent<ICanvasCellProps> = ({
   x,
   y,
   width,
   height,
-  rowIndex,
-}) => (
-  <Group>
+}) => {
+  return (
     <Rect
       x={x}
       y={y}
@@ -21,19 +19,10 @@ const RowCell: FunctionComponent<ICanvasCellProps> = ({
       strokeWidth={1}
       fill={STYLE_HEADER_FILL}
       transformsEnabled="position"
+      perfectDrawEnabled={false}
+      hitStrokeWidth={0}
     />
-    <Text
-      id={`row={"y":${rowIndex}}`}
-      text={rowIndex.toString()}
-      x={x}
-      y={y}
-      width={width}
-      height={height}
-      align="center"
-      verticalAlign="middle"
-      transformsEnabled="position"
-    />
-  </Group>
-)
+  )
+}
 
-export default RowCell
+export default RootCell

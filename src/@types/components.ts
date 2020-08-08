@@ -32,6 +32,8 @@ export type ExcelComponentProps = {
   isToolBarDisabled?: boolean
   /** Function to process save events */
   handleSave?: IHandleSave
+  /** Return link */
+  returnLink?: string
 }
 
 export type IItemData = {
@@ -127,6 +129,7 @@ export type IGenericLayerProps = {
   rowStartBound: number
   columnStartBound: number
   data: ICanvasItemData
+  CellComponent: FunctionComponent<ICanvasCellProps>
 }
 
 export type IGenergicPaneProps = {

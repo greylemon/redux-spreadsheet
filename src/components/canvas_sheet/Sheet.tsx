@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useCallback, useEffect } from 'react'
+import React, {
+  FunctionComponent,
+  useCallback,
+  useEffect,
+  useMemo,
+} from 'react'
 import { Stage, Layer } from 'react-konva'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import { shallowEqual, useDispatch } from 'react-redux'
@@ -33,7 +38,7 @@ import {
   selectTopLeftPositionX,
 } from '../../redux/selectors/base'
 import { CanvasHorizontalScroll, CanvasVerticalScroll } from './Scroll'
-import Cell from './text_layer/Cell'
+import Cell from './text/Cell'
 import { ICanvasItemData } from '../../@types/components'
 // import { THUNK_MOUSE_DOUBLE_CLICK } from '../../redux/thunks/mouse'
 import { IPosition } from '../../@types/state'
@@ -85,13 +90,16 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     dispatch(ExcelActions.UPDATE_SHEET_DIMENSIONS({ x: width, y: height }))
   }, [dispatch, height, width])
 
-  const itemData: ICanvasItemData = {
-    data,
-    sheetResults,
-    rowOffsets,
-    columnOffsets,
-    // viewWidths,
-  }
+  const itemData: ICanvasItemData = useMemo(
+    () => ({
+      data,
+      sheetResults,
+      rowOffsets,
+      columnOffsets,
+      // viewWidths,
+    }),
+    [data, sheetResults, rowOffsets, columnOffsets]
+  )
 
   const handleDoubleClick = useCallback(
     (event) => {
@@ -138,64 +146,64 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
         <GenericPane
           id="bottom-right"
           columnStart={viewColumnStart}
-          rowStart={viewRowStart}
-          columnEnd={viewColumnEnd}
-          rowEnd={viewRowEnd}
-          columnOffsets={columnOffsets}
-          rowOffsets={rowOffsets}
-          getColumnWidth={getColumnWidth}
-          getRowHeight={getRowHeight}
-          CellComponent={Cell}
-          data={itemData}
           columnStartBound={tableFreezeColumnCount}
-          rowStartBound={tableFreezeRowCount}
-        />
-        <GenericPane
-          id="top-right"
-          columnStart={0}
-          columnEnd={tableFreezeColumnCount}
-          rowStart={viewRowStart}
-          rowEnd={viewRowEnd}
           columnOffsets={columnOffsets}
+          columnEnd={viewColumnEnd}
+          rowStart={viewRowStart}
+          rowStartBound={tableFreezeRowCount}
+          rowEnd={viewRowEnd}
           rowOffsets={rowOffsets}
           getColumnWidth={getColumnWidth}
           getRowHeight={getRowHeight}
           CellComponent={Cell}
           data={itemData}
-          columnStartBound={0}
-          rowStartBound={tableFreezeRowCount}
-          enableRowHeader
         />
         <GenericPane
           id="bottom-left"
-          columnStart={viewColumnStart}
-          columnEnd={tableColumnCount}
-          rowStart={0}
-          rowEnd={tableFreezeRowCount}
+          columnStart={0}
+          columnStartBound={0}
+          columnEnd={tableFreezeColumnCount}
           columnOffsets={columnOffsets}
+          rowStart={viewRowStart}
+          rowStartBound={tableFreezeRowCount}
+          rowEnd={viewRowEnd}
           rowOffsets={rowOffsets}
           getColumnWidth={getColumnWidth}
           getRowHeight={getRowHeight}
           CellComponent={Cell}
           data={itemData}
+          enableRowHeader
+        />
+        <GenericPane
+          id="top-right"
+          columnStart={viewColumnStart}
           columnStartBound={tableFreezeColumnCount}
+          columnEnd={tableColumnCount}
+          columnOffsets={columnOffsets}
+          rowStart={0}
           rowStartBound={0}
+          rowEnd={tableFreezeRowCount}
+          rowOffsets={rowOffsets}
+          getColumnWidth={getColumnWidth}
+          getRowHeight={getRowHeight}
+          CellComponent={Cell}
+          data={itemData}
           enableColumnHeader
         />
         <GenericPane
           id="top-left"
           columnStart={0}
-          rowStart={0}
+          columnStartBound={0}
           columnEnd={tableFreezeColumnCount}
-          rowEnd={tableFreezeRowCount}
           columnOffsets={columnOffsets}
+          rowStart={0}
+          rowStartBound={0}
+          rowEnd={tableFreezeRowCount}
           rowOffsets={rowOffsets}
           getColumnWidth={getColumnWidth}
           getRowHeight={getRowHeight}
           CellComponent={Cell}
           data={itemData}
-          columnStartBound={0}
-          rowStartBound={0}
           enableColumnHeader
           enableRowHeader
         />
@@ -231,7 +239,8 @@ const CanvasSheetContainer: FunctionComponent = () => {
 
   // CONVERT TO THUNK AND BOUND
   const handleScroll = useCallback(
-    ({ deltaY, deltaX }) => {
+    (event) => {
+      const { deltaY, deltaX } = event
       if (deltaY > 0) {
         dispatch(ExcelActions.SCROLL_DOWN())
       } else if (deltaY < 0) {
