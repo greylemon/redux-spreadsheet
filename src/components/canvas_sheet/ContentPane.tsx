@@ -1,6 +1,6 @@
 import React, { FunctionComponent, useMemo } from 'react'
 import { Group, Rect, Line } from 'react-konva'
-import { IGenergicPaneProps } from '../../@types/components'
+import { IGenericPaneProps } from '../../@types/components'
 import { IBlockStyles, IPosition } from '../../@types/state'
 import { checkIsPositionEqualOtherPosition } from '../../tools'
 import { STYLE_CELL_BORDER } from '../../constants/styles'
@@ -22,7 +22,7 @@ const getBorderWidth = (widthStyle: string) => {
 
   return width
 }
-const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
+const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
   id,
   rowStart,
   rowEnd,
@@ -43,7 +43,6 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
     const { data: sheetData } = data
     const StyleComponents: JSX.Element[] = []
     const TextCompnents: JSX.Element[] = []
-    const topLeftPosition: IPosition = { x: columnStart, y: rowStart }
 
     for (let rowIndex = rowStart; rowIndex < rowEnd; rowIndex += 1) {
       let y =
@@ -58,7 +57,7 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
         columnIndex < columnEnd;
         columnIndex += 1
       ) {
-        const cellData = rowData[columnIndex] ? rowData[columnIndex] : {}
+        let cellData = rowData[columnIndex] ? rowData[columnIndex] : {}
 
         let relativeRowIndex = rowIndex
         let relativeColumnIndex = columnIndex
@@ -69,6 +68,7 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
           columnOffsets[columnStart] +
           columnOffsets[columnStartBound]
 
+        let backgroundColor = 'transparent'
         if (cellData && cellData.merged) {
           let { area, parent } = cellData.merged
 
@@ -82,14 +82,23 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
           relativeRowIndex = parent.y
 
           const currentPosition: IPosition = { x: columnIndex, y: rowIndex }
+          const adjustedPosition = {
+            x: Math.max(columnStart, parent.x),
+            y: Math.max(rowStart, parent.y),
+          }
 
           if (
             !checkIsPositionEqualOtherPosition(parent, currentPosition) &&
-            !checkIsPositionEqualOtherPosition(currentPosition, topLeftPosition)
+            !checkIsPositionEqualOtherPosition(
+              currentPosition,
+              adjustedPosition
+            )
           ) {
             columnIndex = area.end.x
             continue
           }
+
+          cellData = sheetData[parent.y][parent.x]
 
           x =
             columnOffsets[parent.x] -
@@ -109,12 +118,13 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
             rowOffsets[area.end.y + 1] - rowOffsets[area.start.y],
             rowOffsets[rowEnd] - rowOffsets[rowStart]
           )
+
+          backgroundColor = 'white'
         }
 
-        const cellId = `cell={"y":${rowIndex},"x":${columnIndex}}`
-        // const keyId = `${id}-${cellId}`
+        const cellId = `cell={"y":${relativeRowIndex},"x":${relativeColumnIndex}}`
+        const keyId = `${id}-${cellId}`
 
-        let backgroundColor = 'transparent'
         if (
           cellData &&
           cellData.style &&
@@ -125,7 +135,7 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
 
         StyleComponents.push(
           <Rect
-            // key={`bg-${keyId}`}
+            key={`bg-${keyId}`}
             id={cellId}
             x={x}
             y={y}
@@ -133,11 +143,12 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
             height={height}
             fill={backgroundColor}
             transformsEnabled="position"
-            perfectDrawEnabled={false}
+            // perfectDrawEnabled={false}
             stroke={STYLE_CELL_BORDER}
             strokeWidth={1}
-            hitStrokeWidth={0}
-            shadowForStrokeEnabled={false}
+            // hitStrokeWidth={0}
+            // shadowForStrokeEnabled={false}
+            listening
           />
         )
 
@@ -162,7 +173,7 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
           if (borderBottomColor || borderBottomStyle || borderBottomWidth) {
             StyleComponents.push(
               <Line
-                // key={`bb-${keyId}`}
+                key={`bb-${keyId}`}
                 points={[x, y + height, x + width, y + height]}
                 stroke={borderBottomColor}
                 strokeWidth={getBorderWidth(borderBottomWidth)}
@@ -177,7 +188,7 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
           if (borderLeftColor || borderLeftStyle || borderLeftWidth) {
             StyleComponents.push(
               <Line
-                // key={`bl-${keyId}`}
+                key={`bl-${keyId}`}
                 points={[x, y, x, y + height]}
                 stroke={borderLeftColor}
                 strokeWidth={getBorderWidth(borderLeftWidth)}
@@ -192,7 +203,7 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
           if (borderRightColor || borderRightStyle || borderRightWidth) {
             StyleComponents.push(
               <Line
-                // key={`br-${keyId}`}
+                key={`br-${keyId}`}
                 points={[x + width, y, x + width, y + height]}
                 stroke={borderRightColor}
                 strokeWidth={getBorderWidth(borderRightWidth)}
@@ -207,7 +218,7 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
           if (borderTopColor || borderTopStyle || borderTopWidth) {
             StyleComponents.push(
               <Line
-                // key={`bt-${keyId}`}
+                key={`bt-${keyId}`}
                 points={[x, y, x + width, y]}
                 stroke={borderTopColor}
                 strokeWidth={getBorderWidth(borderTopWidth)}
@@ -227,7 +238,7 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
         ) {
           TextCompnents.push(
             <CellComponent
-              // key={`text-${keyId}`}
+              key={`text-${keyId}`}
               rowIndex={rowIndex}
               columnIndex={columnIndex}
               x={x}
@@ -257,6 +268,13 @@ const ContentLayer: FunctionComponent<Partial<IGenergicPaneProps>> = ({
 
   return (
     <Group>
+      <Rect
+        y={rowOffsets[rowStart]}
+        x={columnOffsets[columnStart]}
+        height={rowOffsets[rowEnd] - rowOffsets[rowStart]}
+        width={columnOffsets[columnEnd] - columnOffsets[columnStart]}
+        fill="white"
+      />
       <Group>{Styles}</Group>
       <Group listening={false}>{Texts}</Group>
     </Group>

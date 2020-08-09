@@ -6,7 +6,12 @@ import React, {
 } from 'react'
 import { Stage, Layer } from 'react-konva'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
-import { shallowEqual, useDispatch } from 'react-redux'
+import {
+  shallowEqual,
+  useDispatch,
+  ReactReduxContext,
+  Provider,
+} from 'react-redux'
 import {
   STYLE_SHEET,
   STYLE_SHEET_CONTAINER,
@@ -42,6 +47,12 @@ import Cell from './text/Cell'
 import { ICanvasItemData } from '../../@types/components'
 // import { THUNK_MOUSE_DOUBLE_CLICK } from '../../redux/thunks/mouse'
 import { IPosition } from '../../@types/state'
+import {
+  selectIsActiveCellInBottomRightPane,
+  selectIsActiveCellInBottomLeftPane,
+  selectIsActiveCellInTopRightPane,
+  selectIsActiveCellInTopLeftPane,
+} from '../../redux/selectors/pane'
 
 const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
@@ -112,10 +123,11 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     [dispatch]
   )
 
-  const handleClick = useCallback(
+  const handleMouseDown = useCallback(
     ({ evt, currentTarget }) => {
       const [, address] = currentTarget.clickStartShape.attrs.id.split('=')
       const position: IPosition = JSON.parse(address)
+
       const {
         // ctrlKey,
         // shiftKey,
@@ -136,79 +148,89 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
   )
 
   return (
-    <Stage
-      height={height}
-      width={width}
-      onDblClick={handleDoubleClick}
-      onClick={handleClick}
-    >
-      <Layer>
-        <GenericPane
-          id="bottom-right"
-          columnStart={viewColumnStart}
-          columnStartBound={tableFreezeColumnCount}
-          columnOffsets={columnOffsets}
-          columnEnd={viewColumnEnd}
-          rowStart={viewRowStart}
-          rowStartBound={tableFreezeRowCount}
-          rowEnd={viewRowEnd}
-          rowOffsets={rowOffsets}
-          getColumnWidth={getColumnWidth}
-          getRowHeight={getRowHeight}
-          CellComponent={Cell}
-          data={itemData}
-        />
-        <GenericPane
-          id="bottom-left"
-          columnStart={0}
-          columnStartBound={0}
-          columnEnd={tableFreezeColumnCount}
-          columnOffsets={columnOffsets}
-          rowStart={viewRowStart}
-          rowStartBound={tableFreezeRowCount}
-          rowEnd={viewRowEnd}
-          rowOffsets={rowOffsets}
-          getColumnWidth={getColumnWidth}
-          getRowHeight={getRowHeight}
-          CellComponent={Cell}
-          data={itemData}
-          enableRowHeader
-        />
-        <GenericPane
-          id="top-right"
-          columnStart={viewColumnStart}
-          columnStartBound={tableFreezeColumnCount}
-          columnEnd={tableColumnCount}
-          columnOffsets={columnOffsets}
-          rowStart={0}
-          rowStartBound={0}
-          rowEnd={tableFreezeRowCount}
-          rowOffsets={rowOffsets}
-          getColumnWidth={getColumnWidth}
-          getRowHeight={getRowHeight}
-          CellComponent={Cell}
-          data={itemData}
-          enableColumnHeader
-        />
-        <GenericPane
-          id="top-left"
-          columnStart={0}
-          columnStartBound={0}
-          columnEnd={tableFreezeColumnCount}
-          columnOffsets={columnOffsets}
-          rowStart={0}
-          rowStartBound={0}
-          rowEnd={tableFreezeRowCount}
-          rowOffsets={rowOffsets}
-          getColumnWidth={getColumnWidth}
-          getRowHeight={getRowHeight}
-          CellComponent={Cell}
-          data={itemData}
-          enableColumnHeader
-          enableRowHeader
-        />
-      </Layer>
-    </Stage>
+    <ReactReduxContext.Consumer>
+      {({ store }) => (
+        <Stage
+          height={height}
+          width={width}
+          onDblClick={handleDoubleClick}
+          onMouseDown={handleMouseDown}
+        >
+          <Provider store={store}>
+            <Layer>
+              <GenericPane
+                id="bottom-right"
+                columnStart={viewColumnStart}
+                columnStartBound={tableFreezeColumnCount}
+                columnOffsets={columnOffsets}
+                columnEnd={viewColumnEnd}
+                rowStart={viewRowStart}
+                rowStartBound={tableFreezeRowCount}
+                rowEnd={viewRowEnd}
+                rowOffsets={rowOffsets}
+                getColumnWidth={getColumnWidth}
+                getRowHeight={getRowHeight}
+                CellComponent={Cell}
+                data={itemData}
+                selectIsInPane={selectIsActiveCellInBottomRightPane}
+              />
+              <GenericPane
+                id="bottom-left"
+                columnStart={0}
+                columnStartBound={0}
+                columnEnd={tableFreezeColumnCount}
+                columnOffsets={columnOffsets}
+                rowStart={viewRowStart}
+                rowStartBound={tableFreezeRowCount}
+                rowEnd={viewRowEnd}
+                rowOffsets={rowOffsets}
+                getColumnWidth={getColumnWidth}
+                getRowHeight={getRowHeight}
+                CellComponent={Cell}
+                data={itemData}
+                selectIsInPane={selectIsActiveCellInBottomLeftPane}
+                enableRowHeader
+              />
+              <GenericPane
+                id="top-right"
+                columnStart={viewColumnStart}
+                columnStartBound={tableFreezeColumnCount}
+                columnEnd={tableColumnCount}
+                columnOffsets={columnOffsets}
+                rowStart={0}
+                rowStartBound={0}
+                rowEnd={tableFreezeRowCount}
+                rowOffsets={rowOffsets}
+                getColumnWidth={getColumnWidth}
+                getRowHeight={getRowHeight}
+                CellComponent={Cell}
+                data={itemData}
+                selectIsInPane={selectIsActiveCellInTopRightPane}
+                enableColumnHeader
+              />
+              <GenericPane
+                id="top-left"
+                columnStart={0}
+                columnStartBound={0}
+                columnEnd={tableFreezeColumnCount}
+                columnOffsets={columnOffsets}
+                rowStart={0}
+                rowStartBound={0}
+                rowEnd={tableFreezeRowCount}
+                rowOffsets={rowOffsets}
+                getColumnWidth={getColumnWidth}
+                getRowHeight={getRowHeight}
+                CellComponent={Cell}
+                data={itemData}
+                selectIsInPane={selectIsActiveCellInTopLeftPane}
+                enableColumnHeader
+                enableRowHeader
+              />
+            </Layer>
+          </Provider>
+        </Stage>
+      )}
+    </ReactReduxContext.Consumer>
   )
 }
 

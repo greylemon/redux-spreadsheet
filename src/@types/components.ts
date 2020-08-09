@@ -132,7 +132,7 @@ export type IGenericLayerProps = {
   CellComponent: FunctionComponent<ICanvasCellProps>
 }
 
-export type IGenergicPaneProps = {
+export type IGenericPaneProps = {
   id: string
   rowOffsets: IRowOffsets
   columnOffsets: IColumnOffsets
@@ -148,6 +148,7 @@ export type IGenergicPaneProps = {
   data: ICanvasItemData
   enableRowHeader?: boolean
   enableColumnHeader?: boolean
+  selectIsInPane: any
 }
 
 export type ITextLayerProps = {
@@ -166,4 +167,19 @@ export type ITextLayerProps = {
   columnStartBound: number
   enableRowHeader?: boolean
   enableColumnHeader?: boolean
+}
+
+export type IActiveCellPane = {
+  selectIsInPane: any
+  data: IRows
+  columnOffsets: IColumnOffsets
+  rowOffsets: IRowOffsets
+  rowStart: number
+  rowEnd: number
+  columnStart: number
+  columnEnd: number
+  rowStartBound: number
+  columnStartBound: number
+  getRowHeight: IGetRowHeight
+  getColumnWidth: IGetColumnWidth
 }
