@@ -305,4 +305,7 @@ export type IExcelState = {
   scrollVertical: IVerticalOffsetType
 
   topLeftPosition: IPosition
+
+  cellEditorOffset?: IPosition
+  // isCellEditorLabelVisible: boolean
 }

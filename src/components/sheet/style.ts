@@ -31,6 +31,5 @@ export const STYLE_SHEET_OUTER: CSSProperties = {
 
 export const STYLE_SHEET: CSSProperties = {
   width: '100%',
-  // width: `calc(100% - ${getScrollbarSize()}px)`,
   height: `calc(100% - ${getScrollbarSize()}px)`,
 }

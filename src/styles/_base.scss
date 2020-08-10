@@ -16,6 +16,8 @@ $customBorderStyle: 'solid';
   -moz-user-drag: none;
   -o-user-drag: none;
 
+  position: relative;
+
   &:focus {
     outline-style: none;
     box-shadow: none;

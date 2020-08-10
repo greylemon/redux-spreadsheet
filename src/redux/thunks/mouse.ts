@@ -212,12 +212,13 @@ export const THUNK_MOUSE_DOWN = (
   }
 }
 
-export const THUNK_MOUSE_DOUBLE_CLICK = (type: ICellTypes): IAppThunk => (
-  dispatch
-) => {
+export const THUNK_MOUSE_DOUBLE_CLICK = (
+  type: ICellTypes,
+  position: IPosition
+): IAppThunk => (dispatch) => {
   switch (type) {
     case 'cell': {
-      dispatch(ExcelActions.CELL_DOUBLE_CLICK())
+      dispatch(ExcelActions.CELL_DOUBLE_CLICK(position))
       break
     }
     default:

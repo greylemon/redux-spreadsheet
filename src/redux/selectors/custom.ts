@@ -43,6 +43,7 @@ import {
 } from '../../constants/styles'
 import { getMergeArea } from '../tools/merge'
 import { IViewWidths } from '../../@types/objects'
+import { columnNumberToName } from '../../tools/conversion'
 
 export const selectTableColumnCount = createSelector(
   [selectColumnCount],
@@ -323,6 +324,35 @@ export const selectPosition = createSelector(
   (merged, data, activeCellPosition) => {
     return merged ? getMergeArea(data, merged).start : activeCellPosition
   }
+)
+
+export const selectPositionDimensions = createSelector(
+  [selectPosition, selectMerged, selectRowOffsets, selectColumnOffsets],
+  (position, merged, rowOffsets, columnOffsets) => {
+    let width: number
+    let height: number
+
+    if (merged) {
+      width =
+        columnOffsets[merged.area.end.x + 1] -
+        columnOffsets[merged.area.start.x]
+      height =
+        rowOffsets[merged.area.end.y + 1] - rowOffsets[merged.area.start.y]
+    } else {
+      width = columnOffsets[position.x + 1] - columnOffsets[position.x]
+      height = rowOffsets[position.y + 1] - rowOffsets[position.y]
+    }
+
+    return {
+      minHeight: height,
+      minWidth: width,
+    }
+  }
+)
+
+export const selectActiveCellId = createSelector(
+  [selectActiveCellPosition],
+  ({ x, y }) => `${y}${columnNumberToName(x)}`
 )
 
 export const selectVisibleCellWidths = createSelector(

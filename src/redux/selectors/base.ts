@@ -181,3 +181,8 @@ export const selectScrollVertical = createSelector(
   [selectExcel],
   (excel) => excel.scrollVertical
 )
+
+export const selectCellEditorOffset = createSelector(
+  [selectExcel],
+  (excel) => excel.cellEditorOffset
+)

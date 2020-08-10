@@ -50,10 +50,11 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
   const dispatch = useDispatch()
 
   const handleDoubleClick = useCallback(
-    (event) => {
-      const { type } = getPositionAndTypeFromCellId(event.currentTarget)
+    (event, position) => {
+      const { currentTarget } = event
+      const { type } = getPositionAndTypeFromCellId(currentTarget)
 
-      dispatch(THUNK_MOUSE_DOUBLE_CLICK(type))
+      dispatch(THUNK_MOUSE_DOUBLE_CLICK(type, position))
     },
     [dispatch]
   )
@@ -98,6 +99,7 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
     const TextCompnents: JSX.Element[] = []
 
     for (let rowIndex = rowStart; rowIndex < rowEnd; rowIndex += 1) {
+      /* eslint-disable no-loop-func */
       let y =
         rowOffsets[rowIndex] - rowOffsets[rowStart] + rowOffsets[rowStartBound]
 
@@ -153,15 +155,15 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
 
           cellData = sheetData[parent.y][parent.x]
 
-          x =
-            columnOffsets[parent.x] -
-            columnOffsets[columnStart] +
-            columnOffsets[columnStartBound]
-
           y =
             rowOffsets[parent.y] -
             rowOffsets[rowStart] +
             rowOffsets[rowStartBound]
+
+          x =
+            columnOffsets[parent.x] -
+            columnOffsets[columnStart] +
+            columnOffsets[columnStartBound]
 
           width = Math.min(
             columnOffsets[area.end.x + 1] - columnOffsets[area.start.x],
@@ -215,7 +217,7 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
             // shadowForStrokeEnabled={false}
             onMouseEnter={handleMouseEnter}
             onMouseDown={handleMouseDown}
-            onDblClick={handleDoubleClick}
+            onDblClick={(event) => handleDoubleClick(event, { y, x })}
           />
         )
 

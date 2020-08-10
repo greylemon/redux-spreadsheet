@@ -67,6 +67,7 @@ import {
   // THUNK_KEY_ENTER,
   THUNK_CELL_KEY_DELETE,
 } from '../../redux/thunks/keyboard'
+import EditorCell from './EditableCell'
 
 const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
@@ -287,6 +288,7 @@ const CanvasSheetInnerContent: FunctionComponent = () => {
       <AutoSizer>
         {({ height, width }) => <CanvasSheet height={height} width={width} />}
       </AutoSizer>
+      <EditorCell />
     </div>
   )
 }
