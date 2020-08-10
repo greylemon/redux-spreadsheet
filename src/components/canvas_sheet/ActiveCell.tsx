@@ -29,7 +29,12 @@ const ActiveCell: FunctionComponent<IActiveCellPane> = ({
   )
 
   const style = useMemo(() => {
-    if (!isInPane) return null
+    if (
+      !isInPane ||
+      columnStart > activeCellPosition.x ||
+      rowStart > activeCellPosition.y
+    )
+      return null
 
     let x =
       columnOffsets[activeCellPosition.x] -
@@ -83,19 +88,15 @@ const ActiveCell: FunctionComponent<IActiveCellPane> = ({
     }
 
     return (
-      columnStart < activeCellPosition.x &&
-      rowStart < activeCellPosition.y && (
-        <Rect
-          id={`cell={"x":${activeCellPosition.x},"y":${activeCellPosition.y}}`}
-          x={x}
-          y={y}
-          height={height}
-          width={width}
-          stroke={STYLE_ACTIVE_CELL_COLOR}
-          strokeWidth={1}
-          listening={false}
-        />
-      )
+      <Rect
+        x={x}
+        y={y}
+        height={height}
+        width={width}
+        stroke={STYLE_ACTIVE_CELL_COLOR}
+        strokeWidth={1}
+        listening={false}
+      />
     )
   }, [
     isInPane,
