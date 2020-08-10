@@ -3,6 +3,7 @@ import React, {
   useCallback,
   useEffect,
   useMemo,
+  KeyboardEvent,
 } from 'react'
 import { Stage, Layer } from 'react-konva'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
@@ -46,13 +47,26 @@ import { CanvasHorizontalScroll, CanvasVerticalScroll } from './Scroll'
 import Cell from './text/Cell'
 import { ICanvasItemData } from '../../@types/components'
 // import { THUNK_MOUSE_DOUBLE_CLICK } from '../../redux/thunks/mouse'
-import { IPosition } from '../../@types/state'
 import {
   selectIsActiveCellInBottomRightPane,
   selectIsActiveCellInBottomLeftPane,
   selectIsActiveCellInTopRightPane,
   selectIsActiveCellInTopLeftPane,
+  selectIsAreaInBottomRightPane,
+  selectIsAreaInBottomLeftPane,
+  selectIsAreaInTopRightPane,
+  selectIsAreaInTopLeftPane,
 } from '../../redux/selectors/pane'
+import {
+  THUNK_TOGGLE_BOLD,
+  THUNK_TOGGLE_UNDERLINE,
+  THUNK_TOGGLE_ITALIC,
+  THUNK_TOGGLE_STRIKETHROUGH,
+} from '../../redux/thunks/style'
+import {
+  // THUNK_KEY_ENTER,
+  THUNK_CELL_KEY_DELETE,
+} from '../../redux/thunks/keyboard'
 
 const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
@@ -112,50 +126,10 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     [data, sheetResults, rowOffsets, columnOffsets]
   )
 
-  const handleDoubleClick = useCallback(
-    (event) => {
-      const [, address] = event.currentTarget.clickStartShape.attrs.id.split(
-        '='
-      )
-      const position: IPosition = JSON.parse(address)
-      if (position.x || position.y) dispatch(ExcelActions.CELL_DOUBLE_CLICK())
-    },
-    [dispatch]
-  )
-
-  const handleMouseDown = useCallback(
-    ({ evt, currentTarget }) => {
-      const [, address] = currentTarget.clickStartShape.attrs.id.split('=')
-      const position: IPosition = JSON.parse(address)
-
-      const {
-        // ctrlKey,
-        // shiftKey,
-        button,
-      } = evt
-
-      switch (button) {
-        case 0:
-          dispatch(ExcelActions.CELL_MOUSE_DOWN(position))
-          break
-        case 2:
-          break
-        default:
-          break
-      }
-    },
-    [dispatch]
-  )
-
   return (
     <ReactReduxContext.Consumer>
       {({ store }) => (
-        <Stage
-          height={height}
-          width={width}
-          onDblClick={handleDoubleClick}
-          onMouseDown={handleMouseDown}
-        >
+        <Stage height={height} width={width}>
           <Provider store={store}>
             <Layer>
               <GenericPane
@@ -173,6 +147,7 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
                 CellComponent={Cell}
                 data={itemData}
                 selectIsInPane={selectIsActiveCellInBottomRightPane}
+                selectIsAreaInPane={selectIsAreaInBottomRightPane}
               />
               <GenericPane
                 id="bottom-left"
@@ -189,6 +164,7 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
                 CellComponent={Cell}
                 data={itemData}
                 selectIsInPane={selectIsActiveCellInBottomLeftPane}
+                selectIsAreaInPane={selectIsAreaInBottomLeftPane}
                 enableRowHeader
               />
               <GenericPane
@@ -206,6 +182,7 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
                 CellComponent={Cell}
                 data={itemData}
                 selectIsInPane={selectIsActiveCellInTopRightPane}
+                selectIsAreaInPane={selectIsAreaInTopRightPane}
                 enableColumnHeader
               />
               <GenericPane
@@ -223,6 +200,7 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
                 CellComponent={Cell}
                 data={itemData}
                 selectIsInPane={selectIsActiveCellInTopLeftPane}
+                selectIsAreaInPane={selectIsAreaInTopLeftPane}
                 enableColumnHeader
                 enableRowHeader
               />
@@ -234,13 +212,84 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
   )
 }
 
-const CanvasSheetInnerContent: FunctionComponent = () => (
-  <div style={STYLE_SHEET}>
-    <AutoSizer>
-      {({ height, width }) => <CanvasSheet height={height} width={width} />}
-    </AutoSizer>
-  </div>
-)
+const CanvasSheetInnerContent: FunctionComponent = () => {
+  const dispatch = useDispatch()
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      const { key, ctrlKey, metaKey } = event
+
+      if (ctrlKey || metaKey) {
+        switch (key) {
+          case 'A':
+          case 'a':
+            dispatch(ExcelActions.SELECT_ALL())
+            event.preventDefault()
+            break
+          case 'B':
+          case 'b':
+            dispatch(THUNK_TOGGLE_BOLD())
+            break
+          case 'U':
+          case 'u':
+            dispatch(THUNK_TOGGLE_UNDERLINE())
+            event.preventDefault()
+            break
+          case 'I':
+          case 'i':
+            dispatch(THUNK_TOGGLE_ITALIC())
+            break
+          case 'X':
+          case 'x':
+            dispatch(THUNK_TOGGLE_STRIKETHROUGH())
+            break
+          default:
+            break
+        }
+      } else if (key.length === 1) {
+        dispatch(ExcelActions.CELL_EDITOR_STATE_START())
+      } else {
+        switch (key) {
+          case 'Enter':
+            // dispatch(THUNK_KEY_ENTER(sheetRef))
+            break
+          case 'Delete':
+            dispatch(THUNK_CELL_KEY_DELETE())
+            break
+          case 'ArrowDown':
+            dispatch(ExcelActions.CELL_KEY_DOWN())
+            break
+          case 'ArrowRight':
+            dispatch(ExcelActions.CELL_KEY_RIGHT())
+            break
+          case 'ArrowLeft':
+            dispatch(ExcelActions.CELL_KEY_LEFT())
+            break
+          case 'ArrowUp':
+            dispatch(ExcelActions.CELL_KEY_UP())
+            break
+          default:
+            break
+        }
+      }
+    },
+    [dispatch]
+  )
+
+  return (
+    <div
+      id="sheet"
+      className="sheetGrid"
+      style={STYLE_SHEET}
+      onKeyDown={handleKeyDown}
+      tabIndex={-1}
+    >
+      <AutoSizer>
+        {({ height, width }) => <CanvasSheet height={height} width={width} />}
+      </AutoSizer>
+    </div>
+  )
+}
 
 const CanvasSheetOuterContent: FunctionComponent = () => (
   <div style={STYLE_SHEET_OUTER}>

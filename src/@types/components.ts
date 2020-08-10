@@ -149,6 +149,7 @@ export type IGenericPaneProps = {
   enableRowHeader?: boolean
   enableColumnHeader?: boolean
   selectIsInPane: any
+  selectIsAreaInPane: any
 }
 
 export type ITextLayerProps = {
@@ -182,4 +183,16 @@ export type IActiveCellPane = {
   columnStartBound: number
   getRowHeight: IGetRowHeight
   getColumnWidth: IGetColumnWidth
+}
+
+export type ISelectionAreaPane = {
+  rowStart: number
+  rowEnd: number
+  columnStart: number
+  columnEnd: number
+  rowStartBound: number
+  columnStartBound: number
+  columnOffsets: IColumnOffsets
+  rowOffsets: IRowOffsets
+  selectIsAreaInPane: any
 }

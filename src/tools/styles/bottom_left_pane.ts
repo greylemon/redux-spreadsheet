@@ -25,7 +25,6 @@ import {
   STYLE_SELECTION_BORDER_WIDTH,
   STYLE_SELECTION_BORDER_COLOR,
   STYLE_SELECTION_BORDER_STYLE,
-  STYLE_SELECTION_AREA_Z_INDEX,
 } from '../../constants/styles'
 import { getMergeArea } from '../../redux/tools/merge'
 
@@ -107,7 +106,6 @@ export const computeSelectionAreaBottomLeftStyle: IComputeSelectionAreaStyle = (
     borderBottomWidth: STYLE_SELECTION_BORDER_WIDTH,
     borderBottomColor: STYLE_SELECTION_BORDER_COLOR,
     borderBottomStyle: STYLE_SELECTION_BORDER_STYLE,
-    zIndex: STYLE_SELECTION_AREA_Z_INDEX,
   }
 
   const topStart = rowOffsets[start.y]
@@ -174,11 +172,10 @@ export const computeSelectionAreaBottomLeftStyle: IComputeSelectionAreaStyle = (
     customSelectionStyle.borderTopStyle = STYLE_SELECTION_BORDER_STYLE
   }
 
-  customSelectionStyle.left = left - 1
-  customSelectionStyle.top = top - 1
-  customSelectionStyle.width = selectionAreaWidth + 1
-  customSelectionStyle.height = selectionAreaHeight + 1
-  customSelectionStyle.boxSizing = 'border-box'
+  customSelectionStyle.left = left
+  customSelectionStyle.top = top
+  customSelectionStyle.width = selectionAreaWidth
+  customSelectionStyle.height = selectionAreaHeight
 
   return customSelectionStyle
 }

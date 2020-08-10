@@ -59,8 +59,8 @@ export const CanvasHorizontalScroll: FunctionComponent = () => {
   )
 
   const handleScroll = useCallback(
-    (_, value) => {
-      if (value !== scrollOffsetDimension)
+    (event, value) => {
+      if (event.type !== 'keydown' && value !== scrollOffsetDimension)
         dispatch(ExcelActions.SCROLL_HORIZONTAL(value))
     },
     [dispatch, scrollLength, scrollOffsetDimension]
@@ -102,10 +102,10 @@ export const CanvasVerticalScroll: FunctionComponent = () => {
   )
 
   const handleScroll = useCallback(
-    (_, value) => {
+    (event, value) => {
       const newOffset = scrollLength - value
 
-      if (newOffset !== scrollOffsetDimension)
+      if (event.type !== 'keydown' && newOffset !== scrollOffsetDimension)
         dispatch(ExcelActions.SCROLL_VERTICAL(newOffset))
     },
     [dispatch, scrollLength, freezeRowCount, scrollOffsetDimension]

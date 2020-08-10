@@ -1,9 +1,17 @@
-import React, { FunctionComponent, useMemo } from 'react'
+import React, { FunctionComponent, useMemo, useCallback } from 'react'
 import { Group, Rect, Line } from 'react-konva'
+import { useDispatch } from 'react-redux'
 import { IGenericPaneProps } from '../../@types/components'
 import { IBlockStyles, IPosition } from '../../@types/state'
 import { checkIsPositionEqualOtherPosition } from '../../tools'
 import { STYLE_CELL_BORDER } from '../../constants/styles'
+import { getPositionFromCellId as getPositionAndTypeFromCellId } from '../../tools/konva'
+import {
+  THUNK_MOUSE_DOWN,
+  THUNK_MOUSE_DOUBLE_CLICK,
+  THUNK_MOUSE_ENTER,
+} from '../../redux/thunks/mouse'
+import { ICellTypes } from '../../@types/general'
 
 const getBorderWidth = (widthStyle: string) => {
   let width: number
@@ -39,6 +47,55 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
   enableColumnHeader,
   enableRowHeader,
 }) => {
+  const dispatch = useDispatch()
+
+  const handleDoubleClick = useCallback(
+    (event) => {
+      const { type } = getPositionAndTypeFromCellId(event.currentTarget)
+
+      dispatch(THUNK_MOUSE_DOUBLE_CLICK(type))
+    },
+    [dispatch]
+  )
+
+  const handleMouseDown = useCallback(
+    ({ evt, currentTarget }) => {
+      const { ctrlKey, shiftKey, which } = evt
+
+      const { type, position } = getPositionAndTypeFromCellId(currentTarget)
+
+      switch (which) {
+        case 1:
+          dispatch(THUNK_MOUSE_DOWN(type, position, shiftKey, ctrlKey))
+          break
+        default:
+          break
+      }
+    },
+    [dispatch]
+  )
+
+  const handleMouseEnter = useCallback(
+    ({ evt, currentTarget }) => {
+      const {
+        // ctrlKey,
+        // shiftKey,
+        which,
+      } = evt
+
+      switch (which) {
+        case 1: {
+          const { type, position } = getPositionAndTypeFromCellId(currentTarget)
+          dispatch(THUNK_MOUSE_ENTER(type, position))
+          break
+        }
+        default:
+          break
+      }
+    },
+    [dispatch]
+  )
+
   const { Styles, Texts } = useMemo(() => {
     const { data: sheetData } = data
     const StyleComponents: JSX.Element[] = []
@@ -122,7 +179,19 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
           backgroundColor = 'white'
         }
 
-        const cellId = `cell={"y":${relativeRowIndex},"x":${relativeColumnIndex}}`
+        let type: ICellTypes
+
+        if (rowIndex && columnIndex) {
+          type = 'cell'
+        } else if (rowIndex) {
+          type = 'row'
+        } else if (columnIndex) {
+          type = 'column'
+        } else {
+          type = 'root'
+        }
+
+        const cellId = `${type}={"y":${relativeRowIndex},"x":${relativeColumnIndex}}`
         const keyId = `${id}-${cellId}`
 
         if (
@@ -148,7 +217,9 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
             strokeWidth={1}
             // hitStrokeWidth={0}
             // shadowForStrokeEnabled={false}
-            listening
+            onMouseEnter={handleMouseEnter}
+            onMouseDown={handleMouseDown}
+            onDblClick={handleDoubleClick}
           />
         )
 
@@ -180,7 +251,6 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
                 transformsEnabled="position"
                 perfectDrawEnabled={false}
                 hitStrokeWidth={0}
-                listening={false}
               />
             )
           }
@@ -195,7 +265,6 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
                 transformsEnabled="position"
                 perfectDrawEnabled={false}
                 hitStrokeWidth={0}
-                listening={false}
               />
             )
           }
@@ -210,7 +279,6 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
                 transformsEnabled="position"
                 perfectDrawEnabled={false}
                 hitStrokeWidth={0}
-                listening={false}
               />
             )
           }
@@ -225,7 +293,6 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
                 transformsEnabled="position"
                 perfectDrawEnabled={false}
                 hitStrokeWidth={0}
-                listening={false}
               />
             )
           }
@@ -264,6 +331,9 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
     columnOffsets,
     columnStartBound,
     rowStartBound,
+    handleMouseEnter,
+    handleMouseDown,
+    handleDoubleClick,
   ])
 
   return (

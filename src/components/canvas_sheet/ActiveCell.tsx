@@ -4,6 +4,7 @@ import { shallowEqual } from 'react-redux'
 import { useTypedSelector } from '../../redux/redux'
 import { selectPosition } from '../../redux/selectors/custom'
 import { IActiveCellPane } from '../../@types/components'
+import { STYLE_ACTIVE_CELL_COLOR } from '../../constants/styles'
 
 const ActiveCell: FunctionComponent<IActiveCellPane> = ({
   selectIsInPane,
@@ -110,8 +111,9 @@ const ActiveCell: FunctionComponent<IActiveCellPane> = ({
       y={style.y}
       height={style.height}
       width={style.width}
-      stroke="black"
+      stroke={STYLE_ACTIVE_CELL_COLOR}
       strokeWidth={1}
+      listening={false}
     />
   ) : null
 }

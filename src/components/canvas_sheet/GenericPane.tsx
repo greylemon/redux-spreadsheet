@@ -4,6 +4,7 @@ import { Group } from 'react-konva'
 import { IGenericPaneProps } from '../../@types/components'
 import ContentLayer from './ContentPane'
 import ActiveCell from './ActiveCell'
+import SelectionArea from './SelectionArea'
 
 const GenericPane: FunctionComponent<Partial<IGenericPaneProps>> = ({
   id,
@@ -22,6 +23,7 @@ const GenericPane: FunctionComponent<Partial<IGenericPaneProps>> = ({
   enableColumnHeader,
   enableRowHeader,
   selectIsInPane,
+  selectIsAreaInPane,
 }) => (
   <Group>
     <ContentLayer
@@ -40,6 +42,17 @@ const GenericPane: FunctionComponent<Partial<IGenericPaneProps>> = ({
       CellComponent={CellComponent}
       enableColumnHeader={enableColumnHeader}
       enableRowHeader={enableRowHeader}
+    />
+    <SelectionArea
+      rowStart={rowStart}
+      rowEnd={rowEnd}
+      columnStart={columnStart}
+      columnEnd={columnEnd}
+      rowOffsets={rowOffsets}
+      columnOffsets={columnOffsets}
+      columnStartBound={columnStartBound}
+      rowStartBound={rowStartBound}
+      selectIsAreaInPane={selectIsAreaInPane}
     />
     <ActiveCell
       selectIsInPane={selectIsInPane}

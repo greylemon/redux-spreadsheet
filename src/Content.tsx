@@ -19,12 +19,12 @@ import SheetNavigation from './components/sheetNavigation/SheetNavigation'
 import { ExcelActions } from './redux/store'
 import { ExcelComponentProps } from './@types/components'
 import { THUNK_COMMAND_SAVE } from './redux/thunks/IO'
-// import {
-//   THUNK_MOUSE_UP,
-//   THUNK_MOUSE_MOVE,
-//   THUNK_MOUSE_DOWN,
-//   THUNK_MOUSE_DOUBLE_CLICK,
-// } from './redux/thunks/mouse'
+import {
+  // THUNK_MOUSE_MOVE,
+  THUNK_MOUSE_UP,
+  // THUNK_MOUSE_DOWN,
+  // THUNK_MOUSE_DOUBLE_CLICK,
+} from './redux/thunks/mouse'
 import { THUNK_HISTORY_UNDO, THUNK_HISTORY_REDO } from './redux/thunks/history'
 import AppBar from './components/appBar/AppBar'
 import { STYLE_EXCEL } from './style'
@@ -72,7 +72,7 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
         }
       }
     },
-    [dispatch, THUNK_HISTORY_REDO, THUNK_HISTORY_UNDO, handleSave]
+    [dispatch, handleSave]
   )
 
   // window.onmousemove = useCallback(
@@ -90,38 +90,13 @@ export const ExcelContent: FunctionComponent<ExcelComponentProps> = ({
   //   [dispatch]
   // )
 
-  // window.onmouseup = useCallback(() => {
-  //   dispatch(THUNK_MOUSE_UP())
-  // }, [dispatch])
+  window.onmouseup = useCallback(() => {
+    dispatch(THUNK_MOUSE_UP())
+  }, [dispatch])
 
   // window.ontouchend = useCallback(() => {
   //   dispatch(THUNK_MOUSE_UP())
   // }, [dispatch])
-
-  // window.onmousedown = useCallback(
-  //   ({ clientX, clientY, ctrlKey, shiftKey, buttons }: MouseEvent) => {
-  //     if (buttons === 1)
-  //       dispatch(
-  //         THUNK_MOUSE_DOWN({ x: clientX, y: clientY }, shiftKey, ctrlKey)
-  //       )
-  //   },
-  //   [dispatch]
-  // )
-
-  // window.ontouchstart = useCallback(
-  //   ({ touches }: TouchEvent) => {
-  //     const { clientX, clientY } = touches[0]
-  //     dispatch(THUNK_MOUSE_DOWN({ x: clientX, y: clientY }, false, false))
-  //   },
-  //   [dispatch]
-  // )
-
-  // window.ondblclick = useCallback(
-  //   ({ clientX, clientY }: MouseEvent) => {
-  //     dispatch(THUNK_MOUSE_DOUBLE_CLICK({ x: clientX, y: clientY }))
-  //   },
-  //   [dispatch]
-  // )
 
   useEffect(() => {
     return () => {
