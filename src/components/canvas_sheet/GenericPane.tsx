@@ -5,6 +5,7 @@ import { IGenericPaneProps } from '../../@types/components'
 import ContentLayer from './ContentPane'
 import ActiveCell from './ActiveCell'
 import SelectionArea from './SelectionArea'
+import InactiveSelectionAreas from './InactiveSelectionAreas'
 
 const GenericPane: FunctionComponent<Partial<IGenericPaneProps>> = ({
   id,
@@ -44,6 +45,17 @@ const GenericPane: FunctionComponent<Partial<IGenericPaneProps>> = ({
       enableRowHeader={enableRowHeader}
     />
     <SelectionArea
+      rowStart={rowStart}
+      rowEnd={rowEnd}
+      columnStart={columnStart}
+      columnEnd={columnEnd}
+      rowOffsets={rowOffsets}
+      columnOffsets={columnOffsets}
+      columnStartBound={columnStartBound}
+      rowStartBound={rowStartBound}
+      selectIsAreaInPane={selectIsAreaInPane}
+    />
+    <InactiveSelectionAreas
       rowStart={rowStart}
       rowEnd={rowEnd}
       columnStart={columnStart}

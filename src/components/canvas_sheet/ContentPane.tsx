@@ -77,16 +77,12 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
 
   const handleMouseEnter = useCallback(
     ({ evt, currentTarget }) => {
-      const {
-        // ctrlKey,
-        // shiftKey,
-        which,
-      } = evt
+      const { ctrlKey, shiftKey, which } = evt
 
       switch (which) {
         case 1: {
           const { type, position } = getPositionAndTypeFromCellId(currentTarget)
-          dispatch(THUNK_MOUSE_ENTER(type, position))
+          dispatch(THUNK_MOUSE_ENTER(type, position, shiftKey, ctrlKey))
           break
         }
         default:

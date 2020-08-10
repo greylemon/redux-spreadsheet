@@ -103,7 +103,9 @@ export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
 
 export const THUNK_MOUSE_ENTER = (
   type: ICellTypes,
-  position: IPosition
+  position: IPosition,
+  shiftKey: boolean,
+  ctrlKey: boolean
 ): IAppThunk => (dispatch, getState) => {
   const state = getState()
   const isSelectionMode = selectIsSelectionMode(state)
@@ -111,7 +113,13 @@ export const THUNK_MOUSE_ENTER = (
   if (isSelectionMode) {
     switch (type) {
       case 'cell': {
-        dispatch(ExcelActions.CELL_MOUSE_ENTER(position))
+        if (shiftKey) {
+          dispatch(ExcelActions.CELL_MOUSE_ENTER(position))
+        } else if (ctrlKey) {
+          dispatch(ExcelActions.CELL_MOUSE_ENTER_CTRL(position))
+        } else {
+          dispatch(ExcelActions.CELL_MOUSE_ENTER(position))
+        }
         break
       }
       default:
