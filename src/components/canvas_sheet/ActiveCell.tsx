@@ -82,12 +82,21 @@ const ActiveCell: FunctionComponent<IActiveCellPane> = ({
       )
     }
 
-    return {
-      x,
-      y,
-      width,
-      height,
-    }
+    return (
+      columnStart < activeCellPosition.x &&
+      rowStart < activeCellPosition.y && (
+        <Rect
+          id={`cell={"x":${activeCellPosition.x},"y":${activeCellPosition.y}}`}
+          x={x}
+          y={y}
+          height={height}
+          width={width}
+          stroke={STYLE_ACTIVE_CELL_COLOR}
+          strokeWidth={1}
+          listening={false}
+        />
+      )
+    )
   }, [
     isInPane,
     data,
@@ -104,18 +113,7 @@ const ActiveCell: FunctionComponent<IActiveCellPane> = ({
     columnEnd,
   ])
 
-  return isInPane ? (
-    <Rect
-      id={`cell={"x":${activeCellPosition.x},"y":${activeCellPosition.y}}`}
-      x={style.x}
-      y={style.y}
-      height={style.height}
-      width={style.width}
-      stroke={STYLE_ACTIVE_CELL_COLOR}
-      strokeWidth={1}
-      listening={false}
-    />
-  ) : null
+  return style
 }
 
 export default ActiveCell
