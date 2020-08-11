@@ -12,6 +12,7 @@ export const getElementaryRanges = (
     }
   }
 
+  // ! POTENTIAL ISSUE
   ranges.forEach((range) => {
     points.push({ start: range.start, end: 1 })
     points.push({ start: range.end + 1, end: -1 })

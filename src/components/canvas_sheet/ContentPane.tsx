@@ -213,6 +213,7 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
             // perfectDrawEnabled={false}
             stroke={STYLE_CELL_BORDER}
             strokeWidth={1}
+            perfectDrawEnabled
             // hitStrokeWidth={0}
             // shadowForStrokeEnabled={false}
             onMouseEnter={handleMouseEnter}

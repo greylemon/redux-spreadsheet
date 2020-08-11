@@ -329,6 +329,13 @@ const CanvasSheetContainer: FunctionComponent = () => {
 
   return (
     <div style={STYLE_SHEET_CONTAINER} onWheel={handleScroll}>
+      <div
+        id="rich-text-space"
+        style={{
+          position: 'absolute',
+          zIndex: -1000,
+        }}
+      />
       <CanvasSheetContent />
     </div>
   )
