@@ -13,6 +13,7 @@ import {
   ReactReduxContext,
   Provider,
 } from 'react-redux'
+import { ContextMenuTrigger } from 'react-contextmenu'
 import {
   STYLE_SHEET,
   STYLE_SHEET_CONTAINER,
@@ -68,6 +69,8 @@ import {
   THUNK_CELL_KEY_DELETE,
 } from '../../redux/thunks/keyboard'
 import EditorCell from './EditableCell'
+import { contextMenuId } from '../../constants/misc'
+import CustomContextMenu from '../sheet/CustomContextMenu/CustomContextMenu'
 
 const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
   const dispatch = useDispatch()
@@ -213,9 +216,18 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
   )
 }
 
-const CanvasSheetInnerContent: FunctionComponent = () => {
-  const dispatch = useDispatch()
+const CanvasSheetInnerContent: FunctionComponent = () => (
+  <AutoSizer>
+    {({ height, width }) => (
+      <ContextMenuTrigger id={contextMenuId} holdToDisplay={-1}>
+        <CanvasSheet height={height} width={width} />
+      </ContextMenuTrigger>
+    )}
+  </AutoSizer>
+)
 
+export const CanvasSheetMainContent: FunctionComponent = () => {
+  const dispatch = useDispatch()
   const handleKeyDown = useCallback(
     (event: KeyboardEvent) => {
       const { key, ctrlKey, metaKey } = event
@@ -276,7 +288,6 @@ const CanvasSheetInnerContent: FunctionComponent = () => {
     },
     [dispatch]
   )
-
   return (
     <div
       id="sheet"
@@ -285,24 +296,23 @@ const CanvasSheetInnerContent: FunctionComponent = () => {
       onKeyDown={handleKeyDown}
       tabIndex={-1}
     >
-      <AutoSizer>
-        {({ height, width }) => <CanvasSheet height={height} width={width} />}
-      </AutoSizer>
+      <CanvasSheetInnerContent />
       <EditorCell />
+      <CustomContextMenu />
     </div>
   )
 }
 
-const CanvasSheetOuterContent: FunctionComponent = () => (
+const CanvasSheetHorizontalContent: FunctionComponent = () => (
   <div style={STYLE_SHEET_OUTER}>
-    <CanvasSheetInnerContent />
+    <CanvasSheetMainContent />
     <CanvasHorizontalScroll />
   </div>
 )
 
-export const CanvasSheetContent: FunctionComponent = () => (
+export const CanvasSheetVerticalContent: FunctionComponent = () => (
   <div style={STYLE_SHEET_CONTENT}>
-    <CanvasSheetOuterContent />
+    <CanvasSheetHorizontalContent />
     <CanvasVerticalScroll />
   </div>
 )
@@ -336,7 +346,7 @@ const CanvasSheetContainer: FunctionComponent = () => {
           zIndex: -1000,
         }}
       />
-      <CanvasSheetContent />
+      <CanvasSheetVerticalContent />
     </div>
   )
 }
