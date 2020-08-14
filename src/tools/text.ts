@@ -154,7 +154,7 @@ export const createValueFromEditorState = (
       if (font) cell.style = { font }
     }
 
-    if (text.includes('=')) {
+    if (text.length && text.charAt(0) === '=') {
       cell.value = text.substring(1)
       cell.type = TYPE_FORMULA
     } else if (text.match(exactNumberRegex)) {
