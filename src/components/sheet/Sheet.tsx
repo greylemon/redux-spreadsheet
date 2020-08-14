@@ -134,7 +134,7 @@ export const Sheet: FunctionComponent<Size & ISheetProps> = ({
       } else {
         switch (key) {
           case 'Enter':
-            dispatch(THUNK_KEY_ENTER(sheetRef))
+            dispatch(THUNK_KEY_ENTER())
             break
           case 'Delete':
             dispatch(THUNK_CELL_KEY_DELETE())

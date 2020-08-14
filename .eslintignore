@@ -13,3 +13,4 @@ rollup.config.js
 config/
 docs/
 coverage/
+src/components/sheet

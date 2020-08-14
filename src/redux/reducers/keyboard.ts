@@ -13,10 +13,7 @@ import {
   nSelectActiveCell,
 } from '../tools/selectors'
 import { TYPE_MERGE } from '../../constants/types'
-import {
-  createEditorStateFromCell,
-  getFontBlockEditorState,
-} from '../../tools/cell'
+import { getFontBlockEditorState } from '../../tools/cell'
 import { getCellMapSetFromState } from '../tools/area'
 import { IGeneralActionPayload } from '../../@types/history'
 import { deletePositions } from '../../tools/formula/formula'
@@ -154,6 +151,11 @@ export const CELL_EDITOR_STATE_START = (
   return state
 }
 
+export const CELL_EDITOR_STATE_END = (state: IExcelState): IExcelState => {
+  state.isEditMode = false
+  return state
+}
+
 export const CELL_KEY_DELETE = (
   state: IExcelState,
   action: PayloadAction<IGeneralActionPayload>
@@ -200,13 +202,5 @@ export const CELL_KEY_DELETE = (
     state.results
   )
 
-  return state
-}
-
-export const CELL_KEY_ENTER_EDIT_START = (state: IExcelState): IExcelState => {
-  state.isEditMode = true
-  const cell = nSelectActiveCell(state)
-
-  state.cellEditorState = createEditorStateFromCell(cell, true)
   return state
 }
