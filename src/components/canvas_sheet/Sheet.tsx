@@ -65,6 +65,10 @@ import {
   THUNK_KEY_ENTER,
   THUNK_CELL_KEY_DELETE,
   THUNK_START_KEY_EDIT,
+  THUNK_CELL_KEY_DOWN,
+  THUNK_CELL_KEY_RIGHT,
+  THUNK_CELL_KEY_UP,
+  THUNK_CELL_KEY_LEFT,
 } from '../../redux/thunks/keyboard'
 import EditorCell from './EditableCell'
 import { contextMenuId } from '../../constants/misc'
@@ -197,16 +201,16 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
             dispatch(THUNK_CELL_KEY_DELETE())
             break
           case 'ArrowDown':
-            dispatch(ExcelActions.CELL_KEY_DOWN())
+            dispatch(THUNK_CELL_KEY_DOWN())
             break
           case 'ArrowRight':
-            dispatch(ExcelActions.CELL_KEY_RIGHT())
+            dispatch(THUNK_CELL_KEY_RIGHT())
             break
           case 'ArrowLeft':
-            dispatch(ExcelActions.CELL_KEY_LEFT())
+            dispatch(THUNK_CELL_KEY_LEFT())
             break
           case 'ArrowUp':
-            dispatch(ExcelActions.CELL_KEY_UP())
+            dispatch(THUNK_CELL_KEY_UP())
             break
           default:
             break

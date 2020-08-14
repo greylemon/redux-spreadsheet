@@ -42,10 +42,15 @@ export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_DOWN = (state: IExcelState): IExcelState => {
+export const CELL_KEY_DOWN = (
+  state: IExcelState,
+  action: PayloadAction<number>
+): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   if (state.isEditMode || state.activeCellPosition.y >= activeSheet.rowCount)
     return state
+
+  state.topLeftPosition.y = action.payload
 
   const mergeData = nSelectMergeCellArea(state)
 
@@ -64,9 +69,13 @@ export const CELL_KEY_UP_SHIFT = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_UP = (state: IExcelState): IExcelState => {
+export const CELL_KEY_UP = (
+  state: IExcelState,
+  action: PayloadAction<number>
+): IExcelState => {
   if (state.isEditMode || state.activeCellPosition.y < 2) return state
 
+  state.topLeftPosition.y = action.payload
   const mergeData = nSelectMergeCellArea(state)
 
   state.activeCellPosition.y = Math.max(
@@ -86,10 +95,15 @@ export const CELL_KEY_RIGHT_SHIFT = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_RIGHT = (state: IExcelState): IExcelState => {
+export const CELL_KEY_RIGHT = (
+  state: IExcelState,
+  action: PayloadAction<number>
+): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   if (state.isEditMode || state.activeCellPosition.x >= activeSheet.columnCount)
     return state
+
+  state.topLeftPosition.x = action.payload
 
   const mergeData = nSelectMergeCellArea(state)
 
@@ -108,10 +122,15 @@ export const CELL_KEY_LEFT_SHIFT = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_LEFT = (state: IExcelState): IExcelState => {
+export const CELL_KEY_LEFT = (
+  state: IExcelState,
+  action: PayloadAction<number>
+): IExcelState => {
   if (state.isEditMode || state.activeCellPosition.x < 2) return state
 
   const mergeData = nSelectMergeCellArea(state)
+
+  state.topLeftPosition.x = action.payload
 
   state.activeCellPosition.x = Math.max(
     mergeData ? mergeData.start.x - 1 : state.activeCellPosition.x - 1,

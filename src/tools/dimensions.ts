@@ -192,10 +192,10 @@ export const getSheetContainer = () => document.getElementById(sheetContainerId)
 
 export const getSheetHeight = () => {
   const container = getSheetContainer()
-  return container ? container.clientHeight : 0
+  return container ? container.scrollHeight : 0
 }
 
 export const getSheetWidth = () => {
   const container = getSheetContainer()
-  return container ? container.clientWidth : 0
+  return container ? container.scrollWidth : 0
 }

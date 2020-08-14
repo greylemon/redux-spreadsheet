@@ -26,8 +26,8 @@ export const createSheetState = (): ISheet => ({
   columnWidths: {},
   rowHeights: {},
 
-  freezeColumnCount: SHEET_FREEZE_COLUMN_COUNT,
-  freezeRowCount: SHEET_FREEZE_ROW_COUNT,
+  freezeColumnCount: SHEET_FREEZE_COLUMN_COUNT + 4,
+  freezeRowCount: SHEET_FREEZE_ROW_COUNT + 4,
   hiddenColumns: {},
   hiddenRows: {},
 
@@ -83,5 +83,5 @@ export const createInitialExcelState = (): IExcelState => ({
   scrollHorizontal: 'neutral',
   scrollVertical: 'neutral',
 
-  topLeftPosition: { x: 1, y: 1 },
+  topLeftPosition: { x: 5, y: 5 },
 })

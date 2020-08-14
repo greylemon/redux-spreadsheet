@@ -36,7 +36,7 @@ import {
   columnDraggerIndicatorStyle,
 } from '../../constants/styles'
 import { getMergeArea } from '../tools/merge'
-import { columnNumberToName } from '../../tools/conversion'
+import { getCellAddressFromPosition } from '../../tools/cell'
 
 export const selectTableColumnCount = createSelector(
   [selectColumnCount],
@@ -277,7 +277,7 @@ export const selectPositionDimensions = createSelector(
 
 export const selectActiveCellId = createSelector(
   [selectActiveCellPosition],
-  ({ x, y }) => `${columnNumberToName(x)}${y}`
+  (position) => getCellAddressFromPosition(position)
 )
 
 // export const selectVisibleCellWidths = createSelector(
