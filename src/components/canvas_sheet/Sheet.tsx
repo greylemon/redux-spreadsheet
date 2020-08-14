@@ -64,14 +64,17 @@ import {
 import {
   // THUNK_KEY_ENTER,
   THUNK_CELL_KEY_DELETE,
+  THUNK_START_KEY_EDIT,
 } from '../../redux/thunks/keyboard'
 import EditorCell from './EditableCell'
 import { contextMenuId } from '../../constants/misc'
 import CustomContextMenu from '../sheet/CustomContextMenu/CustomContextMenu'
 import { sheetContainerId } from '../../constants/ids'
 import { getEndDimension } from '../../tools/dimensions'
+import { THUNK_MOUSE_DOUBLE_CLICK } from '../../redux/thunks/mouse'
 
 const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
+  const dispatch = useDispatch()
   const {
     sheetResults,
     data,
@@ -111,8 +114,8 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     shallowEqual
   )
 
-  const itemData: ICanvasItemData = useMemo(
-    () => ({
+  const itemData = useMemo(
+    (): ICanvasItemData => ({
       data,
       sheetResults,
       rowOffsets,
@@ -152,10 +155,82 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     ]
   )
 
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      const { key, ctrlKey, metaKey } = event
+
+      if (ctrlKey || metaKey) {
+        switch (key) {
+          case 'A':
+          case 'a':
+            dispatch(ExcelActions.SELECT_ALL())
+            event.preventDefault()
+            break
+          case 'B':
+          case 'b':
+            dispatch(THUNK_TOGGLE_BOLD())
+            break
+          case 'U':
+          case 'u':
+            dispatch(THUNK_TOGGLE_UNDERLINE())
+            event.preventDefault()
+            break
+          case 'I':
+          case 'i':
+            dispatch(THUNK_TOGGLE_ITALIC())
+            break
+          case 'X':
+          case 'x':
+            dispatch(THUNK_TOGGLE_STRIKETHROUGH())
+            break
+          default:
+            break
+        }
+      } else if (key.length === 1) {
+        dispatch(THUNK_START_KEY_EDIT())
+      } else {
+        switch (key) {
+          case 'Enter':
+            // dispatch(THUNK_KEY_ENTER(sheetRef))
+            break
+          case 'Delete':
+            dispatch(THUNK_CELL_KEY_DELETE())
+            break
+          case 'ArrowDown':
+            dispatch(ExcelActions.CELL_KEY_DOWN())
+            break
+          case 'ArrowRight':
+            dispatch(ExcelActions.CELL_KEY_RIGHT())
+            break
+          case 'ArrowLeft':
+            dispatch(ExcelActions.CELL_KEY_LEFT())
+            break
+          case 'ArrowUp':
+            dispatch(ExcelActions.CELL_KEY_UP())
+            break
+          default:
+            break
+        }
+      }
+    },
+    [dispatch]
+  )
+
+  const handleDoubleClick = useCallback(
+    () => dispatch(THUNK_MOUSE_DOUBLE_CLICK()),
+    [dispatch]
+  )
+
   return (
     <ReactReduxContext.Consumer>
       {({ store }) => (
-        <div id={sheetContainerId}>
+        <div
+          id={sheetContainerId}
+          className="sheetGrid"
+          tabIndex={-1}
+          onKeyDown={handleKeyDown}
+          onDoubleClick={handleDoubleClick}
+        >
           <Stage height={height} width={width}>
             <Provider store={store}>
               <Layer>
@@ -250,82 +325,13 @@ const CanvasSheetInnerContent: FunctionComponent = () => (
   </AutoSizer>
 )
 
-export const CanvasSheetMainContent: FunctionComponent = () => {
-  const dispatch = useDispatch()
-  const handleKeyDown = useCallback(
-    (event: KeyboardEvent) => {
-      const { key, ctrlKey, metaKey } = event
-
-      if (ctrlKey || metaKey) {
-        switch (key) {
-          case 'A':
-          case 'a':
-            dispatch(ExcelActions.SELECT_ALL())
-            event.preventDefault()
-            break
-          case 'B':
-          case 'b':
-            dispatch(THUNK_TOGGLE_BOLD())
-            break
-          case 'U':
-          case 'u':
-            dispatch(THUNK_TOGGLE_UNDERLINE())
-            event.preventDefault()
-            break
-          case 'I':
-          case 'i':
-            dispatch(THUNK_TOGGLE_ITALIC())
-            break
-          case 'X':
-          case 'x':
-            dispatch(THUNK_TOGGLE_STRIKETHROUGH())
-            break
-          default:
-            break
-        }
-      } else if (key.length === 1) {
-        dispatch(ExcelActions.CELL_EDITOR_STATE_START())
-      } else {
-        switch (key) {
-          case 'Enter':
-            // dispatch(THUNK_KEY_ENTER(sheetRef))
-            break
-          case 'Delete':
-            dispatch(THUNK_CELL_KEY_DELETE())
-            break
-          case 'ArrowDown':
-            dispatch(ExcelActions.CELL_KEY_DOWN())
-            break
-          case 'ArrowRight':
-            dispatch(ExcelActions.CELL_KEY_RIGHT())
-            break
-          case 'ArrowLeft':
-            dispatch(ExcelActions.CELL_KEY_LEFT())
-            break
-          case 'ArrowUp':
-            dispatch(ExcelActions.CELL_KEY_UP())
-            break
-          default:
-            break
-        }
-      }
-    },
-    [dispatch]
-  )
-  return (
-    <div
-      id="sheet"
-      className="sheetGrid"
-      style={STYLE_SHEET}
-      onKeyDown={handleKeyDown}
-      tabIndex={-1}
-    >
-      <CanvasSheetInnerContent />
-      <EditorCell />
-      <CustomContextMenu />
-    </div>
-  )
-}
+export const CanvasSheetMainContent: FunctionComponent = () => (
+  <div style={STYLE_SHEET}>
+    <CanvasSheetInnerContent />
+    <EditorCell />
+    <CustomContextMenu />
+  </div>
+)
 
 const CanvasSheetHorizontalContent: FunctionComponent = () => (
   <div style={STYLE_SHEET_OUTER}>
@@ -363,13 +369,6 @@ const CanvasSheetContainer: FunctionComponent = () => {
 
   return (
     <div style={STYLE_SHEET_CONTAINER} onWheel={handleScroll}>
-      <div
-        id="rich-text-space"
-        style={{
-          position: 'absolute',
-          zIndex: -1000,
-        }}
-      />
       <CanvasSheetVerticalContent />
     </div>
   )

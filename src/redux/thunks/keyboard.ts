@@ -6,6 +6,7 @@ import {
   getGeneralActionPayload,
 } from '../tools/history'
 import { ISheetRef } from '../../@types/ref'
+import { computeInputPosition } from '../tools/offset'
 
 export const THUNK_KEY_ENTER = (sheetRef: ISheetRef): IAppThunk => (
   dispatch,
@@ -29,4 +30,10 @@ export const THUNK_CELL_KEY_DELETE = (): IAppThunk => (dispatch, getState) => {
 
   if (!selectIsEditMode(state))
     dispatch(ExcelActions.CELL_KEY_DELETE(getGeneralActionPayload(state)))
+}
+
+export const THUNK_START_KEY_EDIT = (): IAppThunk => (dispatch, getState) => {
+  const state = getState()
+
+  dispatch(ExcelActions.CELL_EDITOR_STATE_START(computeInputPosition(state)))
 }

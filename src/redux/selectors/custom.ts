@@ -277,7 +277,7 @@ export const selectPositionDimensions = createSelector(
 
 export const selectActiveCellId = createSelector(
   [selectActiveCellPosition],
-  ({ x, y }) => `${y}${columnNumberToName(x)}`
+  ({ x, y }) => `${columnNumberToName(x)}${y}`
 )
 
 // export const selectVisibleCellWidths = createSelector(

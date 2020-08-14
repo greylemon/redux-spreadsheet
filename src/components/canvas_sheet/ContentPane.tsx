@@ -6,11 +6,7 @@ import { IBlockStyles, IPosition } from '../../@types/state'
 import { checkIsPositionEqualOtherPosition } from '../../tools'
 import { STYLE_CELL_BORDER } from '../../constants/styles'
 import { getPositionFromCellId as getPositionAndTypeFromCellId } from '../../tools/konva'
-import {
-  THUNK_MOUSE_DOWN,
-  THUNK_MOUSE_DOUBLE_CLICK,
-  THUNK_MOUSE_ENTER,
-} from '../../redux/thunks/mouse'
+import { THUNK_MOUSE_DOWN, THUNK_MOUSE_ENTER } from '../../redux/thunks/mouse'
 import { ICellTypes } from '../../@types/general'
 
 const getBorderWidth = (widthStyle: string) => {
@@ -30,6 +26,7 @@ const getBorderWidth = (widthStyle: string) => {
 
   return width
 }
+
 const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
   id,
   rowStart,
@@ -48,17 +45,6 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
   enableRowHeader,
 }) => {
   const dispatch = useDispatch()
-
-  const handleDoubleClick = useCallback(
-    (event, position) => {
-      const { currentTarget } = event
-      const { type } = getPositionAndTypeFromCellId(currentTarget)
-
-      dispatch(THUNK_MOUSE_DOUBLE_CLICK(type, position))
-    },
-    [dispatch]
-  )
-
   const handleMouseDown = useCallback(
     ({ evt, currentTarget }) => {
       const { ctrlKey, shiftKey, which } = evt
@@ -218,7 +204,6 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
             // shadowForStrokeEnabled={false}
             onMouseEnter={handleMouseEnter}
             onMouseDown={handleMouseDown}
-            onDblClick={(event) => handleDoubleClick(event, { y, x })}
           />
         )
 
@@ -332,7 +317,6 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
     rowStartBound,
     handleMouseEnter,
     handleMouseDown,
-    handleDoubleClick,
   ])
 
   return (

@@ -12,6 +12,7 @@ import {
   selectSelectionArea,
   selectIsSelectionMode,
   selectIsEditMode,
+  selectActiveCellPosition,
   // selectLastVisitedCell,
   // selectScrollHorizontal,
   // selectScrollVertical,
@@ -52,6 +53,7 @@ import {
 //   SHEET_COLUMN_WIDTH_HEADER,
 // } from '../../constants/defaults'
 import { ICellTypes } from '../../@types/general'
+import { computeInputPosition } from '../tools/offset'
 
 export const THUNK_MOUSE_UP = (): IAppThunk => (dispatch, getState) => {
   const state = getState()
@@ -212,16 +214,14 @@ export const THUNK_MOUSE_DOWN = (
   }
 }
 
-export const THUNK_MOUSE_DOUBLE_CLICK = (
-  type: ICellTypes,
-  position: IPosition
-): IAppThunk => (dispatch) => {
-  switch (type) {
-    case 'cell': {
-      dispatch(ExcelActions.CELL_DOUBLE_CLICK(position))
-      break
-    }
-    default:
-      break
-  }
+export const THUNK_MOUSE_DOUBLE_CLICK = (): IAppThunk => (
+  dispatch,
+  getState
+) => {
+  const state = getState()
+
+  const activeCellPosition = selectActiveCellPosition(state)
+
+  if (activeCellPosition.x && activeCellPosition.y)
+    dispatch(ExcelActions.CELL_DOUBLE_CLICK(computeInputPosition(state)))
 }

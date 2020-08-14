@@ -23,7 +23,6 @@ import {
   // THUNK_MOUSE_MOVE,
   THUNK_MOUSE_UP,
   // THUNK_MOUSE_DOWN,
-  // THUNK_MOUSE_DOUBLE_CLICK,
 } from './redux/thunks/mouse'
 import { THUNK_HISTORY_UNDO, THUNK_HISTORY_REDO } from './redux/thunks/history'
 import AppBar from './components/appBar/AppBar'

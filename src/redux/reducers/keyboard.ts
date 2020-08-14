@@ -136,9 +136,11 @@ export const CELL_EDITOR_STATE_UPDATE = (
   return state
 }
 
-export const CELL_EDITOR_STATE_START = (state: IExcelState): IExcelState => {
-  if (state.isEditMode) return state
-
+export const CELL_EDITOR_STATE_START = (
+  state: IExcelState,
+  action: PayloadAction<IPosition>
+): IExcelState => {
+  state.cellEditorOffset = action.payload
   state.isEditMode = true
   let editorState = EditorState.moveFocusToEnd(EditorState.createEmpty())
 
