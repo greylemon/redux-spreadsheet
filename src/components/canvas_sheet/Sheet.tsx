@@ -1,7 +1,6 @@
 import React, {
   FunctionComponent,
   useCallback,
-  useEffect,
   useMemo,
   KeyboardEvent,
 } from 'react'
@@ -30,8 +29,6 @@ import {
   selectGetRowHeight,
   selectTableFreezeRowCount,
   selectTableFreezeColumnCount,
-  selectViewRowEnd,
-  selectViewColumnEnd,
   selectTableRowCount,
   selectTableColumnCount,
   // selectVisibleCellWidths,
@@ -71,9 +68,10 @@ import {
 import EditorCell from './EditableCell'
 import { contextMenuId } from '../../constants/misc'
 import CustomContextMenu from '../sheet/CustomContextMenu/CustomContextMenu'
+import { sheetContainerId } from '../../constants/ids'
+import { getEndDimension } from '../../tools/dimensions'
 
 const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
-  const dispatch = useDispatch()
   const {
     sheetResults,
     data,
@@ -82,14 +80,13 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     tableFreezeColumnCount,
     tableFreezeRowCount,
     tableColumnCount,
-    // tableRowCount,
+    tableRowCount,
     rowOffsets,
     columnOffsets,
-    viewColumnEnd,
-    viewRowEnd,
     viewRowStart,
     viewColumnStart,
-    // viewWidths,
+    topLeftPositionX,
+    topLeftPositionY,
   } = useTypedSelector(
     (state) => ({
       sheetResults: selectActiveResults(state),
@@ -101,10 +98,9 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
 
       tableRowCount: selectTableRowCount(state),
       tableColumnCount: selectTableColumnCount(state),
-      viewRowEnd: selectViewRowEnd(state),
-      viewColumnEnd: selectViewColumnEnd(state),
 
-      // viewWidths: selectVisibleCellWidths(state),
+      topLeftPositionY: selectTopLeftPositionY(state),
+      topLeftPositionX: selectTopLeftPositionX(state),
 
       rowOffsets: selectRowOffsets(state),
       columnOffsets: selectColumnOffsets(state),
@@ -114,10 +110,6 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     }),
     shallowEqual
   )
-
-  useEffect(() => {
-    dispatch(ExcelActions.UPDATE_SHEET_DIMENSIONS({ x: width, y: height }))
-  }, [dispatch, height, width])
 
   const itemData: ICanvasItemData = useMemo(
     () => ({
@@ -130,87 +122,119 @@ const CanvasSheet: FunctionComponent<Size> = ({ height, width }) => {
     [data, sheetResults, rowOffsets, columnOffsets]
   )
 
+  const viewRowEnd = useMemo(
+    () =>
+      getEndDimension(
+        topLeftPositionY,
+        rowOffsets,
+        tableFreezeRowCount - 1,
+        height,
+        tableRowCount
+      ),
+    [topLeftPositionY, rowOffsets, tableFreezeRowCount, height, tableRowCount]
+  )
+
+  const viewColumnEnd = useMemo(
+    () =>
+      getEndDimension(
+        topLeftPositionX,
+        columnOffsets,
+        tableFreezeColumnCount - 1,
+        width,
+        tableColumnCount
+      ),
+    [
+      topLeftPositionX,
+      columnOffsets,
+      tableFreezeColumnCount,
+      width,
+      tableColumnCount,
+    ]
+  )
+
   return (
     <ReactReduxContext.Consumer>
       {({ store }) => (
-        <Stage height={height} width={width}>
-          <Provider store={store}>
-            <Layer>
-              <GenericPane
-                id="bottom-right"
-                columnStart={viewColumnStart}
-                columnStartBound={tableFreezeColumnCount}
-                columnOffsets={columnOffsets}
-                columnEnd={viewColumnEnd}
-                rowStart={viewRowStart}
-                rowStartBound={tableFreezeRowCount}
-                rowEnd={viewRowEnd}
-                rowOffsets={rowOffsets}
-                getColumnWidth={getColumnWidth}
-                getRowHeight={getRowHeight}
-                CellComponent={Cell}
-                data={itemData}
-                selectIsInPane={selectIsActiveCellInBottomRightPane}
-                selectIsAreaInPane={selectIsAreaInBottomRightPane}
-              />
-              <GenericPane
-                id="bottom-left"
-                columnStart={0}
-                columnStartBound={0}
-                columnEnd={tableFreezeColumnCount}
-                columnOffsets={columnOffsets}
-                rowStart={viewRowStart}
-                rowStartBound={tableFreezeRowCount}
-                rowEnd={viewRowEnd}
-                rowOffsets={rowOffsets}
-                getColumnWidth={getColumnWidth}
-                getRowHeight={getRowHeight}
-                CellComponent={Cell}
-                data={itemData}
-                selectIsInPane={selectIsActiveCellInBottomLeftPane}
-                selectIsAreaInPane={selectIsAreaInBottomLeftPane}
-                enableRowHeader
-              />
-              <GenericPane
-                id="top-right"
-                columnStart={viewColumnStart}
-                columnStartBound={tableFreezeColumnCount}
-                columnEnd={tableColumnCount}
-                columnOffsets={columnOffsets}
-                rowStart={0}
-                rowStartBound={0}
-                rowEnd={tableFreezeRowCount}
-                rowOffsets={rowOffsets}
-                getColumnWidth={getColumnWidth}
-                getRowHeight={getRowHeight}
-                CellComponent={Cell}
-                data={itemData}
-                selectIsInPane={selectIsActiveCellInTopRightPane}
-                selectIsAreaInPane={selectIsAreaInTopRightPane}
-                enableColumnHeader
-              />
-              <GenericPane
-                id="top-left"
-                columnStart={0}
-                columnStartBound={0}
-                columnEnd={tableFreezeColumnCount}
-                columnOffsets={columnOffsets}
-                rowStart={0}
-                rowStartBound={0}
-                rowEnd={tableFreezeRowCount}
-                rowOffsets={rowOffsets}
-                getColumnWidth={getColumnWidth}
-                getRowHeight={getRowHeight}
-                CellComponent={Cell}
-                data={itemData}
-                selectIsInPane={selectIsActiveCellInTopLeftPane}
-                selectIsAreaInPane={selectIsAreaInTopLeftPane}
-                enableColumnHeader
-                enableRowHeader
-              />
-            </Layer>
-          </Provider>
-        </Stage>
+        <div id={sheetContainerId}>
+          <Stage height={height} width={width}>
+            <Provider store={store}>
+              <Layer>
+                <GenericPane
+                  id="bottom-right"
+                  columnStart={viewColumnStart}
+                  columnStartBound={tableFreezeColumnCount}
+                  columnOffsets={columnOffsets}
+                  columnEnd={viewColumnEnd}
+                  rowStart={viewRowStart}
+                  rowStartBound={tableFreezeRowCount}
+                  rowEnd={viewRowEnd}
+                  rowOffsets={rowOffsets}
+                  getColumnWidth={getColumnWidth}
+                  getRowHeight={getRowHeight}
+                  CellComponent={Cell}
+                  data={itemData}
+                  selectIsInPane={selectIsActiveCellInBottomRightPane}
+                  selectIsAreaInPane={selectIsAreaInBottomRightPane}
+                />
+                <GenericPane
+                  id="bottom-left"
+                  columnStart={0}
+                  columnStartBound={0}
+                  columnEnd={tableFreezeColumnCount}
+                  columnOffsets={columnOffsets}
+                  rowStart={viewRowStart}
+                  rowStartBound={tableFreezeRowCount}
+                  rowEnd={viewRowEnd}
+                  rowOffsets={rowOffsets}
+                  getColumnWidth={getColumnWidth}
+                  getRowHeight={getRowHeight}
+                  CellComponent={Cell}
+                  data={itemData}
+                  selectIsInPane={selectIsActiveCellInBottomLeftPane}
+                  selectIsAreaInPane={selectIsAreaInBottomLeftPane}
+                  enableRowHeader
+                />
+                <GenericPane
+                  id="top-right"
+                  columnStart={viewColumnStart}
+                  columnStartBound={tableFreezeColumnCount}
+                  columnEnd={tableColumnCount}
+                  columnOffsets={columnOffsets}
+                  rowStart={0}
+                  rowStartBound={0}
+                  rowEnd={tableFreezeRowCount}
+                  rowOffsets={rowOffsets}
+                  getColumnWidth={getColumnWidth}
+                  getRowHeight={getRowHeight}
+                  CellComponent={Cell}
+                  data={itemData}
+                  selectIsInPane={selectIsActiveCellInTopRightPane}
+                  selectIsAreaInPane={selectIsAreaInTopRightPane}
+                  enableColumnHeader
+                />
+                <GenericPane
+                  id="top-left"
+                  columnStart={0}
+                  columnStartBound={0}
+                  columnEnd={tableFreezeColumnCount}
+                  columnOffsets={columnOffsets}
+                  rowStart={0}
+                  rowStartBound={0}
+                  rowEnd={tableFreezeRowCount}
+                  rowOffsets={rowOffsets}
+                  getColumnWidth={getColumnWidth}
+                  getRowHeight={getRowHeight}
+                  CellComponent={Cell}
+                  data={itemData}
+                  selectIsInPane={selectIsActiveCellInTopLeftPane}
+                  selectIsAreaInPane={selectIsAreaInTopLeftPane}
+                  enableColumnHeader
+                  enableRowHeader
+                />
+              </Layer>
+            </Provider>
+          </Stage>
+        </div>
       )}
     </ReactReduxContext.Consumer>
   )

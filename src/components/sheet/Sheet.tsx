@@ -171,10 +171,6 @@ export const Sheet: FunctionComponent<Size & ISheetProps> = ({
     [dispatch]
   )
 
-  useEffect(() => {
-    dispatch(ExcelActions.UPDATE_SHEET_DIMENSIONS({ x: width, y: height }))
-  }, [dispatch, height, width])
-
   const extraTopLeftElement = useMemo(
     () => <CommonPane key="top-left-pane" type="TOP_LEFT" />,
     []

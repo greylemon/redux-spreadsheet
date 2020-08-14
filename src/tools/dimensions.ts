@@ -19,6 +19,7 @@ import {
   IArea,
   IGridMeasurements,
 } from '../@types/state'
+import { sheetContainerId } from '../constants/ids'
 
 const normalizeDimension = (
   dimension: number,
@@ -185,4 +186,16 @@ export const getEndDimension = (
   }
 
   return dimensionEnd
+}
+
+export const getSheetContainer = () => document.getElementById(sheetContainerId)
+
+export const getSheetHeight = () => {
+  const container = getSheetContainer()
+  return container ? container.clientHeight : 0
+}
+
+export const getSheetWidth = () => {
+  const container = getSheetContainer()
+  return container ? container.clientWidth : 0
 }

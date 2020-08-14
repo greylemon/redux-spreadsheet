@@ -157,21 +157,6 @@ export const selectDragColumnIndex = createSelector(
   (excel) => excel.dragColumnIndex
 )
 
-export const selectSheetDimensions = createSelector(
-  [selectExcel],
-  (excel) => excel.sheetDimensions
-)
-
-export const selectSheetDimensionsX = createSelector(
-  [selectSheetDimensions],
-  (sheetDimensions) => sheetDimensions.x
-)
-
-export const selectSheetDimensionsY = createSelector(
-  [selectSheetDimensions],
-  (sheetDimensions) => sheetDimensions.y
-)
-
 export const selectScrollHorizontal = createSelector(
   [selectExcel],
   (excel) => excel.scrollHorizontal

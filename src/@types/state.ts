@@ -257,8 +257,6 @@ export type IIsColumnDrag = boolean
 export type IDragColumnOffset = IOffset
 export type IDragColumnIndex = IColumnIndex
 
-export type ISheetDimensions = IPosition
-
 export type IExcelState = {
   title: IName
   activeSheetName: ISheetName
@@ -290,8 +288,6 @@ export type IExcelState = {
   isColumnDrag: IIsColumnDrag
   dragColumnOffset?: IDragColumnOffset
   dragColumnIndex?: IDragColumnIndex
-
-  sheetDimensions: ISheetDimensions
 
   lastVisitedCell: IPosition
 

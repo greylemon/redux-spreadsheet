@@ -6,7 +6,6 @@ import {
   normalizeRowHeightFromArray,
   normalizeColumnWidthFromArray,
   getScrollLength,
-  getEndDimension,
   getScrollBlock,
 } from '../../tools/dimensions'
 import {
@@ -18,10 +17,6 @@ import {
   selectDragColumnOffset,
   selectScrollOffsetY,
   selectScrollOffsetX,
-  selectTopLeftPositionX,
-  selectTopLeftPositionY,
-  selectSheetDimensionsY,
-  selectSheetDimensionsX,
 } from './base'
 import {
   selectColumnCount,
@@ -32,7 +27,6 @@ import {
   selectRowHeights,
   selectData,
   selectMerged,
-  selectActiveResults,
 } from './activeSheet'
 
 import {
@@ -42,7 +36,6 @@ import {
   columnDraggerIndicatorStyle,
 } from '../../constants/styles'
 import { getMergeArea } from '../tools/merge'
-import { IViewWidths } from '../../@types/objects'
 import { columnNumberToName } from '../../tools/conversion'
 
 export const selectTableColumnCount = createSelector(
@@ -73,74 +66,6 @@ export const selectColumnOffsets = createSelector(
 export const selectRowOffsets = createSelector(
   [selectRowHeights, selectRowCount],
   (rowHeights, rowCount) => getRowOffsets(rowHeights, rowCount)
-)
-
-// export const selectScrollColumnOffsets = createSelector(
-//   [selectColumnOffsets, selectTableFreezeColumnCount, selectTopLeftPositionX],
-//   (columnOffsets, tableFreezeColumnCount, topLeftPositionX) =>
-//     getScrolledDimensionOffsets(
-//       columnOffsets,
-//       tableFreezeColumnCount,
-//       topLeftPositionX
-//     )
-// )
-
-// export const selectScrollRowOffsets = createSelector(
-//   [selectRowOffsets, selectTableFreezeRowCount, selectTopLeftPositionY],
-//   (rowOffsets, tableFreezeRowCount, topLeftPositionY) =>
-//     getScrolledDimensionOffsets(
-//       rowOffsets,
-//       tableFreezeRowCount,
-//       topLeftPositionY
-//     )
-// )
-
-export const selectViewRowEnd = createSelector(
-  [
-    selectTopLeftPositionY,
-    selectRowOffsets,
-    selectFreezeRowCount,
-    selectSheetDimensionsY,
-    selectTableRowCount,
-  ],
-  (
-    topLeftPositionY,
-    rowOffsets,
-    freezeRowCount,
-    sheetDimensionsY,
-    tableRowCount
-  ) =>
-    getEndDimension(
-      topLeftPositionY,
-      rowOffsets,
-      freezeRowCount,
-      sheetDimensionsY,
-      tableRowCount
-    )
-)
-
-export const selectViewColumnEnd = createSelector(
-  [
-    selectTopLeftPositionX,
-    selectColumnOffsets,
-    selectFreezeColumnCount,
-    selectSheetDimensionsX,
-    selectTableColumnCount,
-  ],
-  (
-    topLeftPositionX,
-    columnOffsets,
-    freezeColumnCount,
-    sheetDimensionsX,
-    tableColumnCount
-  ) =>
-    getEndDimension(
-      topLeftPositionX,
-      columnOffsets,
-      freezeColumnCount,
-      sheetDimensionsX,
-      tableColumnCount
-    )
 )
 
 export const selectScrollHorizontalWidth = createSelector(
@@ -355,49 +280,49 @@ export const selectActiveCellId = createSelector(
   ({ x, y }) => `${y}${columnNumberToName(x)}`
 )
 
-export const selectVisibleCellWidths = createSelector(
-  [
-    selectTopLeftPositionY,
-    selectViewRowEnd,
-    selectColumnCount,
-    selectData,
-    selectColumnOffsets,
-    selectActiveResults,
-  ],
-  (
-    topLeftPositionY,
-    viewRowEnd,
-    columnCount,
-    data,
-    columnOffsets,
-    activeResults
-  ) => {
-    if (!activeResults) activeResults = {}
-    const viewWidths: IViewWidths = {}
-    const endOffset = columnOffsets[columnOffsets.length - 1]
+// export const selectVisibleCellWidths = createSelector(
+//   [
+//     selectTopLeftPositionY,
+//     selectViewRowEnd,
+//     selectColumnCount,
+//     selectData,
+//     selectColumnOffsets,
+//     selectActiveResults,
+//   ],
+//   (
+//     topLeftPositionY,
+//     viewRowEnd,
+//     columnCount,
+//     data,
+//     columnOffsets,
+//     activeResults
+//   ) => {
+//     if (!activeResults) activeResults = {}
+//     const viewWidths: IViewWidths = {}
+//     const endOffset = columnOffsets[columnOffsets.length - 1]
 
-    for (
-      let rowIndex = topLeftPositionY;
-      rowIndex < viewRowEnd;
-      rowIndex += 1
-    ) {
-      const row = data[rowIndex]
-      const resultRow = activeResults[rowIndex]
-      let curEndOffset = endOffset
+//     for (
+//       let rowIndex = topLeftPositionY;
+//       rowIndex < viewRowEnd;
+//       rowIndex += 1
+//     ) {
+//       const row = data[rowIndex]
+//       const resultRow = activeResults[rowIndex]
+//       let curEndOffset = endOffset
 
-      for (let columnIndex = columnCount; columnIndex > 0; columnIndex -= 1) {
-        if (
-          (row && row[columnIndex] && row[columnIndex].value) ||
-          (resultRow && resultRow[columnIndex])
-        ) {
-          if (!viewWidths[rowIndex]) viewWidths[rowIndex] = {}
-          viewWidths[rowIndex][columnIndex] =
-            curEndOffset - columnOffsets[columnIndex]
-          curEndOffset = columnOffsets[columnIndex]
-        }
-      }
-    }
+//       for (let columnIndex = columnCount; columnIndex > 0; columnIndex -= 1) {
+//         if (
+//           (row && row[columnIndex] && row[columnIndex].value) ||
+//           (resultRow && resultRow[columnIndex])
+//         ) {
+//           if (!viewWidths[rowIndex]) viewWidths[rowIndex] = {}
+//           viewWidths[rowIndex][columnIndex] =
+//             curEndOffset - columnOffsets[columnIndex]
+//           curEndOffset = columnOffsets[columnIndex]
+//         }
+//       }
+//     }
 
-    return viewWidths
-  }
-)
+//     return viewWidths
+//   }
+// )
