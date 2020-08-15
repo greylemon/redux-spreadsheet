@@ -80,7 +80,7 @@ export const CanvasHorizontalScroll: FunctionComponent = () => {
         display: 'flex',
         border: '1px solid #DCDCDC',
         boxSizing: 'border-box',
-        height: getScrollbarSize(),
+        // height: getScrollbarSize(),
       }}
     >
       <span style={{ width: blockLength }} />
