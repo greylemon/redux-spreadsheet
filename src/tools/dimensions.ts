@@ -182,7 +182,7 @@ export const getEndDimension = (
   for (let i = dimension; i <= tableDimensionCount; i += 1) {
     const curEndOffset = offsets[i]
     dimensionEnd = i
-    if (curEndOffset > dimensionOffsetEnd) break
+    if (curEndOffset >= dimensionOffsetEnd) break
   }
 
   return dimensionEnd

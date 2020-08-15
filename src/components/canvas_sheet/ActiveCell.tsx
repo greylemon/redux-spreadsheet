@@ -89,12 +89,12 @@ const ActiveCell: FunctionComponent<IActiveCellPane> = ({
 
     return (
       <Rect
-        x={x}
-        y={y}
-        height={height}
-        width={width}
+        x={x + 0.5}
+        y={y + 0.5}
+        height={height - 1.5}
+        width={width - 1.5}
         stroke={STYLE_ACTIVE_CELL_COLOR}
-        strokeWidth={1}
+        strokeWidth={2}
         listening={false}
       />
     )

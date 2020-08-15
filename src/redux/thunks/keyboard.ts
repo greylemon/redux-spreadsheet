@@ -1,4 +1,4 @@
-import IRootStore, { IAppThunk } from '../../@types/store'
+import { IAppThunk } from '../../@types/store'
 import {
   selectIsEditMode,
   selectSelectionAreaIndex,
@@ -12,13 +12,12 @@ import {
   dispatchSaveActiveCell,
   getGeneralActionPayload,
 } from '../tools/history'
-import { computeInputPosition } from '../tools/offset'
 import {
-  getSheetContainer,
-  getSheetHeight,
-  getEndDimension,
-  getSheetWidth,
-} from '../../tools'
+  computeInputPosition,
+  decreaseWithState,
+  increaseWithState,
+} from '../tools/offset'
+import { getSheetContainer, getSheetHeight, getSheetWidth } from '../../tools'
 import {
   selectTableFreezeColumnCount,
   selectTableFreezeRowCount,
@@ -60,50 +59,6 @@ export const THUNK_CELL_KEY_DELETE = (): IAppThunk => (dispatch, getState) => {
 
   if (!selectIsEditMode(state))
     dispatch(ExcelActions.CELL_KEY_DELETE(getGeneralActionPayload(state)))
-}
-
-const increase = (dimension: number, start: number, end: number) =>
-  dimension >= end ? start + 1 : start
-
-const decrease = (dimension: number, start: number, freeze: number) =>
-  dimension <= start && dimension > freeze && start > freeze ? start - 1 : start
-
-const decreaseWithState = (
-  state: IRootStore,
-  selectDimension: any,
-  selectStart: any,
-  selectTableFreeze: any
-) => {
-  const dimension = selectDimension(state)
-  const start = selectStart(state)
-  const tableFreeze = selectTableFreeze(state)
-
-  return decrease(dimension, start, tableFreeze)
-}
-
-export const increaseWithState = (
-  state: IRootStore,
-  selectDimension: any,
-  selectStart: any,
-  selectFreeze: any,
-  selectOffsets: any,
-  selectTableDimensionCount: any,
-  screenDimension: number
-) => {
-  const dimension = selectDimension(state)
-  const start = selectStart(state)
-  const offsets = selectOffsets(state)
-  const freeze = selectFreeze(state)
-  const tableDimensionCount = selectTableDimensionCount(state)
-  const end = getEndDimension(
-    start,
-    offsets,
-    freeze,
-    screenDimension,
-    tableDimensionCount
-  )
-
-  return increase(dimension, start, end)
 }
 
 export const THUNK_CELL_KEY_UP = (): IAppThunk => (dispatch, getState) => {

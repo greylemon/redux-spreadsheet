@@ -251,6 +251,7 @@ export const selectPosition = createSelector(
   }
 )
 
+// TODO: FIX
 export const selectPositionDimensions = createSelector(
   [selectPosition, selectMerged, selectRowOffsets, selectColumnOffsets],
   (position, merged, rowOffsets, columnOffsets) => {
@@ -269,8 +270,8 @@ export const selectPositionDimensions = createSelector(
     }
 
     return {
-      minHeight: height,
-      minWidth: width,
+      minHeight: height + 0.5,
+      minWidth: width + 0.5,
     }
   }
 )

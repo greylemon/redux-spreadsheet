@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
-import { Rect } from 'react-konva'
+import { Rect, Group } from 'react-konva'
 import { ICanvasCellProps } from '../../../@types/components'
-import { STYLE_CELL_BORDER, STYLE_HEADER_FILL } from '../../../constants/styles'
+import { STYLE_HEADER_FILL, STYLE_CELL_BORDER } from '../../../constants/styles'
 
 const RootCell: FunctionComponent<ICanvasCellProps> = ({
   x,
@@ -10,17 +10,29 @@ const RootCell: FunctionComponent<ICanvasCellProps> = ({
   height,
 }) => {
   return (
-    <Rect
-      x={x}
-      y={y}
-      width={width}
-      height={height}
-      stroke={STYLE_CELL_BORDER}
-      fill={STYLE_HEADER_FILL}
-      transformsEnabled="position"
-      perfectDrawEnabled={false}
-      hitStrokeWidth={0}
-    />
+    <Group>
+      <Rect
+        x={x}
+        y={y}
+        width={width - 1}
+        height={height - 1}
+        stroke={STYLE_CELL_BORDER}
+        strokeWidth={1}
+        transformsEnabled="position"
+        hitStrokeWidth={0}
+        listeneing={false}
+      />
+      <Rect
+        x={x}
+        y={y}
+        width={width - 1}
+        height={height - 1}
+        fill={STYLE_HEADER_FILL}
+        transformsEnabled="position"
+        hitStrokeWidth={0}
+        listeneing={false}
+      />
+    </Group>
   )
 }
 

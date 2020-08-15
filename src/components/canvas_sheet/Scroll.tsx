@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from 'react'
+import React, { FunctionComponent, useCallback, useMemo } from 'react'
 import { shallowEqual, useDispatch } from 'react-redux'
 import { Slider, withStyles } from '@material-ui/core'
 import { useTypedSelector } from '../../redux/redux'
@@ -66,15 +66,27 @@ export const CanvasHorizontalScroll: FunctionComponent = () => {
     [dispatch, scrollLength, scrollOffsetDimension]
   )
 
+  const scrollStyle = useMemo(
+    () => ({
+      width: `calc(100% - ${blockLength + getScrollbarSize()}px)`,
+      height: '100%',
+    }),
+    [blockLength]
+  )
+
   return (
-    <div style={{ display: 'flex' }}>
-      <span style={{ width: blockLength, borderRadius: 1 }} />
+    <div
+      style={{
+        display: 'flex',
+        border: '1px solid #DCDCDC',
+        boxSizing: 'border-box',
+        height: getScrollbarSize(),
+      }}
+    >
+      <span style={{ width: blockLength }} />
       <HorizontalConfiguredSlider
         orientation="horizontal"
-        style={{
-          width: `calc(100% - ${blockLength}px)`,
-          height: '100%',
-        }}
+        style={scrollStyle}
         value={scrollOffsetDimension}
         min={freezeColumnCount + 1}
         max={scrollLength + freezeColumnCount}
@@ -111,15 +123,28 @@ export const CanvasVerticalScroll: FunctionComponent = () => {
     [dispatch, scrollLength, freezeRowCount, scrollOffsetDimension]
   )
 
+  const scrollStyle = useMemo(
+    () => ({
+      width: 0,
+      height: `calc(100% - ${getScrollbarSize() + blockLength}px)`,
+    }),
+    [blockLength]
+  )
+
   return (
-    <div style={{ display: 'flex', flexFlow: 'column nowrap' }}>
+    <div
+      style={{
+        display: 'flex',
+        flexFlow: 'column nowrap',
+        border: '1px solid #DCDCDC',
+        height: `calc(100% - ${getScrollbarSize()}px`,
+        boxSizing: 'border-box',
+      }}
+    >
       <span style={{ height: blockLength }} />
       <VerticalConfiguredSlider
         orientation="vertical"
-        style={{
-          width: 0,
-          height: `calc(100% - ${getScrollbarSize() + blockLength}px)`,
-        }}
+        style={scrollStyle}
         value={scrollLength - scrollOffsetDimension}
         min={-freezeRowCount}
         max={scrollLength - 1 - freezeRowCount}

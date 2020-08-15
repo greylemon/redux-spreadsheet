@@ -14,7 +14,7 @@ export const getScrollbarSize = (() => {
       // size = div.offsetWidth - div.clientWidth
 
       // document.body.removeChild(div)
-      size = 30
+      size = 28
     }
 
     return size

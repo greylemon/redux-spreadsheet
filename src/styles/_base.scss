@@ -46,7 +46,7 @@ $customBorderStyle: 'solid';
 
   &__active {
     position: absolute;
-    outline: 2px solid rgba(75, 135, 255, 0.8);
+    outline: 2px solid rgb(25, 95, 240);
     outline-offset: -2px;
 
     &--normal {
@@ -54,8 +54,7 @@ $customBorderStyle: 'solid';
     }
 
     &--edit {
-      border-top: thin solid transparent;
-      border-left: thin solid transparent;
+      box-shadow: #ccc 0 2px 3px 1px;
       padding: 2px 3px;
       background-color: white;
       height: fit-content !important;

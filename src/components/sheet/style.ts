@@ -16,6 +16,7 @@ export const STYLE_SHEET_CONTAINER: CSSProperties = {
     STYLE_APP_BAR_HEIGHT +
     DIVIDER_COUNT
   }px)`,
+  backgroundColor: '#F8F8F8',
 }
 
 export const STYLE_SHEET_CONTENT: CSSProperties = {

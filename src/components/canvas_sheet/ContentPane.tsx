@@ -109,7 +109,7 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
           columnOffsets[columnStart] +
           columnOffsets[columnStartBound]
 
-        let backgroundColor = 'transparent'
+        let backgroundColor = 'white'
         if (cellData && cellData.merged) {
           let { area, parent } = cellData.merged
 
@@ -176,7 +176,7 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
         }
 
         const cellId = `${type}={"y":${relativeRowIndex},"x":${relativeColumnIndex}}`
-        const keyId = `${id}-${cellId}`
+        // const keyId = `${id}-${cellId}`
 
         if (
           cellData &&
@@ -188,7 +188,22 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
 
         StyleComponents.push(
           <Rect
-            key={`bg-${keyId}`}
+            // key={`bg-${keyId}`}
+            id={cellId}
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+            transformsEnabled="position"
+            stroke={STYLE_CELL_BORDER}
+            strokeWidth={1}
+            perfectDrawEnabled
+          />
+        )
+
+        StyleComponents.push(
+          <Rect
+            // key={`bgx-${keyId}`}
             id={cellId}
             x={x}
             y={y}
@@ -196,12 +211,6 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
             height={height}
             fill={backgroundColor}
             transformsEnabled="position"
-            // perfectDrawEnabled={false}
-            stroke={STYLE_CELL_BORDER}
-            strokeWidth={1}
-            perfectDrawEnabled
-            // hitStrokeWidth={0}
-            // shadowForStrokeEnabled={false}
             onMouseEnter={handleMouseEnter}
             onMouseDown={handleMouseDown}
           />
@@ -228,12 +237,11 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
           if (borderBottomColor || borderBottomStyle || borderBottomWidth) {
             StyleComponents.push(
               <Line
-                key={`bb-${keyId}`}
+                // key={`bb-${keyId}`}
                 points={[x, y + height, x + width, y + height]}
                 stroke={borderBottomColor}
                 strokeWidth={getBorderWidth(borderBottomWidth)}
                 transformsEnabled="position"
-                perfectDrawEnabled={false}
                 hitStrokeWidth={0}
               />
             )
@@ -242,12 +250,11 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
           if (borderLeftColor || borderLeftStyle || borderLeftWidth) {
             StyleComponents.push(
               <Line
-                key={`bl-${keyId}`}
+                // key={`bl-${keyId}`}
                 points={[x, y, x, y + height]}
                 stroke={borderLeftColor}
                 strokeWidth={getBorderWidth(borderLeftWidth)}
                 transformsEnabled="position"
-                perfectDrawEnabled={false}
                 hitStrokeWidth={0}
               />
             )
@@ -256,12 +263,11 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
           if (borderRightColor || borderRightStyle || borderRightWidth) {
             StyleComponents.push(
               <Line
-                key={`br-${keyId}`}
+                // key={`br-${keyId}`}
                 points={[x + width, y, x + width, y + height]}
                 stroke={borderRightColor}
                 strokeWidth={getBorderWidth(borderRightWidth)}
                 transformsEnabled="position"
-                perfectDrawEnabled={false}
                 hitStrokeWidth={0}
               />
             )
@@ -270,12 +276,11 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
           if (borderTopColor || borderTopStyle || borderTopWidth) {
             StyleComponents.push(
               <Line
-                key={`bt-${keyId}`}
+                // key={`bt-${keyId}`}
                 points={[x, y, x + width, y]}
                 stroke={borderTopColor}
                 strokeWidth={getBorderWidth(borderTopWidth)}
                 transformsEnabled="position"
-                perfectDrawEnabled={false}
                 hitStrokeWidth={0}
               />
             )
@@ -289,7 +294,7 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
         ) {
           TextCompnents.push(
             <CellComponent
-              key={`text-${keyId}`}
+              // key={`text-${keyId}`}
               rowIndex={rowIndex}
               columnIndex={columnIndex}
               x={x}
@@ -321,13 +326,6 @@ const ContentLayer: FunctionComponent<Partial<IGenericPaneProps>> = ({
 
   return (
     <Group>
-      <Rect
-        y={rowOffsets[rowStart]}
-        x={columnOffsets[columnStart]}
-        height={rowOffsets[rowEnd] - rowOffsets[rowStart]}
-        width={columnOffsets[columnEnd] - columnOffsets[columnStart]}
-        fill="white"
-      />
       <Group>{Styles}</Group>
       <Group listening={false}>{Texts}</Group>
     </Group>

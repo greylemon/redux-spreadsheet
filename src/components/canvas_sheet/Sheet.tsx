@@ -4,7 +4,7 @@ import React, {
   useMemo,
   KeyboardEvent,
 } from 'react'
-import { Stage, Layer } from 'react-konva'
+import { Stage, Layer, Rect } from 'react-konva'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import {
   shallowEqual,
@@ -44,7 +44,6 @@ import {
 import { CanvasHorizontalScroll, CanvasVerticalScroll } from './Scroll'
 import Cell from './text/Cell'
 import { ICanvasItemData } from '../../@types/components'
-// import { THUNK_MOUSE_DOUBLE_CLICK } from '../../redux/thunks/mouse'
 import {
   selectIsActiveCellInBottomRightPane,
   selectIsActiveCellInBottomLeftPane,
