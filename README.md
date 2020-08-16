@@ -76,7 +76,7 @@ const SomeComponent = () => {
   - [x] Active cell
   - [ ] Update formula references
 - Router
-  - [x] Page router
+  - [ ] Page router (not fully-working)
   - [x] No page router
   - [ ] Return link
 - Formulas
@@ -133,3 +133,4 @@ const SomeComponent = () => {
 
 - Adding keys on canvas elements causes lag
 - Build performance is slower than local
+- Page router URL has issues
