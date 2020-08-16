@@ -132,3 +132,4 @@ const SomeComponent = () => {
 ## Issues
 
 - Adding keys on canvas elements causes lag
+- Build performance is slower than local
