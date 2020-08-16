@@ -4,7 +4,7 @@ import React, {
   useMemo,
   KeyboardEvent,
 } from 'react'
-import { Stage, Layer, Rect } from 'react-konva'
+import { Stage, Layer } from 'react-konva'
 import AutoSizer, { Size } from 'react-virtualized-auto-sizer'
 import {
   shallowEqual,
@@ -18,7 +18,7 @@ import {
   STYLE_SHEET_CONTAINER,
   STYLE_SHEET_OUTER,
   STYLE_SHEET_CONTENT,
-} from '../sheet/style'
+} from './style'
 import { useTypedSelector } from '../../redux/redux'
 import {
   selectActiveResults,
@@ -71,7 +71,7 @@ import {
 } from '../../redux/thunks/keyboard'
 import EditorCell from './EditableCell'
 import { contextMenuId } from '../../constants/misc'
-import CustomContextMenu from '../sheet/CustomContextMenu/CustomContextMenu'
+import CustomContextMenu from './CustomContextMenu/CustomContextMenu'
 import { sheetContainerId } from '../../constants/ids'
 import { getEndDimension } from '../../tools/dimensions'
 import { THUNK_MOUSE_DOUBLE_CLICK } from '../../redux/thunks/mouse'

@@ -94,8 +94,8 @@ const EditorCell: FunctionComponent = () => {
           position: 'absolute',
           ...blockStyle,
           ...dimensions,
-          top: cellEditorOffset.y - 0.5,
-          left: cellEditorOffset.x - 0.5,
+          top: cellEditorOffset.y,
+          left: cellEditorOffset.x,
         }}
         onKeyDown={handleKeyDown}
       >

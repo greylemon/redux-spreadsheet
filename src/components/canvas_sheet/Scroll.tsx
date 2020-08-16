@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useCallback, useMemo } from 'react'
+import React, {
+  FunctionComponent,
+  useCallback,
+  useMemo,
+  CSSProperties,
+} from 'react'
 import { shallowEqual, useDispatch } from 'react-redux'
 import { Slider, withStyles } from '@material-ui/core'
 import { useTypedSelector } from '../../redux/redux'
@@ -19,15 +24,16 @@ import {
 } from '../../redux/selectors/activeSheet'
 import { ExcelActions } from '../../redux/store'
 
-const CustomSlider = (type: 'horizontal' | 'vertical') =>
-  withStyles({
+const CustomSlider = (type: 'horizontal' | 'vertical') => {
+  const styles = {
     root: {
-      color: '#52af77',
+      color: 'darkgreen',
+      padding: type === 'horizontal' ? '10px 0' : 0,
     },
     active: {},
     thumb: {
-      height: type === 'vertical' ? 20 : 12,
-      width: type === 'horizontal' ? 20 : 12,
+      height: type === 'vertical' ? 21 : 12,
+      width: type === 'horizontal' ? 21 : 12,
       backgroundColor: '#fff',
       marginTop: type === 'vertical' ? -10 : -6,
       marginLeft: type === 'horizontal' ? -10 : -6,
@@ -38,9 +44,17 @@ const CustomSlider = (type: 'horizontal' | 'vertical') =>
         boxShadow: '#ccc 0 2px 3px 1px',
       },
     },
-  })(Slider)
+    vertical: {
+      marginLeft: type === 'vertical' ? -2 : 0,
+    },
+  }
+
+  return (() => withStyles(styles)(Slider))()
+}
+
 const HorizontalConfiguredSlider = CustomSlider('horizontal')
 const VerticalConfiguredSlider = CustomSlider('vertical')
+
 export const CanvasHorizontalScroll: FunctionComponent = () => {
   const dispatch = useDispatch()
   const {
@@ -67,8 +81,8 @@ export const CanvasHorizontalScroll: FunctionComponent = () => {
   )
 
   const scrollStyle = useMemo(
-    () => ({
-      width: `calc(100% - ${blockLength + getScrollbarSize()}px)`,
+    (): CSSProperties => ({
+      width: '100%',
       height: '100%',
     }),
     [blockLength]
@@ -79,11 +93,11 @@ export const CanvasHorizontalScroll: FunctionComponent = () => {
       style={{
         display: 'flex',
         border: '1px solid #DCDCDC',
-        boxSizing: 'border-box',
-        // height: getScrollbarSize(),
       }}
     >
-      <span style={{ width: blockLength }} />
+      <span
+        style={{ minWidth: blockLength - 1, borderRight: '1px solid #DCDCDC' }}
+      />
       <HorizontalConfiguredSlider
         orientation="horizontal"
         style={scrollStyle}
@@ -96,6 +110,7 @@ export const CanvasHorizontalScroll: FunctionComponent = () => {
     </div>
   )
 }
+
 export const CanvasVerticalScroll: FunctionComponent = () => {
   const dispatch = useDispatch()
   const {
@@ -125,8 +140,8 @@ export const CanvasVerticalScroll: FunctionComponent = () => {
 
   const scrollStyle = useMemo(
     () => ({
-      width: 0,
-      height: `calc(100% - ${getScrollbarSize() + blockLength}px)`,
+      width: '100%',
+      height: '100%',
     }),
     [blockLength]
   )
@@ -137,11 +152,16 @@ export const CanvasVerticalScroll: FunctionComponent = () => {
         display: 'flex',
         flexFlow: 'column nowrap',
         border: '1px solid #DCDCDC',
-        height: `calc(100% - ${getScrollbarSize()}px`,
-        boxSizing: 'border-box',
+        height: `calc(100% - ${getScrollbarSize()}px - 1px)`,
+        width: getScrollbarSize(),
       }}
     >
-      <span style={{ height: blockLength }} />
+      <span
+        style={{
+          minHeight: blockLength - 1,
+          borderBottom: '1px solid #DCDCDC',
+        }}
+      />
       <VerticalConfiguredSlider
         orientation="vertical"
         style={scrollStyle}

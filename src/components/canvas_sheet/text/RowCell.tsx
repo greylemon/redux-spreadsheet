@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react'
 
 import { Group, Text, Rect } from 'react-konva'
 import { ICanvasCellProps } from '../../../@types/components'
-import { STYLE_HEADER_FILL, STYLE_CELL_BORDER } from '../../../constants/styles'
+import { STYLE_HEADER_FILL } from '../../../constants/styles'
 
 const RowCell: FunctionComponent<ICanvasCellProps> = ({
   x,
@@ -13,21 +13,10 @@ const RowCell: FunctionComponent<ICanvasCellProps> = ({
 }) => (
   <Group>
     <Rect
-      x={x}
-      y={y}
+      x={x + 0.5}
+      y={y + 0.5}
       width={width - 1}
-      height={height}
-      stroke={STYLE_CELL_BORDER}
-      strokeWidth={1}
-      transformsEnabled="position"
-      hitStrokeWidth={0}
-      listeneing={false}
-    />
-    <Rect
-      x={x}
-      y={y}
-      width={width - 1}
-      height={height}
+      height={height - 1}
       fill={STYLE_HEADER_FILL}
       transformsEnabled="position"
       hitStrokeWidth={0}
