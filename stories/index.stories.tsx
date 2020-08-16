@@ -1,7 +1,7 @@
 import { storiesOf } from '@storybook/react'
 import NonRoute from './NonRoute.stories'
 import Formulas from './Formula.stories'
-import './index.scss'
+import './index.css'
 import Frozen from './Frozen.stories'
 
 storiesOf('Formulas', module).add('Formula', Formulas)

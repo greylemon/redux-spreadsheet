@@ -82,6 +82,7 @@ const SomeComponent = () => {
   - [x] Multi-selection
   - [x] Selection slicing
   - [ ] Select rows / columns
+  - [ ] Inactive selection area borders
 - Inline-styles/rich-text
   - [x] Bold
   - [x] Italic
@@ -120,12 +121,13 @@ const SomeComponent = () => {
   - [x] Update sheet name
   - [ ] Update formula references for rename
 - Row / Column
-  - [x] Resize
+  - [ ] Resize (Have been implemented before in non-canvas)
   - [ ] Resize Freeze
   - [ ] Set row / column count
 - Scroll
-  - [x] Selection area (may crash -- need to limit trigger)
-  - [ ] Key press
+  - [ ] Selection area
+  - [x] Arrow key press
+  - [ ] Other key presses
 - Alternative container experiments
   - [ ] react-canvas container - Google Spreadsheet uses canvas
 - ...many more to do
