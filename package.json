@@ -1,6 +1,6 @@
 {
   "name": "redux-spreadsheet",
-  "version": "0.5.0",
+  "version": "0.5.2",
   "main": "dist/main.cjs.js",
   "module": "dist/main.esm.js",
   "author": "Alfred Lemon <alfred.lemon@mail.utoronto.ca>",
@@ -110,6 +110,7 @@
     "resolve": "1.15.0",
     "rollup": "^2.18.0",
     "rollup-plugin-scss": "^2.5.0",
+    "rollup-plugin-typescript2": "^0.27.2",
     "sass-loader": "8.0.2",
     "style-loader": "0.23.1",
     "ts-jest": "^26.1.0",

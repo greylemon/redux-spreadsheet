@@ -11,7 +11,7 @@
     "moduleResolution": "node",
     "isolatedModules": true,
     "sourceMap": true,
-    "module": "commonjs",
+    "module": "ES2015",
     "jsx": "react"
   },
   "include": [
