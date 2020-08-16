@@ -112,9 +112,9 @@ export const createValueFromEditorState = (
         const inlineEnd = inlineStart + inlineRange.length - 1
 
         if (inlineStart <= start && end <= inlineEnd) {
-          if (!fragment.styles) fragment.styles = {}
+          if (!fragment.style) fragment.style = {}
 
-          updateStyleInPlace(inlineRange, fragment.styles)
+          updateStyleInPlace(inlineRange, fragment.style)
         }
       }
 
@@ -145,8 +145,8 @@ export const createValueFromEditorState = (
       const fragment = richText[0].fragments[0]
       let font: IInlineStyles | null = null
 
-      if (fragment.styles) {
-        font = fragment.styles
+      if (fragment.style) {
+        font = fragment.style
       } else if (!fragment.text) {
         font = getFontStyleFromEditorState(editorState)
       }
@@ -154,7 +154,7 @@ export const createValueFromEditorState = (
       if (font) cell.style = { font }
     }
 
-    if (text.includes('=')) {
+    if (text.length && text.charAt(0) === '=') {
       cell.value = text.substring(1)
       cell.type = TYPE_FORMULA
     } else if (text.match(exactNumberRegex)) {
@@ -235,7 +235,7 @@ export const getRawInlineStyleRangesFromRichTextBlock = (
 
     const range: IRange = { start, end }
 
-    if (fragment.styles) {
+    if (fragment.style) {
       const {
         fontWeight,
         // fontFamily,
@@ -244,7 +244,7 @@ export const getRawInlineStyleRangesFromRichTextBlock = (
         textDecoration,
         // verticalAlign,
         // color
-      } = fragment.styles
+      } = fragment.style
 
       if (fontWeight === 'bold') {
         data.BOLD.push(range)

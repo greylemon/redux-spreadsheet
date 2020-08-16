@@ -1,18 +1,21 @@
 import React, { FunctionComponent, useMemo } from 'react'
-import { ICellProps } from '../../@types/components'
-import EditableCell from './EditableCell'
 import RowCell from './RowCell'
+import { ICanvasCellProps } from '../../../@types/components'
 import ColumnCell from './ColumnCell'
 import RootCell from './RootCell'
+import EditableCell from './EditableCell'
 
-const Cell: FunctionComponent<ICellProps> = ({
-  data,
-  style,
+const Cell: FunctionComponent<ICanvasCellProps> = ({
+  x,
+  y,
+  height,
+  width,
   columnIndex,
   rowIndex,
+  data,
 }) => {
   const CellComponent = useMemo(() => {
-    let Component: FunctionComponent<ICellProps>
+    let Component: FunctionComponent<ICanvasCellProps>
     if (columnIndex && rowIndex) {
       Component = EditableCell
     } else if (rowIndex) {
@@ -28,10 +31,13 @@ const Cell: FunctionComponent<ICellProps> = ({
 
   return (
     <CellComponent
-      data={data}
-      style={style}
+      x={x}
+      y={y}
+      width={width}
+      height={height}
       columnIndex={columnIndex}
       rowIndex={rowIndex}
+      data={data}
     />
   )
 }

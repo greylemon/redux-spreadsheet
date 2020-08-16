@@ -1,5 +1,6 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useCallback } from 'react'
 import { Description } from '@material-ui/icons'
+import { useHistory } from 'react-router-dom'
 import { SmallLabelButton } from '../misc/buttons'
 import STYLE_APP_BAR, {
   STYLE_APP_BAR_ICON,
@@ -11,9 +12,21 @@ import AppBarName from './AppBarName'
 import { ISheetRef } from '../../@types/ref'
 import { IHandleSave } from '../../@types/functions'
 
-const SpreadSheetButton: FunctionComponent = () => {
+const SpreadSheetButton: FunctionComponent<{
+  returnLink: string
+}> = ({ returnLink }) => {
+  const history = useHistory()
+
+  const handleClick = useCallback(() => {
+    if (returnLink && history) history.push(returnLink)
+  }, [returnLink, history])
+
   return (
-    <SmallLabelButton title="Home" style={STYLE_APP_BAR_BUTTON_ICON}>
+    <SmallLabelButton
+      title="Home"
+      style={STYLE_APP_BAR_BUTTON_ICON}
+      onClick={handleClick}
+    >
       <Description style={STYLE_APP_BAR_ICON} />
     </SmallLabelButton>
   )
@@ -30,11 +43,12 @@ const AppBarContent: FunctionComponent<{
 )
 
 const AppBar: FunctionComponent<{
+  returnLink?: string
   sheetRef: ISheetRef
   handleSave: IHandleSave
-}> = ({ sheetRef, handleSave }) => (
+}> = ({ sheetRef, returnLink, handleSave }) => (
   <div style={STYLE_APP_BAR}>
-    <SpreadSheetButton />
+    <SpreadSheetButton returnLink={returnLink} />
     <AppBarContent sheetRef={sheetRef} handleSave={handleSave} />
   </div>
 )

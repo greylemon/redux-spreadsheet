@@ -79,7 +79,7 @@ describe('Text tools', () => {
           fragments: [
             {
               text: 'Hello!',
-              styles: {
+              style: {
                 textDecoration: 'line-through underline',
                 fontWeight: 'bold',
                 fontStyle: 'italic',
@@ -87,7 +87,7 @@ describe('Text tools', () => {
             },
             {
               text: '~',
-              styles: {
+              style: {
                 textDecoration: 'line-through underline',
                 fontWeight: 'bold',
               },

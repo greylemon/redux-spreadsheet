@@ -16,6 +16,7 @@ module.exports = {
     port: 5000,
     open: true,
     historyApiFallback: true,
+    writeToDisk: true,
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
@@ -50,4 +51,5 @@ module.exports = {
       favicon: path.join(__dirname, '/public/favicon.ico'),
     }),
   ],
+  context: path.join(__dirname, 'dev'),
 }

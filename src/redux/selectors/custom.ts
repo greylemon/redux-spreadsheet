@@ -5,6 +5,8 @@ import {
   getRowOffsets,
   normalizeRowHeightFromArray,
   normalizeColumnWidthFromArray,
+  getScrollLength,
+  getScrollBlock,
 } from '../../tools/dimensions'
 import {
   selectActiveSheetName,
@@ -34,6 +36,7 @@ import {
   columnDraggerIndicatorStyle,
 } from '../../constants/styles'
 import { getMergeArea } from '../tools/merge'
+import { getCellAddressFromPosition } from '../../tools/cell'
 
 export const selectTableColumnCount = createSelector(
   [selectColumnCount],
@@ -63,6 +66,29 @@ export const selectColumnOffsets = createSelector(
 export const selectRowOffsets = createSelector(
   [selectRowHeights, selectRowCount],
   (rowHeights, rowCount) => getRowOffsets(rowHeights, rowCount)
+)
+
+export const selectScrollHorizontalWidth = createSelector(
+  [selectColumnCount, selectFreezeColumnCount],
+  (columnCount, freezeColumnCount) =>
+    getScrollLength(columnCount, freezeColumnCount)
+)
+
+export const selectScrollVerticalHeight = createSelector(
+  [selectRowCount, selectFreezeRowCount],
+  (rowCount, freezeRowCount) => getScrollLength(rowCount, freezeRowCount)
+)
+
+export const selectScrollVerticalBlock = createSelector(
+  [selectRowOffsets, selectTableFreezeRowCount],
+  (rowOffsets, tableFreezeRowCount) =>
+    getScrollBlock(rowOffsets, tableFreezeRowCount)
+)
+
+export const selectScrollHorizontalBlock = createSelector(
+  [selectColumnOffsets, selectTableFreezeColumnCount],
+  (columnOffsets, tableFreezeColumnCount) =>
+    getScrollBlock(columnOffsets, tableFreezeColumnCount)
 )
 
 export const selectGetRowHeight = createSelector(
@@ -224,3 +250,80 @@ export const selectPosition = createSelector(
     return merged ? getMergeArea(data, merged).start : activeCellPosition
   }
 )
+
+// TODO: FIX
+export const selectPositionDimensions = createSelector(
+  [selectPosition, selectMerged, selectRowOffsets, selectColumnOffsets],
+  (position, merged, rowOffsets, columnOffsets) => {
+    let width: number
+    let height: number
+
+    if (merged) {
+      width =
+        columnOffsets[merged.area.end.x + 1] -
+        columnOffsets[merged.area.start.x]
+      height =
+        rowOffsets[merged.area.end.y + 1] - rowOffsets[merged.area.start.y]
+    } else {
+      width = columnOffsets[position.x + 1] - columnOffsets[position.x]
+      height = rowOffsets[position.y + 1] - rowOffsets[position.y]
+    }
+
+    return {
+      minHeight: height + 0.5,
+      minWidth: width + 0.5,
+    }
+  }
+)
+
+export const selectActiveCellId = createSelector(
+  [selectActiveCellPosition],
+  (position) => getCellAddressFromPosition(position)
+)
+
+// export const selectVisibleCellWidths = createSelector(
+//   [
+//     selectTopLeftPositionY,
+//     selectViewRowEnd,
+//     selectColumnCount,
+//     selectData,
+//     selectColumnOffsets,
+//     selectActiveResults,
+//   ],
+//   (
+//     topLeftPositionY,
+//     viewRowEnd,
+//     columnCount,
+//     data,
+//     columnOffsets,
+//     activeResults
+//   ) => {
+//     if (!activeResults) activeResults = {}
+//     const viewWidths: IViewWidths = {}
+//     const endOffset = columnOffsets[columnOffsets.length - 1]
+
+//     for (
+//       let rowIndex = topLeftPositionY;
+//       rowIndex < viewRowEnd;
+//       rowIndex += 1
+//     ) {
+//       const row = data[rowIndex]
+//       const resultRow = activeResults[rowIndex]
+//       let curEndOffset = endOffset
+
+//       for (let columnIndex = columnCount; columnIndex > 0; columnIndex -= 1) {
+//         if (
+//           (row && row[columnIndex] && row[columnIndex].value) ||
+//           (resultRow && resultRow[columnIndex])
+//         ) {
+//           if (!viewWidths[rowIndex]) viewWidths[rowIndex] = {}
+//           viewWidths[rowIndex][columnIndex] =
+//             curEndOffset - columnOffsets[columnIndex]
+//           curEndOffset = columnOffsets[columnIndex]
+//         }
+//       }
+//     }
+
+//     return viewWidths
+//   }
+// )

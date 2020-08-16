@@ -25,10 +25,14 @@ import {
   checkIsBlockItalic,
   getSelectionState,
 } from './style'
+import { columnNumberToName } from './conversion'
 
 export const changeActiveCell = (position: IPosition): IPosition => {
   return position
 }
+
+export const getCellAddressFromPosition = ({ x, y }: IPosition): string =>
+  `${columnNumberToName(x)}${y}`
 
 export const checkIsCellPositionValid = (
   position: IPosition,

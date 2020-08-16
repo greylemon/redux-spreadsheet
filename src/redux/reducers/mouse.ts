@@ -218,7 +218,11 @@ export const CELL_MOUSE_UP = (
   return state
 }
 
-export const CELL_DOUBLE_CLICK = (state: IExcelState): IExcelState => {
+export const CELL_DOUBLE_CLICK = (
+  state: IExcelState,
+  action: PayloadAction<IPosition>
+): IExcelState => {
+  state.cellEditorOffset = action.payload
   state.isEditMode = true
 
   const cell = nSelectActiveCell(state)

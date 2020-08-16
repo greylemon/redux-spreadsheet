@@ -93,6 +93,7 @@ const getBorderStyleInPlace = (
 ) => {
   const { style, color } = border
 
+  // TODO : FIX THIS - border has no pixel width...?
   styles[
     `border${section}Style` as
       | 'borderTopStyle'
@@ -161,12 +162,15 @@ export const setFontStyleInPlaceFromFont = (
   font: Partial<Font>,
   style: IInlineStyles
 ): void => {
-  const { bold, italic, strike, underline } = font
+  const { bold, italic, strike, underline, name, size, color } = font
 
   if (bold) setBoldStyle(style)
   if (italic) setItalicStyle(style)
   if (strike) setStrikethroughStyle(style)
   if (underline) setUnderlineStyle(style)
+  if (style.fontFamily) style.fontFamily = name
+  if (style.fontSize) style.fontSize = size
+  if (style.color) style.color = getFormattedColor(color)
 }
 
 export const getStylesFromCell = (cell: Cell): IStyles | undefined => {
@@ -210,7 +214,7 @@ export const getRichTextFromCellValue = (
     if (font) setFontStyleInPlaceFromFont(font, style)
 
     richTextBlock.fragments.push({
-      styles: style,
+      style,
       text,
       key: uniqid(),
     })
@@ -417,16 +421,37 @@ export const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
   workbook.eachSheet((sheet) => {
     sheetNames.push(sheet.name)
 
+    const {
+      activeCellPosition,
+      freezeColumnCount,
+      freezeRowCount,
+    } = getPaneDataFromSheetViews(sheet.views)
+    const { columnWidths, hiddenColumns } = getColumnDataFromColumns(sheet)
+    const { hiddenRows, rowHeights } = getRowDataFromSheet(sheet)
+
     sheetsMap[sheet.name] = {
       data: getSheetDataFromSheet(sheet),
       columnCount: getTableColumnCount(sheet.columnCount),
       rowCount: getTableRowCount(sheet.rowCount),
-      ...getPaneDataFromSheetViews(sheet.views),
-      ...getColumnDataFromColumns(sheet),
-      ...getRowDataFromSheet(sheet),
+      activeCellPosition,
+      freezeColumnCount,
+      freezeRowCount,
+      columnWidths,
+      hiddenColumns,
+      hiddenRows,
+      rowHeights,
       inactiveSelectionAreas: [],
     }
   })
+
+  const activeSheet = sheetsMap[activeSheetName]
+  const activeSheetFreezeColumnCount = activeSheet.freezeColumnCount
+  const activeSheetFreezeRowCount = activeSheet.freezeRowCount
+
+  const topLeftPosition: IPosition = {
+    x: activeSheetFreezeColumnCount + 1,
+    y: activeSheetFreezeRowCount + 1,
+  }
 
   return {
     ...cloneDeep(initialExcelState),
@@ -435,5 +460,6 @@ export const createStateFromWorkbook = (workbook: Workbook): IExcelState => {
     sheetsMap,
     sheetNames,
     activeSheetName,
+    topLeftPosition,
   }
 }

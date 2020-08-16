@@ -19,7 +19,6 @@ import {
   STYLE_SELECTION_BORDER_WIDTH,
   STYLE_SELECTION_BORDER_COLOR,
   STYLE_SELECTION_BORDER_STYLE,
-  STYLE_SELECTION_AREA_Z_INDEX,
 } from '../../constants/styles'
 import { normalizeColumnWidthFromArray, normalizeRowHeightFromArray } from '..'
 
@@ -46,7 +45,6 @@ export const computeSelectionAreaTopLeftStyle: IComputeSelectionAreaStyle = (
     borderTopWidth: STYLE_SELECTION_BORDER_WIDTH,
     borderTopColor: STYLE_SELECTION_BORDER_COLOR,
     borderTopStyle: STYLE_SELECTION_BORDER_STYLE,
-    zIndex: STYLE_SELECTION_AREA_Z_INDEX,
   }
 
   const topStart = rowOffsets[start.y]
@@ -108,11 +106,10 @@ export const computeSelectionAreaTopLeftStyle: IComputeSelectionAreaStyle = (
     customSelectionStyle.borderBottomStyle = STYLE_SELECTION_BORDER_STYLE
   }
 
-  customSelectionStyle.left = left - 1
-  customSelectionStyle.top = top - 1
-  customSelectionStyle.width = selectionAreaWidth + 1
-  customSelectionStyle.height = selectionAreaHeight + 1
-  customSelectionStyle.boxSizing = 'border-box'
+  customSelectionStyle.left = left
+  customSelectionStyle.top = top
+  customSelectionStyle.width = selectionAreaWidth
+  customSelectionStyle.height = selectionAreaHeight
 
   return customSelectionStyle
 }

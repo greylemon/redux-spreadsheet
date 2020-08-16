@@ -70,7 +70,6 @@ export const createInitialExcelState = (): IExcelState => ({
   results: {},
   sheetNameText: '',
   scrollOffset: { x: 0, y: 0 },
-  sheetDimensions: { x: 0, y: 0 },
 
   lastVisitedCell: { x: 0, y: 0 },
 
@@ -83,4 +82,6 @@ export const createInitialExcelState = (): IExcelState => ({
 
   scrollHorizontal: 'neutral',
   scrollVertical: 'neutral',
+
+  topLeftPosition: { x: 1, y: 1 },
 })

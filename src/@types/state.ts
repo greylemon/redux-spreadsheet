@@ -67,7 +67,7 @@ export type IStyles = {
 export type IFragment = {
   key?: string
   text?: string
-  styles?: IInlineStyles
+  style?: IInlineStyles
 }
 
 export type IRichTextBlock = {
@@ -257,8 +257,6 @@ export type IIsColumnDrag = boolean
 export type IDragColumnOffset = IOffset
 export type IDragColumnIndex = IColumnIndex
 
-export type ISheetDimensions = IPosition
-
 export type IExcelState = {
   title: IName
   activeSheetName: ISheetName
@@ -291,8 +289,6 @@ export type IExcelState = {
   dragColumnOffset?: IDragColumnOffset
   dragColumnIndex?: IDragColumnIndex
 
-  sheetDimensions: ISheetDimensions
-
   lastVisitedCell: IPosition
 
   dependentReferences: IDependentReferences
@@ -303,4 +299,9 @@ export type IExcelState = {
 
   scrollHorizontal: IHorizontalOffsetType
   scrollVertical: IVerticalOffsetType
+
+  topLeftPosition: IPosition
+
+  cellEditorOffset?: IPosition
+  // isCellEditorLabelVisible: boolean
 }

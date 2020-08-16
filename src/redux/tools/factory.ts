@@ -24,8 +24,8 @@ export const setRichTextFactoryStyle = (
 
   cellValue.forEach((block) => {
     block.fragments.forEach((fragment) => {
-      if (fragment.styles === undefined) fragment.styles = {}
-      setInlineStyleFn(fragment.styles)
+      if (fragment.style === undefined) fragment.style = {}
+      setInlineStyleFn(fragment.style)
     })
   })
 
@@ -54,7 +54,7 @@ export const unsetRichTextFactoryStyle = (
 
   cellValue.forEach((block) => {
     block.fragments.forEach((fragment) => {
-      if (fragment.styles) unsetInlineStyleFn(fragment.styles)
+      if (fragment.style) unsetInlineStyleFn(fragment.style)
     })
   })
 

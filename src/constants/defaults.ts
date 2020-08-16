@@ -1,6 +1,6 @@
 import { IPosition } from '../@types/state'
 
-export const SHEET_ROW_COUNT = 200
+export const SHEET_ROW_COUNT = 1000
 export const SHEET_COLUMN_COUNT = 26
 
 export const SHEET_MIN_ROW_COUNT = 200
@@ -50,8 +50,8 @@ export const SCROLL_DATA = {
   verticalScrollDirection: 'forward',
 }
 
-export const ROW_HEIGHT_SCALE = 2
-export const COLUMN_WIDTH_SCALE = 11.07
+export const ROW_HEIGHT_SCALE = 1.49
+export const COLUMN_WIDTH_SCALE = 7.8
 
 export const WINDOW_OVERSCAN_COLUMN_COUNT = 5
 export const WINDOW_OVERSCAN_ROW_COUNT = 20

@@ -9,23 +9,6 @@
 
 Excel/Google-like spreadsheet
 
-## Note - Canvas with react-konva
-
-Currently working on a canvas version as the performance is much faster since it can utilize GPU and can have less overhead than the usual DOM elements.
-
-However, some behaviours with DOM elements are different from canvas, and may not be fully supported in canvas. For example, z-index exists in a different way in canvas - things are layered on top of one another by the order they are drawn.
-
-- [x] Create four panes - top left, top right, bottom left, and bottom right
-- [x] Optimize by limiting render to 'visible' items (excluding columns for bottom right)
-- [x] Custom scrollbar
-- [ ] Optimize performance (cache, improve selectors, change component design to reduce drawing...)
-- Cell layering
-  - [x] Grid layer
-  - [x] Text layer
-  - [x] Block layer
-  - [x] Event layer
-  - [ ] Spacing layer
-
 ## Demos
 
 [Storybook](https://greylemon.github.io/redux-spreadsheet/)
@@ -82,6 +65,7 @@ const SomeComponent = () => {
   - [x] Multi-selection
   - [x] Selection slicing
   - [ ] Select rows / columns
+  - [ ] Inactive selection area borders
 - Inline-styles/rich-text
   - [x] Bold
   - [x] Italic
@@ -120,14 +104,13 @@ const SomeComponent = () => {
   - [x] Update sheet name
   - [ ] Update formula references for rename
 - Row / Column
-  - [x] Resize
+  - [ ] Resize (Have been implemented before in non-canvas)
   - [ ] Resize Freeze
   - [ ] Set row / column count
 - Scroll
-  - [x] Selection area (may crash -- need to limit trigger)
-  - [ ] Key press
-- Alternative container experiments
-  - [ ] react-canvas container - Google Spreadsheet uses canvas
+  - [ ] Selection area
+  - [x] Arrow key press
+  - [ ] Other key presses
 - ...many more to do
 
 ## Main Libraries Used
@@ -145,3 +128,8 @@ const SomeComponent = () => {
 | [undox](https://github.com/greylemon/undox)                                                          | Fork of [JannieBeck](https://github.com/JannicBeck/undox) with ignore history                                                |
 | [react-sortable-hoc](https://github.com/clauderic/react-sortable-hoc)                                | Draggable list for sheet navigation                                                                                          |
 | [material-ui](https://github.com/mui-org/material-ui)                                                | Customized styled base components                                                                                            |
+
+## Issues
+
+- Adding keys on canvas elements causes lag
+- Build performance is slower than local

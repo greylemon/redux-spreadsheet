@@ -1,4 +1,4 @@
-import { CSSProperties } from 'react'
+import { CSSProperties, FunctionComponent } from 'react'
 import {
   IRows,
   IColumnIndex,
@@ -15,8 +15,11 @@ import {
   IComputeActiveCellStyle,
   IComputeSelectionAreaStyle,
   IHandleSave,
+  IGetRowHeight,
+  IGetColumnWidth,
 } from './functions'
 import { ISheetRef, IGridRef } from './ref'
+// import { IViewWidths } from './objects'
 
 export type ExcelComponentProps = {
   /** Initial excel state */
@@ -29,6 +32,8 @@ export type ExcelComponentProps = {
   isToolBarDisabled?: boolean
   /** Function to process save events */
   handleSave?: IHandleSave
+  /** Return link */
+  returnLink?: string
 }
 
 export type IItemData = {
@@ -38,6 +43,14 @@ export type IItemData = {
   cellLayering: number[][]
   rowOffsets: IRowOffsets
   columnOffsets: IColumnOffsets
+}
+
+export type ICanvasItemData = {
+  data: IRows
+  sheetResults: IRowResults
+  rowOffsets: IRowOffsets
+  columnOffsets: IColumnOffsets
+  // viewWidths: IViewWidths
 }
 
 export interface ICellProps {
@@ -81,4 +94,105 @@ export interface IInactiveSelectionAreasProps {
 export type ISheetProps = {
   sheetRef: ISheetRef
   gridRef: IGridRef
+}
+
+export type ICanvasCellProps = {
+  x: number
+  y: number
+  width: number
+  height: number
+  columnIndex: number
+  rowIndex: number
+  data: ICanvasItemData
+}
+
+export type ICanvasCellComponentProps = {
+  rowOffsets: IRowOffsets
+  columnOffsets: IColumnOffsets
+  columnIndex: number
+  rowIndex: number
+  getRowHeight: IGetRowHeight
+  getColumnWidth: IGetColumnWidth
+  data: ICanvasItemData
+}
+
+export type IGenericLayerProps = {
+  id: string
+  rowOffsets: IRowOffsets
+  columnOffsets: IColumnOffsets
+  getRowHeight: IGetRowHeight
+  getColumnWidth: IGetColumnWidth
+  rowStart: number
+  rowEnd: number
+  columnStart: number
+  columnEnd: number
+  rowStartBound: number
+  columnStartBound: number
+  data: ICanvasItemData
+  CellComponent: FunctionComponent<ICanvasCellProps>
+}
+
+export type IGenericPaneProps = {
+  id: string
+  rowOffsets: IRowOffsets
+  columnOffsets: IColumnOffsets
+  getRowHeight: IGetRowHeight
+  getColumnWidth: IGetColumnWidth
+  rowStart: number
+  rowEnd: number
+  columnStart: number
+  columnEnd: number
+  rowStartBound: number
+  columnStartBound: number
+  CellComponent: FunctionComponent<ICanvasCellProps>
+  data: ICanvasItemData
+  enableRowHeader?: boolean
+  enableColumnHeader?: boolean
+  selectIsInPane: any
+  selectIsAreaInPane: any
+}
+
+export type ITextLayerProps = {
+  id: string
+  rowOffsets: IRowOffsets
+  columnOffsets: IColumnOffsets
+  getRowHeight: IGetRowHeight
+  getColumnWidth: IGetColumnWidth
+  rowStart: number
+  rowEnd: number
+  columnStart: number
+  columnEnd: number
+  CellComponent: FunctionComponent<any>
+  data: ICanvasItemData
+  rowStartBound: number
+  columnStartBound: number
+  enableRowHeader?: boolean
+  enableColumnHeader?: boolean
+}
+
+export type IActiveCellPane = {
+  selectIsInPane: any
+  data: IRows
+  columnOffsets: IColumnOffsets
+  rowOffsets: IRowOffsets
+  rowStart: number
+  rowEnd: number
+  columnStart: number
+  columnEnd: number
+  rowStartBound: number
+  columnStartBound: number
+  getRowHeight: IGetRowHeight
+  getColumnWidth: IGetColumnWidth
+}
+
+export type ISelectionAreaPane = {
+  rowStart: number
+  rowEnd: number
+  columnStart: number
+  columnEnd: number
+  rowStartBound: number
+  columnStartBound: number
+  columnOffsets: IColumnOffsets
+  rowOffsets: IRowOffsets
+  selectIsAreaInPane: any
 }

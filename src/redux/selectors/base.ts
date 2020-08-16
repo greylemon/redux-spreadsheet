@@ -112,6 +112,21 @@ export const selectScrollOffsetY = createSelector(
   (scrollOffset) => scrollOffset.y
 )
 
+export const selectTopLeftPosition = createSelector(
+  [selectExcel],
+  (excel) => excel.topLeftPosition
+)
+
+export const selectTopLeftPositionX = createSelector(
+  [selectTopLeftPosition],
+  (topLeftPosition) => topLeftPosition.x
+)
+
+export const selectTopLeftPositionY = createSelector(
+  [selectTopLeftPosition],
+  (topLeftPosition) => topLeftPosition.y
+)
+
 export const selectIsRowDrag = createSelector(
   [selectExcel],
   (excel) => excel.isRowDrag
@@ -142,11 +157,6 @@ export const selectDragColumnIndex = createSelector(
   (excel) => excel.dragColumnIndex
 )
 
-export const selectSheetDimensions = createSelector(
-  [selectExcel],
-  (excel) => excel.sheetDimensions
-)
-
 export const selectScrollHorizontal = createSelector(
   [selectExcel],
   (excel) => excel.scrollHorizontal
@@ -155,4 +165,9 @@ export const selectScrollHorizontal = createSelector(
 export const selectScrollVertical = createSelector(
   [selectExcel],
   (excel) => excel.scrollVertical
+)
+
+export const selectCellEditorOffset = createSelector(
+  [selectExcel],
+  (excel) => excel.cellEditorOffset
 )

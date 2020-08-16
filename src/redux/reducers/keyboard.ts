@@ -13,10 +13,7 @@ import {
   nSelectActiveCell,
 } from '../tools/selectors'
 import { TYPE_MERGE } from '../../constants/types'
-import {
-  createEditorStateFromCell,
-  getFontBlockEditorState,
-} from '../../tools/cell'
+import { getFontBlockEditorState } from '../../tools/cell'
 import { getCellMapSetFromState } from '../tools/area'
 import { IGeneralActionPayload } from '../../@types/history'
 import { deletePositions } from '../../tools/formula/formula'
@@ -45,10 +42,15 @@ export const CELL_KEY_DOWN_SHIFT = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_DOWN = (state: IExcelState): IExcelState => {
+export const CELL_KEY_DOWN = (
+  state: IExcelState,
+  action: PayloadAction<number>
+): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   if (state.isEditMode || state.activeCellPosition.y >= activeSheet.rowCount)
     return state
+
+  state.topLeftPosition.y = action.payload
 
   const mergeData = nSelectMergeCellArea(state)
 
@@ -67,9 +69,13 @@ export const CELL_KEY_UP_SHIFT = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_UP = (state: IExcelState): IExcelState => {
+export const CELL_KEY_UP = (
+  state: IExcelState,
+  action: PayloadAction<number>
+): IExcelState => {
   if (state.isEditMode || state.activeCellPosition.y < 2) return state
 
+  state.topLeftPosition.y = action.payload
   const mergeData = nSelectMergeCellArea(state)
 
   state.activeCellPosition.y = Math.max(
@@ -89,10 +95,15 @@ export const CELL_KEY_RIGHT_SHIFT = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_RIGHT = (state: IExcelState): IExcelState => {
+export const CELL_KEY_RIGHT = (
+  state: IExcelState,
+  action: PayloadAction<number>
+): IExcelState => {
   const activeSheet = nSelectActiveSheet(state)
   if (state.isEditMode || state.activeCellPosition.x >= activeSheet.columnCount)
     return state
+
+  state.topLeftPosition.x = action.payload
 
   const mergeData = nSelectMergeCellArea(state)
 
@@ -111,10 +122,15 @@ export const CELL_KEY_LEFT_SHIFT = (state: IExcelState): IExcelState => {
   return state
 }
 
-export const CELL_KEY_LEFT = (state: IExcelState): IExcelState => {
+export const CELL_KEY_LEFT = (
+  state: IExcelState,
+  action: PayloadAction<number>
+): IExcelState => {
   if (state.isEditMode || state.activeCellPosition.x < 2) return state
 
   const mergeData = nSelectMergeCellArea(state)
+
+  state.topLeftPosition.x = action.payload
 
   state.activeCellPosition.x = Math.max(
     mergeData ? mergeData.start.x - 1 : state.activeCellPosition.x - 1,
@@ -136,9 +152,11 @@ export const CELL_EDITOR_STATE_UPDATE = (
   return state
 }
 
-export const CELL_EDITOR_STATE_START = (state: IExcelState): IExcelState => {
-  if (state.isEditMode) return state
-
+export const CELL_EDITOR_STATE_START = (
+  state: IExcelState,
+  action: PayloadAction<IPosition>
+): IExcelState => {
+  state.cellEditorOffset = action.payload
   state.isEditMode = true
   let editorState = EditorState.moveFocusToEnd(EditorState.createEmpty())
 
@@ -149,6 +167,11 @@ export const CELL_EDITOR_STATE_START = (state: IExcelState): IExcelState => {
 
   state.cellEditorState = editorState
 
+  return state
+}
+
+export const CELL_EDITOR_STATE_END = (state: IExcelState): IExcelState => {
+  state.isEditMode = false
   return state
 }
 
@@ -198,13 +221,5 @@ export const CELL_KEY_DELETE = (
     state.results
   )
 
-  return state
-}
-
-export const CELL_KEY_ENTER_EDIT_START = (state: IExcelState): IExcelState => {
-  state.isEditMode = true
-  const cell = nSelectActiveCell(state)
-
-  state.cellEditorState = createEditorStateFromCell(cell, true)
   return state
 }

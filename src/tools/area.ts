@@ -4,6 +4,8 @@ import {
   IRange,
   IArea,
   IAreaRange,
+  IColumnOffsets,
+  IRowOffsets,
 } from '../@types/state'
 import { getScrollbarSize } from './misc'
 import {
@@ -308,4 +310,60 @@ export const boundPositionInOrderedArea = (
   }
 
   return { boundedPosition, scrollHorizontal, scrollVertical }
+}
+
+export const getlDimensionOffset = (
+  offsets: number[],
+  index: number,
+  startIndex: number,
+  freezeCount: number
+) => offsets[index] + offsets[startIndex] - offsets[freezeCount]
+
+export const getActualDimensionOffset = (
+  offsets: number[],
+  index: number,
+  startIndex: number,
+  freezeCount: number
+) =>
+  startIndex
+    ? getlDimensionOffset(offsets, index, startIndex, freezeCount)
+    : offsets[index]
+
+export const getAreaStyleDimension = (
+  selectionArea: IArea,
+  columnStart: number,
+  rowStart: number,
+  columnOffsets: IColumnOffsets,
+  columnStartBound: number,
+  rowOffsets: IRowOffsets,
+  rowStartBound: number,
+  columnEnd: number,
+  rowEnd: number
+) => {
+  const orderedArea = getOrderedAreaFromArea(selectionArea)
+
+  orderedArea.start.x = Math.max(columnStart, orderedArea.start.x)
+  orderedArea.start.y = Math.max(rowStart, orderedArea.start.y)
+
+  const x =
+    columnOffsets[orderedArea.start.x] -
+    columnOffsets[columnStart] +
+    columnOffsets[columnStartBound]
+
+  const y =
+    rowOffsets[orderedArea.start.y] -
+    rowOffsets[rowStart] +
+    rowOffsets[rowStartBound]
+
+  const width = Math.min(
+    columnOffsets[columnEnd] - x,
+    columnOffsets[orderedArea.end.x + 1] - columnOffsets[orderedArea.start.x]
+  )
+
+  const height = Math.min(
+    rowOffsets[rowEnd] - y,
+    rowOffsets[orderedArea.end.y + 1] - rowOffsets[orderedArea.start.y]
+  )
+
+  return { width, height, x, y }
 }

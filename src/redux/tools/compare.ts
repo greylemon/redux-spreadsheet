@@ -36,7 +36,7 @@ export const isCellEqualOtherCell = (
         const otherCellFragment = otherCellBlock[j]
 
         if (
-          !deepEqual(cellFragment.styles, otherCellFragment.styles) ||
+          !deepEqual(cellFragment.style, otherCellFragment.style) ||
           !deepEqual(cellFragment.text, cellFragment.text)
         )
           return false
