@@ -1,36 +1,22 @@
 /* eslint-disable */
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-/* eslint-enable */
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   entry: path.join(__dirname, '/development/index.tsx'),
-  mode: 'development',
-  output: {
-    publicPath: '/',
-  },
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: path.join(__dirname, 'public'),
-    // hot: true,
-    port: 5000,
-    open: true,
-    historyApiFallback: true,
-    writeToDisk: true,
-  },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],
+    alias: {
+      'react-dom': 'react-dom/profiling',
+      'scheduler/tracing': 'scheduler/tracing-profiling',
+    },
   },
   module: {
     rules: [
       {
         test: /\.scss$/,
         use: ['style-loader', 'css-loader', 'sass-loader'],
-      },
-      {
-        test: /\.tsx?$/,
-        use: ['ts-loader'],
-        exclude: [/node_modules/],
       },
       {
         test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
@@ -42,6 +28,7 @@ module.exports = {
     fs: 'empty',
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, '/public/index.html'),
       filename: 'index.html',
@@ -51,5 +38,4 @@ module.exports = {
       favicon: path.join(__dirname, '/public/favicon.ico'),
     }),
   ],
-  context: path.join(__dirname, 'dev'),
 }

@@ -12,7 +12,8 @@
     "isolatedModules": true,
     "sourceMap": true,
     "module": "ES2015",
-    "jsx": "react"
+    "jsx": "react",
+    "importsNotUsedAsValues": "preserve"
   },
   "include": [
     "src",
@@ -20,6 +21,8 @@
     "stories",
     "index.d.ts",
     "development",
-    "webpack.config.js"
+    "webpack.common.js",
+    "webpack.prod.js",
+    "webpack.dev.js"
   ]
 }

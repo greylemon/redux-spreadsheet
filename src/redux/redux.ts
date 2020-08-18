@@ -6,10 +6,12 @@ import { middleware, devTools } from './config'
 
 export const useTypedSelector: TypedUseSelectorHook<IRootStore> = useSelector
 
-const store = configureStore({
+const config = {
   reducer: rootReducer,
-  devTools,
+  devTools: process.env.NODE_ENV === 'development' && devTools,
   middleware,
-})
+}
+
+const store = configureStore(config)
 
 export default store

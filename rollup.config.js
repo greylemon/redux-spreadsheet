@@ -4,6 +4,8 @@ import pkg from './package.json'
 import typescript from 'rollup-plugin-typescript2'
 import scss from 'rollup-plugin-scss'
 import resolve from '@rollup/plugin-node-resolve'
+import { terser } from 'rollup-plugin-terser'
+import replace from '@rollup/plugin-replace'
 
 const external = (id) => !id.startsWith('.') && !path.isAbsolute(id)
 const input = './src/index.ts'
@@ -16,7 +18,13 @@ export default [
       format: 'cjs',
       sourcemap: true,
     },
-    plugins: [scss(), typescript(), resolve()],
+    plugins: [
+      replace({ __buildEnv__: 'production' }),
+      scss(),
+      typescript(),
+      resolve(),
+      terser(),
+    ],
     external,
   },
   {
@@ -26,7 +34,13 @@ export default [
       format: 'esm',
       sourcemap: true,
     },
-    plugins: [scss(), typescript(), resolve()],
+    plugins: [
+      replace({ __buildEnv__: 'production' }),
+      scss(),
+      typescript(),
+      resolve(),
+      terser(),
+    ],
     external,
   },
 ]

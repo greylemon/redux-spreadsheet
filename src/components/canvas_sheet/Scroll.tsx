@@ -85,7 +85,7 @@ export const CanvasHorizontalScroll: FunctionComponent = () => {
       width: '100%',
       height: '100%',
     }),
-    [blockLength]
+    []
   )
 
   return (
@@ -143,7 +143,7 @@ export const CanvasVerticalScroll: FunctionComponent = () => {
       width: '100%',
       height: '100%',
     }),
-    [blockLength]
+    []
   )
 
   return (

@@ -174,6 +174,7 @@ export const ExcelRouter: FunctionComponent<Partial<ExcelComponentProps>> = ({
   returnLink,
 }) => {
   const { url } = useRouteMatch()
+  // console.log('loading excel')
 
   return (
     <Switch>
