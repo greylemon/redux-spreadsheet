@@ -133,3 +133,5 @@ const SomeComponent = () => {
 
 - Adding keys on canvas elements causes lag
 - Build performance is slower than local
+- Routing
+- Formula when referencing other sheet
