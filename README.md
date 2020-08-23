@@ -31,7 +31,7 @@ const SomeComponent = () => {
   const handleSave = (excelState) => {
     // Do something with data
   }
-  return <Excel handleSave={handleSave} isRouted />
+  return <Excel handleSave={handleSave} />
 }
 ```
 
@@ -128,9 +128,21 @@ const SomeComponent = () => {
 | [undox](https://github.com/greylemon/undox)                                                          | Fork of [JannieBeck](https://github.com/JannicBeck/undox) with ignore history                                                |
 | [react-sortable-hoc](https://github.com/clauderic/react-sortable-hoc)                                | Draggable list for sheet navigation                                                                                          |
 | [material-ui](https://github.com/mui-org/material-ui)                                                | Customized styled base components                                                                                            |
+| [react-konva](https://github.com/konvajs/react-konva)                                                | Used for rendering canvas grid elements                                                                                      |
 
 ## Issues
 
 - Adding keys on canvas elements causes lag
 - Build performance is slower than local
 - Page router URL has issues
+
+## Potential Optimizations
+
+- Formula mapping
+- Web workers
+- ? Refactor cell data structure - compress certain states (like styles?)
+- ? Refactor row heights/column width offsets to visible (edge case with millions of columns/rows)
+
+## Limitations
+
+- Extremely large files will cause lag since the state is stored in the client
