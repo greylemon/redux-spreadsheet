@@ -2,10 +2,6 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/greylemon/redux-spreadsheet/blob/master/LICENSE)
 ![npm](https://img.shields.io/npm/v/redux-spreadsheet?color=blue)
-![LGTM Grade](https://img.shields.io/lgtm/grade/javascript/github/greylemon/redux-spreadsheet)
-[![Build Status](https://travis-ci.org/greylemon/redux-spreadsheet.svg?branch=master)](https://travis-ci.org/greylemon/redux-spreadsheet)
-[![Coverage Status](https://coveralls.io/repos/github/greylemon/redux-spreadsheet/badge.svg?branch=master)](https://coveralls.io/github/greylemon/redux-spreadsheet?branch=master)
-[![Maintainability](https://api.codeclimate.com/v1/badges/34a279ac732e0c37a4bf/maintainability)](https://codeclimate.com/github/greylemon/redux-spreadsheet/maintainability)
 
 Excel/Google-like spreadsheet
 
